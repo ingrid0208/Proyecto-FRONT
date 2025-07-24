@@ -38,10 +38,6 @@ import { Product, ProductService } from '../service/product.service';
             </p-carousel>
         </div>
 
-        <div class="card">
-            <div class="font-semibold text-xl mb-4">Image</div>
-            <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="250" />
-        </div>
 
         <div class="card">
             <div class="font-semibold text-xl mb-4">Galleria</div>

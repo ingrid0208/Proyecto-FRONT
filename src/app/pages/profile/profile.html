@@ -1,0 +1,73 @@
+<div class="profile-container">
+  <aside class="profile-sidebar">
+    <div class="avatar-container">
+      <img [src]="user.profileImage" alt="Profile" />
+      <label for="image-upload" class="edit-icon">✎</label>
+      <input type="file" id="image-upload" hidden (change)="onImageUpload($event)" />
+    </div>
+    <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+    <p>{{ user.role }}</p>
+
+    <nav class="profile-menu">
+      <button class="active">Personal Information</button>
+      <button disabled>Login & Password</button>
+      <button disabled>Log Out</button>
+    </nav>
+  </aside>
+
+  <main class="profile-form">
+    <h2>Personal Information</h2>
+
+    <div class="gender-selection">
+      <label *ngFor="let g of genders">
+        <input type="radio" name="gender" [(ngModel)]="user.gender" [value]="g" />
+        {{ g | titlecase }}
+      </label>
+    </div>
+
+    <form>
+      <div class="form-grid">
+        <div>
+          <label>First Name</label>
+          <input type="text" [(ngModel)]="user.firstName" name="firstName" />
+        </div>
+        <div>
+          <label>Last Name</label>
+          <input type="text" [(ngModel)]="user.lastName" name="lastName" />
+        </div>
+        <div class="email">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="user.email" name="email" />
+          <span class="verified">✔ Verified</span>
+        </div>
+        <div>
+          <label>Address</label>
+          <input type="text" [(ngModel)]="user.address" name="address" />
+        </div>
+        <div>
+          <label>Phone Number</label>
+          <input type="tel" [(ngModel)]="user.phone" name="phone" />
+        </div>
+        <div>
+          <label>Date of Birth</label>
+          <input type="date" [(ngModel)]="user.birth" name="birth" />
+        </div>
+        <div>
+          <label>Location</label>
+          <select [(ngModel)]="user.location" name="location">
+            <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+          </select>
+        </div>
+        <div>
+          <label>Postal Code</label>
+          <input type="text" [(ngModel)]="user.postalCode" name="postalCode" />
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="discard">Discard Changes</button>
+        <button type="submit" class="save">Save Changes</button>
+      </div>
+    </form>
+  </main>
+</div>

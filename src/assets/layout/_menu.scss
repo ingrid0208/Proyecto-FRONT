@@ -158,3 +158,18 @@
     overflow: hidden;
     transition: max-height 1s ease-in-out;
 }
+.layout-sidebar {
+  background-color: #01763C !important; // verde oscuro
+  color: #fff;
+
+  a {
+    color: #ffffff;
+
+    &.router-link-active {
+      background-color: #21d883;
+      color: #fff;
+    }
+  }
+}
+
+
