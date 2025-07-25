@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-payment-agreement',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="p-8">
       <h2 class="text-2xl font-bold mb-4">Resumen del Acuerdo de Pago</h2>
@@ -21,8 +23,14 @@ import { CommonModule, Location } from '@angular/common';
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let fine of selectedFines" class="border-b hover:bg-gray-50">
-              <td class="py-2 px-4 text-green-600 font-semibold">{{ fine.selected }}</td>
+            <tr *ngFor="let fine of fines" class="border-b hover:bg-gray-50">
+              <td class="py-2 px-4">
+                <input 
+                  type="checkbox" 
+                  [(ngModel)]="fine.selected" 
+                  (change)="calculateTotal()"
+                  class="form-checkbox h-5 w-5 text-green-600">
+              </td>
               <td class="py-2 px-4">{{ fine.number }}</td>
               <td class="py-2 px-4">{{ fine.date }}</td>
               <td class="py-2 px-4">\${{ fine.amount }}</td>
@@ -48,8 +56,9 @@ import { CommonModule, Location } from '@angular/common';
 
           <button 
             class="bg-green-700 hover:bg-green-800 text-white font-semibold py-2 px-4 rounded"
-            (click)="confirmAgreement()">
-            ✅ Confirmar Acuerdo
+            (click)="generateAgreement()"
+            [disabled]="!hasSelectedFines()">
+            ✅ Generar Acuerdo de Pago
           </button>
         </div>
       </div>
@@ -57,7 +66,7 @@ import { CommonModule, Location } from '@angular/common';
   `
 })
 export class PaymentAgreementComponent {
-  selectedFines = [
+  fines = [
     {
       selected: true,
       number: '1234567890',
@@ -83,19 +92,33 @@ export class PaymentAgreementComponent {
 
   totalAmount: number = 0;
 
-  constructor(private location: Location) {
+  constructor(private location: Location, private router: Router) {
     this.calculateTotal();
   }
 
   calculateTotal() {
-    this.totalAmount = this.selectedFines.reduce((sum, fine) => sum + fine.amount, 0);
+    this.totalAmount = this.fines
+      .filter(fine => fine.selected)
+      .reduce((sum, fine) => sum + fine.amount, 0);
+  }
+
+  hasSelectedFines(): boolean {
+    return this.fines.some(fine => fine.selected);
   }
 
   goBack() {
     this.location.back();
   }
 
-  confirmAgreement() {
-    alert('✅ Acuerdo de pago confirmado con multas seleccionadas.');
+  generateAgreement() {
+    if (this.hasSelectedFines()) {
+      const selectedFines = this.fines.filter(fine => fine.selected);
+      this.router.navigate(['/uikit/generar-acuerdo'], { 
+        state: { 
+          selectedFines: selectedFines,
+          totalAmount: this.totalAmount 
+        }
+      });
+    }
   }
 }

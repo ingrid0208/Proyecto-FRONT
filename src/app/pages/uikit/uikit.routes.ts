@@ -26,6 +26,11 @@ export default [
       loadComponent: () =>
         import('./payment-agreement').then(m => m.PaymentAgreementComponent)
     },
+    {
+      path: 'generar-acuerdo',
+      loadComponent: () =>
+        import('./generate-agreement').then(m => m.GenerateAgreementComponent)
+    },
 
     
 ] as Routes;
