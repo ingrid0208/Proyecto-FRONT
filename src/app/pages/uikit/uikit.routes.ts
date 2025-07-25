@@ -19,7 +19,18 @@ export default [
     { path: 'panel', data: { breadcrumb: 'Panel' }, component: PanelsDemo },
     { path: 'timeline', data: { breadcrumb: 'Timeline' }, component: TimelineDemo },
     { path: 'table', data: { breadcrumb: 'Table' }, component: TableDemo },
-    { path: '**', redirectTo: '/notfound' },
+
+    // ✅ Mueve esta ruta arriba del wildcard
+    {
+      path: 'acuerdo-pago',
+      loadComponent: () =>
+        import('./payment-agreement').then(m => m.PaymentAgreementComponent)
+    },
+
+    
+] as Routes;
+
+
     
 
-] as Routes;
+
