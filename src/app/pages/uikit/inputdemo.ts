@@ -76,9 +76,9 @@ export class InputDemo {
   email: string = '';
   
  
- goToAgreement() {
-    this.router.navigate(['/acuerdo-pago']);
-  }
+goToAgreement() {
+  this.router.navigate(['/uikit/acuerdo-pago']);
+}
 
 }
 
