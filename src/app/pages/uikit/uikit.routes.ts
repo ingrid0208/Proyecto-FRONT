@@ -31,6 +31,11 @@ export default [
       loadComponent: () =>
         import('./generate-agreement').then(m => m.GenerateAgreementComponent)
     },
+    {
+      path: 'acuerdo-exitoso',
+      loadComponent: () =>
+        import('./agreement-success').then(m => m.AgreementSuccessComponent)
+    },
 
     
 ] as Routes;
