@@ -1,25 +1,33 @@
-import { Component } from '@angular/core';
-import { NotificationsWidget } from './components/notificationswidget';
-import { StatsWidget } from './components/statswidget';
-import { RecentSalesWidget } from './components/recentsaleswidget';
-import { BestSellingWidget } from './components/bestsellingwidget';
-import { RevenueStreamWidget } from './components/revenuestreamwidget';
+import { Component } from "@angular/core";
+import { ContenidoInicioComponent } from "../../components/contenido-inicio/contenido-inicio.component";
+import { AppTopbar } from "../../components/topbar/topbar.component";
+// ← QUITAR la importación de AppTopbar
 
 @Component({
-    selector: 'app-dashboard',
-    imports: [StatsWidget, RecentSalesWidget, BestSellingWidget, RevenueStreamWidget, NotificationsWidget],
-    template: `
-        <div class="grid grid-cols-12 gap-8">
-            <app-stats-widget class="contents" />
-            <div class="col-span-12 xl:col-span-6">
-                <app-recent-sales-widget />
-                <app-best-selling-widget />
-            </div>
-            <div class="col-span-12 xl:col-span-6">
-                <app-revenue-stream-widget />
-                <app-notifications-widget />
-            </div>
-        </div>
-    `
+  selector: 'app-dashboard',
+  standalone: true,
+  imports: [
+    ContenidoInicioComponent, AppTopbar
+  ],
+  template: `
+    <div class="dashboard-container">
+      <app-contenido-inicio/>
+      <<!-- ← QUITAR <app-topbar /> de aquí -->>
+    </div>
+  `,
+  styles: [`
+    .dashboard-container {
+      padding: 2rem;
+      height: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-container {
+        padding: 1rem;
+      }
+    }
+  `]
 })
 export class Dashboard {}
