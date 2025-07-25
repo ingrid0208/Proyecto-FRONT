@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-contenido-inicio',
@@ -15,7 +16,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatCardModule,
     MatTableModule,
     MatButtonModule,
-    MatChipsModule
+    MatChipsModule,
+    RouterModule
   ]
 })
 export class ContenidoInicioComponent {

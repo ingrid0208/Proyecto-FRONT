@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common'; // 👈 Necesario para *ngFor, *ngIf, ngClass
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-tipos-multas',

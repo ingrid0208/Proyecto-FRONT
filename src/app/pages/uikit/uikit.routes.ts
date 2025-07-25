@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ButtonDemo } from './buttondemo';
 import { ChartDemo } from './chartdemo';
-import { InputDemo } from './inputdemo';
+import { FormularioAcuerdo } from './formularioAcuerdoPago';
 import { ListDemo } from './listdemo';
 import { MediaDemo } from './mediademo';
 import { PanelsDemo } from './panelsdemo';
@@ -13,7 +13,7 @@ export default [
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'TipoMultas', data: { breadcrumb: 'Tipos de multas' }, component: TiposMultasComponent },
-    { path: 'input', data: { breadcrumb: 'Input' }, component: InputDemo },
+    { path: 'AcuerdoPago', data: { breadcrumb: 'acuerdo de pago' }, component: FormularioAcuerdo },
     { path: 'list', data: { breadcrumb: 'List' }, component: ListDemo },
     { path: 'media', data: { breadcrumb: 'Media' }, component: MediaDemo },
     { path: 'panel', data: { breadcrumb: 'Panel' }, component: PanelsDemo },
