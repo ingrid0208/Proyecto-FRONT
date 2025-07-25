@@ -12,7 +12,7 @@ import { TiposMultasComponent } from '../../components/tipos-multas/tipos-multas
 export default [
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
-    { path: 'formlayout', data: { breadcrumb: 'Tipos de multas' }, component: TiposMultasComponent },
+    { path: 'TipoMultas', data: { breadcrumb: 'Tipos de multas' }, component: TiposMultasComponent },
     { path: 'input', data: { breadcrumb: 'Input' }, component: InputDemo },
     { path: 'list', data: { breadcrumb: 'List' }, component: ListDemo },
     { path: 'media', data: { breadcrumb: 'Media' }, component: MediaDemo },

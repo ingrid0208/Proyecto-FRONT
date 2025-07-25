@@ -5,7 +5,7 @@ import { ContenidoInicioComponent } from './app/components/contenido-inicio/cont
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterModule, ContenidoInicioComponent],
+    imports: [RouterModule  ],
     template: `<router-outlet></router-outlet>`
 })
 export class AppComponent {}
