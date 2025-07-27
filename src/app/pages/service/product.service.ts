@@ -23,18 +23,18 @@ export interface Product {
 export class ProductService {
     getProductsData() {
         return [
-            {
-                id: '1000',
-                code: 'f230fh0g3',
-                name: 'Bamboo Watch',
-                description: 'Product Description',
-                image: 'bamboo-watch.jpg',
-                price: 65,
-                category: 'Accessories',
-                quantity: 24,
-                inventoryStatus: 'INSTOCK',
-                rating: 5
-            },
+         {
+  id: 'C01',
+  code: '123',
+  name: 'Conducir sin licencia',
+  description: 'No portar licencia de conducción vigente.',
+  image: 'conducir-sin-licencia.jpg',
+  price: 390000,
+  category: 'Licencia',
+  inventoryStatus: 'LOWSTOCK',
+  rating: 4
+},
+
             {
                 id: '1001',
                 code: 'nvklal433',
