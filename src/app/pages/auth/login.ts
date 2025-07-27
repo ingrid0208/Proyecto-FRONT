@@ -11,7 +11,7 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule, AppFloatingConfigurator],
+    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule],
     template: `
 <div class="login-wrapper animate-fade-in">
   <div class="login-card">
@@ -58,8 +58,8 @@ import { AppFloatingConfigurator } from '../../layout/component/app.floatingconf
       <button pButton label="Iniciar Sesión" class="p-button-success w-full mt-3 login-btn pulse"></button>
 
       <div class="login-links">
-        <a href="#">¿Olvidaste tu contraseña?</a>
-        <a href="#">¿Deseas Registrarte?</a>
+<a [routerLink]="'/auth/Recovery-password'">¿Olvidaste tu contraseña?</a>
+<a [routerLink]="'/auth/Registrar'">¿Deseas Registrarte?</a>
       </div>
 
       <img src="../../../assets/demo/login_Abajo.png" class="corner corner-bottom-left" />

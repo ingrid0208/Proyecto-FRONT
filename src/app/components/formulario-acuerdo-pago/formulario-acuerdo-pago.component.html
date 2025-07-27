@@ -1,0 +1,79 @@
+<div class="form-container">
+  <h2>Crear Acuerdo de Pago</h2>
+
+  <form (ngSubmit)="onSubmit()">
+    <div class="form-grid">
+
+      <!-- Columna izquierda -->
+      <div class="form-column">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" type="text" [(ngModel)]="form.nombre" name="nombre" placeholder="Ingrese su nombre" />
+
+        <label for="apellido">Apellido</label>
+        <input id="apellido" type="text" [(ngModel)]="form.apellido" name="apellido" placeholder="Ingrese su apellido" />
+
+        <label for="documento">Número de Documento</label>
+        <input id="documento" type="text" [(ngModel)]="form.documento" name="documento" placeholder="Ingrese su número de documento" />
+
+        <label for="tipoDocumento">Tipo de Documento</label>
+        <select id="tipoDocumento" [(ngModel)]="form.tipoDocumento" name="tipoDocumento">
+          <option value="">Seleccione</option>
+          <option value="CC">Cédula</option>
+          <option value="TI">Tarjeta de Identidad</option>
+          <option value="CE">Cédula de Extranjería</option>
+        </select>
+
+        <label for="expedidoEn">Expedido en</label>
+        <input id="expedidoEn" type="text" [(ngModel)]="form.expedidoEn" name="expedidoEn" placeholder="Ciudad de expedición" />
+
+        <label for="telefono">Número de Teléfono</label>
+        <input id="telefono" type="text" [(ngModel)]="form.telefono" name="telefono" placeholder="Ingrese su teléfono" />
+
+        <label for="direccion">Dirección</label>
+        <input id="direccion" type="text" [(ngModel)]="form.direccion" name="direccion" placeholder="Ingrese su dirección" />
+
+        <label for="estadoPago">Metodo de Pago</label>
+        <select id="estadoPago" [(ngModel)]="form.estadoPago" name="estadoPago">
+          <option value="">Seleccione</option>
+          <option value="efectivo">efectivo</option>
+          <option value="tarjeta">tarjeta</option>
+        </select>
+      </div>
+
+      <!-- Columna derecha -->
+      <div class="form-column">
+        <label for="correo">Correo Electrónico</label>
+        <input id="correo" type="email" [(ngModel)]="form.correo" name="correo" placeholder="Ingrese su correo" />
+
+        <label for="inicioAcuerdo">Inicio del Acuerdo</label>
+        <input id="inicioAcuerdo" type="date" [(ngModel)]="form.inicioAcuerdo" name="inicioAcuerdo" />
+
+        <label for="finAcuerdo">Fin del Acuerdo</label>
+        <input id="finAcuerdo" type="date" [(ngModel)]="form.finAcuerdo" name="finAcuerdo" />
+
+        <label for="fechaInfraccion">Fecha de la Infracción</label>
+        <input id="fechaInfraccion" type="date" [(ngModel)]="form.fechaInfraccion" name="fechaInfraccion" />
+
+        <label for="infraccion">Infracción Cometida</label>
+        <input id="infraccion" type="text" [(ngModel)]="form.infraccion" name="infraccion" placeholder="Describa la infracción" />
+
+        <label for="tipoMulta">Tipo de Multa</label>
+        <select id="tipoMulta" [(ngModel)]="form.tipoMulta" name="tipoMulta">
+          <option value="">Seleccione</option>
+          <option value="TipoUno">Tipo Uno</option>
+          <option value="TipoDos">tipo Dos</option>
+          <option value="TipoTres">Tipo Tres</option>
+          <option value="muy_grave">Tipo Cuatro</option>
+        </select>
+
+        <label for="valorSMDLV">Valor en SMDLV</label>
+        <input id="valorSMDLV" type="number" [(ngModel)]="form.valorSMDLV" name="valorSMDLV" placeholder="Ej: 2" />
+
+        <label for="infoInfraccion">Información de la Infracción</label>
+        <textarea id="infoInfraccion" rows="4" [(ngModel)]="form.infoInfraccion" name="infoInfraccion" placeholder="Ingrese detalles adicionales..."></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn green">Generar Acuerdo de Pago</button>
+  </form>
+</div>

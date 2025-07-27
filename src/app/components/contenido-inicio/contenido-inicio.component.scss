@@ -1,0 +1,40 @@
+mat-card {
+  margin-bottom: 1.5rem;
+}
+
+.table-container {
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  margin-top: 0;
+}
+
+mat-card-actions {
+  margin-top: 1rem;
+}
+
+.header-section {
+  padding: 14px;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 12px 0;
+}
+
+.header-description {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
