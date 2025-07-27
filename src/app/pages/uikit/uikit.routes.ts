@@ -19,7 +19,28 @@ export default [
     { path: 'panel', data: { breadcrumb: 'Panel' }, component: PanelsDemo },
     { path: 'timeline', data: { breadcrumb: 'Timeline' }, component: TimelineDemo },
     { path: 'table', data: { breadcrumb: 'Table' }, component: TableDemo },
-    { path: '**', redirectTo: '/notfound' },
+
+    // ✅ Mueve esta ruta arriba del wildcard
+    {
+      path: 'acuerdo-pago',
+      loadComponent: () =>
+        import('./payment-agreement').then(m => m.PaymentAgreementComponent)
+    },
+    {
+      path: 'generar-acuerdo',
+      loadComponent: () =>
+        import('./generate-agreement').then(m => m.GenerateAgreementComponent)
+    },
+    {
+      path: 'acuerdo-exitoso',
+      loadComponent: () =>
+        import('./agreement-success').then(m => m.AgreementSuccessComponent)
+    },
+
+    
+] as Routes;
+
+
     
 
-] as Routes;
+
