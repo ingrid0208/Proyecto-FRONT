@@ -1,35 +1,120 @@
+// 1. app.layout.ts - REEMPLAZAR COMPLETAMENTE
 import { Component, Renderer2, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
-import { AppTopbar } from './app.topbar';
 import { AppSidebar } from './app.sidebar';
-import { AppFooter } from './app.footer';
 import { LayoutService } from '../service/layout.service';
+import { AppTopbar } from '../../components/topbar/topbar.component';
 
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, AppFooter],
-    template: `<div class="layout-wrapper" [ngClass]="containerClass">
-        <app-topbar></app-topbar>
+    imports: [CommonModule, AppSidebar, RouterModule, AppTopbar], // ← AGREGAR AppTopbar aquí
+    template: `
+    <div class="layout-wrapper" [ngClass]="containerClass">
         <app-sidebar></app-sidebar>
         <div class="layout-main-container">
+            <app-topbar></app-topbar> <!-- ← AGREGAR esta línea -->
             <div class="layout-main">
                 <router-outlet></router-outlet>
             </div>
-            <app-footer></app-footer>
         </div>
-        <div class="layout-mask animate-fadein"></div>
-    </div> `
+        <div class="layout-mask animate-fadein" 
+             *ngIf="layoutService.layoutState().overlayMenuActive || layoutService.layoutState().staticMenuMobileActive"
+             (click)="hideMenu()">
+        </div>
+    </div>`,
+    styles: [`
+        :host {
+            display: block;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        .layout-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layout-main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        .layout-main-container app-topbar {
+            flex-shrink: 0;
+            z-index: 997;
+        }
+
+        .layout-main {
+            flex: 1;
+            background: #f3f4f6;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 0;
+        }
+
+        .layout-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 998;
+            display: none;
+        }
+
+        .layout-static .layout-main-container {
+            margin-left: 300px;
+        }
+
+        .layout-static-inactive .layout-main-container {
+            margin-left: 0;
+        }
+
+        .layout-overlay .layout-main-container {
+            margin-left: 0;
+        }
+
+        .layout-overlay-active .layout-mask,
+        .layout-mobile-active .layout-mask {
+            display: block;
+        }
+
+        @media (max-width: 991px) {
+            .layout-static .layout-main-container,
+            .layout-static-inactive .layout-main-container {
+                margin-left: 0;
+            }
+        }
+
+        .animate-fadein {
+            animation: fadein 0.15s;
+        }
+
+        @keyframes fadein {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    `]
 })
 export class AppLayout {
+    // ← MANTENER TODO EL RESTO DEL CÓDIGO IGUAL
     overlayMenuOpenSubscription: Subscription;
-
     menuOutsideClickListener: any;
 
     @ViewChild(AppSidebar) appSidebar!: AppSidebar;
-
     @ViewChild(AppTopbar) appTopBar!: AppTopbar;
 
     constructor(
