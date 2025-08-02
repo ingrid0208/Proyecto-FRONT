@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { ButtonDemo } from './buttondemo';
 import { ChartDemo } from './chartdemo';
 import { FormularioAcuerdo } from './formularioAcuerdoPago';
@@ -9,7 +10,7 @@ import { TimelineDemo } from './timelinedemo';
 import { TableDemo } from './tabledemo';
 import { TiposMultasComponent } from '../../components/tipos-multas/tipos-multas.component';
 
-export default [
+const routes: Routes = [
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'TipoMultas', data: { breadcrumb: 'Tipos de multas' }, component: TiposMultasComponent },
@@ -38,7 +39,13 @@ export default [
     },
 
     
-] as Routes;
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class UikitRoutesModule {}
 
 
     
