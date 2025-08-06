@@ -9,7 +9,7 @@ export const appRoutes: Routes = [
     component: AppLayout,
     children: [
       { path: '', component: Dashboard },
-      { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes') },
+      { path: 'uikit', loadChildren: () => import('./app/pages/uikit/uikit.routes').then(m => m.UikitRoutesModule) },
       { path: 'pages', loadChildren: () => import('./app/pages/pages.routes') },
       {
         path: 'calendar',
