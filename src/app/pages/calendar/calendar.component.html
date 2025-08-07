@@ -1,0 +1,22 @@
+<div class="calendar-container">
+  <h1>Calendario</h1>
+  <p>
+    En este apartado encontrarás el tipo de multa y los detalles de la infracción cometida.
+    Al seleccionar una tarjeta, podrás consultar las fechas disponibles para realizar el pago,
+    así como más información relacionada con tu multa.
+  </p>
+
+  <div class="cards-container">
+    <div class="card" *ngFor="let multa of [1, 2, 3, 4]">
+      <div class="calendar-grid">
+        <div class="day" *ngFor="let day of [].constructor(35); let i = index">
+          <span [class.active]="i % 5 === 0">{{ i + 1 }}</span>
+        </div>
+      </div>
+      <p class="multa-text">
+        <strong>Multa Tipo Uno</strong><br />
+        consumir bebidas alcohólicas o sustancias psicoactivas en lugares públicos
+      </p>
+    </div>
+  </div>
+</div>
