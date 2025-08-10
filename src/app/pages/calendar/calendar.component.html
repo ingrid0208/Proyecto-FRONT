@@ -1,5 +1,8 @@
 <div class="calendar-container">
-  <h1>Calendario</h1>
+  <h1 style="display:flex;align-items:center;gap:12px;">
+    <span style="font-size:2.2rem;">📅</span>
+    Calendario
+  </h1>
   <p>
     En este apartado encontrarás el tipo de multa y los detalles de la infracción cometida.
     Al seleccionar una tarjeta, podrás consultar las fechas disponibles para realizar el pago,
@@ -18,7 +21,10 @@
         </div>
       </div>
       <p class="multa-text">
-        <strong>{{ multa.tipo }}</strong><br />
+        <strong>
+          <span style="font-size:1.3rem;vertical-align:middle;">⚠️</span>
+          {{ multa.tipo }}
+        </strong><br />
         {{ multa.descripcion }}
       </p>
     </button>
@@ -27,14 +33,20 @@
   <!-- Calendario grande modal/section -->
   <div class="big-calendar-modal" *ngIf="showBigCalendar">
     <div class="big-calendar-header">
-      <button (click)="closeBigCalendar()">Cerrar</button>
+      <button (click)="closeBigCalendar()">✖ Cerrar</button>
       <button (click)="prevYear()">&#8592; {{selectedYear - 1}}</button>
-      <span class="big-calendar-title">{{selectedYear}}</span>
+      <span class="big-calendar-title">
+        <span style="font-size:1.5rem;">📆</span>
+        {{selectedYear}}
+      </span>
       <button (click)="nextYear()">{{selectedYear + 1}} &#8594;</button>
     </div>
     <div class="big-calendar-content">
       <div class="month" *ngFor="let month of months; let m = index">
-        <h3>{{month}}</h3>
+        <h3>
+          <span style="font-size:1.1rem;">🗓️</span>
+          {{month}}
+        </h3>
         <div class="days-grid">
           <span class="day" *ngFor="let d of [].constructor(getDaysInMonth(m, selectedYear)); let day = index">
             {{day + 1}}
