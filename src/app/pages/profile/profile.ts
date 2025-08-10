@@ -28,7 +28,7 @@ import { ViewChild } from '@angular/core';
     OverlayPanelModule
   ],
   templateUrl: './profile.html',
-  styleUrls: ['../../../assets/layout/layout.scss']
+  styleUrls: ['./profile.scss'] // Usa el archivo de estilos del perfil
 })
 export class ProfileComponent {
       @ViewChild('op') overlayPanel: any;

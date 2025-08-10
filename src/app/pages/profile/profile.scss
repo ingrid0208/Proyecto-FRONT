@@ -1,0 +1,256 @@
+.profile-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  background: #eafaf1;
+  min-height: 100vh;
+  justify-content: center;
+  animation: fadeIn 0.8s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.profile-sidebar {
+  width: 320px;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(0,128,0,0.07);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInLeft 0.8s;
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px);}
+  to { opacity: 1; transform: translateX(0);}
+}
+
+.avatar-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.profile-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #a3e635;
+  box-shadow: 0 2px 8px rgba(34,197,94,0.08);
+  transition: box-shadow 0.3s;
+}
+.profile-avatar:hover {
+  box-shadow: 0 4px 16px rgba(34,197,94,0.18);
+}
+
+.edit-icon {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: #22c55e;
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.4em 0.5em;
+  cursor: pointer;
+  font-size: 1.1em;
+  box-shadow: 0 1px 4px rgba(34,197,94,0.12);
+  transition: background 0.2s, transform 0.2s;
+}
+.edit-icon:hover {
+  background: #166534;
+  transform: scale(1.1) rotate(-10deg);
+}
+
+.profile-name {
+  margin: 0.5rem 0 0.2rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #166534;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+}
+
+.profile-role {
+  color: #22c55e;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.profile-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+.profile-menu button {
+  padding: 0.7em 1em;
+  border: none;
+  border-radius: 0.5em;
+  background: #d1fae5;
+  color: #166534;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.profile-menu button.active {
+  background: #22c55e;
+  color: #fff;
+  transform: scale(1.05);
+}
+.profile-menu button:disabled {
+  background: #e0e0e0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.profile-form {
+  flex: 1;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(34,197,94,0.07);
+  padding: 2rem 2.5rem;
+  min-width: 340px;
+  max-width: 600px;
+  animation: fadeInRight 0.8s;
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px);}
+  to { opacity: 1; transform: translateX(0);}
+}
+
+.profile-form h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #166534;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.gender-selection {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.gender-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 500;
+  color: #166534;
+  transition: color 0.2s;
+}
+.gender-label input[type="radio"]:checked + span {
+  color: #22c55e;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 2rem;
+  margin-bottom: 2rem;
+}
+.form-grid .email {
+  grid-column: span 2;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.form-grid label {
+  font-weight: 500;
+  color: #166534;
+  margin-bottom: 0.3em;
+  display: block;
+}
+.form-grid input,
+.form-grid select {
+  width: 100%;
+  padding: 0.6em 0.8em;
+  border-radius: 0.4em;
+  border: 1px solid #a3e635;
+  background: #f0fdf4;
+  font-size: 1em;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.form-grid input:focus,
+.form-grid select:focus {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px #bbf7d0;
+  outline: none;
+}
+
+.verified {
+  color: #22c55e;
+  font-size: 1.1em;
+  font-weight: 600;
+  animation: pulse 1.2s infinite alternate;
+}
+
+@keyframes pulse {
+  from { transform: scale(1);}
+  to { transform: scale(1.15);}
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+.form-actions .discard {
+  background: #e0e0e0;
+  color: #166534;
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.7em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.form-actions .discard:hover {
+  background: #bbf7d0;
+  color: #166534;
+  transform: scale(1.05);
+}
+.form-actions .save {
+  background: #22c55e;
+  color: #fff;
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.7em 1.2em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.form-actions .save:hover {
+  background: #166534;
+  transform: scale(1.05);
+}
+
+@media (max-width: 900px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  .profile-form {
+    padding: 1.2rem;
+    max-width: 100%;
+  }
+  .profile-sidebar {
+    width: 100%;
+    padding: 1.2rem;
+  }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-grid .email {
+    grid-column: span 1;
+  }
+}

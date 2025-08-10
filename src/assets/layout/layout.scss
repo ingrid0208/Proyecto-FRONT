@@ -12,3 +12,6 @@
 @use './_utils';
 @use './_typography';
 @use './variables/profile';
+@use './registrar';
+@use './recoveryPassword';
+@use './veryCode';

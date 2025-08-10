@@ -53,7 +53,7 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             {
-                label: 'Home',
+                label: 'Inicio',
                 items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/'] }]
             },
             {
@@ -83,7 +83,7 @@ export class AppMenu {
                         routerLink: ['/messages']
                     },
                     {
-                        label: 'Profile',
+                        label: 'Perfil ',
                         icon: 'pi pi-fw pi-user',
                         routerLink: ['/profile']
                     }

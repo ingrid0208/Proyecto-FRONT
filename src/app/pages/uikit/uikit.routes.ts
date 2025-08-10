@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import { ButtonDemo } from './buttondemo';
 import { ChartDemo } from './chartdemo';
 import { FormularioAcuerdo } from './formularioAcuerdoPago';
@@ -11,7 +12,7 @@ import { TiposMultasComponent } from '../../components/tipos-multas/tipos-multas
 import { NotificacionComponent } from '../../components/NotificacionMultas/encabezado/notificacion/notificacion.component';
 
 
-export default [
+const routes: Routes = [
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'TipoMultas', data: { breadcrumb: 'Tipos de multas' }, component: TiposMultasComponent },
@@ -22,6 +23,34 @@ export default [
     { path: 'timeline', data: { breadcrumb: 'Timeline' }, component: TimelineDemo },
     { path: 'table', data: { breadcrumb: 'Table' }, component: TableDemo },
     { path: '**', redirectTo: '/notfound' },
-    
 
-] as Routes;
+    // ✅ Mueve esta ruta arriba del wildcard
+    {
+      path: 'acuerdo-pago',
+      loadComponent: () =>
+        import('./payment-agreement').then(m => m.PaymentAgreementComponent)
+    },
+    {
+      path: 'generar-acuerdo',
+      loadComponent: () =>
+        import('./generate-agreement').then(m => m.GenerateAgreementComponent)
+    },
+    {
+      path: 'acuerdo-exitoso',
+      loadComponent: () =>
+        import('./agreement-success').then(m => m.AgreementSuccessComponent)
+    },
+
+    
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class UikitRoutesModule {}
+
+
+
+
+
