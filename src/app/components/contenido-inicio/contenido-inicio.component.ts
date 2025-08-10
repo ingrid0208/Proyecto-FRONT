@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
 import { RouterModule } from '@angular/router';
+import { GenericMultasTableComponent } from '../../shared/components/generic-multas-table/generic-multas-table.component';
+import type { Multa } from '../../shared/components/generic-multas-table/generic-multas-table.component';
 
 @Component({
   selector: 'app-contenido-inicio',
@@ -14,17 +14,23 @@ import { RouterModule } from '@angular/router';
   imports: [
     CommonModule,
     MatCardModule,
-    MatTableModule,
     MatButtonModule,
-    MatChipsModule,
-    RouterModule
+    RouterModule,
+    GenericMultasTableComponent 
   ]
 })
 export class ContenidoInicioComponent {
-  @Input() multas: any[] = [];  // ahora vienen desde afuera
+  // ✅ Datos locales (ya NO vienen del Dashboard)
+  multas: Multa[] = [
+    { tipo: 'Exceso de velocidad', fecha: new Date(2025, 0, 12), descripcion: 'Zona escolar', costo: 350000, estado: 'Pendiente' },
+    { tipo: 'Mal estacionamiento', fecha: new Date(2025, 2, 3), descripcion: 'Bloqueo de hidrante', costo: 180000, estado: 'Pagada' },
+    { tipo: 'Semáforo en rojo', fecha: new Date(2025, 4, 21), descripcion: 'Cruce con cámara', costo: 420000, estado: 'Vencida' },
+  ];
 
-  @Input() botonTexto: string = 'Generar Acuerdo de Pago';
-  @Output() generarAcuerdo = new EventEmitter<void>(); // evento para notificar al padre
+  botonTexto: string = 'Generar Acuerdo de Pago';
+  @Output() generarAcuerdo = new EventEmitter<void>();
 
-  displayedColumns = ['tipo', 'fecha', 'descripcion', 'costo', 'estado'];
+  onClickGenerar() {
+    this.generarAcuerdo.emit();
+  }
 }

@@ -1,4 +1,22 @@
+mat-card {
+  margin-bottom: 1.5rem;
+}
 
+.table-container {
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  margin-top: 0;
+}
+
+mat-card-actions {
+  margin-top: 1rem;
+}
 
 .header-section {
   padding: 14px;

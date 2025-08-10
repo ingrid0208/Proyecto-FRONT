@@ -1,0 +1,15 @@
+<div class="multa-card">
+  <div class="multa-header">
+    <strong>{{ multa.numero }}</strong>
+  </div>
+  <div class="multa-body">
+    <p>{{ multa.descripcion }}</p>
+    <div class="multa-info">
+      <span class="fecha">📅 {{ multa.fecha }}</span>
+      <span class="estado" [ngClass]="estadoClass">
+        {{ multa.estado }}
+      </span>
+    </div>
+    <div class="multa-location">📍 {{ multa.ubicacion }}</div>
+  </div>
+</div>

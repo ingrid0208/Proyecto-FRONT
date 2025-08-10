@@ -8,13 +8,15 @@ import { PanelsDemo } from './panelsdemo';
 import { TimelineDemo } from './timelinedemo';
 import { TableDemo } from './tabledemo';
 import { TiposMultasComponent } from '../../components/tipos-multas/tipos-multas.component';
+import { NotificacionComponent } from '../../components/NotificacionMultas/encabezado/notificacion/notificacion.component';
+
 
 export default [
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'TipoMultas', data: { breadcrumb: 'Tipos de multas' }, component: TiposMultasComponent },
     { path: 'AcuerdoPago', data: { breadcrumb: 'acuerdo de pago' }, component: FormularioAcuerdo },
-    { path: 'list', data: { breadcrumb: 'List' }, component: ListDemo },
+     { path: 'NotificacionMultas', data: { breadcrumb: 'Notificación de multas' }, component: NotificacionComponent },
     { path: 'media', data: { breadcrumb: 'Media' }, component: MediaDemo },
     { path: 'panel', data: { breadcrumb: 'Panel' }, component: PanelsDemo },
     { path: 'timeline', data: { breadcrumb: 'Timeline' }, component: TimelineDemo },
