@@ -1,12 +1,12 @@
 <div class="profile-container">
-  <aside class="profile-sidebar">
+  <aside class="profile-sidebar card">
     <div class="avatar-container">
-      <img [src]="user.profileImage" alt="Profile" />
+      <img [src]="user.profileImage" alt="Profile" class="profile-avatar" />
       <label for="image-upload" class="edit-icon">✎</label>
       <input type="file" id="image-upload" hidden (change)="onImageUpload($event)" />
     </div>
-    <h3>{{ user.firstName }} {{ user.lastName }}</h3>
-    <p>{{ user.role }}</p>
+    <h3 class="profile-name">{{ user.firstName }} {{ user.lastName }}</h3>
+    <p class="profile-role">{{ user.role }}</p>
 
     <nav class="profile-menu">
       <button class="active">Personal Information</button>
@@ -15,11 +15,11 @@
     </nav>
   </aside>
 
-  <main class="profile-form">
+  <main class="profile-form card">
     <h2>Personal Information</h2>
 
     <div class="gender-selection">
-      <label *ngFor="let g of genders">
+      <label *ngFor="let g of genders" class="gender-label">
         <input type="radio" name="gender" [(ngModel)]="user.gender" [value]="g" />
         {{ g | titlecase }}
       </label>
