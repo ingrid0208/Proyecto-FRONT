@@ -7,17 +7,21 @@
   </p>
 
   <div class="cards-container">
-    <div class="card" *ngFor="let multa of [1, 2, 3, 4]">
+    <button 
+      class="card" 
+      *ngFor="let multa of multas; let i = index"
+      type="button"
+      (click)="onMultaClick(i)">
       <div class="calendar-grid">
-        <div class="day" *ngFor="let day of [].constructor(30); let i = index">
-          <span [class.active]="i % 5 === 0">{{ i + 1 }}</span>
+        <div class="day" *ngFor="let day of [].constructor(30); let j = index">
+          <span [class.active]="j % 5 === 0">{{ j + 1 }}</span>
         </div>
       </div>
       <p class="multa-text">
-        <strong>Multa Tipo Uno</strong><br />
-        consumir bebidas alcohólicas o sustancias psicoactivas en lugares públicos
+        <strong>{{ multa.tipo }}</strong><br />
+        {{ multa.descripcion }}
       </p>
-       
-    </div>
+    </button>
   </div>
 </div>
+
