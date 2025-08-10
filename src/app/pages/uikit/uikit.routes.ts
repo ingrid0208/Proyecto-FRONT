@@ -9,6 +9,7 @@ import { PanelsDemo } from './panelsdemo';
 import { TimelineDemo } from './timelinedemo';
 import { TableDemo } from './tabledemo';
 import { TiposMultasComponent } from '../../components/tipos-multas/tipos-multas.component';
+import { InputDemo } from './inputdemo';
 
 const routes: Routes = [
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
@@ -20,6 +21,7 @@ const routes: Routes = [
     { path: 'panel', data: { breadcrumb: 'Panel' }, component: PanelsDemo },
     { path: 'timeline', data: { breadcrumb: 'Timeline' }, component: TimelineDemo },
     { path: 'table', data: { breadcrumb: 'Table' }, component: TableDemo },
+    { path: 'inputdemo', data: { breadcrumb: 'Identificación ciudadana' }, component: InputDemo },
 
     // ✅ Mueve esta ruta arriba del wildcard
     {
@@ -48,6 +50,6 @@ const routes: Routes = [
 export class UikitRoutesModule {}
 
 
-    
+
 
 

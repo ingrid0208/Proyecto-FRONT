@@ -60,7 +60,7 @@ export class AppMenu {
                 label: 'UI Components',
                 items: [
                     { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoMultas'] },
-                    { label: 'Acuerdo de Pago', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/acuerdo-pago'] },
+                    { label: 'Identificación ciudadana', icon: 'pi pi-fw pi-user', routerLink: ['/uikit/inputdemo'] },
                     { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
                     { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
                     { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
