@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // 👈 IMPORTANTE para *ngFor y *ngIf
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
@@ -28,8 +29,33 @@ export class CalendarComponent {
     }
   ];
 
+  showBigCalendar = false;
+  selectedYear = new Date().getFullYear();
+  months = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+
+  constructor(private router: Router) {}
+
+  getDaysInMonth(month: number, year: number): number {
+    return new Date(year, month + 1, 0).getDate();
+  }
+
   onMultaClick(index: number) {
-    // Aquí puedes mostrar un modal, navegar o mostrar información adicional
-    alert(`Seleccionaste: ${this.multas[index].tipo}`);
+    const multa = this.multas[index];
+    this.router.navigate(['/calendar-detail'], { state: { multa } });
+  }
+
+  closeBigCalendar() {
+    this.showBigCalendar = false;
+  }
+
+  nextYear() {
+    this.selectedYear++;
+  }
+
+  prevYear() {
+    this.selectedYear--;
   }
 }

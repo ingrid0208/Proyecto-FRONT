@@ -23,5 +23,25 @@
       </p>
     </button>
   </div>
+
+  <!-- Calendario grande modal/section -->
+  <div class="big-calendar-modal" *ngIf="showBigCalendar">
+    <div class="big-calendar-header">
+      <button (click)="closeBigCalendar()">Cerrar</button>
+      <button (click)="prevYear()">&#8592; {{selectedYear - 1}}</button>
+      <span class="big-calendar-title">{{selectedYear}}</span>
+      <button (click)="nextYear()">{{selectedYear + 1}} &#8594;</button>
+    </div>
+    <div class="big-calendar-content">
+      <div class="month" *ngFor="let month of months; let m = index">
+        <h3>{{month}}</h3>
+        <div class="days-grid">
+          <span class="day" *ngFor="let d of [].constructor(getDaysInMonth(m, selectedYear)); let day = index">
+            {{day + 1}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 

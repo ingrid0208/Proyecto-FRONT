@@ -16,6 +16,10 @@ export const appRoutes: Routes = [
         loadComponent: () => import('./app/pages/calendar/calendar').then(m => m.CalendarComponent)
       },
       {
+        path: 'calendar-detail',
+        loadComponent: () => import('./app/pages/calendar/calendar-detail').then(m => m.CalendarDetailComponent)
+      },
+      {
         path: 'messages',
         loadComponent: () => import('./app/pages/messages/messages').then(m => m.MessagesComponent)
       },
