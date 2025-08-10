@@ -9,7 +9,7 @@
   <div class="cards-container">
     <div class="card" *ngFor="let multa of [1, 2, 3, 4]">
       <div class="calendar-grid">
-        <div class="day" *ngFor="let day of [].constructor(35); let i = index">
+        <div class="day" *ngFor="let day of [].constructor(30); let i = index">
           <span [class.active]="i % 5 === 0">{{ i + 1 }}</span>
         </div>
       </div>
