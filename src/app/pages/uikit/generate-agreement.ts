@@ -8,18 +8,18 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-   <div class="flex items-center justify-center min-h-screen bg-gray-100">
-  <div class="bg-white border border-green-600 rounded-xl shadow-md w-full max-w-md p-8">
+ <div class="flex items-center justify-center p-16">
+  <div class="bg-white border border-green-600 rounded-xl shadow-md w-full max-w-xl p-10">
     <h2 class="text-2xl font-bold text-center mb-6">Acuerdo de Pago</h2>
 
-    <div class="mb-4">
-      <label class="block text-gray-700 font-medium mb-1" for="cuotas">Número de cuotas</label>
+    <div class="mb-5">
+      <label class="block text-gray-700 font-medium mb-2" for="cuotas">Número de cuotas</label>
       <input
         id="cuotas"
         type="number"
         [(ngModel)]="numberOfInstallments"
         (ngModelChange)="calculateInstallment()"
-        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-500"
+        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-green-500 text-base"
         placeholder="Digite el número de cuotas"
         min="1"
         max="12"
@@ -27,28 +27,28 @@ import { FormsModule } from '@angular/forms';
       />
     </div>
 
-    <div class="flex justify-between mb-4">
+    <div class="flex justify-between mb-5 text-base">
       <div>
         <p class="text-gray-700 font-medium">Monto total</p>
-        <p class="text-black font-bold text-lg">\${{ totalAmount }}</p>
+        <p class="text-black font-bold text-xl">\${{ totalAmount }}</p>
       </div>
       <div class="text-right">
-        <label class="block text-gray-700 font-medium mb-1" for="cuotaMensual">Cuota mensual</label>
+        <label class="block text-gray-700 font-medium mb-2" for="cuotaMensual">Cuota mensual</label>
         <input
           id="cuotaMensual"
           type="text"
           [value]="'$' + monthlyInstallment"
           readonly
-          class="w-full px-3 py-1.5 border border-gray-300 rounded-md bg-gray-100 focus:outline-none"
+          class="w-full px-3 py-1.5 border border-gray-300 rounded-md bg-gray-100 focus:outline-none text-base"
         />
       </div>
     </div>
 
     <!-- Infracciones seleccionadas -->
-    <div class="mb-4" *ngIf="selectedFines.length > 0">
-      <p class="text-gray-700 font-medium mb-2">Infracciones incluidas en el acuerdo</p>
+    <div class="mb-5" *ngIf="selectedFines.length > 0">
+      <p class="text-gray-700 font-medium mb-3">Infracciones incluidas en el acuerdo</p>
       <div class="bg-gray-50 rounded-lg p-3">
-        <div *ngFor="let fine of selectedFines" class="flex justify-between items-center py-1 border-b border-gray-200 last:border-b-0">
+        <div *ngFor="let fine of selectedFines" class="flex justify-between items-center py-1.5 border-b border-gray-200 last:border-b-0">
           <div>
             <span class="text-sm font-medium">{{ fine.number }}</span>
             <span class="text-xs text-gray-500 ml-2">{{ fine.date }}</span>
@@ -58,12 +58,12 @@ import { FormsModule } from '@angular/forms';
       </div>
     </div>
 
-    <div class="mb-4">
+    <div class="mb-5 text-base">
       <p class="text-gray-700 font-medium">Fecha de inicio del acuerdo</p>
       <p class="text-green-700 font-semibold">{{ getCurrentDate() }}</p>
     </div>
 
-    <div class="mb-4 flex items-start">
+    <div class="mb-5 flex items-start">
       <input 
         id="terminos" 
         type="checkbox" 
@@ -75,7 +75,7 @@ import { FormsModule } from '@angular/forms';
     </div>
 
     <button
-      class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2 px-4 rounded-md transition-colors"
+      class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-2.5 px-4 rounded-md transition-colors text-base"
       (click)="confirmAgreement()"
       [disabled]="!canConfirm()"
       [class.opacity-50]="!canConfirm()"
@@ -84,16 +84,17 @@ import { FormsModule } from '@angular/forms';
       Confirmar acuerdo
     </button>
     
-    
     <!-- Botón para recargar datos -->
     <button
-      class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-md transition-colors mt-2"
+      class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-md transition-colors mt-2 text-base"
       (click)="loadTestData()"
     >
       Cargar Datos de Prueba
     </button>
   </div>
 </div>
+
+
   `
 })
 export class GenerateAgreementComponent implements OnInit {

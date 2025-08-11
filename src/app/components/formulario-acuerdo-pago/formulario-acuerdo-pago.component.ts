@@ -8,6 +8,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -36,8 +37,15 @@ export class FormularioAcuerdoPagoComponent {
     infoInfraccion: ''
   };
 
-  
+  constructor(private router: Router) {}
+
   onSubmit() {
     console.log('Formulario enviado:', this.form);
   }
+
+   crearAcuerdo(): void {
+    this.router.navigateByUrl('/uikit/generar-acuerdo');
+    // o: this.router.navigate(['/uikit', 'acuerdo-exitoso']);
+  }
+  
 }

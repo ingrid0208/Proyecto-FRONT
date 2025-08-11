@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { Multas } from '../../../../Models/multas.model';
 import { CommonModule } from '@angular/common';
 import { MultaCardComponent } from '../../contenido/multa-card/multa-card.component';
+import { AppTopbar } from '../../../topbar/topbar.component';
 
 @Component({
   selector: 'app-notificacion',
-  imports: [CommonModule, MultaCardComponent],
+  imports: [CommonModule, MultaCardComponent,AppTopbar],
   templateUrl: './notificacion.component.html',
   styleUrl: './notificacion.component.scss'
 })

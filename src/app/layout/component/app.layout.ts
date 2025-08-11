@@ -15,7 +15,7 @@ import { AppTopbar } from '../../components/topbar/topbar.component';
     <div class="layout-wrapper" [ngClass]="containerClass">
         <app-sidebar></app-sidebar>
         <div class="layout-main-container">
-            <app-topbar></app-topbar> <!-- ← AGREGAR esta línea -->
+            <!-- ← AGREGAR esta línea -->
             <div class="layout-main">
                 <router-outlet></router-outlet>
             </div>

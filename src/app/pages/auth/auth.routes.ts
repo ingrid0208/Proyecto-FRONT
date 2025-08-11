@@ -5,6 +5,8 @@ import { Error } from './error';
 import { Registrar } from './Registrar';
 import { RecoverPasswordComponent } from './RecoveryPassword';
 import { VerifyCodeComponent } from './veryCode';
+import { Identificacion } from './Identificacion';
+
 
 
 export default [
@@ -14,4 +16,5 @@ export default [
     { path: 'Registrar', component: Registrar },
     { path: 'Recovery-password', component: RecoverPasswordComponent },
     { path: 'veryCode', component: VerifyCodeComponent },
+    { path: 'Identificacion', component: Identificacion },
 ] as Routes;

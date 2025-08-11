@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
+import { AppTopbar } from '../topbar/topbar.component';
 
 @Component({
   selector: 'app-tipos-multas',
     standalone: true,
-  imports: [CommonModule], 
+  imports: [CommonModule,AppTopbar], 
   templateUrl: './tipos-multas.component.html',
   styleUrls: ['./tipos-multas.component.scss']
 })

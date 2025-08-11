@@ -7,8 +7,8 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-      <div class="bg-white border border-green-600 rounded-xl shadow-lg w-full max-w-lg p-8">
+    <div class="flex items-center justify-center p-10">
+      <div class="bg-white border border-green-600 rounded-xl shadow-md w-full max-w-xl p-10">
         <!-- Icono de éxito -->
         <div class="text-center mb-6">
           <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">

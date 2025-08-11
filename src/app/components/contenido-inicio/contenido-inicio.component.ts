@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { GenericMultasTableComponent } from '../../shared/components/generic-multas-table/generic-multas-table.component';
 import type { Multa } from '../../shared/components/generic-multas-table/generic-multas-table.component';
+import { AppTopbar } from '../topbar/topbar.component';
 
 @Component({
   selector: 'app-contenido-inicio',
@@ -16,7 +17,7 @@ import type { Multa } from '../../shared/components/generic-multas-table/generic
     MatCardModule,
     MatButtonModule,
     RouterModule,
-    GenericMultasTableComponent 
+    GenericMultasTableComponent,AppTopbar 
   ]
 })
 export class ContenidoInicioComponent {
