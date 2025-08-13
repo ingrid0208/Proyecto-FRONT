@@ -1,59 +1,31 @@
-// app.routes.ts
-import { Routes } from '@angular/router';
-import { AppLayout } from './app/layout/component/app.layout';
-import { Notfound } from './app/pages/notfound/notfound';
+// src/app.routes.ts
+import { Routes, provideRouter } from '@angular/router';
 
-export const appRoutes: Routes = [
+export const routes: Routes = [
   {
     path: '',
-    component: AppLayout,
+    loadComponent: () =>
+      import('./app/layout/shell/app.layout').then(m => m.AppLayout),
     children: [
-      // Home: Inicio
-      {
-        path: '',
-        loadComponent: () =>
-          import('./app/components/contenido-inicio/contenido-inicio.component')
-            .then(m => m.ContenidoInicioComponent)
-      },
+      { path: '', pathMatch: 'full', redirectTo: 'home' },
 
-      // UIKit (NgModule)
-      {
-        path: 'uikit',
-        loadChildren: () =>
-          import('./app/pages/uikit/uikit.routes').then(m => m.UikitRoutesModule)
-      },
-
-      // Pages (standalone routes con export default)
-      {
-        path: 'pages',
-        loadChildren: () => import('./app/pages/pages.routes') // ← export default
-      },
-
-      // Rutas sueltas con loadComponent
-      {
-        path: 'calendar',
-        loadComponent: () =>
-          import('./app/pages/calendar/calendar').then(m => m.CalendarComponent)
-      },
-      {
-        path: 'messages',
-        loadComponent: () =>
-          import('./app/pages/messages/messages').then(m => m.MessagesComponent)
-      },
-      {
-        path: 'profile',
-        loadComponent: () =>
-          import('./app/pages/profile/profile').then(m => m.ProfileComponent)
-      }
+      { path: 'home',            loadChildren: () => import('./app/feature/home/pages/home.routes').then(m => m.HOME_ROUTES) },
+      { path: 'notificaciones',  loadChildren: () => import('./app/feature/notificacion-multas/pages/notificacion-multas.routes').then(m => m.NOTIFICACION_ROUTES) },
+      { path: 'acuerdo-pago',    loadChildren: () => import('./app/feature/acuerdo-pago/acuerdo-pago.routes').then(m => m.ACUERDO_PAGO_ROUTES) },
+      { path: 'tipos-multas',    loadChildren: () => import('./app/feature/tipos-multas/tipos-multas.routes').then(m => m.TIPOS_MULTAS_ROUTES) },
+      { path: 'uikit',           loadChildren: () => import('./app/feature/auth/pages/uikit-demo/uikit.routes').then(m => m.UIKIT_ROUTES) },
+      { path: 'calendario',      loadChildren: () => import('./app/feature/calendario/calendario.routes').then(m => m.CALENDARIO_ROUTES) },
+      { path: 'perfil',          loadChildren: () => import('./app/feature/perfil/perfil.routes').then(m => m.PERFIL_ROUTES) },
+      { path: 'mensajes',        loadChildren: () => import('./app/feature/mensajes/pages/messages.routes').then(m => m.MENSAJES_ROUTES) },
+      { path: 'crud',            loadChildren: () => import('./app/feature/crud/crud.routes').then(m => m.CRUD_ROUTES) },
     ]
   },
 
-  // Auth como lazy standalone routes (si usas export default en auth.routes)
-  {
-    path: 'auth',
-    loadChildren: () => import('./app/pages/auth/auth.routes')
-  },
+  // Auth fuera del shell
+  { path: 'auth', loadChildren: () => import('./app/feature/auth/auth.routes').then(m => m.AUTH_ROUTES) },
 
-  { path: 'notfound', component: Notfound },
-  { path: '**', redirectTo: '/notfound' }
+  // 404
+  { path: '**', loadChildren: () => import('./app/feature/not-found/not-found.routes').then(m => m.NOT_FOUND_ROUTES) }
 ];
+
+export const APP_ROUTER_PROVIDERS = [provideRouter(routes)];
