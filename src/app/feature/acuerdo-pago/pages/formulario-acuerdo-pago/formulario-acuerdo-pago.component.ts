@@ -9,11 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
+import { AppTopbar } from '../../../topbar/topbar.component';
 
 
 @Component({
   selector: 'app-formulario-acuerdo-pago',
-  imports: [MatFormFieldModule,MatInputModule,MatSelectModule,MatSelectModule,MatDatepickerModule,MatNativeDateModule,MatButtonModule,CommonModule, FormsModule],
+  imports: [MatFormFieldModule,MatInputModule,MatSelectModule,MatSelectModule,MatDatepickerModule,
+  MatNativeDateModule,MatButtonModule,CommonModule, FormsModule,AppTopbar],
   templateUrl: './formulario-acuerdo-pago.component.html',
   styleUrl: './formulario-acuerdo-pago.component.scss'
 })
@@ -43,9 +45,8 @@ export class FormularioAcuerdoPagoComponent {
     console.log('Formulario enviado:', this.form);
   }
 
-   crearAcuerdo(): void {
-    this.router.navigateByUrl('/uikit/generar-acuerdo');
-    // o: this.router.navigate(['/uikit', 'acuerdo-exitoso']);
+   onClickGenerar() {
+    this.router.navigate(['/uikit/generate-agreement']);
   }
   
 }

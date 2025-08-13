@@ -61,34 +61,8 @@ export class AppMenu {
                 label: 'UI Components',
                 items: [
                     { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoMultas'] },
-                    { label: 'Identificación ciudadana', icon: 'pi pi-fw pi-user', routerLink: ['/uikit/inputdemo'] },
                     { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/NotificacionMultas'] },
-                    { label: 'Table', icon: 'pi pi-fw pi-table', routerLink: ['/uikit/table'] },
-                    { label: 'List', icon: 'pi pi-fw pi-list', routerLink: ['/uikit/list'] },
-                    { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
                     { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                    { label: 'Chart', icon: 'pi pi-fw pi-chart-bar', routerLink: ['/uikit/charts'] },
-                    { label: 'Timeline', icon: 'pi pi-fw pi-calendar', routerLink: ['/uikit/timeline'] }
-                ]
-            },
-            {
-                label: 'Tools',
-                items: [
-                    {
-                        label: 'Calendar',
-                        icon: 'pi pi-fw pi-calendar',
-                        routerLink: ['/calendar']
-                    },
-                    {
-                        label: 'Messages',
-                        icon: 'pi pi-fw pi-inbox',
-                        routerLink: ['/messages']
-                    },
-                    {
-                        label: 'Perfil ',
-                        icon: 'pi pi-fw pi-user',
-                        routerLink: ['/profile']
-                    }
                 ]
             },
             {
@@ -117,16 +91,6 @@ export class AppMenu {
                             }
                         ]
                     },
-                    {
-                        label: 'Crud',
-                        icon: 'pi pi-fw pi-pencil',
-                        routerLink: ['/pages/crud']
-                    },
-                    {
-                        label: 'Not Found',
-                        icon: 'pi pi-fw pi-exclamation-circle',
-                        routerLink: ['/pages/notfound']
-                    }
                 ]
             }
         ];

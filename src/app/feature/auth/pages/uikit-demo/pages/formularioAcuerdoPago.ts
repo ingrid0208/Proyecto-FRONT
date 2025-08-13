@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { CountryService } from '../../../../../core/services/country.service';
 import { NodeService } from '../../../../../core/services/node.service';
-import { FormularioAcuerdoPagoComponent } from '../../components/formulario-acuerdo-pago/formulario-acuerdo-pago.component';
-
+import { FormularioAcuerdoPagoComponent } from '../../../../acuerdo-pago/pages/formulario-acuerdo-pago/formulario-acuerdo-pago.component';
 // 👇 Importa el componente del formulario
 
 @Component({
