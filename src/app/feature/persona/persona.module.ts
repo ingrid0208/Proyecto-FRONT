@@ -1,17 +1,29 @@
+// Angular Core
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PersonaRoutingModule } from './persona-routing.module';
-import { PersonaListComponent } from './pages/persona-list/persona-list.component';
-import { SharedModule } from '@shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
+
+// Components
+import { PersonaListComponent } from './pages/persona-list/persona-list.component';
+
+const PERSONA_ROUTES: Routes = [
+  {
+    path: '',
+    component: PersonaListComponent
+  }
+];
 
 @NgModule({
-  declarations: [PersonaListComponent],
+  declarations: [
+    PersonaListComponent
+  ],
   imports: [
     CommonModule,
-    PersonaRoutingModule,
-    SharedModule,
-    ReactiveFormsModule
+    RouterModule.forChild(PERSONA_ROUTES),
+    ReactiveFormsModule,
+    HttpClientModule
   ]
 })
 export class PersonaModule { }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PersonaService } from '../../services/persona.service';
-import { Persona } from '@shared/Models/persona.model';
+import { Persona } from '../../../../shared/Models/persona.model';
+import { catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-persona-list',
@@ -9,6 +11,7 @@ import { Persona } from '@shared/Models/persona.model';
 })
 export class PersonaListComponent implements OnInit {
   personas: Persona[] = [];
+  error: string | null = null;
 
   constructor(private personaService: PersonaService) {}
 
@@ -18,18 +21,37 @@ export class PersonaListComponent implements OnInit {
 
   loadPersonas(): void {
     this.personaService.getPersonas()
+      .pipe(
+        catchError(error => {
+          this.error = 'Error al cargar las personas';
+          return of([]);
+        })
+      )
       .subscribe(personas => this.personas = personas);
   }
 
+  getInitials(persona: Persona): string {
+    return (persona.nombre?.[0] || '') + (persona.apellido?.[0] || '');
+  }
+
   addPersona(): void {
-    // Implementar lógica para agregar persona
+    // TODO: Implementar
   }
 
   updatePersona(persona: Persona): void {
-    // Implementar lógica para actualizar persona
+    // TODO: Implementar
   }
 
   deletePersona(persona: Persona): void {
-    // Implementar lógica para eliminar persona
+    this.personaService.deletePersona(persona.id)
+      .pipe(
+        catchError(error => {
+          this.error = 'Error al eliminar la persona';
+          return of(void 0);
+        })
+      )
+      .subscribe(() => {
+        this.loadPersonas();
+      });
   }
 }
