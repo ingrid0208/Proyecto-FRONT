@@ -1,0 +1,31 @@
+<div class="personas-container">
+  <div class="personas-header">
+    <h2>Personas del Sistema</h2>
+    <button class="add-button" (click)="addPersona()">
+      + Agregar Persona
+    </button>
+  </div>
+
+  <div class="personas-list">
+    <div class="persona-card" *ngFor="let persona of personas">
+      <div class="persona-info">
+        <div class="persona-avatar">
+          {{persona.nombre.charAt(0)}}{{persona.apellido.charAt(0)}}
+        </div>
+        <div class="persona-details">
+          <h3>{{persona.nombre}} {{persona.apellido}}</h3>
+          <p>{{persona.documento}}</p>
+          <p>{{persona.email}} | {{persona.telefono}}</p>
+          <p>Rol: {{persona.rol}}</p>
+          <span class="status-badge" [class.active]="persona.estado === 'activo'">
+            {{persona.estado}}
+          </span>
+        </div>
+      </div>
+      <div class="persona-actions">
+        <button class="update-button" (click)="updatePersona(persona)">Actualizar</button>
+        <button class="delete-button" (click)="deletePersona(persona)">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>
