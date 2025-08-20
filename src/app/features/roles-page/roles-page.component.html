@@ -9,12 +9,15 @@
       <div class="rol-header">
         <span class="rol-dot" [style.background]="rol.color"></span>
         <span class="rol-nombre">{{ rol.nombre }}</span>
+        <div class="rol-actions-right">
+          <button class="blue-btn">+ Actualizar</button>
+          <button class="red-btn">= Eliminar</button>
+        </div>
       </div>
-      <div class="rol-acciones">
-        <button *ngFor="let accion of rol.acciones"
-                [ngClass]="accion.color + '-btn'">
+      <div class="rol-permisos">
+        <span *ngFor="let accion of rol.acciones" class="permiso-tag" [ngClass]="accion.color + '-tag'">
           {{ accion.label }}
-        </button>
+        </span>
       </div>
     </div>
   </div>

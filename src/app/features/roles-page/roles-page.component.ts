@@ -23,10 +23,7 @@ export class RolesPageComponent {
       acciones: [
         { label: 'Crear', color: 'green' },
         { label: 'Editar', color: 'green' },
-        { label: 'Eliminar', color: 'green' },
-        { label: 'Configurar', color: 'green' },
-        { label: 'Actualizar', color: 'blue' },
-        { label: 'Eliminar', color: 'red' }
+        { label: 'Configurar', color: 'green' }
       ]
     },
     {
@@ -35,9 +32,7 @@ export class RolesPageComponent {
       acciones: [
         { label: 'Crear', color: 'green' },
         { label: 'Editar', color: 'green' },
-        { label: 'Aprobar', color: 'green' },
-        { label: 'Actualizar', color: 'blue' },
-        { label: 'Eliminar', color: 'red' }
+        { label: 'Aprobar', color: 'green' }
       ]
     },
     {
@@ -45,9 +40,7 @@ export class RolesPageComponent {
       color: '#43a047',
       acciones: [
         { label: 'Ver', color: 'green' },
-        { label: 'Reportes', color: 'green' },
-        { label: 'Actualizar', color: 'blue' },
-        { label: 'Eliminar', color: 'red' }
+        { label: 'Reportes', color: 'green' }
       ]
     }
   ];
@@ -61,12 +54,10 @@ export class RolesPageComponent {
   permisosDisponibles = [
     { label: 'Crear', color: 'green' },
     { label: 'Editar', color: 'green' },
-    { label: 'Eliminar', color: 'red' },
     { label: 'Configurar', color: 'green' },
     { label: 'Aprobar', color: 'green' },
     { label: 'Ver', color: 'green' },
-    { label: 'Reportes', color: 'green' },
-    { label: 'Actualizar', color: 'blue' }
+    { label: 'Reportes', color: 'green' }
   ];
 
   abrirModal() {

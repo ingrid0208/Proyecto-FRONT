@@ -1,3 +1,34 @@
+.rol-permisos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+.permiso-tag {
+  padding: 0.18rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.93rem;
+  font-weight: 500;
+  background: #e0f2f1;
+  color: #388e3c;
+  border: 1px solid #b2dfdb;
+  text-transform: capitalize;
+}
+.green-tag {
+  background: #e8f5e9;
+  color: #388e3c;
+  border: 1px solid #a5d6a7;
+}
+.blue-tag {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+.red-tag {
+  background: #ffebee;
+  color: #b71c1c;
+  border: 1px solid #ef9a9a;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -130,6 +161,12 @@
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  justify-content: space-between;
+}
+.rol-actions-right {
+  display: flex;
+  gap: 1.2rem;
+  margin-left: 2.5rem;
 }
 .rol-dot {
   width: 13px;
