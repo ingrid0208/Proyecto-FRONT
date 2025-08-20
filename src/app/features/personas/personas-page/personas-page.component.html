@@ -1,0 +1,96 @@
+<div class="personas-container">
+  <div class="personas-header">
+    <div class="header-title">
+      <span class="icon"><i class="material-icons">groups</i></span>
+      <span class="title">Personas del Sistema</span>
+    </div>
+    <button class="add-btn" (click)="abrirFormulario()">+ Agregar Persona</button>
+  </div>
+  <div class="search-bar">
+   <input (input)="onSearch($any($event.target).value)" placeholder="Buscar persona..." />
+  </div>
+
+  <!-- Modal para agregar persona -->
+  <div *ngIf="showForm" class="modal-overlay">
+    <div class="modal-content persona-form">
+      <h2>Crear Usuario</h2>
+      <form>
+        <label>
+          ID:
+          <input type="number" name="id" required />
+        </label>
+        <label>
+          Nombre:
+          <input type="text" name="nombre" required />
+        </label>
+        <label>
+          Apellido:
+          <input type="text" name="apellido" required />
+        </label>
+        <label>
+          Documento:
+          <input type="text" name="documento" required />
+        </label>
+        <label>
+          Email:
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Teléfono:
+          <input type="text" name="telefono" required />
+        </label>
+        <label>
+          Rol:
+          <input type="text" name="rol" required />
+        </label>
+        <label>
+          Estado:
+          <select name="estado" required>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </select>
+        </label>
+        <label>
+          Fecha de Creación:
+          <input type="date" name="fechaCreacion" required />
+        </label>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarFormulario()">Cancelar</button>
+          <button type="submit">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="personas-list">
+    <div class="persona-row" *ngFor="let persona of filteredPersonas" (click)="abrirInfoModal(persona)" style="cursor:pointer;">
+      <div class="avatar">
+        {{ persona.nombre[0] }}{{ persona.apellido[0] }}
+      </div>
+      <div class="persona-nombre">
+        {{ persona.nombre }} {{ persona.apellido }}
+      </div>
+      <button class="update-btn" (click)="$event.stopPropagation();">+ Actualizar</button>
+      <button class="delete-btn" (click)="$event.stopPropagation();">= Eliminar</button>
+    </div>
+  </div>
+
+  <!-- Modal de información de usuario -->
+  <div *ngIf="showInfoModal && personaSeleccionada" class="modal-overlay">
+    <div class="modal-content persona-form">
+      <h2>Información del Usuario</h2>
+      <div class="info-item"><b>ID:</b> {{ personaSeleccionada.id }}</div>
+      <div class="info-item"><b>Nombre:</b> {{ personaSeleccionada.nombre }}</div>
+      <div class="info-item"><b>Apellido:</b> {{ personaSeleccionada.apellido }}</div>
+      <div class="info-item"><b>Documento:</b> {{ personaSeleccionada.documento }}</div>
+      <div class="info-item"><b>Email:</b> {{ personaSeleccionada.email }}</div>
+      <div class="info-item"><b>Teléfono:</b> {{ personaSeleccionada.telefono }}</div>
+      <div class="info-item"><b>Rol:</b> {{ personaSeleccionada.rol }}</div>
+      <div class="info-item"><b>Estado:</b> {{ personaSeleccionada.estado }}</div>
+      <div class="info-item"><b>Fecha de Creación:</b> {{ personaSeleccionada.fechaCreacion | date:'mediumDate' }}</div>
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarInfoModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
