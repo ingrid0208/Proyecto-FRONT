@@ -1,0 +1,51 @@
+<div class="roles-container">
+  <div class="roles-header">
+    <span class="icon"><i class="material-icons">lock</i></span>
+    <span class="title">Roles y Permisos</span>
+  <button class="add-role-btn" (click)="abrirModal()">+ Agregar Roles</button>
+  </div>
+  <div class="roles-list">
+    <div class="rol-card" *ngFor="let rol of roles">
+      <div class="rol-header">
+        <span class="rol-dot" [style.background]="rol.color"></span>
+        <span class="rol-nombre">{{ rol.nombre }}</span>
+      </div>
+      <div class="rol-acciones">
+        <button *ngFor="let accion of rol.acciones"
+                [ngClass]="accion.color + '-btn'">
+          {{ accion.label }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para crear rol -->
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-content persona-form">
+    <h2>Crear Rol</h2>
+    <form (ngSubmit)="crearRol()" autocomplete="off">
+      <label>
+        Nombre del Rol:
+        <input type="text" [(ngModel)]="nuevoRol.nombre" name="nombreRol" required />
+      </label>
+      <label>
+        Color:
+        <input type="color" [(ngModel)]="nuevoRol.color" name="colorRol" style="width: 40px; height: 30px; padding: 0; border: none; background: none;" />
+      </label>
+      <div class="permisos-list">
+        <span>Permisos:</span>
+        <div class="permisos-grid">
+          <label *ngFor="let permiso of permisosDisponibles" class="permiso-item">
+            <input type="checkbox" [checked]="isPermisoSeleccionado(permiso)" (change)="togglePermiso(permiso)" />
+            {{ permiso.label }}
+          </label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit">Crear</button>
+      </div>
+    </form>
+  </div>
+</div>
