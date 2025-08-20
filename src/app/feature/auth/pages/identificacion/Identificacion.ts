@@ -5,6 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
+import { AppTopbar } from '../../../topbar/topbar.component';
 
 @Component({
   selector: 'app-identification',
@@ -14,10 +15,12 @@ import { Router } from '@angular/router';
     FormsModule,
     DropdownModule,
     InputTextModule,
-    ButtonModule
+    ButtonModule,
+    AppTopbar
   ],
   template: `
-    <div class="flex justify-center items-center pt-40">
+   <app-topbar></app-topbar>
+    <div class="flex justify-center items-center pt-20">
       <div class="bg-white p-12 rounded-xl shadow-lg w-full max-w-2xl">
         <h2 class="text-center text-3xl font-semibold mb-8 text-gray-800">
           Identificación ciudadana

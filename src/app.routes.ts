@@ -9,6 +9,7 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
 
+      { path: 'identificacion',            loadChildren: () => import('./app/feature/auth/pages/identificacion/identificacion.routes').then(m => m.IDENTIFICACION_ROUTES) },
       { path: 'home',            loadChildren: () => import('./app/feature/home/pages/home.routes').then(m => m.HOME_ROUTES) },
       { path: 'notificaciones',  loadChildren: () => import('./app/feature/notificacion-multas/pages/notificacion-multas.routes').then(m => m.NOTIFICACION_ROUTES) },
       { path: 'acuerdo-pago',    loadChildren: () => import('./app/feature/acuerdo-pago/acuerdo-pago.routes').then(m => m.ACUERDO_PAGO_ROUTES) },

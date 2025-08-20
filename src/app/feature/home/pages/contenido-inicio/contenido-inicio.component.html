@@ -1,19 +1,20 @@
+<app-topbar></app-topbar>
 
- <app-topbar></app-topbar>
 <mat-card class="payment-fines-card">
-  <div class="header-section">
-    <h2 class="header-title">Selección de Multas para Acuerdo de Pago</h2>
-    <p class="header-description">
-      Seleccione las multas que desea incluir en el acuerdo de pago.<br>
-      Puede elegir una o varias multas para generar el acuerdo.
-    </p>
-  </div>
+ <app-card-header                        
+    title="Selección de Multas para Acuerdo de Pago"
+    [description]="'Seleccione las multas que desea incluir en el acuerdo de pago.\nPuede elegir una o varias multas para generar el acuerdo.'">
+  </app-card-header>
 
-  <!-- 👇 Pasas los datos locales a la tabla genérica -->
-  <app-generic-multas-table [multas]="multas"></app-generic-multas-table>
+
+  <!-- Tabla genérica con columnas dinámicas -->
+  <app-generic-multas-table
+    [data]="multas"
+    [columns]="columns">
+  </app-generic-multas-table>
 
   <mat-card-actions align="end">
-    <button mat-raised-button color="accent" [routerLink]="'/uikit/AcuerdoPago'" (click)="onClickGenerar()">
+    <button mat-raised-button color="accent" (click)="onClickGenerar()">
       {{ botonTexto }}
     </button>
   </mat-card-actions>

@@ -9,11 +9,6 @@ export const AUTH_ROUTES: Routes = [
       import('./pages/login/login')
         .then(m => m.Login)
   },
-  { path: 'identificacion',
-    loadComponent: () =>
-      import('./pages/identificacion/Identificacion')
-        .then(m => m.Identificacion)
-  },
   { path: 'registrar',
     loadComponent: () =>
       import('./pages/registrar/Registrar')
