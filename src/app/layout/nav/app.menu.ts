@@ -58,7 +58,7 @@ export class AppMenu {
                 items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/identificacion/identificacion'] }]
             },
             {
-                label: 'UI Components',
+                label: 'Contenido',
                 items: [
                     { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoMultas'] },
                     { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/NotificacionMultas'] },
@@ -66,7 +66,7 @@ export class AppMenu {
                 ]
             },
             {
-                label: 'Pages',
+                label: 'Perfil',
                 icon: 'pi pi-fw pi-briefcase',
                 routerLink: ['/pages'],
                 items: [
@@ -88,6 +88,35 @@ export class AppMenu {
                                 label: 'Access Denied',
                                 icon: 'pi pi-fw pi-lock',
                                 routerLink: ['/auth/access']
+                            }
+                        ]
+                    },
+                ]
+            },
+            {
+                label: 'Modulo de parametro',
+                icon: 'pi pi-fw pi-briefcase',
+                routerLink: ['/pages'],
+                items: [
+                    {
+                        label: 'parametro',
+                        icon: 'pi pi-fw pi-user',
+                        items: [
+                            {
+                                label: 'Departamentos',
+                                routerLink: ['/parameters/department']
+                            },
+                            {
+                                label: 'Tipo de documento',
+                                routerLink: ['/parameters/document-type']
+                            },
+                            {
+                                label: 'Municipios',
+                                routerLink: ['/parameters/municipality']
+                            },
+                            {
+                                label: 'Frecuencia de pago',
+                                routerLink: ['/parameters/payment-frequency']
                             }
                         ]
                     },

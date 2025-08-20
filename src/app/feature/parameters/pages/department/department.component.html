@@ -1,0 +1,28 @@
+<app-topbar></app-topbar>
+
+<mat-card class="department-card">
+  <app-card-header
+    title="Departamentos"
+    [description]="'Listado de departamentos y su código DANE.'">
+  </app-card-header>
+
+  <mat-card-content>
+    <ng-container *ngIf="!loading && !errorMsg; else estado">
+      <app-generic-multas-table
+        [data]="departamentos"
+        [columns]="columns">
+      </app-generic-multas-table>
+    </ng-container>
+
+    <ng-template #estado>
+      <div *ngIf="loading">Cargando departamentos...</div>
+      <div *ngIf="!loading && errorMsg" class="text-red-600">{{ errorMsg }}</div>
+    </ng-template>
+  </mat-card-content>
+
+  <app-button
+    texto="Agregar nuevo departamento"
+    color="accent"
+    (clicked)="onClickGenerar()">
+  </app-button>
+</mat-card>

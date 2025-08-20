@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 
 // Acepta nombre o número del enum del backend:
-type GetAllType = 'GetAll' | 'GetAllDeletes';
+type getAllType = 'GetAll' | 'GetAllDeletes';
 type DeleteType = 'Persistent' | 'Logical';
 
 @Injectable({ providedIn: 'root' })
@@ -24,11 +24,18 @@ export class ServiceGenericService {
     }
 
     private url(controller: string, ...segments: (string | number)[]) {
-        const path = [this.baseUrl, controller, ...segments]
-            .map(s => String(s).replace(/^\/|\/$/g, ''))
-            .join('/');
-        return path.replace(/\/{2,}/g, '/');
+        // Limpia bordes de cada segmento
+        const clean = [this.baseUrl, controller, ...segments]
+            .map(s => String(s).replace(/^\/+|\/+$/g, ''));
+
+        // Une respetando el esquema
+        const path = clean.join('/');
+
+        // (Opcional) Si quieres colapsar dobles slashes sin tocar "https://",
+        // usa esta regex "scheme-safe":
+        return path.replace(/([^:]\/)\/+/g, '$1');
     }
+
 
     private buildParams(obj?: Record<string, any>): HttpParams {
         let params = new HttpParams();
@@ -46,8 +53,8 @@ export class ServiceGenericService {
         return params;
     }
 
-    getAll<T>(controller: string, GetAllType: GetAllType = 'GetAll') {
-        const params = this.buildParams({ GetAllType });
+    getAll<T>(controller: string, getAllType: getAllType = 'GetAll') {
+        const params = this.buildParams({ getAllType: 0 });
         return this.http.get<T[]>(this.url(controller), { headers: this.getHeaders(), params });
     }
 
@@ -63,7 +70,7 @@ export class ServiceGenericService {
         return this.http.put<T>(this.url(controller, id), data, { headers: this.getHeaders() });
     }
 
-    delete(controller: string, id: number | string, deleteType: DeleteType = 'Persistent' ) {
+    delete(controller: string, id: number | string, deleteType: DeleteType = 'Persistent') {
         const params = this.buildParams({ deleteType });
         return this.http.delete(this.url(controller, id), { headers: this.getHeaders(), params });
     }
