@@ -53,9 +53,42 @@ export class ModulosPermisosPageComponent {
     'Ver Usuarios', 'Asignar Roles'
   ];
 
+  // Modales de alerta y confirmación
+  showAlert: boolean = false;
+  alertMsg: string = '';
+  alertType: string = 'bienvenida';
+  showConfirm: boolean = false;
+  moduloAEliminar: number | null = null;
+
   abrirModal() {
     this.showModal = true;
     this.nuevoModulo = { icono: '', nombre: '', acciones: [] };
+  }
+
+  mostrarAlerta(msg: string, tipo: string) {
+    this.alertMsg = msg;
+    this.alertType = tipo;
+    this.showAlert = true;
+    setTimeout(() => this.showAlert = false, 2500);
+  }
+
+  pedirConfirmacionEliminar(idx: number) {
+    this.moduloAEliminar = idx;
+    this.showConfirm = true;
+  }
+
+  confirmarEliminar() {
+    if (this.moduloAEliminar !== null) {
+      this.modulos.splice(this.moduloAEliminar, 1);
+      this.mostrarAlerta('Módulo eliminado correctamente.', 'eliminado');
+    }
+    this.showConfirm = false;
+    this.moduloAEliminar = null;
+  }
+
+  cancelarEliminar() {
+    this.showConfirm = false;
+    this.moduloAEliminar = null;
   }
 
   cerrarModal() {

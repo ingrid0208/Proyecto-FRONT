@@ -17,6 +17,13 @@ export class PersonasPageComponent implements OnInit {
   showInfoModal: boolean = false;
   personaSeleccionada: Persona | null = null;
 
+  // Modales de alerta y confirmación
+  showAlert = false;
+  alertMsg = '';
+  alertType: string = 'bienvenida';
+  showConfirm = false;
+  personaAEliminar: Persona | null = null;
+
   constructor(private personaService: PersonaService) {}
 
   ngOnInit() {
@@ -24,6 +31,7 @@ export class PersonasPageComponent implements OnInit {
       this.personas = personas;
       this.filteredPersonas = personas;
     });
+    this.mostrarAlerta('¡Bienvenido a la gestión de personas!', 'bienvenida');
   }
 
   onSearch(term: string) {
@@ -48,5 +56,32 @@ export class PersonasPageComponent implements OnInit {
   cerrarInfoModal() {
     this.showInfoModal = false;
     this.personaSeleccionada = null;
+  }
+
+  mostrarAlerta(msg: string, tipo: string) {
+    this.alertMsg = msg;
+    this.alertType = tipo;
+    this.showAlert = true;
+    setTimeout(() => this.showAlert = false, 2500);
+  }
+
+  pedirConfirmacionEliminar(persona: Persona) {
+    this.personaAEliminar = persona;
+    this.showConfirm = true;
+  }
+
+  confirmarEliminar() {
+    if (this.personaAEliminar) {
+      this.personas = this.personas.filter(p => p !== this.personaAEliminar);
+      this.filteredPersonas = this.filteredPersonas.filter(p => p !== this.personaAEliminar);
+      this.mostrarAlerta('Persona eliminada correctamente.', 'eliminado');
+    }
+    this.showConfirm = false;
+    this.personaAEliminar = null;
+  }
+
+  cancelarEliminar() {
+    this.showConfirm = false;
+    this.personaAEliminar = null;
   }
 }

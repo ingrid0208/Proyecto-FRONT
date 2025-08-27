@@ -1,5 +1,26 @@
 
 <div class="modulos-container">
+  <!-- Modal de alerta -->
+  <div *ngIf="showAlert" class="alert-modal-overlay">
+    <div class="alert-modal-content" [ngClass]="alertType">
+      <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
+      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-msg">{{ alertMsg }}</span>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">🗑️</span>
+      <span class="alert-msg">¿Estás seguro de que deseas eliminar este módulo?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
+        <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+    </div>
+  </div>
   <div class="modulos-header">
     <span class="icon"><i class="material-icons">vpn_key</i></span>
     <span class="title">Permisos de Modulo</span>
@@ -7,13 +28,16 @@
   </div>
 
   <div class="modulos-list">
-    <div class="modulo-card" *ngFor="let modulo of modulos">
+  <div class="modulo-card" *ngFor="let modulo of modulos; let i = index">
       <div class="modulo-header">
         <span class="modulo-icon">{{ modulo.icono }}</span>
         <span class="modulo-nombre">{{ modulo.nombre }}</span>
       </div>
       <div class="modulo-acciones">
         <span *ngFor="let accion of modulo.acciones" class="accion-tag">{{ accion }}</span>
+      </div>
+      <div class="modulo-actions">
+        <button class="red-btn" (click)="pedirConfirmacionEliminar(i)">Eliminar</button>
       </div>
     </div>
   </div>
@@ -46,7 +70,7 @@
         </div>
         <div class="modal-actions">
           <button type="button" (click)="cerrarModal()">Cancelar</button>
-          <button type="submit">Crear</button>
+          <button type="submit" (click)="$event.preventDefault(); mostrarAlerta('Módulo creado exitosamente.', 'creado'); cerrarModal();">Crear</button>
         </div>
       </form>
     </div>

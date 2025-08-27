@@ -1,17 +1,38 @@
 <div class="roles-container">
+  <!-- Modal de alerta -->
+  <div *ngIf="showAlert" class="alert-modal-overlay">
+    <div class="alert-modal-content" [ngClass]="alertType">
+      <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
+      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-msg">{{ alertMsg }}</span>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">🗑️</span>
+      <span class="alert-msg">¿Estás seguro de que deseas eliminar este rol?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
+        <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+    </div>
+  </div>
   <div class="roles-header">
     <span class="icon"><i class="material-icons">lock</i></span>
     <span class="title">Roles y Permisos</span>
   <button class="add-role-btn" (click)="abrirModal()">+ Agregar Roles</button>
   </div>
-  <div class="roles-list">
-    <div class="rol-card" *ngFor="let rol of roles">
+    <div class="roles-list">
+      <div class="rol-card" *ngFor="let rol of roles; let i = index">
       <div class="rol-header">
         <span class="rol-dot" [style.background]="rol.color"></span>
         <span class="rol-nombre">{{ rol.nombre }}</span>
         <div class="rol-actions-right">
           <button class="blue-btn">+ Actualizar</button>
-          <button class="red-btn">= Eliminar</button>
+          <button class="red-btn" (click)="pedirConfirmacionEliminar(i)">= Eliminar</button>
         </div>
       </div>
       <div class="rol-permisos">

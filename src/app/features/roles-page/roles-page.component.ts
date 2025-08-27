@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+// Eliminado ngOnInit duplicado fuera de la clase
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -15,7 +16,10 @@ interface Rol {
   standalone: true,
   imports: [CommonModule, FormsModule]
 })
-export class RolesPageComponent {
+export class RolesPageComponent implements OnInit {
+  ngOnInit(): void {
+    this.mostrarAlerta('¡Bienvenido a la gestión de roles!', 'bienvenida');
+  }
   roles: Rol[] = [
     {
       nombre: 'Administrador',
@@ -60,6 +64,12 @@ export class RolesPageComponent {
     { label: 'Reportes', color: 'green' }
   ];
 
+  showAlert = false;
+  alertMsg = '';
+  alertType: string = 'bienvenida';
+  showConfirm = false;
+  rolAEliminar: number | null = null;
+
   abrirModal() {
     this.showModal = true;
     this.nuevoRol = {
@@ -90,7 +100,34 @@ export class RolesPageComponent {
         acciones: [...this.nuevoRol.acciones]
       });
       this.cerrarModal();
+      this.mostrarAlerta('Rol creado exitosamente.', 'creado');
     }
+  }
+
+  mostrarAlerta(msg: string, tipo: string) {
+    this.alertMsg = msg;
+    this.alertType = tipo;
+    this.showAlert = true;
+    setTimeout(() => this.showAlert = false, 2500);
+  }
+
+  pedirConfirmacionEliminar(idx: number) {
+    this.rolAEliminar = idx;
+    this.showConfirm = true;
+  }
+
+  confirmarEliminar() {
+    if (this.rolAEliminar !== null) {
+      this.roles.splice(this.rolAEliminar, 1);
+      this.mostrarAlerta('Rol eliminado correctamente.', 'eliminado');
+    }
+    this.showConfirm = false;
+    this.rolAEliminar = null;
+  }
+
+  cancelarEliminar() {
+    this.showConfirm = false;
+    this.rolAEliminar = null;
   }
   isPermisoSeleccionado(permiso: { label: string; color: string }) {
     return this.nuevoRol.acciones.find(a => a.label === permiso.label) !== undefined;

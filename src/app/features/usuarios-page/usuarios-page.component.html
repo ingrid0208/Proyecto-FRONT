@@ -8,6 +8,18 @@
       <span class="alert-msg">{{ alertMsg }}</span>
     </div>
   </div>
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">🗑️</span>
+      <span class="alert-msg">¿Estás seguro de que deseas eliminar este usuario?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
+        <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="usuarios-header">
     <span class="icon"><i class="material-icons">person</i></span>
     <span class="title">Gestión de Usuarios</span>
@@ -21,7 +33,7 @@
       </div>
       <div class="usuario-actions">
   <button class="blue-btn">+ Actualizar</button>
-  <button class="red-btn" (click)="eliminarUsuario(i)">= Eliminar</button>
+  <button class="red-btn" (click)="pedirConfirmacionEliminar(i)">= Eliminar</button>
       </div>
     </div>
   </div>

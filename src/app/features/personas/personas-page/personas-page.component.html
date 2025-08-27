@@ -4,7 +4,28 @@
       <span class="icon"><i class="material-icons">groups</i></span>
       <span class="title">Personas del Sistema</span>
     </div>
-    <button class="add-btn" (click)="abrirFormulario()">+ Agregar Persona</button>
+      <button class="add-btn" (click)="abrirFormulario()">+ Agregar Persona</button>
+    <!-- Modal de alerta -->
+    <div *ngIf="showAlert" class="alert-modal-overlay">
+      <div class="alert-modal-content" [ngClass]="alertType">
+        <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
+        <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+        <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+        <span class="alert-msg">{{ alertMsg }}</span>
+      </div>
+    </div>
+
+    <!-- Modal de confirmación de eliminación -->
+    <div *ngIf="showConfirm" class="alert-modal-overlay">
+      <div class="alert-modal-content eliminado">
+        <span class="alert-icon">🗑️</span>
+        <span class="alert-msg">¿Estás seguro de que deseas eliminar esta persona?</span>
+        <div class="modal-actions">
+          <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
+          <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="search-bar">
    <input (input)="onSearch($any($event.target).value)" placeholder="Buscar persona..." />
@@ -56,7 +77,7 @@
         </label>
         <div class="modal-actions">
           <button type="button" (click)="cerrarFormulario()">Cancelar</button>
-          <button type="submit">Guardar</button>
+            <button type="submit" (click)="$event.preventDefault(); mostrarAlerta('Persona creada exitosamente.', 'creado'); cerrarFormulario();">Guardar</button>
         </div>
       </form>
     </div>
@@ -71,7 +92,7 @@
         {{ persona.nombre }} {{ persona.apellido }}
       </div>
       <button class="update-btn" (click)="$event.stopPropagation();">+ Actualizar</button>
-      <button class="delete-btn" (click)="$event.stopPropagation();">= Eliminar</button>
+        <button class="delete-btn" (click)="pedirConfirmacionEliminar(persona)">Eliminar</button>
     </div>
   </div>
 

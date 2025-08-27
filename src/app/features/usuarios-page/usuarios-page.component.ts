@@ -29,6 +29,9 @@ export class UsuariosPageComponent implements OnInit {
   alertMsg = '';
   alertType: string = 'bienvenida';
 
+  showConfirm = false;
+  usuarioAEliminar: number | null = null;
+
   ngOnInit() {
     this.mostrarAlerta('¡Bienvenido a la gestión de usuarios!', 'bienvenida');
   }
@@ -40,13 +43,28 @@ export class UsuariosPageComponent implements OnInit {
     setTimeout(() => this.showAlert = false, 2500);
   }
 
+
   crearUsuario() {
     // Aquí iría la lógica real de creación
     this.mostrarAlerta('Usuario creado exitosamente.', 'creado');
   }
 
-  eliminarUsuario(idx: number) {
-    this.usuarios.splice(idx, 1);
-    this.mostrarAlerta('Usuario eliminado correctamente.', 'eliminado');
+  pedirConfirmacionEliminar(idx: number) {
+    this.usuarioAEliminar = idx;
+    this.showConfirm = true;
+  }
+
+  confirmarEliminar() {
+    if (this.usuarioAEliminar !== null) {
+      this.usuarios.splice(this.usuarioAEliminar, 1);
+      this.mostrarAlerta('Usuario eliminado correctamente.', 'eliminado');
+    }
+    this.showConfirm = false;
+    this.usuarioAEliminar = null;
+  }
+
+  cancelarEliminar() {
+    this.showConfirm = false;
+    this.usuarioAEliminar = null;
   }
 }
