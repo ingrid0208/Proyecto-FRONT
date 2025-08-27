@@ -1,0 +1,28 @@
+<div class="usuarios-container">
+  <!-- Modal de alerta -->
+  <div *ngIf="showAlert" class="alert-modal-overlay">
+    <div class="alert-modal-content" [ngClass]="alertType">
+      <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
+      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-msg">{{ alertMsg }}</span>
+    </div>
+  </div>
+  <div class="usuarios-header">
+    <span class="icon"><i class="material-icons">person</i></span>
+    <span class="title">Gestión de Usuarios</span>
+  <button class="add-usuario-btn" (click)="crearUsuario()">+ Agregar Usuario</button>
+  </div>
+  <div class="usuarios-list">
+  <div class="usuario-card" *ngFor="let usuario of usuarios; let i = index">
+      <div class="usuario-info">
+        <span><b>Email:</b> {{ usuario.email }}</span>
+        <span><b>Contraseña:</b> {{ usuario.contrasena }}</span>
+      </div>
+      <div class="usuario-actions">
+  <button class="blue-btn">+ Actualizar</button>
+  <button class="red-btn" (click)="eliminarUsuario(i)">= Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

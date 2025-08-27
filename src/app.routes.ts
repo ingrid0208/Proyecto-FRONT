@@ -20,6 +20,7 @@ export const routes: Routes = [
       { path: 'crud',            loadChildren: () => import('./app/feature/crud/crud.routes').then(m => m.CRUD_ROUTES) },
   { path: 'roles',           loadChildren: () => import('./app/features/roles-page/roles-page.routes').then(m => m.ROLES_ROUTES) },
   { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/modulos-permisos-page.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },
+  { path: 'usuarios', loadChildren: () => import('./app/features/usuarios-page/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
   { path: 'personas',        loadChildren: () => import('./app/features/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
     ]
   },
