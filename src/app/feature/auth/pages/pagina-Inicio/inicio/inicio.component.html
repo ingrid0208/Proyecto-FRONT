@@ -1,0 +1,119 @@
+<div class="landing-container">
+  <!-- NAV -->
+  <nav class="navbar" role="navigation" aria-label="Principal">
+    <h3 class="logo">Sistema de Multas</h3>
+
+    <div class="nav-links">
+      <a
+        href="#"
+        class="login-btn"
+        (click)="onLogin($event)"
+        role="button"
+        aria-label="Iniciar sesión"
+      >
+        Acceso Funcionario
+      </a>
+    </div>
+  </nav>
+
+  <!-- NUEVA SECCIÓN: Split intro (mitad/mitad) -->
+  <section class="intro-split intro-contrast" aria-label="Accesos rápidos">
+  <div class="split-inner">
+
+    <!-- Columna 1: Consultar multas -->
+    <article class="split-card">
+      <header class="split-head">
+        <h2 class="split-title">Consulta de multas</h2>
+      </header>
+
+      <p class="split-text">
+        En esta página de inicio encontrarás un formulario donde, al digitar tus
+        datos, podrás consultar si tienes alguna multa de convivencia ciudadana.
+        Además, más abajo tendrás un apartado con información detallada sobre
+        las diferentes multas de convivencia ciudadana que existen en Colombia.
+      </p>
+    </article>
+
+    <!-- Columna 2: Funcionarios -->
+    <article class="split-card alt">
+      <header class="split-head">
+        <h2 class="split-title">Funcionarios</h2>
+      </header>
+
+      <p class="split-text">
+        Si haces parte de la administración municipal de <strong>Palermo</strong>,
+        en la esquina superior derecha verás el botón
+        <strong>Acceso Funcionario</strong>. Al ingresar, autentícate con tus
+        credenciales. Si aún no cuentas con una, podrás registrarte desde esa
+        misma pantalla para obtener acceso al sistema.
+      </p>
+    </article>
+
+  </div>
+</section>
+
+
+
+  <!-- HERO -->
+  <main class="hero" id="inicio">
+    <div class="hero-inner">
+      <!-- Izquierda -->
+      <div class="hero-copy">
+        <h1>
+          Tus multas.<br />
+          Organizadas. Sin<br />
+          esfuerzo
+        </h1>
+
+        <p>
+          Consulta rápidamente tus infracciones. Encuentra información detallada.
+          Gestiona pagos con quien quieras. Todo absolutamente bajo tu control.
+        </p>
+      </div>
+
+      <!-- Derecha: tu formulario existente -->
+      <div class="hero-form">
+        <app-identification [layout]="'embedded'"></app-identification>
+      </div>
+    </div>
+  </main>
+</div> <!-- ⬅️ Cerramos el contenedor verde -->
+
+<!-- BANDA FULL-WIDTH BLANCA: ¿Cómo funciona? -->
+<section class="howto-band" aria-label="Cómo funciona">
+  <div class="band-container">
+    <app-step-card [steps]="steps"></app-step-card>
+  </div>
+</section>
+
+<!-- MULTAS (también fuera del contenedor verde) -->
+<section class="multas-section" id="consultas" aria-labelledby="titulo-multas">
+  <div class="container">
+    <h2 class="section-title" id="titulo-multas">Tipos de Multas</h2>
+
+    <!-- Acordeón padre (solo uno abierto) -->
+    <mat-accordion [multi]="false" class="accordion-lg">
+      <ng-container *ngFor="let cat of categories; let i = index">
+        <mat-expansion-panel (opened)="onParentOpened(i)">
+          <mat-expansion-panel-header>
+            <mat-panel-title>{{ cat.title }}</mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <!-- Acordeón hijo (permite varios abiertos) -->
+          <mat-accordion [multi]="true" class="sub-accordion-lg" #subAcc>
+            <ng-container *ngFor="let it of cat.items; let j = index">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>{{ it.title }}</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <p class="subtext">{{ it.text }}</p>
+              </mat-expansion-panel>
+            </ng-container>
+          </mat-accordion>
+        </mat-expansion-panel>
+      </ng-container>
+    </mat-accordion>
+  </div>
+</section>
+

@@ -2,7 +2,7 @@
 import { Routes } from '@angular/router';
 export const HOME_ROUTES: Routes = [
   {
-    path: '',
+    path: 'contenido',
     loadComponent: () =>
       import('./contenido-inicio/contenido-inicio.component').then(m => m.ContenidoInicioComponent)
   }

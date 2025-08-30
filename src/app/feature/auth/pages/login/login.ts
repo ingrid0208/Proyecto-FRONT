@@ -24,14 +24,14 @@ import { RippleModule } from 'primeng/ripple';
       <h2>Iniciar sesión</h2>
 
       <div class="input-group">
-        <label for="usuario" class="input-label">
+        <label for="Correo Electronico" class="input-label">
           <i class="pi pi-user input-icon"></i>
           <input
-            id="usuario"
+            id="Correo"
             type="text"
             pInputText
             [(ngModel)]="email"
-            placeholder="Usuario"
+            placeholder="Correo Electrónico"
             class="styled-input"
           />
         </label>

@@ -7,9 +7,8 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./app/layout/shell/app.layout').then(m => m.AppLayout),
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'home' },
+      { path: '', pathMatch: 'full', redirectTo: 'auth' },
 
-      { path: 'identificacion',            loadChildren: () => import('./app/feature/auth/pages/identificacion/identificacion.routes').then(m => m.IDENTIFICACION_ROUTES) },
       { path: 'home',            loadChildren: () => import('./app/feature/home/pages/home.routes').then(m => m.HOME_ROUTES) },
       { path: 'notificaciones',  loadChildren: () => import('./app/feature/notificacion-multas/pages/notificacion-multas.routes').then(m => m.NOTIFICACION_ROUTES) },
       { path: 'acuerdo-pago',    loadChildren: () => import('./app/feature/acuerdo-pago/acuerdo-pago.routes').then(m => m.ACUERDO_PAGO_ROUTES) },
@@ -20,8 +19,11 @@ export const routes: Routes = [
       { path: 'mensajes',        loadChildren: () => import('./app/feature/mensajes/pages/messages.routes').then(m => m.MENSAJES_ROUTES) },
       { path: 'crud',            loadChildren: () => import('./app/feature/crud/crud.routes').then(m => m.CRUD_ROUTES) },
       { path: 'parameters',            loadChildren: () => import('./app/feature/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
+    
     ]
   },
+
+  { path: 'identificacion',            loadChildren: () => import('./app/feature/auth/pages/identificacion/identificacion.routes').then(m => m.IDENTIFICACION_ROUTES) },
 
   // Auth fuera del shell
   { path: 'auth', loadChildren: () => import('./app/feature/auth/auth.routes').then(m => m.AUTH_ROUTES) },

@@ -2,7 +2,7 @@
 import { Routes } from '@angular/router';
 
 export const AUTH_ROUTES: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' },
+  { path: '', pathMatch: 'full', redirectTo: 'inicio' },
 
   { path: 'login',
     loadComponent: () =>
@@ -33,5 +33,10 @@ export const AUTH_ROUTES: Routes = [
     loadComponent: () =>
       import('./pages/error/error')
         .then(m => m.Error)
+  },
+    {
+    path: 'inicio',
+    loadComponent: () =>
+      import('../auth/pages/pagina-Inicio/inicio/inicio.component').then(m => m.InicioComponent)
   }
 ];
