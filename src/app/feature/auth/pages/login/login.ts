@@ -79,7 +79,7 @@ export class Login {
 
   onLogin(): void {
     // aquí luego llamas a tu API, por ahora solo navega:
-    this.router.navigate(['/identificacion/identificacion']);
+    this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
   }
 
   goToRecovery(e?: Event) { e?.preventDefault(); this.router.navigate(['/auth/recovery-password']); }

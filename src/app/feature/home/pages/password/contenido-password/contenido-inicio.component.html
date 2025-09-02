@@ -1,13 +1,11 @@
 <app-topbar></app-topbar>
 
 <mat-card class="payment-fines-card">
- <app-card-header                        
+  <app-card-header
     title="Selección de Multas para Acuerdo de Pago"
-    [description]="'Seleccione las multas que desea incluir en el acuerdo de pago.\nPuede elegir una o varias multas para generar el acuerdo.'">
+    [description]="ciudadano ? 'Ciudadano: ' + ciudadano : 'Seleccione las multas que desea incluir en el acuerdo de pago.\nPuede elegir una o varias multas para generar el acuerdo.'">
   </app-card-header>
 
-
-  <!-- Tabla genérica con columnas dinámicas -->
   <app-generic-multas-table
     [data]="multas"
     [columns]="columns">
@@ -19,3 +17,4 @@
     </button>
   </mat-card-actions>
 </mat-card>
+

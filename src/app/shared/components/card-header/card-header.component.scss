@@ -1,22 +1,29 @@
-:host { display: block; }
-
-/* Estilos base que querías */
 .header-section {
-  padding: 14px;
-  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 20px;
   border-bottom: 1px solid #e0e0e0;
-  text-align: center; /* default */
+  background-color: #fff;
 }
+
+.header-left {
+  position: absolute;
+  left: 16px;
+}
+
+.header-center {
+  text-align: center;
+}
+
 .header-title {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
-  margin: 0 0 12px 0;
+  margin: 0 0 6px;
 }
+
 .header-description {
   font-size: 14px;
   color: #666;
   margin: 0;
-  line-height: 1.5;
-  white-space: pre-line; /* permite \n como <br> sin innerHTML */
 }
