@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ColumnDef } from '../../../../../shared/Models/table.Generic';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -9,7 +9,6 @@ import { CardHeaderComponent } from '../../../../../shared/components/card-heade
 import { ServiceGenericService } from '../../../../../core/services/servicesGeneric/service-generic.service';
 import { SessionPingService } from '../../../../../core/services/session-ping.service';
 import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/userInfractionSelectDto';
-
 
 @Component({
   selector: 'app-contenido-documento',
@@ -25,7 +24,7 @@ import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/u
   templateUrl: './contenido-documento.component.html',
   styleUrl: './contenido-documento.component.scss'
 })
-export class ContenidoDocumentoComponent implements OnInit {
+export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
 
   constructor(
     private auth: ServiceGenericService,
@@ -34,17 +33,19 @@ export class ContenidoDocumentoComponent implements OnInit {
   ) {}
 
   multas: UserInfractionSelectDto[] = [];
-  ciudadano = ''; // opcional para mostrar en el header
+  ciudadano = '';
 
   columns: ColumnDef[] = [
-    { key: 'tipo',        header: 'Tipo de multa',        type: 'text' },
-    { key: 'fecha',       header: 'Fecha de infracción',  type: 'date', dateFormat: 'dd/MM/yyyy' },
-    { key: 'descripcion', header: 'Descripción',          type: 'text' },
-    { key: 'estado',      header: 'Estado',               type: 'chip' },
+    { key: 'tipo', header: 'Tipo de multa', type: 'text' },
+    { key: 'fecha', header: 'Fecha de infracción', type: 'date', dateFormat: 'dd/MM/yyyy' },
+    { key: 'descripcion', header: 'Descripción', type: 'text' },
+    { key: 'estado', header: 'Estado', type: 'chip' },
   ];
 
   async ngOnInit() {
-    // 1) intenta leer lo que vino en el navigation state
+    this.sessionPing.start(); // ⬅️ arranca el monitor
+
+    // ...tu lógica actual (leer navigation state, fallback a sessionStorage, etc.)
     const nav = this.router.getCurrentNavigation();
     const st: any = nav?.extras?.state ?? history.state;
 
@@ -54,10 +55,8 @@ export class ContenidoDocumentoComponent implements OnInit {
       return;
     }
 
-    // 2) Fallback: re-consulta con los datos del doc guardados en sessionStorage
     const docTypeId = Number(sessionStorage.getItem('docTypeId'));
     const docNumber = sessionStorage.getItem('docNumber') || '';
-
     if (!docTypeId || !docNumber) {
       alert('No se encontraron datos de documento. Inicia la consulta nuevamente.');
       this.router.navigate(['/auth/inicio']);
@@ -74,10 +73,10 @@ export class ContenidoDocumentoComponent implements OnInit {
       }
 
       this.multas = data.map((x: any) => ({
-        tipo:        x.typeInfractionName ?? '—',
-        fecha:       x.dateInfraction ?? '',
+        tipo: x.typeInfractionName ?? '—',
+        fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        estado:      mapEstadoFromBool(x.stateInfraction)
+        estado: mapEstadoFromBool(x.stateInfraction)
       }));
       const first = data[0];
       this.ciudadano = [first?.firstName, first?.lastName].filter(Boolean).join(' ');
@@ -85,6 +84,11 @@ export class ContenidoDocumentoComponent implements OnInit {
       alert(e?.error?.message || 'No fue posible obtener las multas.');
       this.router.navigate(['/auth/inicio']);
     }
+  }
+
+  ngOnDestroy() {
+    // ⬅️ ¡AHORA sí se detiene al salir de la ruta!
+    this.sessionPing.stop();
   }
 
   onBack() {

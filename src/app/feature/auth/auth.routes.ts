@@ -14,14 +14,9 @@ export const AUTH_ROUTES: Routes = [
       import('./pages/registrar/Registrar')
         .then(m => m.Registrar)
   },
-  { path: 'recovery-password',
-    loadComponent: () =>
-      import('./pages/recovery-password/RecoveryPassword')
-        .then(m => m.RecoverPasswordComponent)
-  },
   { path: 'verify-code',
     loadComponent: () =>
-      import('./pages/verify-code/veryCode')
+      import('./pages/VerifyCode/verify-code')
         .then(m => m.VerifyCodeComponent)
   },
   { path: 'access-denied',

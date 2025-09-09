@@ -6,6 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
+import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
 
 @Component({
   selector: 'app-login',
@@ -20,14 +21,12 @@ import { RippleModule } from 'primeng/ripple';
 
     <div class="login-form">
       <img src="../../../assets/demo/login_Arriba.png" class="corner corner-top-right" alt="" />
-
       <h2>Iniciar sesión</h2>
 
       <div class="input-group">
-        <label for="Correo Electronico" class="input-label">
+        <label class="input-label">
           <i class="pi pi-user input-icon"></i>
           <input
-            id="Correo"
             type="text"
             pInputText
             [(ngModel)]="email"
@@ -41,7 +40,6 @@ import { RippleModule } from 'primeng/ripple';
         <label class="input-label">
           <i class="pi pi-lock input-icon"></i>
           <input
-            id="password"
             type="password"
             pInputText
             [(ngModel)]="password"
@@ -51,17 +49,16 @@ import { RippleModule } from 'primeng/ripple';
         </label>
       </div>
 
-      <!-- Antes tenía [routerLink]; ahora es función -->
       <button
-        pButton
-        label="Iniciar Sesión"
+        pButton label="Iniciar Sesión"
         class="p-button-success w-full mt-3 login-btn pulse"
-        (click)="onLogin()">
+        (click)="onLogin()"
+        [disabled]="!email || !password">
       </button>
 
       <div class="login-links">
         <a (click)="goToRecovery($event)">¿Olvidaste tu contraseña?</a>
-        <a  (click)="goToRegister($event)">¿Deseas Registrarte?</a>
+        <a (click)="goToRegister($event)">¿Deseas Registrarte?</a>
       </div>
 
       <img src="../../../assets/demo/login_Abajo.png" class="corner corner-bottom-left" alt="" />
@@ -71,15 +68,36 @@ import { RippleModule } from 'primeng/ripple';
   `
 })
 export class Login {
- email = '';
+  email = '';
   password = '';
-  checked = false;
+  loading = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private api : ServiceGenericService) {}
 
   onLogin(): void {
-    // aquí luego llamas a tu API, por ahora solo navega:
-    this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+    if(!this.email || !this.password)return;
+    this.loading = true;
+
+     this.api.loginEmail({ email: this.email.trim(), password: this.password })
+      .subscribe({
+        next: (res) => {
+          if (res?.isSuccess && res?.token) {
+            // Guarda el token para que tu interceptor/headers lo usen
+            localStorage.setItem('currentUser', JSON.stringify({
+              email: this.email.trim(),
+              token: res.token
+            }));
+            this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+          } else {
+            alert('No se pudo iniciar sesión.');
+          }
+        },
+        error: (err) => {
+          console.error('Login error', err);
+          alert(err?.error?.message ?? 'Error al iniciar sesión');
+        },
+        complete: () => this.loading = false
+      });
   }
 
   goToRecovery(e?: Event) { e?.preventDefault(); this.router.navigate(['/auth/recovery-password']); }

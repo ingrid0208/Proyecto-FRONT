@@ -1,14 +1,18 @@
 // src/app/app.config.ts
 import { ApplicationConfig } from '@angular/core';
+import {
+  provideRouter,
+  withEnabledBlockingInitialNavigation,
+  withInMemoryScrolling,
+  withRouterConfig,                // ⬅️ importa esto
+} from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling } from '@angular/router';
 
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from '../../../app.routes';
 import { authExpiredInterceptor } from '../Interceptor/AuthExpiredInterceptor';
-
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,11 +22,15 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'enabled',
       }),
-      withEnabledBlockingInitialNavigation()
+      withEnabledBlockingInitialNavigation(),
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',   // ⬅️ fuerza destruir/recrear el componente
+        // urlUpdateStrategy: 'deferred', // opcional (por defecto)
+      }),
     ),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authExpiredInterceptor]) // 👈 añade aquí
+      withInterceptors([authExpiredInterceptor]),
     ),
     provideAnimationsAsync(),
     providePrimeNG({

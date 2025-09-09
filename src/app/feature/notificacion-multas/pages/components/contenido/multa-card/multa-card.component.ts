@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Multas } from '../../../../../../shared/Models/multas.model';
 
 @Component({
@@ -7,10 +7,16 @@ import { Multas } from '../../../../../../shared/Models/multas.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './multa-card.component.html',
-  styleUrl: './multa-card.component.scss'
+  styleUrls: ['./multa-card.component.scss']
 })
 export class MultaCardComponent {
- @Input() multa!: Multas;
+ @Input() multa: Multas = {
+  numero : '',
+  descripcion : '',
+  fecha : '',
+  estado : 'PENDIENTE',
+  ubicacion : ''
+ };
 
   get estadoClass(): string {
     return this.multa.estado === 'ABIERTO' ? 'estado-abierto' : 'estado-pendiente';

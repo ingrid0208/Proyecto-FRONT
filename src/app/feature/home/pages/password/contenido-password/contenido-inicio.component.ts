@@ -8,6 +8,7 @@ import { ColumnDef } from '../../../../../shared/Models/table.Generic';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { ServiceGenericService } from '../../../../../core/services/servicesGeneric/service-generic.service';
 import { AppTopbar } from '../../../../topbar/topbar.component';
+import { SessionPingService } from '../../../../../core/services/session-ping.service';
 
 interface Multa {
   tipo: string;
@@ -34,7 +35,8 @@ interface Multa {
 export class ContenidoInicioComponent implements OnInit {
   constructor(
     private router: Router,
-    private api: ServiceGenericService
+    private api: ServiceGenericService,
+    private sessionPing: SessionPingService
   ) {}
 
   multas: Multa[] = [];
@@ -65,6 +67,7 @@ export class ContenidoInicioComponent implements OnInit {
 
     try {
       const r = await this.api.getMultasByDocument(docTypeId, docNumber).toPromise();
+      this.sessionPing.start();
       const data = r?.data ?? [];
       this.multas = data.map((x: any) => ({
         tipo:        x.typeInfractionName ?? '—',

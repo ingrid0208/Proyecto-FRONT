@@ -1,23 +1,36 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { GenericMultasTableComponent } from './generic-multas-table.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service'; // ajusta la ruta real!
 
 describe('GenericMultasTableComponent', () => {
-  let component: GenericMultasTableComponent;
   let fixture: ComponentFixture<GenericMultasTableComponent>;
+  let serviceStub: jasmine.SpyObj<ServiceGenericService>;
 
   beforeEach(async () => {
+    serviceStub = jasmine.createSpyObj('ServiceGenericService', ['getAll', 'post', 'put', 'delete', 'deleteLogic']);
+    // Ajusta según cómo el componente obtenga datos:
+    serviceStub.getAll.and.returnValue(of([]));
+
     await TestBed.configureTestingModule({
-      imports: [GenericMultasTableComponent]
-    })
-    .compileComponents();
+      imports: [
+        GenericMultasTableComponent,
+        HttpClientTestingModule,
+        NoopAnimationsModule
+      ],
+      providers: [
+        { provide: ServiceGenericService, useValue: serviceStub }
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GenericMultasTableComponent);
-    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 });
