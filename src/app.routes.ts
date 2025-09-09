@@ -21,6 +21,10 @@ export const routes: Routes = [
       { path: 'perfil',          loadChildren: () => import('./app/feature/perfil/perfil.routes').then(m => m.PERFIL_ROUTES) },
       { path: 'mensajes',        loadChildren: () => import('./app/feature/mensajes/pages/messages.routes').then(m => m.MENSAJES_ROUTES) },
       { path: 'crud',            loadChildren: () => import('./app/feature/crud/crud.routes').then(m => m.CRUD_ROUTES) },
+  { path: 'roles',           loadChildren: () => import('./app/features/roles-page/roles-page.routes').then(m => m.ROLES_ROUTES) },
+  { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/modulos-permisos-page.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },
+  { path: 'usuarios', loadChildren: () => import('./app/features/usuarios-page/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
+  { path: 'personas',        loadChildren: () => import('./app/features/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
       { path: 'parameters',      loadChildren: () => import('./app/feature/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
     ]
   },

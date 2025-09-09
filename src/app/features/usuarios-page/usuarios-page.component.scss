@@ -1,0 +1,192 @@
+.alert-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.08);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 2000;
+}
+.alert-modal-content {
+  margin-top: 3.5rem;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 24px rgba(67,160,71,0.13);
+  padding: 1.3rem 2.2rem 1.1rem 2.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  min-width: 320px;
+  border: 2px solid #43a047;
+  animation: modalIn 0.25s cubic-bezier(.4,0,.2,1);
+}
+.alert-modal-content.bienvenida {
+  border-color: #43a047;
+}
+.alert-modal-content.creado {
+  border-color: #1e88e5;
+}
+.alert-modal-content.eliminado {
+  border-color: #e53935;
+}
+.alert-icon {
+  font-size: 2.1rem;
+  margin-right: 0.5rem;
+}
+.alert-msg {
+  color: #333;
+}
+@keyframes modalIn {
+  from { transform: translateY(-40px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+.usuarios-container {
+  background: #fff;
+  border-radius: 14px;
+  max-width: 900px;
+  margin: 2.5rem auto;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+.usuarios-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  .icon {
+    background: #43a047;
+    color: #fff;
+    border-radius: 50%;
+    padding: 0.5rem;
+    font-size: 1.7rem;
+    margin-right: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .title {
+    color: #43a047;
+    font-weight: 600;
+    font-size: 1.4rem;
+    margin-right: auto;
+    margin-left: 0.7rem;
+  }
+  .add-usuario-btn {
+    background: #43a047;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.7rem 1.5rem;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover {
+      background: #388e3c;
+    }
+  }
+}
+.usuarios-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.usuario-card {
+  background: #f6fefa;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.usuario-header {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.usuario-avatar {
+  font-size: 1.2rem;
+  background: #e0f2f1;
+  border-radius: 50%;
+  padding: 0.5rem 1rem;
+  color: #388e3c;
+  border: 2px solid #b2dfdb;
+  box-shadow: 0 2px 8px rgba(67,160,71,0.08);
+}
+.usuario-nombre {
+  color: #388e3c;
+  font-size: 1.1rem;
+}
+.usuario-rol {
+  background: #e3f2fd;
+  color: #1565c0;
+  border-radius: 8px;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  border: 1px solid #90caf9;
+}
+.usuario-estado {
+  background: #e8f5e9;
+  color: #388e3c;
+  border-radius: 8px;
+  padding: 0.2rem 0.8rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  border: 1px solid #a5d6a7;
+  text-transform: capitalize;
+}
+.usuario-estado.inactivo {
+  background: #ffebee;
+  color: #b71c1c;
+  border: 1px solid #ef9a9a;
+}
+.usuario-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  font-size: 0.98rem;
+  color: #333;
+}
+.usuario-actions {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 0.7rem;
+}
+.blue-btn {
+  background: #1e88e5;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.blue-btn:hover {
+  background: #1565c0;
+}
+.red-btn {
+  background: #e53935;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.red-btn:hover {
+  background: #b71c1c;
+}
