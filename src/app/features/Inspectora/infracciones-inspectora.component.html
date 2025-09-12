@@ -1,0 +1,61 @@
+<div class="infracciones-inspectora">
+  <div class="page-header">
+    <div class="title">
+      <h2>Infracciones</h2>
+      <p>"Puedes conseguir el trabajo que tú quieres"</p>
+    </div>
+    <div class="toolbar">
+      <div class="search">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 4a6 6 0 104.472 10.03l4.25 4.25 1.415-1.414-4.25-4.25A6 6 0 0010 4zm0 2a4 4 0 110 8 4 4 0 010-8z"/></svg>
+        <input type="text" placeholder="Buscar" [(ngModel)]="busqueda" />
+      </div>
+      <button class="btn btn-icon" title="Filtros">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 6h10v2H3V6zm0 5h6v2H3v-2zm0 5h14v2H3v-2zM17 6h4v2h-4V6zm-2 5h6v2h-6v-2zm-4 5h10v2H11v-2z"/>
+        </svg>
+      </button>
+      <button class="btn btn-primary">
+        <svg class="icon-left" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M11 11V6h2v5h5v2h-5v5h-2v-5H6v-2h5z"/>
+        </svg>
+        Agregar Nueva Multa
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card">
+    <table class="tabla-infracciones">
+      <thead>
+        <tr>
+          <th>Tipo De Infracción</th>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Valor</th>
+          <th>Estado</th>
+          <th>Genera Pdf</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let i of infraccionesFiltradas; trackBy: trackByDescripcion">
+          <td class="col-tipo">{{ i.tipo }}</td>
+          <td>{{ i.fecha }}</td>
+          <td class="col-descripcion">{{ i.descripcion }}</td>
+          <td class="col-valor">{{ i.valor }}</td>
+          <td class="col-estado">{{ i.estado }}</td>
+          <td class="col-pdf">
+            <ng-container *ngIf="i.pdf; else noPdf">
+              <button class="icon-btn" title="Generar PDF">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm0 2.5L19.5 10H14V4.5zM8 12h4a2 2 0 010 4H9v2H8v-6zm1 1v2h3a1 1 0 000-2H9z"/>
+                </svg>
+              </button>
+            </ng-container>
+            <ng-template #noPdf>
+              <span class="no-pdf">—</span>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
