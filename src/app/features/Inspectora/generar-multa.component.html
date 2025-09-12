@@ -1,0 +1,55 @@
+<div class="generar-multa">
+  <div class="page-header">
+    <div class="title">
+      <h2>Generar multa</h2>
+      <p>Selecciona los inputs con datos validos para adjuntar el acuerdo de pago. Puedes elegir una o varias multas para generar el acuerdo.</p>
+    </div>
+    <div class="toolbar">
+      <button class="btn btn-icon" (click)="volver()" title="Volver">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-header">
+      <button class="circle" (click)="volver()" aria-label="Volver">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+      <h3>Anexar nueva infracción</h3>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="guardar()" class="form-grid">
+      <label>
+        <span>Nombre Completo</span>
+        <input formControlName="nombreCompleto" placeholder="Ingresa su nombre" />
+      </label>
+      <label>
+        <span>Tipo de documento</span>
+        <select formControlName="tipoDocumento">
+          <option value="" disabled selected>Tipo de documento</option>
+          <option *ngFor="let td of tiposDocumento" [value]="td">{{ td }}</option>
+        </select>
+      </label>
+      <label>
+        <span>Número de Documento</span>
+        <input formControlName="numeroDocumento" placeholder="Ingresa número de documento" />
+      </label>
+      <label>
+        <span>Tipo de multa</span>
+        <select formControlName="tipoMulta">
+          <option value="" disabled selected>Elige el tipo de multa</option>
+          <option *ngFor="let tm of tiposMulta" [value]="tm">{{ tm }}</option>
+        </select>
+      </label>
+      <label>
+        <span>Salario Mínimo (Datos Legales Vigentes/Unidad)</span>
+        <input formControlName="salarioMinimo" placeholder="Ingresa el campo acordado de la multa" />
+      </label>
+
+      <div class="actions">
+        <button class="btn btn-primary" type="submit">Anexar nueva multa</button>
+      </div>
+    </form>
+  </div>
+</div>

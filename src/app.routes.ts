@@ -22,6 +22,7 @@ export const routes: Routes = [
   { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/modulos-permisos-page.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },
   { path: 'usuarios', loadChildren: () => import('./app/features/usuarios-page/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
   { path: 'personas',        loadChildren: () => import('./app/features/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
+  { path: 'generar-multa',   loadChildren: () => import('./app/features/Inspectora/generar-multa.routes').then(m => m.GENERAR_MULTA_ROUTES) },
   { path: 'infracciones-inspectora', loadChildren: () => import('./app/features/Inspectora/infracciones-inspectora.routes').then(m => m.INFRACCIONES_INSPECTORA_ROUTES) },
     ]
   },

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 export interface Infraccion {
   tipo: string;
@@ -16,7 +17,7 @@ export interface Infraccion {
   standalone: true,
   templateUrl: './infracciones-inspectora.component.html',
   styleUrls: ['./infracciones-inspectora.component.scss'],
-  imports: [NgFor, NgIf, FormsModule]
+  imports: [NgFor, NgIf, FormsModule, RouterLink]
 })
 export class InfraccionesInspectoraComponent {
   busqueda: string = '';
