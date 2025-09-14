@@ -3,18 +3,14 @@
 <mat-card class="payment-fines-card">
   <app-card-header
     title="Selección de Multas para Acuerdo de Pago"
-    [description]="ciudadano ? 'Ciudadano: ' + ciudadano : 'Seleccione las multas que desea incluir en el acuerdo de pago.\nPuede elegir una o varias multas para generar el acuerdo.'">
+    [description]="ciudadano ? 'Ciudadano: ' + ciudadano : 'Seleccione una multa para generar el acuerdo de pago.'">
   </app-card-header>
 
+  <!-- Tabla de multas -->
   <app-generic-multas-table
     [data]="multas"
-    [columns]="columns">
+    [columns]="columns"
+    (rowClicked)="onMultaSelected($event)">
   </app-generic-multas-table>
 
-  <mat-card-actions align="end">
-    <button mat-raised-button color="accent" (click)="onClickGenerar()">
-      {{ botonTexto }}
-    </button>
-  </mat-card-actions>
 </mat-card>
-

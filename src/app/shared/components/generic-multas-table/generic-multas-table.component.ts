@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
@@ -18,11 +18,13 @@ import { SessionPingService } from '../../../core/services/session-ping.service'
 export class GenericMultasTableComponent {
   @Input() data: any[] = [];
   @Input() columns: ColumnDef[] = [];
+  @Output() rowClicked = new EventEmitter<any>();
 
   constructor(
     private auth: ServiceGenericService,
     private router: Router,
     private sessionPing: SessionPingService // opcional
+    
   ) {}
 
   get displayedColumnKeys(): string[] {
@@ -38,5 +40,16 @@ export class GenericMultasTableComponent {
     }
   }
 
- 
+  onRowClick(row: any) {
+  const original = this.data.find(item =>
+    item.descripcion === row.descripcion &&
+    item.tipo === row.tipo &&
+    item.fecha === row.fecha
+  );
+
+  this.rowClicked.emit(original ?? row);
+}
+
+
+
 }

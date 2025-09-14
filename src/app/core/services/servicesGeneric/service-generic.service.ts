@@ -8,6 +8,7 @@ import { LoginDocumentoResponse } from '../../../shared/Models/LoginDocumentoRes
 import { LoginEmailRequest } from '../../../shared/Models/auth/LoginEmailRequest';
 import { LoginEmailResponse } from '../../../shared/Models/auth/LoginEmailResponse';
 import { RegisterRequestDto } from '../../../shared/Models/auth/RegisterRequestDto';
+import { PaymentAgreementInitDto } from '../../../shared/Models/Init/PaymentAgreementInitDto';
 
 type getAllType = 'GetAll' | 'GetAllDeletes';
 type DeleteType = 'Persistent' | 'Logical';
@@ -16,7 +17,7 @@ type DeleteType = 'Persistent' | 'Logical';
 @Injectable({ providedIn: 'root' })
 export class ServiceGenericService {
   private readonly baseUrl = environment.apiURL;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // ===== Helpers =====
   private getHeaders(skipAuth = false): HttpHeaders {
@@ -39,12 +40,12 @@ export class ServiceGenericService {
     return { headers: this.getHeaders(true), withCredentials: true }; // true => skipAuth => NO Bearer
   }
 
-  private url(controller: string, ...segments: (string|number)[]) {
-  const parts = [this.baseUrl, controller, ...segments].map(s =>
-    String(s).replace(/^\/+|\/+$/g, '')
-  );
-  return parts.filter(Boolean).join('/');
-}
+  private url(controller: string, ...segments: (string | number)[]) {
+    const parts = [this.baseUrl, controller, ...segments].map(s =>
+      String(s).replace(/^\/+|\/+$/g, '')
+    );
+    return parts.filter(Boolean).join('/');
+  }
 
 
   private buildParams(obj?: Record<string, any>): HttpParams {
@@ -88,17 +89,17 @@ export class ServiceGenericService {
     return this.http.patch<void>(this.url(controller, 'logical-restore', id), {}, this.optsJwt());
   }
 
-  // ======================
-  // AUTH: Email/Password (JWT) — sin cookies
-  // ======================
-  loginEmail(body: LoginEmailRequest): Observable<LoginEmailResponse> {
-    // login NO debe mandar Bearer ni cookies
+
+
+  loginEmail(body: LoginEmailRequest) {
     return this.http.post<LoginEmailResponse>(
-      this.url('Login', 'Email'),
+      this.url('Auth', 'login'),
       body,
-      { headers: this.getHeaders(true) } // true => **no** Authorization
+      this.optsCookie()
     );
   }
+
+
 
   registrar(body: RegisterRequestDto) {
     return this.http.post<any>(
@@ -140,8 +141,17 @@ export class ServiceGenericService {
     );
   }
 
-   /** 🔔 Ping a la sesión por documento (cookie) */
+  /** 🔔 Ping a la sesión por documento (cookie) */
   pingDocSession() {
-    return this.http.get<void>(this.url('Login','ping'), this.optsCookie());
+    return this.http.get<void>(this.url('Login', 'ping'), this.optsCookie());
   }
+
+  getInitData(userId: number, infractionId?: number) {
+    let url = this.url('PaymentAgreement', 'init', userId);
+    if (infractionId) {
+      url += `?infractionId=${infractionId}`;
+    }
+    return this.http.get<PaymentAgreementInitDto | PaymentAgreementInitDto[]>(url, this.optsJwt());
+  }
+
 }

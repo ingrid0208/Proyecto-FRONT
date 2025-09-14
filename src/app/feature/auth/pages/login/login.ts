@@ -7,11 +7,20 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
+import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule],
+  imports: [
+    ButtonModule,
+    CheckboxModule,
+    InputTextModule,
+    PasswordModule,
+    FormsModule,
+    RouterModule,
+    RippleModule
+  ],
   template: `
 <div class="login-wrapper animate-fade-in">
   <div class="login-card">
@@ -53,7 +62,7 @@ import { ServiceGenericService } from '../../../../core/services/servicesGeneric
         pButton label="Iniciar Sesión"
         class="p-button-success w-full mt-3 login-btn pulse"
         (click)="onLogin()"
-        [disabled]="!email || !password">
+        [disabled]="!email || !password || loading">
       </button>
 
       <div class="login-links">
@@ -72,34 +81,37 @@ export class Login {
   password = '';
   loading = false;
 
-  constructor(private router: Router, private api : ServiceGenericService) {}
+  constructor(private router: Router, private api: ServiceGenericService) {}
 
   onLogin(): void {
-    if(!this.email || !this.password)return;
+    if (!this.email || !this.password) return;
     this.loading = true;
 
-     this.api.loginEmail({ email: this.email.trim(), password: this.password })
-      .subscribe({
-        next: (res) => {
-          if (res?.isSuccess && res?.token) {
-            // Guarda el token para que tu interceptor/headers lo usen
-            localStorage.setItem('currentUser', JSON.stringify({
-              email: this.email.trim(),
-              token: res.token
-            }));
-            this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
-          } else {
-            alert('No se pudo iniciar sesión.');
-          }
-        },
-        error: (err) => {
-          console.error('Login error', err);
-          alert(err?.error?.message ?? 'Error al iniciar sesión');
-        },
-        complete: () => this.loading = false
-      });
+   this.api.loginEmail({ email: this.email.trim(), password: this.password })
+    .subscribe({
+      next: (res: LoginEmailResponse) => {
+        if (res.isSuccess) {
+          console.log('✅ Login exitoso:', res.message);
+          this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+        } else {
+          alert('No se pudo iniciar sesión.');
+        }
+      },
+      error: (err) => {
+        console.error('Login error', err);
+        alert(err?.error?.message ?? 'Error al iniciar sesión');
+      },
+      complete: () => this.loading = false
+    });
   }
 
-  goToRecovery(e?: Event) { e?.preventDefault(); this.router.navigate(['/auth/recovery-password']); }
-  goToRegister(e?: Event) { e?.preventDefault(); this.router.navigate(['/auth/registrar']); }
+  goToRecovery(e?: Event) {
+    e?.preventDefault();
+    this.router.navigate(['/auth/recovery-password']);
+  }
+
+  goToRegister(e?: Event) {
+    e?.preventDefault();
+    this.router.navigate(['/auth/registrar']);
+  }
 }

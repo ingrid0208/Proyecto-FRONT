@@ -1,4 +1,5 @@
- <app-topbar></app-topbar>
+<app-topbar></app-topbar>
+
 <div class="form-container">
   <h2>Crear Acuerdo de Pago</h2>
 
@@ -7,74 +8,66 @@
 
       <!-- Columna izquierda -->
       <div class="form-column">
-        <label for="nombre">Nombre</label>
-        <input id="nombre" type="text" [(ngModel)]="form.nombre" name="nombre" placeholder="Ingrese su nombre" />
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="initData.personName" name="personName" readonly />
 
-        <label for="apellido">Apellido</label>
-        <input id="apellido" type="text" [(ngModel)]="form.apellido" name="apellido" placeholder="Ingrese su apellido" />
+        <label>Número de Documento</label>
+        <input type="text" [(ngModel)]="initData.documentNumber" name="documentNumber" readonly />
 
-        <label for="documento">Número de Documento</label>
-        <input id="documento" type="text" [(ngModel)]="form.documento" name="documento" placeholder="Ingrese su número de documento" />
+        <label>Tipo de Documento</label>
+        <input type="text" [(ngModel)]="initData.documentType" name="documentType" readonly />
 
-        <label for="tipoDocumento">Tipo de Documento</label>
-        <select id="tipoDocumento" [(ngModel)]="form.tipoDocumento" name="tipoDocumento">
+        <label>Número de Teléfono</label>
+        <input type="text" [(ngModel)]="form.phoneNumber" name="phoneNumber" placeholder="Ingrese su teléfono" />
+
+        <label>Dirección</label>
+        <input type="text" [(ngModel)]="form.address" name="address" placeholder="Ingrese su dirección" />
+
+        <!-- 🚀 Nuevo campo Barrio -->
+        <label>Barrio</label>
+        <input type="text" [(ngModel)]="form.neighborhood" name="neighborhood" placeholder="Ingrese su barrio" />
+
+        <label>Método de Pago</label>
+        <select [(ngModel)]="form.typePaymentId" name="typePaymentId">
           <option value="">Seleccione</option>
-          <option value="CC">Cédula</option>
-          <option value="TI">Tarjeta de Identidad</option>
-          <option value="CE">Cédula de Extranjería</option>
+          <option *ngFor="let tp of typePayments" [ngValue]="tp.id">{{tp.name}}</option>
         </select>
 
-        <label for="expedidoEn">Expedido en</label>
-        <input id="expedidoEn" type="text" [(ngModel)]="form.expedidoEn" name="expedidoEn" placeholder="Ciudad de expedición" />
-
-        <label for="telefono">Número de Teléfono</label>
-        <input id="telefono" type="text" [(ngModel)]="form.telefono" name="telefono" placeholder="Ingrese su teléfono" />
-
-        <label for="direccion">Dirección</label>
-        <input id="direccion" type="text" [(ngModel)]="form.direccion" name="direccion" placeholder="Ingrese su dirección" />
-
-        <label for="estadoPago">Metodo de Pago</label>
-        <select id="estadoPago" [(ngModel)]="form.estadoPago" name="estadoPago">
+        <label>Frecuencia de Pago</label>
+        <select [(ngModel)]="form.paymentFrequencyId" name="paymentFrequencyId">
           <option value="">Seleccione</option>
-          <option value="efectivo">efectivo</option>
-          <option value="tarjeta">tarjeta</option>
+          <option *ngFor="let f of paymentFrequencies" [ngValue]="f.id">{{f.intervalPage}}</option>
         </select>
       </div>
 
       <!-- Columna derecha -->
       <div class="form-column">
-        <label for="correo">Correo Electrónico</label>
-        <input id="correo" type="email" [(ngModel)]="form.correo" name="correo" placeholder="Ingrese su correo" />
+        <label>Correo Electrónico</label>
+        <input type="email" [(ngModel)]="form.email" name="email" placeholder="Ingrese su correo" />
 
-        <label for="inicioAcuerdo">Inicio del Acuerdo</label>
-        <input id="inicioAcuerdo" type="date" [(ngModel)]="form.inicioAcuerdo" name="inicioAcuerdo" />
+        <label>Inicio del Acuerdo</label>
+        <input type="date" [(ngModel)]="form.agreementStart" name="agreementStart" />
 
-        <label for="finAcuerdo">Fin del Acuerdo</label>
-        <input id="finAcuerdo" type="date" [(ngModel)]="form.finAcuerdo" name="finAcuerdo" />
+        <label>Fin del Acuerdo</label>
+        <input type="date" [(ngModel)]="form.agreementEnd" name="agreementEnd" />
 
-        <label for="fechaInfraccion">Fecha de la Infracción</label>
-        <input id="fechaInfraccion" type="date" [(ngModel)]="form.fechaInfraccion" name="fechaInfraccion" />
+        <label>Infracción Cometida</label>
+        <input type="text" [(ngModel)]="initData.infringement" name="infringement" readonly />
 
-        <label for="infraccion">Infracción Cometida</label>
-        <input id="infraccion" type="text" [(ngModel)]="form.infraccion" name="infraccion" placeholder="Describa la infracción" />
+        <label>Tipo de Multa</label>
+        <input type="text" [(ngModel)]="initData.typeFine" name="typeFine" readonly />
 
-        <label for="tipoMulta">Tipo de Multa</label>
-        <select id="tipoMulta" [(ngModel)]="form.tipoMulta" name="tipoMulta">
-          <option value="">Seleccione</option>
-          <option value="TipoUno">Tipo Uno</option>
-          <option value="TipoDos">tipo Dos</option>
-          <option value="TipoTres">Tipo Tres</option>
-          <option value="muy_grave">Tipo Cuatro</option>
-        </select>
+        <label>Valor en SMDLV</label>
+        <input type="number" [(ngModel)]="initData.valorSMDLV" name="valorSMDLV" readonly />
 
-        <label for="valorSMDLV">Valor en SMDLV</label>
-        <input id="valorSMDLV" type="number" [(ngModel)]="form.valorSMDLV" name="valorSMDLV" placeholder="Ej: 2" />
-
-        <label for="infoInfraccion">Información de la Infracción</label>
-        <textarea id="infoInfraccion" rows="4" [(ngModel)]="form.infoInfraccion" name="infoInfraccion" placeholder="Ingrese detalles adicionales..."></textarea>
+        <label>Información de la Infracción</label>
+        <textarea rows="4" [(ngModel)]="form.agreementDescription" name="agreementDescription"
+          placeholder="Ingrese detalles adicionales..."></textarea>
       </div>
     </div>
 
-    <button type="submit" class="submit-btn green" (click)="onClickGenerar()">Generar Acuerdo de Pago</button>
+    <button type="submit" class="submit-btn green">
+      Generar Acuerdo de Pago
+    </button>
   </form>
 </div>

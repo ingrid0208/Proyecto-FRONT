@@ -10,9 +10,11 @@ import { ServiceGenericService } from '../../../../../core/services/servicesGene
 import { AppTopbar } from '../../../../topbar/topbar.component';
 import { SessionPingService } from '../../../../../core/services/session-ping.service';
 
-interface Multa {
+interface MultaTableRow {
+  id: number;              // id de la multa (infractionId)
+  userId: number;          // id del usuario
   tipo: string;
-  fecha: Date | string;
+  fecha: string;
   descripcion: string;
   estado: 'Pendiente' | 'Pagada' | 'Vencida';
 }
@@ -33,13 +35,7 @@ interface Multa {
   ]
 })
 export class ContenidoInicioComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private api: ServiceGenericService,
-    private sessionPing: SessionPingService
-  ) {}
-
-  multas: Multa[] = [];
+  multas: MultaTableRow[] = [];
   ciudadano = '';
 
   columns: ColumnDef[] = [
@@ -49,39 +45,48 @@ export class ContenidoInicioComponent implements OnInit {
     { key: 'estado',      header: 'Estado',               type: 'chip' },
   ];
 
-  botonTexto = 'Generar Acuerdo de Pago';
+  constructor(
+    private router: Router,
+    private api: ServiceGenericService,
+    private sessionPing: SessionPingService
+  ) {}
 
   async ngOnInit() {
-    const nav = this.router.getCurrentNavigation();
-    const st: any = nav?.extras?.state ?? history.state;
-
-    if (st?.multas?.length) {
-      this.multas = st.multas;
-      this.ciudadano = st.ciudadano ?? '';
-      return;
-    }
-
     const docTypeId = Number(sessionStorage.getItem('docTypeId'));
     const docNumber = sessionStorage.getItem('docNumber') || '';
-    if (!docTypeId || !docNumber) return; // podría ser la home general sin datos
+    if (!docTypeId || !docNumber) return;
 
     try {
       const r = await this.api.getMultasByDocument(docTypeId, docNumber).toPromise();
       this.sessionPing.start();
       const data = r?.data ?? [];
+
       this.multas = data.map((x: any) => ({
-        tipo:        x.typeInfractionName ?? '—',
-        fecha:       x.dateInfraction ?? '',
+        id: x.id,              // 👈 infractionId
+        userId: x.userId,      // 👈 userId
+        tipo: x.typeInfractionName ?? '—',
+        fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        estado:      mapEstadoFromBool(x.stateInfraction)
+        estado: mapEstadoFromBool(x.stateInfraction)
       }));
+
       const first = data[0];
       this.ciudadano = [first?.firstName, first?.lastName].filter(Boolean).join(' ');
-    } catch { /* opcional: manejar errores */ }
+    } catch (error) {
+      console.error('Error al cargar multas:', error);
+    }
   }
 
-  onClickGenerar() {
-    this.router.navigate(['/acuerdo-pago/formulario']);
+  onMultaSelected(multa: MultaTableRow) {
+    console.log('Multa seleccionada:', multa);
+
+    this.router.navigate(['/acuerdo-pago/formulario'], {
+      state: {
+        userId: multa.userId,
+        infractionId: multa.id,
+        ciudadano: this.ciudadano
+      }
+    });
   }
 }
 
