@@ -79,15 +79,41 @@
   </div>
 
   <div class="personas-list">
-    <div class="persona-row" *ngFor="let persona of filteredPersonas" (click)="abrirInfoModal(persona)" style="cursor:pointer;">
-      <div class="avatar">
-        {{ persona.firstName[0] }}{{ persona.lastName[0] }}
+    <div class="persona-row" *ngFor="let persona of filteredPersonas" (click)="abrirInfoModal(persona)" style="cursor:pointer; display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
+      <div class="persona-content" style="display: flex; align-items: center; flex: 1;">
+        <div class="avatar" style="margin-right: 15px;">
+          {{ persona.firstName[0] }}{{ persona.lastName[0] }}
+        </div>
+        <div class="persona-info">
+          <div class="persona-nombre" style="font-weight: bold; margin-bottom: 8px;">
+            {{ persona.firstName }} {{ persona.lastName }}
+          </div>
+          <div class="persona-detalles" style="margin-bottom: 5px;">
+            <div class="detalle-row" style="margin-bottom: 3px;">
+              <span class="detalle-label" style="font-weight: 500; margin-right: 5px;">Teléfono:</span>
+              <span class="detalle-value">{{ persona.phoneNumber }}</span>
+            </div>
+            <div class="detalle-row" style="margin-bottom: 3px;">
+              <span class="detalle-label" style="font-weight: 500; margin-right: 5px;">Dirección:</span>
+              <span class="detalle-value">{{ persona.address }}</span>
+            </div>
+          </div>
+          <div class="persona-ids" style="display: flex; gap: 15px;">
+            <div class="id-item">
+              <span class="id-label" style="font-weight: 500; margin-right: 5px;">Tipo Doc:</span>
+              <span class="id-value">{{ persona.documentTypeId }}</span>
+            </div>
+            <div class="id-item">
+              <span class="id-label" style="font-weight: 500; margin-right: 5px;">Municipio:</span>
+              <span class="id-value">{{ persona.municipalityId }}</span>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="persona-nombre">
-        {{ persona.firstName }} {{ persona.lastName }}
+      <div class="persona-actions" style="display: flex; flex-direction: column; gap: 8px; margin-left: 20px;">
+        <button class="update-btn" (click)="$event.stopPropagation(); abrirModalActualizar(persona);" style="padding: 8px 16px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer; font-size: 14px;">✏️ Actualizar</button>
+        <button class="delete-btn" (click)="pedirConfirmacionEliminar(persona)" style="padding: 8px 16px; border: none; border-radius: 4px; background-color: #dc3545; color: white; cursor: pointer; font-size: 14px;">🗑️ Eliminar</button>
       </div>
-      <button class="update-btn" (click)="$event.stopPropagation(); abrirModalActualizar(persona);">+ Actualizar</button>
-        <button class="delete-btn" (click)="pedirConfirmacionEliminar(persona)">Eliminar</button>
     </div>
   </div>
 
