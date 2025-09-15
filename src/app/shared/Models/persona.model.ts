@@ -5,4 +5,5 @@
   phoneNumber: string;
   address: string;
   municipalityId: number;
+  documentTypeId: number;
 }

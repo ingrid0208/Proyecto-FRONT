@@ -33,6 +33,7 @@ export class PersonaService {
             phoneNumber: '123456789',
             address: 'Calle 123 #45-67',
             municipalityId: 1,
+            documentTypeId: 1,
           }
         ]);
       }
