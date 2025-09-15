@@ -1,13 +1,9 @@
 <div class="persona-card">
   <div class="persona-header">
-    <span class="persona-nombre">{{ persona.nombre }} {{ persona.apellido }}</span>
-    <span class="persona-rol">{{ persona.rol }}</span>
+    <span class="persona-nombre">{{ persona.firstName }} {{ persona.lastName }}</span>
   </div>
   <div class="persona-info">
-    <div>Documento: {{ persona.documento }}</div>
-    <div>Email: {{ persona.email }}</div>
-    <div>Teléfono: {{ persona.telefono }}</div>
-    <div>Estado: <span [ngClass]="persona.estado">{{ persona.estado }}</span></div>
-    <div>Creado: {{ persona.fechaCreacion | date }}</div>
+    <div>Teléfono: {{ persona.phoneNumber }}</div>
+    <div>Dirección: {{ persona.address }}</div>
   </div>
 </div>

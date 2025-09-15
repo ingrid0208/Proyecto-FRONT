@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PersonaService } from '../../../core/services/persona.service';
-import { Persona } from '../../../shared/models/persona.model';
+import { Persona } from '../../../shared/Models/persona.model';
 
 @Component({
   selector: 'app-personas-page',
@@ -36,7 +36,7 @@ export class PersonasPageComponent implements OnInit {
 
   onSearch(term: string) {
     this.filteredPersonas = this.personas.filter(p =>
-      (p.nombre + ' ' + p.apellido).toLowerCase().includes(term.toLowerCase())
+      (p.firstName + ' ' + p.lastName).toLowerCase().includes(term.toLowerCase())
     );
   }
 

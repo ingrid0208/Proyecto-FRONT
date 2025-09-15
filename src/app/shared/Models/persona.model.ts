@@ -1,11 +1,10 @@
  export interface Persona {
-  id: number;
-  nombre: string;
-  apellido: string;
-  documento: string;
-  email: string;
-  telefono: string;
-  rol: string;
-  estado: 'activo' | 'inactivo';
-  fechaCreacion: Date;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  address: string;
+  documentTypeId: number;
+  municipalityId: number;
+  
+  
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Persona } from '../../shared/models/persona.model';
+import { Persona } from '../../shared/Models/persona.model';
 
 @Injectable({ providedIn: 'root' })
 export class PersonaService {
@@ -11,15 +11,12 @@ export class PersonaService {
     // Datos de ejemplo
     this.personasSubject.next([
       {
-        id: 1,
-        nombre: 'Juan',
-        apellido: 'Pérez',
-        documento: '12345678',
-        email: 'juan@mail.com',
-        telefono: '123456789',
-        rol: 'Administrador',
-        estado: 'activo',
-        fechaCreacion: new Date()
+        firstName: 'Juan',
+        lastName: 'Pérez',
+        phoneNumber: '123456789',
+        address: 'Calle 123 #45-67',
+        documentTypeId: 1,
+        municipalityId: 1,
       }
       // ...puedes agregar más personas
     ]);
