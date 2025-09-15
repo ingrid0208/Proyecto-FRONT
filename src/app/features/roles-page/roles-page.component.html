@@ -5,6 +5,7 @@
       <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
       <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
       <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
       <span class="alert-msg">{{ alertMsg }}</span>
     </div>
   </div>
@@ -26,19 +27,17 @@
   <button class="add-role-btn" (click)="abrirModal()">+ Agregar Roles</button>
   </div>
     <div class="roles-list">
-      <div class="rol-card" *ngFor="let rol of roles; let i = index">
+      <div class="rol-card" *ngFor="let rol of roles">
       <div class="rol-header">
-        <span class="rol-dot" [style.background]="rol.color"></span>
-        <span class="rol-nombre">{{ rol.nombre }}</span>
+        <span class="rol-dot" style="background: #43a047"></span>
+        <span class="rol-nombre">{{ rol.name }}</span>
         <div class="rol-actions-right">
-          <button class="blue-btn">+ Actualizar</button>
-          <button class="red-btn" (click)="pedirConfirmacionEliminar(i)">= Eliminar</button>
+          <button class="blue-btn" (click)="abrirModalActualizar(rol)">+ Actualizar</button>
+          <button class="red-btn" (click)="pedirConfirmacionEliminar(rol)">= Eliminar</button>
         </div>
       </div>
-      <div class="rol-permisos">
-        <span *ngFor="let accion of rol.acciones" class="permiso-tag" [ngClass]="accion.color + '-tag'">
-          {{ accion.label }}
-        </span>
+      <div class="rol-descripcion">
+        <p>{{ rol.description }}</p>
       </div>
     </div>
   </div>
@@ -48,27 +47,49 @@
 <div *ngIf="showModal" class="modal-overlay">
   <div class="modal-content persona-form">
     <h2>Crear Rol</h2>
-    <form (ngSubmit)="crearRol()" autocomplete="off">
+    <form (ngSubmit)="crearRol()" autocomplete="off" #crearForm="ngForm">
       <label>
         Nombre del Rol:
-        <input type="text" [(ngModel)]="nuevoRol.nombre" name="nombreRol" required />
+        <input type="text" [(ngModel)]="nuevoRol.name" name="nombreRol" required 
+               #nombreInput="ngModel" maxlength="50" />
+        <div *ngIf="nombreInput.invalid && nombreInput.touched" class="error-msg">
+          El nombre del rol es requerido
+        </div>
       </label>
       <label>
-        Color:
-        <input type="color" [(ngModel)]="nuevoRol.color" name="colorRol" style="width: 40px; height: 30px; padding: 0; border: none; background: none;" />
-      </label>
-      <div class="permisos-list">
-        <span>Permisos:</span>
-        <div class="permisos-grid">
-          <label *ngFor="let permiso of permisosDisponibles" class="permiso-item">
-            <input type="checkbox" [checked]="isPermisoSeleccionado(permiso)" (change)="togglePermiso(permiso)" />
-            {{ permiso.label }}
-          </label>
+        Descripción:
+        <textarea [(ngModel)]="nuevoRol.description" name="descripcionRol" required rows="3" 
+                  #descripcionInput="ngModel" maxlength="200"
+                  style="resize: vertical; min-height: 60px; font-family: inherit;"></textarea>
+        <div *ngIf="descripcionInput.invalid && descripcionInput.touched" class="error-msg">
+          La descripción es requerida
         </div>
-      </div>
+      </label>
       <div class="modal-actions">
         <button type="button" (click)="cerrarModal()">Cancelar</button>
-        <button type="submit">Crear</button>
+        <button type="submit" [disabled]="crearForm.invalid || !nuevoRol.name.trim() || !nuevoRol.description.trim()">Crear</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para actualizar rol -->
+<div *ngIf="showUpdateModal && rolSeleccionado" class="modal-overlay">
+  <div class="modal-content persona-form">
+    <h2>Actualizar Rol</h2>
+    <form (ngSubmit)="actualizarRol()" autocomplete="off">
+      <label>
+        Nombre del Rol:
+        <input type="text" [(ngModel)]="rolSeleccionado.name" name="nombreRol" required />
+      </label>
+      <label>
+        Descripción:
+        <textarea [(ngModel)]="rolSeleccionado.description" name="descripcionRol" required rows="3" 
+                  style="resize: vertical; min-height: 60px; font-family: inherit;"></textarea>
+      </label>
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
+        <button type="submit" [disabled]="!rolSeleccionado.name || !rolSeleccionado.description">Actualizar</button>
       </div>
     </form>
   </div>

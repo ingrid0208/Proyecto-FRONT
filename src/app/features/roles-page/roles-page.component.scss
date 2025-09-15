@@ -36,6 +36,9 @@
 .alert-modal-content.eliminado {
   border-left: 6px solid #e53935;
 }
+.alert-modal-content.error {
+  border-left: 6px solid #d32f2f;
+}
 
 .alert-icon {
   font-size: 2.2rem;
@@ -87,21 +90,54 @@
     opacity: 1;
   }
 }
-.rol-permisos {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.3rem;
+.rol-descripcion {
+  margin-top: 0.8rem;
+  padding: 0.8rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #43a047;
 }
-.permiso-tag {
-  padding: 0.18rem 0.8rem;
-  border-radius: 12px;
-  font-size: 0.93rem;
-  font-weight: 500;
-  background: #e0f2f1;
-  color: #388e3c;
+
+.rol-descripcion p {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+// Estilos para textarea en formularios
+textarea {
+  width: 100%;
+  padding: 0.5rem 0.7rem;
   border: 1px solid #b2dfdb;
-  text-transform: capitalize;
+  border-radius: 5px;
+  font-size: 1rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+  font-family: inherit;
+}
+
+textarea:focus {
+  border-color: #43a047;
+  outline: none;
+}
+
+// Estilos para mensajes de error en formularios
+.error-msg {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  background: #ffebee;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border-left: 3px solid #d32f2f;
+  animation: errorShake 0.3s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
 }
 .green-tag {
   background: #e8f5e9;
