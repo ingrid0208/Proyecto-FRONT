@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { AppTopbar } from '../topbar/topbar.component';
 
 @Component({
   selector: 'app-generar-multa',
   templateUrl: './generar-multa.component.html',
   styleUrls: ['./generar-multa.component.scss'],
   standalone: true,
-  imports: [CommonModule, CurrencyPipe]
+  imports: [CommonModule, CurrencyPipe, AppTopbar]
 })
 export class GenerarMultaComponent {
   mostrarFormulario = false;
