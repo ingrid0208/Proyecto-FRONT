@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-infracciones-inspectora',
-  templateUrl: './infracciones-inspectora.component.html',
+  templateUrl: 'infracciones-inspectora.component.html',
   styleUrls: ['./infracciones-inspectora.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule]
