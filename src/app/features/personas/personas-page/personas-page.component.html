@@ -65,18 +65,6 @@
           </div>
         </label>
         <label>
-          Tipo de Documento:
-          <select formControlName="documentTypeId" required>
-            <option value="0">Seleccionar tipo de documento</option>
-            <option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">
-              {{tipo.name}} ({{tipo.abbreviation}})
-            </option>
-          </select>
-          <div *ngIf="personaForm.get('documentTypeId')?.invalid && personaForm.get('documentTypeId')?.touched" class="error-msg">
-            Debe seleccionar un tipo de documento
-          </div>
-        </label>
-        <label>
           Municipio:
           <select formControlName="municipalityId" required>
             <option value="0">Seleccionar municipio</option>
@@ -118,10 +106,6 @@
           </div>
           <div class="persona-ids" style="display: flex; gap: 15px;">
             <div class="id-item">
-              <span class="id-label" style="font-weight: 500; margin-right: 5px;">Tipo Doc:</span>
-              <span class="id-value">{{ persona.documentTypeId }}</span>
-            </div>
-            <div class="id-item">
               <span class="id-label" style="font-weight: 500; margin-right: 5px;">Municipio:</span>
               <span class="id-value">{{ persona.municipalityId }}</span>
             </div>
@@ -143,7 +127,6 @@
       <div class="info-item"><b>Apellido:</b> {{ personaSeleccionada.lastName }}</div>
       <div class="info-item"><b>Número de Teléfono:</b> {{ personaSeleccionada.phoneNumber }}</div>
       <div class="info-item"><b>Dirección:</b> {{ personaSeleccionada.address }}</div>
-      <div class="info-item"><b>Tipo de Documento ID:</b> {{ personaSeleccionada.documentTypeId }}</div>
       <div class="info-item"><b>Municipio ID:</b> {{ personaSeleccionada.municipalityId }}</div>
         <button type="button" (click)="cerrarInfoModal()">Cerrar</button>
       </div>
@@ -181,18 +164,6 @@
           <input type="text" formControlName="address" required />
           <div *ngIf="updateForm.get('address')?.invalid && updateForm.get('address')?.touched" class="error-msg">
             La dirección es requerida
-          </div>
-        </label>
-        <label>
-          Tipo de Documento:
-          <select formControlName="documentTypeId" required>
-            <option value="0">Seleccionar tipo de documento</option>
-            <option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">
-              {{tipo.name}} ({{tipo.abbreviation}})
-            </option>
-          </select>
-          <div *ngIf="updateForm.get('documentTypeId')?.invalid && updateForm.get('documentTypeId')?.touched" class="error-msg">
-            Debe seleccionar un tipo de documento
           </div>
         </label>
         <label>

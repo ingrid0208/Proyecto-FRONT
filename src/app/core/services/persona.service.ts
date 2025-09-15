@@ -32,7 +32,6 @@ export class PersonaService {
             lastName: 'Pérez',
             phoneNumber: '123456789',
             address: 'Calle 123 #45-67',
-            documentTypeId: 1,
             municipalityId: 1,
           }
         ]);

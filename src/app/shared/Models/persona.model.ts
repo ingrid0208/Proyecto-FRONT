@@ -4,6 +4,5 @@
   lastName: string;
   phoneNumber: string;
   address: string;
-  documentTypeId: number;
   municipalityId: number;
 }

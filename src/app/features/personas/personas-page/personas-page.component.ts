@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonaService } from '../../../core/services/persona.service';
-import { TipoDocumentoService } from '../../../core/services/tipo-documento.service';
 import { Persona } from '../../../shared/Models/persona.model';
-import { TipoDocumento } from '../../../shared/Models/tipo-documento.model';
 
 @Component({
   selector: 'app-personas-page',
@@ -16,7 +14,6 @@ import { TipoDocumento } from '../../../shared/Models/tipo-documento.model';
 export class PersonasPageComponent implements OnInit {
   personas: Persona[] = [];
   filteredPersonas: Persona[] = [];
-  tiposDocumento: TipoDocumento[] = [];
   showForm: boolean = false;
   showInfoModal: boolean = false;
   showUpdateModal: boolean = false;
@@ -35,7 +32,6 @@ export class PersonasPageComponent implements OnInit {
 
   constructor(
     private personaService: PersonaService,
-    private tipoDocumentoService: TipoDocumentoService,
     private fb: FormBuilder
   ) {
     this.personaForm = this.fb.group({
@@ -43,7 +39,6 @@ export class PersonasPageComponent implements OnInit {
       lastName: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       address: ['', Validators.required],
-      documentTypeId: [0, [Validators.required, Validators.min(1)]],
       municipalityId: [0, [Validators.required, Validators.min(1)]]
     });
 
@@ -52,7 +47,6 @@ export class PersonasPageComponent implements OnInit {
       lastName: ['', Validators.required],
       phoneNumber: ['', Validators.required],
       address: ['', Validators.required],
-      documentTypeId: [0, [Validators.required, Validators.min(1)]],
       municipalityId: [0, [Validators.required, Validators.min(1)]]
     });
   }
@@ -62,11 +56,6 @@ export class PersonasPageComponent implements OnInit {
     this.personaService.getPersonas().subscribe(personas => {
       this.personas = personas;
       this.filteredPersonas = personas;
-    });
-    
-    // Cargar tipos de documento
-    this.tipoDocumentoService.getTiposDocumento().subscribe(tipos => {
-      this.tiposDocumento = tipos;
     });
     
     this.mostrarAlerta('¡Bienvenido a la gestión de personas!', 'bienvenida');
@@ -183,11 +172,5 @@ export class PersonasPageComponent implements OnInit {
     } else {
       this.mostrarAlerta('Por favor completa todos los campos requeridos.', 'eliminado');
     }
-  }
-
-  // Método helper para obtener el nombre del tipo de documento
-  getTipoDocumentoName(documentTypeId: number): string {
-    const tipo = this.tiposDocumento.find(t => t.id === documentTypeId);
-    return tipo ? `${tipo.name} (${tipo.abbreviation})` : `Tipo ${documentTypeId}`;
   }
 }
