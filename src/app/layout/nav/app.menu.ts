@@ -54,6 +54,12 @@ export class AppMenu {
     ngOnInit() {
         this.model = [
             {
+                label: 'Gestión',
+                items: [
+                    { label: 'Generar Multa', icon: 'pi pi-fw pi-file-edit', routerLink: ['/inspectora/generar-multa'] }
+                ]
+            },
+            {
                 label: 'Inicio',
                 items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/consultar-ingresar/consultar-ingresar'] }]
             },
