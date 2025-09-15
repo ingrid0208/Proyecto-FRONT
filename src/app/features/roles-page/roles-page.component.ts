@@ -1,5 +1,5 @@
 // Eliminado ngOnInit duplicado fuera de la clase
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,7 +14,10 @@ import { RolesService, Rol } from './roles.service';
 })
 export class RolesPageComponent implements OnInit {
   
-  constructor(private rolesService: RolesService) {}
+  constructor(
+    private rolesService: RolesService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.mostrarAlerta('¡Bienvenido a la gestión de roles!', 'bienvenida');
@@ -52,18 +55,28 @@ export class RolesPageComponent implements OnInit {
   rolAEliminar: Rol | null = null;
   
   // Cargar roles desde la API
-  cargarRoles(): void {
+  cargarRoles(esDespuesDeOperacion: boolean = false): void {
     console.log('Cargando roles desde la API...'); // Para depuración
     
     this.rolesService.getRoles().subscribe({
       next: (roles) => {
         console.log('Roles cargados:', roles); // Para depuración
         this.roles = roles || []; // Asegurar que roles sea un array
+        // Forzar detección de cambios para asegurar que la vista se actualice
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error al cargar roles:', error);
         this.mostrarAlerta('Error al cargar los roles: ' + (error.error?.message || error.message), 'error');
-        this.roles = []; // Asegurar que roles sea un array vacío en caso de error
+        
+        // Solo agregar datos de prueba si no es después de una operación y no hay roles
+        if (!esDespuesDeOperacion && this.roles.length === 0) {
+          console.log('Agregando datos de prueba debido a error de API');
+          this.roles = [
+            { id: 1, name: 'Administrador', description: 'Rol con todos los permisos del sistema' },
+            { id: 2, name: 'Usuario', description: 'Rol básico con permisos limitados' }
+          ];
+        }
       }
     });
   }
@@ -78,6 +91,11 @@ export class RolesPageComponent implements OnInit {
 
   cerrarModal() {
     this.showModal = false;
+    // Limpiar el formulario al cerrar
+    this.nuevoRol = {
+      name: '',
+      description: ''
+    };
   }
 
   abrirModalActualizar(rol: Rol) {
@@ -108,9 +126,10 @@ export class RolesPageComponent implements OnInit {
     this.rolesService.createRol(this.nuevoRol).subscribe({
       next: (rolCreado) => {
         console.log('Rol creado exitosamente:', rolCreado); // Para depuración
-        this.roles.push(rolCreado);
         this.cerrarModal();
         this.mostrarAlerta('Rol creado exitosamente.', 'creado');
+        // Recargar la lista completa desde la API para asegurar sincronización
+        this.cargarRoles(true);
       },
       error: (error) => {
         console.error('Error al crear rol:', error);
@@ -123,16 +142,15 @@ export class RolesPageComponent implements OnInit {
     if (this.rolSeleccionado && this.rolSeleccionado.id) {
       this.rolesService.updateRol(this.rolSeleccionado.id, this.rolSeleccionado).subscribe({
         next: (rolActualizado) => {
-          const index = this.roles.findIndex(r => r.id === rolActualizado.id);
-          if (index !== -1) {
-            this.roles[index] = rolActualizado;
-          }
+          console.log('Rol actualizado exitosamente:', rolActualizado);
           this.cerrarModalActualizar();
           this.mostrarAlerta('Rol actualizado exitosamente.', 'creado');
+          // Recargar la lista completa desde la API para asegurar sincronización
+          this.cargarRoles(true);
         },
         error: (error) => {
           console.error('Error al actualizar rol:', error);
-          this.mostrarAlerta('Error al actualizar el rol', 'error');
+          this.mostrarAlerta('Error al actualizar el rol: ' + (error.error?.message || error.message), 'error');
         }
       });
     }
@@ -157,10 +175,11 @@ export class RolesPageComponent implements OnInit {
       this.rolesService.deleteRol(this.rolAEliminar.id).subscribe({
         next: () => {
           console.log('Rol eliminado exitosamente'); // Para depuración
-          this.roles = this.roles.filter(r => r.id !== this.rolAEliminar!.id);
           this.mostrarAlerta('Rol eliminado correctamente.', 'eliminado');
           this.showConfirm = false;
           this.rolAEliminar = null;
+          // Recargar la lista completa desde la API para asegurar sincronización
+          this.cargarRoles(true);
         },
         error: (error) => {
           console.error('Error al eliminar rol:', error);
