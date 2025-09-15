@@ -99,7 +99,7 @@
   </div>
 
   <div class="personas-list">
-    <div class="persona-row" *ngFor="let persona of filteredPersonas" (click)="abrirInfoModal(persona)" style="cursor:pointer; display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
+    <div class="persona-row" *ngFor="let persona of filteredPersonas" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
       <div class="persona-content" style="display: flex; align-items: center; flex: 1;">
         <div class="avatar" style="margin-right: 15px;">
           {{ persona.firstName[0] }}{{ persona.lastName[0] }}
@@ -129,20 +129,6 @@
       <div class="persona-actions" style="display: flex; flex-direction: column; gap: 8px; margin-left: 20px;">
         <button class="update-btn" (click)="$event.stopPropagation(); abrirModalActualizar(persona);" style="padding: 8px 16px; border: none; border-radius: 4px; background-color: #007bff; color: white; cursor: pointer; font-size: 14px;">✏️ Actualizar</button>
         <button class="delete-btn" (click)="pedirConfirmacionEliminar(persona)" style="padding: 8px 16px; border: none; border-radius: 4px; background-color: #dc3545; color: white; cursor: pointer; font-size: 14px;">🗑️ Eliminar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de información de usuario -->
-  <div *ngIf="showInfoModal && personaSeleccionada" class="modal-overlay">
-    <div class="modal-content persona-form">
-      <h2>Información del Usuario</h2>
-      <div class="info-item"><b>Nombre:</b> {{ personaSeleccionada.firstName }}</div>
-      <div class="info-item"><b>Apellido:</b> {{ personaSeleccionada.lastName }}</div>
-      <div class="info-item"><b>Número de Teléfono:</b> {{ personaSeleccionada.phoneNumber }}</div>
-      <div class="info-item"><b>Dirección:</b> {{ personaSeleccionada.address }}</div>
-      <div class="info-item"><b>Municipio:</b> {{ getMunicipioNombre(personaSeleccionada.municipalityId) }}</div>
-        <button type="button" (click)="cerrarInfoModal()">Cerrar</button>
       </div>
     </div>
   </div>
