@@ -120,10 +120,6 @@
           </div>
           <div class="persona-ids" style="display: flex; gap: 15px;">
             <div class="id-item">
-              <span class="id-label" style="font-weight: 500; margin-right: 5px;">Tipo de Documento:</span>
-              <span class="id-value">{{ getDocumentTypeNombre(persona.documentTypeId) }}</span>
-            </div>
-            <div class="id-item">
               <span class="id-label" style="font-weight: 500; margin-right: 5px;">Municipio:</span>
               <span class="id-value">{{ getMunicipioNombre(persona.municipalityId) }}</span>
             </div>
@@ -145,7 +141,6 @@
       <div class="info-item"><b>Apellido:</b> {{ personaSeleccionada.lastName }}</div>
       <div class="info-item"><b>Número de Teléfono:</b> {{ personaSeleccionada.phoneNumber }}</div>
       <div class="info-item"><b>Dirección:</b> {{ personaSeleccionada.address }}</div>
-      <div class="info-item"><b>Tipo de Documento:</b> {{ getDocumentTypeNombre(personaSeleccionada.documentTypeId) }}</div>
       <div class="info-item"><b>Municipio:</b> {{ getMunicipioNombre(personaSeleccionada.municipalityId) }}</div>
         <button type="button" (click)="cerrarInfoModal()">Cerrar</button>
       </div>
