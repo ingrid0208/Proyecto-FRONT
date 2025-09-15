@@ -10,7 +10,7 @@ export const authExpiredInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401 || err.status === 0) {
-        alert('Tu sesión ha expirado, por favor inicia sesión nuevamente.');
+    // alert eliminado: no mostrar mensaje de expiración de sesión
         router.navigate(['/auth/inicio']);
       }
       return throwError(() => err);
