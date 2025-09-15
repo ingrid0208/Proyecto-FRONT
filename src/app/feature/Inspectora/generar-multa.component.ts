@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { AppTopbar } from '../topbar/topbar.component';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-generar-multa',
   templateUrl: './generar-multa.component.html',
   styleUrls: ['./generar-multa.component.scss'],
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, AppTopbar]
+  imports: [CommonModule, CurrencyPipe, AppTopbar, RouterModule]
 })
+
 export class GenerarMultaComponent {
-  mostrarFormulario = false;
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   infracciones = [
     {
@@ -56,10 +58,6 @@ export class GenerarMultaComponent {
   ];
 
   mostrarFormNuevaMulta() {
-    this.mostrarFormulario = true;
-  }
-
-  ocultarFormNuevaMulta() {
-    this.mostrarFormulario = false;
+    this.router.navigate(['anexar-multa'], { relativeTo: this.route });
   }
 }
