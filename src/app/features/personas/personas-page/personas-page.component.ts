@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonaService } from '../../../core/services/persona.service';
+import { MunicipioService } from '../../../core/services/municipio.service';
 import { Persona } from '../../../shared/Models/persona.model';
+import { Municipio } from '../../../shared/Models/municipio.model';
 
 @Component({
   selector: 'app-personas-page',
@@ -14,6 +16,7 @@ import { Persona } from '../../../shared/Models/persona.model';
 export class PersonasPageComponent implements OnInit {
   personas: Persona[] = [];
   filteredPersonas: Persona[] = [];
+  municipios: Municipio[] = [];
   showForm: boolean = false;
   showInfoModal: boolean = false;
   showUpdateModal: boolean = false;
@@ -32,6 +35,7 @@ export class PersonasPageComponent implements OnInit {
 
   constructor(
     private personaService: PersonaService,
+    private municipioService: MunicipioService,
     private fb: FormBuilder
   ) {
     this.personaForm = this.fb.group({
@@ -56,6 +60,11 @@ export class PersonasPageComponent implements OnInit {
     this.personaService.getPersonas().subscribe(personas => {
       this.personas = personas;
       this.filteredPersonas = personas;
+    });
+
+    // Cargar municipios
+    this.municipioService.getMunicipios().subscribe(municipios => {
+      this.municipios = municipios;
     });
     
     this.mostrarAlerta('¡Bienvenido a la gestión de personas!', 'bienvenida');
@@ -172,5 +181,14 @@ export class PersonasPageComponent implements OnInit {
     } else {
       this.mostrarAlerta('Por favor completa todos los campos requeridos.', 'eliminado');
     }
+  }
+
+  // Método helper para obtener el nombre del municipio por ID
+  getMunicipioNombre(municipioId: number): string {
+    if (this.municipios.length === 0) {
+      return 'No se encuentran municipios';
+    }
+    const municipio = this.municipios.find(m => m.id === municipioId);
+    return municipio ? municipio.name : `Municipio ID: ${municipioId}`;
   }
 }
