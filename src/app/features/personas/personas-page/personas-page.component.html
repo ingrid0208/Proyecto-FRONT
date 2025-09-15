@@ -86,7 +86,7 @@
       <div class="persona-nombre">
         {{ persona.firstName }} {{ persona.lastName }}
       </div>
-      <button class="update-btn" (click)="$event.stopPropagation();">+ Actualizar</button>
+      <button class="update-btn" (click)="$event.stopPropagation(); abrirModalActualizar(persona);">+ Actualizar</button>
         <button class="delete-btn" (click)="pedirConfirmacionEliminar(persona)">Eliminar</button>
     </div>
   </div>
@@ -103,6 +103,53 @@
       <div class="info-item"><b>Municipio ID:</b> {{ personaSeleccionada.municipalityId }}</div>
         <button type="button" (click)="cerrarInfoModal()">Cerrar</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal para actualizar persona -->
+  <div *ngIf="showUpdateModal && personaSeleccionada" class="modal-overlay">
+    <div class="modal-content persona-form">
+      <h2>Actualizar Usuario</h2>
+      <form>
+        <label>
+          Nombre:
+          <input type="text" name="firstName" [(ngModel)]="personaSeleccionada.firstName" required />
+        </label>
+        <label>
+          Apellido:
+          <input type="text" name="lastName" [(ngModel)]="personaSeleccionada.lastName" required />
+        </label>
+        <label>
+          Número de Teléfono:
+          <input type="text" name="phoneNumber" [(ngModel)]="personaSeleccionada.phoneNumber" required />
+        </label>
+        <label>
+          Dirección:
+          <input type="text" name="address" [(ngModel)]="personaSeleccionada.address" required />
+        </label>
+        <label>
+          Tipo de Documento:
+          <select name="documentTypeId" [(ngModel)]="personaSeleccionada.documentTypeId" required>
+            <option value="">Seleccionar tipo</option>
+            <option value="1">Cédula de Ciudadanía</option>
+            <option value="2">Cédula de Extranjería</option>
+            <option value="3">Pasaporte</option>
+          </select>
+        </label>
+        <label>
+          Municipio:
+          <select name="municipalityId" [(ngModel)]="personaSeleccionada.municipalityId" required>
+            <option value="">Seleccionar municipio</option>
+            <option value="1">Bogotá</option>
+            <option value="2">Medellín</option>
+            <option value="3">Cali</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
+          <button type="submit" (click)="$event.preventDefault(); actualizarPersona(); cerrarModalActualizar();">Actualizar</button>
+        </div>
+      </form>
     </div>
   </div>
 

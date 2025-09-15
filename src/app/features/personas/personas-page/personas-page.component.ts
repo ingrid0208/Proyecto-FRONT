@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { PersonaService } from '../../../core/services/persona.service';
 import { Persona } from '../../../shared/Models/persona.model';
 
@@ -8,13 +9,14 @@ import { Persona } from '../../../shared/Models/persona.model';
   templateUrl: './personas-page.component.html',
   styleUrls: ['./personas-page.component.scss'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, FormsModule]
 })
 export class PersonasPageComponent implements OnInit {
   personas: Persona[] = [];
   filteredPersonas: Persona[] = [];
   showForm: boolean = false;
   showInfoModal: boolean = false;
+  showUpdateModal: boolean = false;
   personaSeleccionada: Persona | null = null;
 
   // Modales de alerta y confirmación
@@ -83,5 +85,32 @@ export class PersonasPageComponent implements OnInit {
   cancelarEliminar() {
     this.showConfirm = false;
     this.personaAEliminar = null;
+  }
+
+  abrirModalActualizar(persona: Persona) {
+    this.personaSeleccionada = { ...persona }; // Crear una copia para editar
+    this.showUpdateModal = true;
+  }
+
+  cerrarModalActualizar() {
+    this.showUpdateModal = false;
+    this.personaSeleccionada = null;
+  }
+
+  actualizarPersona() {
+    if (this.personaSeleccionada) {
+      // Encontrar el índice de la persona en el array
+      const index = this.personas.findIndex(p => 
+        p.firstName === this.personaSeleccionada?.firstName && 
+        p.lastName === this.personaSeleccionada?.lastName
+      );
+      
+      if (index !== -1) {
+        // Actualizar la persona en el array
+        this.personas[index] = { ...this.personaSeleccionada };
+        this.filteredPersonas = [...this.personas];
+        this.mostrarAlerta('Persona actualizada exitosamente.', 'creado');
+      }
+    }
   }
 }
