@@ -6,7 +6,10 @@ import {
   RolFormPermission, 
   RolFormPermissionDisplay, 
   CreateRolFormPermission, 
-  UpdateRolFormPermission 
+  UpdateRolFormPermission,
+  RoleOption,
+  FormOption,
+  PermissionOption
 } from './rol-form-permission.model';
 
 @Injectable({
@@ -91,27 +94,51 @@ export class RolFormPermissionService {
   /**
    * Obtiene todos los roles disponibles (para dropdowns)
    */
-  getAvailableRoles(): Observable<string[]> {
+  getAvailableRoles(): Observable<RoleOption[]> {
     return this.getAll().pipe(
-      map(items => [...new Set(items.map(item => item.rolName))])
+      map(items => {
+        const uniqueRoles = items.reduce((acc: RoleOption[], item) => {
+          if (!acc.find(role => role.id === item.rolid)) {
+            acc.push({ id: item.rolid, name: item.rolName });
+          }
+          return acc;
+        }, []);
+        return uniqueRoles;
+      })
     );
   }
 
   /**
    * Obtiene todos los formularios disponibles (para dropdowns)
    */
-  getAvailableForms(): Observable<string[]> {
+  getAvailableForms(): Observable<FormOption[]> {
     return this.getAll().pipe(
-      map(items => [...new Set(items.map(item => item.formName))])
+      map(items => {
+        const uniqueForms = items.reduce((acc: FormOption[], item) => {
+          if (!acc.find(form => form.id === item.formid)) {
+            acc.push({ id: item.formid, name: item.formName });
+          }
+          return acc;
+        }, []);
+        return uniqueForms;
+      })
     );
   }
 
   /**
    * Obtiene todos los permisos disponibles (para dropdowns)
    */
-  getAvailablePermissions(): Observable<string[]> {
+  getAvailablePermissions(): Observable<PermissionOption[]> {
     return this.getAll().pipe(
-      map(items => [...new Set(items.map(item => item.permissionName))])
+      map(items => {
+        const uniquePermissions = items.reduce((acc: PermissionOption[], item) => {
+          if (!acc.find(permission => permission.id === item.permissionid)) {
+            acc.push({ id: item.permissionid, name: item.permissionName });
+          }
+          return acc;
+        }, []);
+        return uniquePermissions;
+      })
     );
   }
 }

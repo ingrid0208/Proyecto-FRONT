@@ -125,61 +125,61 @@
     
     <!-- Rol Field -->
     <div class="field">
-      <label for="rolName" class="block text-900 font-medium mb-2">
+      <label for="rolid" class="block text-900 font-medium mb-2">
         Rol <span class="text-red-500">*</span>
       </label>
       <p-dropdown 
-        id="rolName"
-        formControlName="rolName"
+        id="rolid"
+        formControlName="rolid"
         [options]="roleOptions" 
         placeholder="Seleccione un rol"
         [style]="{'width': '100%'}"
-        [class]="isFieldInvalid('rolName') ? 'ng-invalid ng-dirty p-invalid' : ''">
+        [class]="isFieldInvalid('rolid') ? 'ng-invalid ng-dirty p-invalid' : ''">
       </p-dropdown>
       <small 
-        *ngIf="isFieldInvalid('rolName')" 
+        *ngIf="isFieldInvalid('rolid')" 
         class="p-error block mt-1">
-        {{ getFieldError('rolName') }}
+        {{ getFieldError('rolid') }}
       </small>
     </div>
 
     <!-- Form Field -->
     <div class="field">
-      <label for="formName" class="block text-900 font-medium mb-2">
+      <label for="formid" class="block text-900 font-medium mb-2">
         Formulario <span class="text-red-500">*</span>
       </label>
       <p-dropdown 
-        id="formName"
-        formControlName="formName"
+        id="formid"
+        formControlName="formid"
         [options]="formOptions" 
         placeholder="Seleccione un formulario"
         [style]="{'width': '100%'}"
-        [class]="isFieldInvalid('formName') ? 'ng-invalid ng-dirty p-invalid' : ''">
+        [class]="isFieldInvalid('formid') ? 'ng-invalid ng-dirty p-invalid' : ''">
       </p-dropdown>
       <small 
-        *ngIf="isFieldInvalid('formName')" 
+        *ngIf="isFieldInvalid('formid')" 
         class="p-error block mt-1">
-        {{ getFieldError('formName') }}
+        {{ getFieldError('formid') }}
       </small>
     </div>
 
     <!-- Permission Field -->
     <div class="field">
-      <label for="permissionName" class="block text-900 font-medium mb-2">
+      <label for="permissionid" class="block text-900 font-medium mb-2">
         Permiso <span class="text-red-500">*</span>
       </label>
       <p-dropdown 
-        id="permissionName"
-        formControlName="permissionName"
+        id="permissionid"
+        formControlName="permissionid"
         [options]="permissionOptions" 
         placeholder="Seleccione un permiso"
         [style]="{'width': '100%'}"
-        [class]="isFieldInvalid('permissionName') ? 'ng-invalid ng-dirty p-invalid' : ''">
+        [class]="isFieldInvalid('permissionid') ? 'ng-invalid ng-dirty p-invalid' : ''">
       </p-dropdown>
       <small 
-        *ngIf="isFieldInvalid('permissionName')" 
+        *ngIf="isFieldInvalid('permissionid')" 
         class="p-error block mt-1">
-        {{ getFieldError('permissionName') }}
+        {{ getFieldError('permissionid') }}
       </small>
     </div>
 

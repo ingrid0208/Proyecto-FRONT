@@ -22,7 +22,10 @@ import {
   RolFormPermission, 
   RolFormPermissionDisplay, 
   CreateRolFormPermission, 
-  UpdateRolFormPermission 
+  UpdateRolFormPermission,
+  RoleOption,
+  FormOption,
+  PermissionOption
 } from './rol-form-permission.model';
 
 @Component({
@@ -68,9 +71,9 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   loading = false;
   
   // Dropdown options
-  roleOptions: { label: string; value: string }[] = [];
-  formOptions: { label: string; value: string }[] = [];
-  permissionOptions: { label: string; value: string }[] = [];
+  roleOptions: { label: string; value: number }[] = [];
+  formOptions: { label: string; value: number }[] = [];
+  permissionOptions: { label: string; value: number }[] = [];
   
   // Search
   globalFilter = '';
@@ -96,9 +99,9 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.rolFormPermissionForm = this.fb.group({
-      rolName: ['', [Validators.required]],
-      formName: ['', [Validators.required]],
-      permissionName: ['', [Validators.required]]
+      rolid: [null, [Validators.required]],
+      formid: [null, [Validators.required]],
+      permissionid: [null, [Validators.required]]
     });
   }
 
@@ -133,22 +136,22 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
     // Load roles
     this.rolFormPermissionService.getAvailableRoles()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(roles => {
-        this.roleOptions = roles.map(role => ({ label: role, value: role }));
+      .subscribe((roles: RoleOption[]) => {
+        this.roleOptions = roles.map(role => ({ label: role.name, value: role.id }));
       });
 
     // Load forms
     this.rolFormPermissionService.getAvailableForms()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(forms => {
-        this.formOptions = forms.map(form => ({ label: form, value: form }));
+      .subscribe((forms: FormOption[]) => {
+        this.formOptions = forms.map(form => ({ label: form.name, value: form.id }));
       });
 
     // Load permissions
     this.rolFormPermissionService.getAvailablePermissions()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(permissions => {
-        this.permissionOptions = permissions.map(permission => ({ label: permission, value: permission }));
+      .subscribe((permissions: PermissionOption[]) => {
+        this.permissionOptions = permissions.map(permission => ({ label: permission.name, value: permission.id }));
       });
   }
 
@@ -194,9 +197,9 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
       this.dialogTitle = 'Editar Rol-Formulario-Permiso';
       
       this.rolFormPermissionForm.patchValue({
-        rolName: originalItem.rolName,
-        formName: originalItem.formName,
-        permissionName: originalItem.permissionName
+        rolid: originalItem.rolid,
+        formid: originalItem.formid,
+        permissionid: originalItem.permissionid
       });
       
       this.displayDialog = true;
@@ -253,7 +256,9 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
       if (this.isEditMode && this.selectedItemId) {
         const updateData: UpdateRolFormPermission = {
           id: this.selectedItemId,
-          ...formValue
+          rolid: formValue.rolid,
+          formid: formValue.formid,
+          permissionid: formValue.permissionid
         };
         
         this.rolFormPermissionService.update(updateData)
@@ -268,7 +273,7 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
               this.closeDialog();
               this.loadData();
             },
-            error: (error) => {
+            error: (error: any) => {
               console.error('Error updating item:', error);
               this.messageService.add({
                 severity: 'error',
@@ -278,7 +283,11 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
             }
           });
       } else {
-        const createData: CreateRolFormPermission = formValue;
+        const createData: CreateRolFormPermission = {
+          rolid: formValue.rolid,
+          formid: formValue.formid,
+          permissionid: formValue.permissionid
+        };
         
         this.rolFormPermissionService.create(createData)
           .pipe(takeUntil(this.destroy$))
@@ -292,7 +301,7 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
               this.closeDialog();
               this.loadData();
             },
-            error: (error) => {
+            error: (error: any) => {
               console.error('Error creating item:', error);
               this.messageService.add({
                 severity: 'error',
