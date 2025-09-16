@@ -22,11 +22,12 @@ export const routes: Routes = [
       { path: 'mensajes',        loadChildren: () => import('./app/feature/mensajes/pages/messages.routes').then(m => m.MENSAJES_ROUTES) },
       { path: 'crud',            loadChildren: () => import('./app/feature/crud/crud.routes').then(m => m.CRUD_ROUTES) },
   { path: 'roles',           loadChildren: () => import('./app/features/roles-page/roles-page.routes').then(m => m.ROLES_ROUTES) },
-  { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/modulos-permisos-page.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },
+  // Ruta deshabilitada temporalmente: { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/module-form.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },
   { path: 'usuarios', loadChildren: () => import('./app/features/usuarios-page/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
   { path: 'personas',        loadChildren: () => import('./app/features/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
   { path: 'formularios',     loadChildren: () => import('./app/features/Form/form.routes').then(m => m.FORM_ROUTES) },
   { path: 'modulos',         loadChildren: () => import('./app/features/module/module.routes').then(m => m.MODULE_ROUTES) },
+  { path: 'form-modules',    loadChildren: () => import('./app/features/form-module/form-module.routes').then(m => m.FORM_MODULE_ROUTES) },
   { path: 'parameters',      loadChildren: () => import('./app/feature/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
   { path: 'inspectora/generar-multa', loadChildren: () => import('./app/feature/Inspectora/generar-multa.routes').then(m => m.GENERAR_MULTA_ROUTES) },
     ]
