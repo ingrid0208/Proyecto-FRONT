@@ -1,0 +1,315 @@
+// Estilos para el componente Rol-Form-Permission
+.rol-form-permission-container {
+  .p-card {
+    border-radius: 12px;
+    
+    .p-card-header {
+      background: linear-gradient(90deg, var(--primary-color), var(--primary-color-light));
+      color: white;
+      font-weight: 600;
+      padding: 1.5rem;
+    }
+  }
+
+  // Toolbar styles
+  .p-toolbar {
+    background: transparent;
+    border: 1px solid var(--surface-border);
+    border-radius: 8px;
+    padding: 1rem;
+
+    .p-button-success {
+      background: var(--green-500);
+      border-color: var(--green-500);
+      
+      &:hover {
+        background: var(--green-600);
+        border-color: var(--green-600);
+      }
+    }
+
+    .p-input-icon-left {
+      .p-inputtext {
+        padding-left: 2.5rem;
+        border-radius: 6px;
+        transition: all 0.2s;
+        
+        &:focus {
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.2);
+        }
+      }
+    }
+  }
+
+  // Table styles
+  .p-datatable {
+    .p-datatable-header {
+      background: var(--surface-50);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .p-datatable-thead > tr > th {
+      background: var(--surface-100);
+      color: var(--text-color-secondary);
+      font-weight: 600;
+      padding: 1rem;
+      border-bottom: 2px solid var(--surface-border);
+    }
+
+    .p-datatable-tbody > tr {
+      transition: all 0.2s;
+      
+      &:hover {
+        background: var(--surface-50);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      > td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--surface-border);
+        
+        .p-tag {
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          font-weight: 500;
+          
+          &.p-tag-info {
+            background: linear-gradient(45deg, var(--blue-500), var(--blue-400));
+            color: white;
+          }
+          
+          &.p-tag-success {
+            background: linear-gradient(45deg, var(--green-500), var(--green-400));
+            color: white;
+          }
+        }
+      }
+    }
+
+    // Action buttons
+    .p-button-rounded {
+      width: 2.5rem;
+      height: 2.5rem;
+      
+      &.p-button-warning {
+        background: var(--orange-500);
+        border-color: var(--orange-500);
+        
+        &:hover {
+          background: var(--orange-600);
+          border-color: var(--orange-600);
+        }
+      }
+      
+      &.p-button-danger {
+        background: var(--red-500);
+        border-color: var(--red-500);
+        
+        &:hover {
+          background: var(--red-600);
+          border-color: var(--red-600);
+        }
+      }
+    }
+
+    // Empty message
+    .p-datatable-emptymessage td {
+      padding: 3rem;
+      
+      .pi-info-circle {
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.5; }
+        100% { opacity: 1; }
+      }
+    }
+  }
+
+  // Dialog styles
+  .p-dialog {
+    .p-dialog-header {
+      background: var(--primary-color);
+      color: white;
+      border-radius: 8px 8px 0 0;
+      
+      .p-dialog-title {
+        font-weight: 600;
+      }
+      
+      .p-dialog-header-icon {
+        color: white;
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.1);
+        }
+      }
+    }
+
+    .p-dialog-content {
+      padding: 2rem;
+      
+      .field {
+        margin-bottom: 1.5rem;
+        
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-weight: 600;
+          color: var(--text-color);
+          
+          .text-red-500 {
+            color: var(--red-500);
+          }
+        }
+        
+        .p-dropdown {
+          border-radius: 6px;
+          transition: all 0.2s;
+          
+          &:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.2);
+          }
+          
+          &.p-invalid {
+            border-color: var(--red-500);
+            
+            &:focus-within {
+              box-shadow: 0 0 0 0.2rem rgba(var(--red-500-rgb), 0.2);
+            }
+          }
+        }
+        
+        .p-error {
+          color: var(--red-500);
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+      }
+    }
+
+    .p-dialog-footer {
+      padding: 1.5rem 2rem;
+      background: var(--surface-50);
+      border-radius: 0 0 8px 8px;
+      
+      .p-button {
+        margin-left: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        font-weight: 500;
+        transition: all 0.2s;
+        
+        &.p-button-primary {
+          background: var(--primary-color);
+          border-color: var(--primary-color);
+          
+          &:hover:not(:disabled) {
+            background: var(--primary-color-dark);
+            border-color: var(--primary-color-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.3);
+          }
+          
+          &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+          }
+        }
+        
+        &.p-button-secondary {
+          color: var(--text-color-secondary);
+          
+          &:hover {
+            background: var(--surface-100);
+          }
+        }
+      }
+    }
+  }
+
+  // Loading spinner
+  .loading-container {
+    .p-progress-spinner {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  // Toast messages customization
+  .p-toast {
+    .p-toast-message {
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      
+      &.p-toast-message-success {
+        background: linear-gradient(45deg, var(--green-500), var(--green-400));
+      }
+      
+      &.p-toast-message-error {
+        background: linear-gradient(45deg, var(--red-500), var(--red-400));
+      }
+      
+      &.p-toast-message-warn {
+        background: linear-gradient(45deg, var(--orange-500), var(--orange-400));
+      }
+      
+      &.p-toast-message-info {
+        background: linear-gradient(45deg, var(--blue-500), var(--blue-400));
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media screen and (max-width: 768px) {
+  .rol-form-permission-container {
+    .p-toolbar {
+      flex-direction: column;
+      gap: 1rem;
+      
+      .p-toolbar-group-left,
+      .p-toolbar-group-right {
+        width: 100%;
+      }
+    }
+    
+    .p-datatable {
+      .p-datatable-thead > tr > th {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+      }
+      
+      .p-datatable-tbody > tr > td {
+        padding: 0.75rem 0.5rem;
+      }
+    }
+    
+    .p-dialog {
+      width: 95vw !important;
+      
+      .p-dialog-content {
+        padding: 1rem;
+      }
+    }
+  }
+}
+
+// Dark theme adjustments
+@media (prefers-color-scheme: dark) {
+  .rol-form-permission-container {
+    .p-card .p-card-header {
+      background: linear-gradient(90deg, var(--primary-color-dark), var(--primary-color));
+    }
+    
+    .p-datatable-tbody > tr:hover {
+      background: var(--surface-100);
+    }
+  }
+}

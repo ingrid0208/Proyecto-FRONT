@@ -28,6 +28,7 @@ export const routes: Routes = [
   { path: 'formularios',     loadChildren: () => import('./app/features/Form/form.routes').then(m => m.FORM_ROUTES) },
   { path: 'modulos',         loadChildren: () => import('./app/features/module/module.routes').then(m => m.MODULE_ROUTES) },
   { path: 'form-modules',    loadChildren: () => import('./app/features/form-module/form-module.routes').then(m => m.FORM_MODULE_ROUTES) },
+  { path: 'rol-form-permission', loadChildren: () => import('./app/features/Rol-Form-Permission/rol-form-permission.routes').then(m => m.ROL_FORM_PERMISSION_ROUTES) },
   { path: 'parameters',      loadChildren: () => import('./app/feature/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
   { path: 'inspectora/generar-multa', loadChildren: () => import('./app/feature/Inspectora/generar-multa.routes').then(m => m.GENERAR_MULTA_ROUTES) },
     ]
