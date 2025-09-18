@@ -31,7 +31,7 @@ export const routes: Routes = [
   { path: 'form-modules',    loadChildren: () => import('./app/features/modelo-de-seguridad/form-module/form-module.routes').then(m => m.FORM_MODULE_ROUTES) },
   { path: 'rol-form-permission', loadChildren: () => import('./app/features/modelo-de-seguridad/Rol-Form-Permission/rol-form-permission.routes').then(m => m.ROL_FORM_PERMISSION_ROUTES) },
   { path: 'rol-user', loadChildren: () => import('./app/features/modelo-de-seguridad/Rol-user/rol-user.routes').then(m => m.rolUserRoutes) },
-  { path: 'parameters',      loadChildren: () => import('./app/feature/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
+  { path: 'parameters',      loadChildren: () => import('./app/features/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
   { path: 'inspectora/generar-multa', loadChildren: () => import('./app/feature/Inspectora/generar-multa.routes').then(m => m.GENERAR_MULTA_ROUTES) },
     ]
   },

@@ -6,11 +6,11 @@ import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 import { AppTopbar } from '../../../topbar/topbar.component';
-import { GenericMultasTableComponent } from '../../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../../../shared/Models/table.Generic';
-import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
-import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
+import { ColumnDef } from '../../../shared/Models/table.Generic';
+import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
+import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 // DTO que esperas del backend
 export interface Department {

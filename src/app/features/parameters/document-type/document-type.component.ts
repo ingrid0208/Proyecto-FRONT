@@ -1,14 +1,14 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
-import { GenericMultasTableComponent } from '../../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../../../shared/Models/table.Generic';
-import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
-import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
+import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
+import { ColumnDef } from '../../../shared/Models/table.Generic';
+import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
+import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
 import { finalize } from 'rxjs/operators';
 import { AppTopbar } from '../../../topbar/topbar.component';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-document-type',
