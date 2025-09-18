@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PersonaService } from '../../../../core/services/persona.service';
-import { MunicipioService } from '../../../../core/services/municipio.service';
+import { MunicipalityService } from '../../../../core/services/municipality.service';
 import { DocumentTypeService } from '../../../../core/services/document-type.service';
 import { Persona } from '../../../../shared/Models/persona.model';
 import { Municipio } from '../../../../shared/Models/municipio.model';
@@ -38,7 +38,7 @@ export class PersonasPageComponent implements OnInit {
 
   constructor(
     private personaService: PersonaService,
-    private municipioService: MunicipioService,
+    private municipioService: MunicipalityService,
     private documentTypeService: DocumentTypeService,
     private fb: FormBuilder
   ) {
@@ -69,7 +69,7 @@ export class PersonasPageComponent implements OnInit {
     });
 
     // Cargar municipios
-    this.municipioService.personas$.subscribe((municipios: any) => {
+    this.municipioService.municipalities$.subscribe((municipios: any) => {
       this.municipios = municipios;
     });
 

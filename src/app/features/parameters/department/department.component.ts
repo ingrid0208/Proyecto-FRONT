@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
-import { AppTopbar } from '../../../topbar/topbar.component';
+import { AppTopbar } from '../../../feature/topbar/topbar.component';
 import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { ColumnDef } from '../../../shared/Models/table.Generic';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';

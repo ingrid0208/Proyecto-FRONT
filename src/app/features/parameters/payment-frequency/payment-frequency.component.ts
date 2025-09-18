@@ -6,7 +6,7 @@ import { ColumnDef } from '../../../shared/Models/table.Generic';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../../topbar/topbar.component';
+import { AppTopbar } from '../../../feature/topbar/topbar.component';
 import { PaymentFrequency } from '../../../shared/Models/parameter/payment-frequency.models';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';

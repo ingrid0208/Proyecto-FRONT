@@ -6,10 +6,10 @@ import { Municipio } from '../../shared/Models/municipio.model';
 // ...existing code...
 
 @Injectable({ providedIn: 'root' })
-export class MunicipioService {
+export class MunicipalityService {
   readonly endpoint = 'municipality';
-  private municipiosSubject = new BehaviorSubject<Municipio[]>([]);
-  personas$ = this.municipiosSubject.asObservable();
+  private municipalitiesSubject = new BehaviorSubject<Municipio[]>([]);
+  municipalities$ = this.municipalitiesSubject.asObservable();
 
   constructor(public genericService: ServiceGenericService) {
     this.loadMunicipios();
@@ -17,10 +17,10 @@ export class MunicipioService {
 
   private loadMunicipios(): void {
     this.genericService.getAll<Municipio>(this.endpoint).subscribe({
-      next: (municipios) => this.municipiosSubject.next(municipios),
+      next: (municipios) => this.municipalitiesSubject.next(municipios),
       error: (error) => {
         console.error('Error al cargar municipios:', error);
-        this.municipiosSubject.next([]);
+        this.municipalitiesSubject.next([]);
       }
     });
   }
