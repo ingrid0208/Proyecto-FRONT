@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
 import { AppTopbar } from '../../../topbar/topbar.component';
 import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
-import { AcuerdoPago } from '../../../../shared/Models/Entities/acuerdo-pago.model';
 import { PaymentAgreementInitDto } from '../../../../shared/Models/Init/PaymentAgreementInitDto';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-formulario-acuerdo-pago',
@@ -31,20 +31,26 @@ import { PaymentAgreementInitDto } from '../../../../shared/Models/Init/PaymentA
   styleUrls: ['./formulario-acuerdo-pago.component.scss'],
 })
 export class FormularioAcuerdoPagoComponent implements OnInit {
-  form: AcuerdoPago = {
+  step: number = 1;
+  today: string = new Date().toISOString().split('T')[0];
+
+  form: any = {
     address: '',
     neighborhood: '',
     agreementDescription: '',
-    expeditionCedula: '',
+    expeditionCedula: '',   // 👈 debe venir como fecha
     phoneNumber: '',
     email: '',
     agreementStart: '',
     agreementEnd: '',
-    baseAmount: 0,
     isPaid: false,
     userInfractionId: 0,
     paymentFrequencyId: 0,
     typePaymentId: 0,
+    installments: 1,
+    monthlyFee: 0,
+    baseAmount: 0,
+    acceptTerms: false
   };
 
   initData: PaymentAgreementInitDto = {
@@ -54,6 +60,7 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
     infringement: '',
     typeFine: '',
     valorSMDLV: 0,
+    baseAmount: 0,
     infractionId: 0,
     userId: 0,
   };
@@ -61,87 +68,170 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
   paymentFrequencies: any[] = [];
   typePayments: any[] = [];
 
+  totalAmount: number = 0;
+  startDate: string = '';
+  agreementStart: string = '';
+  agreementEnd: string = '';
+
   constructor(
     private serviceGeneric: ServiceGenericService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     const nav = this.router.getCurrentNavigation();
     const st: any = nav?.extras?.state ?? history.state;
 
-    console.log('Estado recibido en formulario:', st);
-
     if (st?.userId && st?.infractionId) {
       this.form.userInfractionId = st.infractionId;
 
-      this.serviceGeneric
-        .getInitData(st.userId, st.infractionId)
-        .subscribe({
-          next: (data: PaymentAgreementInitDto | PaymentAgreementInitDto[]) => {
-            console.log('InitData cargada desde el back:', data);
+      this.serviceGeneric.getInitData(st.userId, st.infractionId).subscribe({
+        next: (data: PaymentAgreementInitDto | PaymentAgreementInitDto[]) => {
+          if (Array.isArray(data)) {
+            this.initData = data.find(x => x.infractionId === st.infractionId) ?? data[0];
+          } else {
+            this.initData = data;
+          }
 
-            if (Array.isArray(data)) {
-              this.initData = data.find(x => x.infractionId === st.infractionId) ?? data[0];
-            } else {
-              this.initData = data;
-            }
+          this.form.userInfractionId = this.initData.infractionId;
 
-            // Precargar form con valores reales
-            this.form.userInfractionId = this.initData.infractionId;
-            this.form.baseAmount = this.initData.valorSMDLV;
-            this.form.expeditionCedula = this.initData.documentNumber;
-            this.form.agreementDescription = this.initData.infringement;
-            this.form.isPaid = false;
-          },
-          error: (err) => {
-            console.error('Error al cargar datos iniciales:', err);
-          },
-        });
+          // ✅ ya no lo piso, me quedo con el calculado en InitData
+          this.totalAmount = this.initData.baseAmount;
+
+          this.form.agreementDescription = this.initData.infringement;
+          this.form.isPaid = false;
+
+          this.startDate = new Date().toISOString().split('T')[0];
+          this.cdr.detectChanges();
+        },
+        error: (err) => console.error('Error al cargar datos iniciales:', err),
+      });
     }
 
-    // Cargar catálogos
-    this.serviceGeneric
-      .getAll<any>('PaymentFrequency')
+    this.serviceGeneric.getAll<any>('PaymentFrequency')
       .subscribe((data) => (this.paymentFrequencies = data));
 
-    this.serviceGeneric
-      .getAll<any>('TypePayment')
+    this.serviceGeneric.getAll<any>('TypePayment')
       .subscribe((data) => (this.typePayments = data));
   }
 
-  onSubmit() {
-    const payload = {
+
+  goToStep2(formRef: NgForm) {
+    if (!formRef.valid) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Validación',
+        text: '⚠️ Debes completar todos los campos correctamente antes de continuar.',
+        confirmButtonColor: '#d33'
+      });
+      return;
+    }
+    this.step = 2;
+  }
+
+  goToStep1() {
+    this.step = 1;
+  }
+
+  onConfirm() {
+    if (!this.form.acceptTerms) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Términos y condiciones',
+        text: '⚠️ Debes aceptar los términos y condiciones',
+        confirmButtonColor: '#006400'
+      });
+      return;
+    }
+
+    // 🔹 Validar que installments * monthlyFee == baseAmount
+    const montoBase = this.initData.baseAmount || this.form.baseAmount;
+    const totalCuotas = this.form.installments * this.form.monthlyFee;
+
+    if (totalCuotas !== montoBase) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Monto incorrecto',
+        text: `❌ El total de cuotas (${this.form.installments} x ${this.form.monthlyFee} = ${totalCuotas}) 
+             no coincide con el monto base (${montoBase}).`,
+        confirmButtonColor: '#d33'
+      });
+      return;
+    }
+
+    const payload: any = {
       ...this.form,
-      // 🚀 nos aseguramos de que barrio no se vaya vacío
       neighborhood: this.form.neighborhood?.trim() || 'No especificado',
       paymentFrequencyId: Number(this.form.paymentFrequencyId),
       typePaymentId: Number(this.form.typePaymentId),
+      expeditionCedula: this.form.expeditionCedula
+        ? new Date(this.form.expeditionCedula).toISOString()
+        : null,
       agreementStart: this.form.agreementStart
         ? new Date(this.form.agreementStart).toISOString()
         : null,
       agreementEnd: this.form.agreementEnd
         ? new Date(this.form.agreementEnd).toISOString()
-        : null,
-      baseAmount: this.initData.valorSMDLV
-        ? this.initData.valorSMDLV * 103448 // convertir SMDLV a pesos
-        : 0
+        : null
     };
 
-    console.log('Payload final a enviar:', payload);
+    delete payload.baseAmount;
+    delete payload.monthlyFee;
 
-    this.serviceGeneric
-      .create<any>('PaymentAgreement', payload)
-      .subscribe({
-        next: (res) => {
-          console.log('Acuerdo creado:', res);
-          alert('✅ Acuerdo de pago creado con éxito');
-          this.router.navigate(['/uikit/list-agreements']);
-        },
-        error: (err) => {
-          console.error('❌ Error al crear acuerdo:', err.error?.errors || err);
-          alert('Error al crear acuerdo');
-        }
-      });
+    console.log("📤 Payload FINAL al backend:", payload);
+
+    this.serviceGeneric.create<any>('PaymentAgreement', payload).subscribe({
+      next: (res) => {
+        console.log("✅ Respuesta backend:", res);
+        this.form.baseAmount = res.baseAmount;
+        this.form.monthlyFee = res.monthlyFee;
+        this.agreementStart = res.agreementStart;
+        this.agreementEnd = res.agreementEnd;
+
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: '✅ Acuerdo creado con éxito',
+          confirmButtonColor: '#006400'
+        });
+
+        this.step = 3;
+      },
+      error: (err) => {
+        console.error("❌ Error al crear acuerdo:", err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error?.message || '❌ Error inesperado al crear el acuerdo',
+          confirmButtonColor: '#d33'
+        });
+      }
+    });
+  }
+
+  onDownload() {
+    Swal.fire({
+      icon: 'info',
+      title: 'Descarga',
+      text: '📄 Aquí podrías implementar la descarga del comprobante en PDF.',
+      confirmButtonColor: '#006400'
+    });
+  }
+
+  goHome() {
+    this.router.navigate(['/home/contenido']);
+  }
+
+  onMonthlyFeeChange(value: any) {
+    const rawValue = String(value).replace(/\D/g, '');
+    this.form.monthlyFee = rawValue ? Number(rawValue) : 0;
+
+    setTimeout(() => {
+      const input = document.getElementById('monthlyFee') as HTMLInputElement;
+      if (input) {
+        input.value = this.form.monthlyFee.toLocaleString('es-CO');
+      }
+    });
   }
 }

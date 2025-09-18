@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ColumnDef } from '../../Models/table.Generic';
 import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
 import { SessionPingService } from '../../../core/services/session-ping.service'; // si usas el ping
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-generic-multas-table',
@@ -24,8 +25,8 @@ export class GenericMultasTableComponent {
     private auth: ServiceGenericService,
     private router: Router,
     private sessionPing: SessionPingService // opcional
-    
-  ) {}
+
+  ) { }
 
   get displayedColumnKeys(): string[] {
     return this.columns.map(c => c.key);
@@ -34,22 +35,35 @@ export class GenericMultasTableComponent {
   chipColor(value: any): 'primary' | 'accent' | 'warn' {
     const estado = (value ?? 'Pendiente')?.toString().toLowerCase();
     switch (estado) {
-      case 'pagada':  return 'accent';
+      case 'pagada': return 'accent';
       case 'vencida': return 'warn';
-      default:        return 'primary';
+      default: return 'primary';
     }
   }
 
   onRowClick(row: any) {
-  const original = this.data.find(item =>
-    item.descripcion === row.descripcion &&
-    item.tipo === row.tipo &&
-    item.fecha === row.fecha
-  );
+    const original = this.data.find(item =>
+      item.descripcion === row.descripcion &&
+      item.tipo === row.tipo &&
+      item.fecha === row.fecha
+    );
 
-  this.rowClicked.emit(original ?? row);
-}
+    const selected = original ?? row;
 
+    // 🚨 validar estado
+    if (selected.estado !== 'Pendiente') {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Acción no permitida',
+        text: `No se puede crear un acuerdo de pago para una multa en estado "${selected.estado}".`,
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#3085d6'
+      });
+      return; // 👈 detenemos el evento
+    }
+
+    this.rowClicked.emit(selected);
+  }
 
 
 }

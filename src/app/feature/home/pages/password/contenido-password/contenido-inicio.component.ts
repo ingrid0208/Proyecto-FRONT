@@ -16,7 +16,7 @@ interface MultaTableRow {
   tipo: string;
   fecha: string;
   descripcion: string;
-  estado: 'Pendiente' | 'Pagada' | 'Vencida';
+  estado: 'Pendiente' | 'Pagada' | 'Vencida' | 'Con acuerdo';
 }
 
 @Component({
@@ -62,12 +62,13 @@ export class ContenidoInicioComponent implements OnInit {
       const data = r?.data ?? [];
 
       this.multas = data.map((x: any) => ({
-        id: x.id,              // 👈 infractionId
-        userId: x.userId,      // 👈 userId
+        id: x.id,              
+        userId: x.userId,      
         tipo: x.typeInfractionName ?? '—',
         fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        estado: mapEstadoFromBool(x.stateInfraction)
+        // 👇 Usamos stateInfraction que viene del backend
+        estado: mapEstadoFromEnum(x.stateInfraction)
       }));
 
       const first = data[0];
@@ -77,21 +78,48 @@ export class ContenidoInicioComponent implements OnInit {
     }
   }
 
-  onMultaSelected(multa: MultaTableRow) {
-    console.log('Multa seleccionada:', multa);
+ onMultaSelected(multa: MultaTableRow) {
+  console.log('Multa seleccionada:', multa);
 
-    this.router.navigate(['/acuerdo-pago/formulario'], {
-      state: {
-        userId: multa.userId,
-        infractionId: multa.id,
-        ciudadano: this.ciudadano
-      }
-    });
+  if (multa.estado !== 'Pendiente') {
+    alert(`No se puede realizar un acuerdo de pago porque la multa está en estado "${multa.estado}".`);
+    return; // 🚫 detenemos la navegación
   }
+
+  this.router.navigate(['/acuerdo-pago/formulario'], {
+    state: {
+      userId: multa.userId,
+      infractionId: multa.id,
+      ciudadano: this.ciudadano
+    }
+  });
 }
 
-function mapEstadoFromBool(v: boolean | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' {
-  if (v === true) return 'Pagada';
-  if (v === false) return 'Pendiente';
+}
+
+// 🔎 Función para mapear el enum del backend a texto legible
+function mapEstadoFromEnum(v: string | number | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' | 'Con acuerdo' {
+  if (v === null || v === undefined) return 'Pendiente';
+
+  // si backend envía string (ej. "ConAcuerdoPago")
+  if (typeof v === 'string') {
+    switch (v) {
+      case 'Pendiente': return 'Pendiente';
+      case 'Pagada': return 'Pagada';
+      case 'Vencida': return 'Vencida';
+      case 'ConAcuerdoPago': return 'Con acuerdo';
+    }
+  }
+
+  // si backend envía número (ej. 0,1,2,3)
+  if (typeof v === 'number') {
+    switch (v) {
+      case 0: return 'Pendiente';
+      case 1: return 'Pagada';
+      case 2: return 'Vencida';
+      case 3: return 'Con acuerdo';
+    }
+  }
+
   return 'Pendiente';
 }
