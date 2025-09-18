@@ -40,12 +40,12 @@ export class FormModulePageComponent implements OnInit {
 
   loadFormModules() {
     this.isLoading = true;
-    this.formModuleService.getFormModules().subscribe({
+    this.formModuleService.genericService.getAll<FormModule>(this.formModuleService.endpoint).subscribe({
       next: (formModules: FormModule[]) => {
         this.formModules = formModules;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al cargar form-modules:', error);
         this.mostrarAlerta('Error al cargar los form-modules', 'error');
         this.isLoading = false;
@@ -94,14 +94,14 @@ export class FormModulePageComponent implements OnInit {
   confirmarEliminar() {
     if (this.formModuleAEliminar !== null && this.formModules[this.formModuleAEliminar].id) {
       const formModuleId = this.formModules[this.formModuleAEliminar].id!;
-      this.formModuleService.deleteFormModule(formModuleId).subscribe({
+      this.formModuleService.genericService.delete(this.formModuleService.endpoint, formModuleId).subscribe({
         next: () => {
           this.formModules.splice(this.formModuleAEliminar!, 1);
           this.mostrarAlerta('Form-Module eliminado correctamente.', 'eliminado');
           this.showConfirm = false;
           this.formModuleAEliminar = null;
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al eliminar form-module:', error);
           this.mostrarAlerta('Error al eliminar el form-module', 'error');
           this.showConfirm = false;
@@ -138,13 +138,13 @@ export class FormModulePageComponent implements OnInit {
           moduleName: this.nuevoFormModule.moduleName
         };
 
-        this.formModuleService.createFormModule(formModuleData).subscribe({
+        this.formModuleService.genericService.create<FormModule>(this.formModuleService.endpoint, formModuleData).subscribe({
           next: (createdFormModule: FormModule) => {
             this.formModules.push(createdFormModule);
             this.mostrarAlerta('Form-Module creado exitosamente.', 'creado');
             this.cerrarModal();
           },
-          error: (error) => {
+          error: (error: any) => {
             console.error('Error al crear form-module:', error);
             this.mostrarAlerta('Error al crear el form-module', 'error');
           }
@@ -162,13 +162,13 @@ export class FormModulePageComponent implements OnInit {
         moduleName: this.nuevoFormModule.moduleName
       };
 
-      this.formModuleService.updateFormModule(this.nuevoFormModule.id, formModuleData).subscribe({
+      this.formModuleService.genericService.update<FormModule>(this.formModuleService.endpoint, this.nuevoFormModule.id, formModuleData).subscribe({
         next: (updatedFormModule: FormModule) => {
           this.formModules[this.formModuleEditando!] = updatedFormModule;
           this.mostrarAlerta('Form-Module actualizado exitosamente.', 'creado');
           this.cerrarModal();
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al actualizar form-module:', error);
           this.mostrarAlerta('Error al actualizar el form-module', 'error');
         }

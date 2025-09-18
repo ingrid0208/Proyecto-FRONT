@@ -58,7 +58,7 @@ export class RolesPageComponent implements OnInit {
   cargarRoles(esDespuesDeOperacion: boolean = false): void {
     console.log('Cargando roles desde la API...'); // Para depuración
     
-    this.rolesService.getRoles().subscribe({
+    this.rolesService.genericService.getAll<Rol>(this.rolesService.endpoint).subscribe({
       next: (roles: Rol[]) => {
         console.log('Roles cargados:', roles); // Para depuración
         this.roles = roles || []; // Asegurar que roles sea un array
@@ -123,7 +123,7 @@ export class RolesPageComponent implements OnInit {
 
     console.log('Creando rol:', this.nuevoRol); // Para depuración
 
-    this.rolesService.createRol(this.nuevoRol).subscribe({
+    this.rolesService.genericService.create<Rol>(this.rolesService.endpoint, this.nuevoRol).subscribe({
       next: (rolCreado: Rol) => {
         console.log('Rol creado exitosamente:', rolCreado); // Para depuración
         this.cerrarModal();
@@ -140,7 +140,7 @@ export class RolesPageComponent implements OnInit {
 
   actualizarRol() {
     if (this.rolSeleccionado && this.rolSeleccionado.id) {
-      this.rolesService.updateRol(this.rolSeleccionado.id, this.rolSeleccionado).subscribe({
+      this.rolesService.genericService.update<Rol>(this.rolesService.endpoint, this.rolSeleccionado.id, this.rolSeleccionado).subscribe({
         next: (rolActualizado: Rol) => {
           console.log('Rol actualizado exitosamente:', rolActualizado);
           this.cerrarModalActualizar();
@@ -172,7 +172,7 @@ export class RolesPageComponent implements OnInit {
     if (this.rolAEliminar && this.rolAEliminar.id) {
       console.log('Eliminando rol:', this.rolAEliminar); // Para depuración
       
-      this.rolesService.deleteRol(this.rolAEliminar.id).subscribe({
+      this.rolesService.genericService.delete(this.rolesService.endpoint, this.rolAEliminar.id).subscribe({
         next: () => {
           console.log('Rol eliminado exitosamente'); // Para depuración
           this.mostrarAlerta('Rol eliminado correctamente.', 'eliminado');

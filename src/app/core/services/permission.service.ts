@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { ServiceGenericService } from './servicesGeneric/service-generic.service';
-export interface RolUser {
+
+export interface Permission {
   id: number;
-  userId: number;
-  rolId: number;
-  userName?: string | null;
-  rolName?: string | null;
+  name: string;
+  description: string;
 }
 
 @Injectable({ providedIn: 'root' })
-export class RolUserService {
-readonly endpoint = 'RolUser';
+export class PermissionService {
+  readonly endpoint = 'Permission';
 
   constructor(public genericService: ServiceGenericService) {}
-
 
 }

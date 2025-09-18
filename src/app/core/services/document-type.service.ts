@@ -7,26 +7,7 @@ import { ServiceGenericService } from './servicesGeneric/service-generic.service
   providedIn: 'root'
 })
 export class DocumentTypeService {
+  readonly endpoint = 'documentType';
 
-  constructor(private genericService: ServiceGenericService) { }
-
-  getDocumentTypes(): Observable<DocumentType[]> {
-    return this.genericService.getAll<DocumentType>('documentType');
-  }
-
-  getDocumentTypeById(id: number): Observable<DocumentType> {
-    return this.genericService.getById<DocumentType>('documentType', id);
-  }
-
-  createDocumentType(documentType: DocumentType): Observable<DocumentType> {
-    return this.genericService.create<DocumentType>('documentType', documentType);
-  }
-
-  updateDocumentType(documentType: DocumentType): Observable<DocumentType> {
-    return this.genericService.update<DocumentType>('documentType', documentType.id, documentType);
-  }
-
-  deleteDocumentType(id: number): Observable<any> {
-    return this.genericService.delete('documentType', id);
-  }
+  constructor(public genericService: ServiceGenericService) { }
 }

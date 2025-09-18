@@ -63,18 +63,18 @@ export class PersonasPageComponent implements OnInit {
 
   ngOnInit() {
     // Cargar personas
-    this.personaService.getPersonas().subscribe(personas => {
+    this.personaService.personas$.subscribe((personas: any) => {
       this.personas = personas;
       this.filteredPersonas = personas;
     });
 
     // Cargar municipios
-    this.municipioService.getMunicipios().subscribe(municipios => {
+    this.municipioService.personas$.subscribe((municipios: any) => {
       this.municipios = municipios;
     });
 
     // Cargar tipos de documento
-    this.documentTypeService.getDocumentTypes().subscribe(documentTypes => {
+    this.documentTypeService.genericService.getAll<any>(this.documentTypeService.endpoint).subscribe((documentTypes: any) => {
       this.documentTypes = documentTypes;
     });
     
@@ -124,12 +124,12 @@ export class PersonasPageComponent implements OnInit {
       // Log para debugging
       console.log('Datos a enviar:', nuevaPersona);
       
-      this.personaService.createPersona(nuevaPersona).subscribe({
-        next: (persona) => {
+      this.personaService.genericService.create<any>(this.personaService.endpoint, nuevaPersona).subscribe({
+        next: (persona: any) => {
           this.mostrarAlerta('Persona creada exitosamente.', 'creado');
           this.cerrarFormulario();
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al crear persona:', error);
           
           // Intentar extraer mensaje específico del error
@@ -181,11 +181,11 @@ export class PersonasPageComponent implements OnInit {
 
   confirmarEliminar() {
     if (this.personaAEliminar && this.personaAEliminar.id) {
-      this.personaService.deletePersona(this.personaAEliminar.id).subscribe({
+      this.personaService.genericService.delete(this.personaService.endpoint, this.personaAEliminar.id).subscribe({
         next: () => {
           this.mostrarAlerta('Persona eliminada correctamente.', 'eliminado');
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al eliminar persona:', error);
           this.mostrarAlerta('Error al eliminar la persona.', 'eliminado');
         }
@@ -243,34 +243,38 @@ export class PersonasPageComponent implements OnInit {
       // Log para debugging
       console.log('Datos a actualizar:', personaActualizada);
       
-      this.personaService.updatePersona(personaActualizada).subscribe({
-        next: (persona) => {
-          this.mostrarAlerta('Persona actualizada exitosamente.', 'creado');
-          this.cerrarModalActualizar();
-        },
-        error: (error) => {
-          console.error('Error al actualizar persona:', error);
-          
-          // Intentar extraer mensaje específico del error
-          let errorMessage = 'Error al actualizar la persona.';
-          if (error?.error) {
-            if (typeof error.error === 'string') {
-              errorMessage = error.error;
-            } else if (error.error.message) {
-              errorMessage = error.error.message;
-            } else if (error.error.errors) {
-              // Errores de validación del backend
-              const validationErrors = Object.keys(error.error.errors).map(key => 
-                `${key}: ${error.error.errors[key].join(', ')}`
-              ).join('; ');
-              errorMessage = `Errores de validación: ${validationErrors}`;
+      if (personaActualizada.id) {
+        this.personaService.genericService.update<any>(this.personaService.endpoint, personaActualizada.id, personaActualizada).subscribe({
+          next: (persona: any) => {
+            this.mostrarAlerta('Persona actualizada exitosamente.', 'creado');
+            this.cerrarModalActualizar();
+          },
+          error: (error: any) => {
+            console.error('Error al actualizar persona:', error);
+            
+            // Intentar extraer mensaje específico del error
+            let errorMessage = 'Error al actualizar la persona.';
+            if (error?.error) {
+              if (typeof error.error === 'string') {
+                errorMessage = error.error;
+              } else if (error.error.message) {
+                errorMessage = error.error.message;
+              } else if (error.error.errors) {
+                // Errores de validación del backend
+                const validationErrors = Object.keys(error.error.errors).map(key => 
+                  `${key}: ${error.error.errors[key].join(', ')}`
+                ).join('; ');
+                errorMessage = `Errores de validación: ${validationErrors}`;
+              }
             }
+            
+            console.log('Mensaje de error procesado:', errorMessage);
+            this.mostrarAlerta(errorMessage, 'eliminado');
           }
-          
-          console.log('Mensaje de error procesado:', errorMessage);
-          this.mostrarAlerta(errorMessage, 'eliminado');
-        }
-      });
+        });
+      } else {
+        this.mostrarAlerta('ID de persona no encontrado.', 'eliminado');
+      }
     } else {
       this.mostrarAlerta('Por favor completa todos los campos requeridos.', 'eliminado');
     }

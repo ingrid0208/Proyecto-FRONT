@@ -1,50 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { ServiceGenericService } from './servicesGeneric/service-generic.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Municipio } from '../../shared/Models/municipio.model';
-import { environment } from '../../../environments/environment.development';
+// ...existing code...
 
 @Injectable({ providedIn: 'root' })
 export class MunicipioService {
-  private apiUrl = `${environment.apiURL}/municipality`;
+  readonly endpoint = 'municipality';
   private municipiosSubject = new BehaviorSubject<Municipio[]>([]);
-  municipios$ = this.municipiosSubject.asObservable();
+  personas$ = this.municipiosSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(public genericService: ServiceGenericService) {
     this.loadMunicipios();
   }
 
   private loadMunicipios(): void {
-    this.http.get<Municipio[]>(this.apiUrl, this.getHttpOptions()).subscribe({
+    this.genericService.getAll<Municipio>(this.endpoint).subscribe({
       next: (municipios) => this.municipiosSubject.next(municipios),
       error: (error) => {
         console.error('Error al cargar municipios:', error);
-        // No cargar datos de ejemplo, dejar vacío para mostrar mensaje de error
         this.municipiosSubject.next([]);
       }
     });
   }
 
-  private getHttpOptions() {
-    const currentUser = localStorage.getItem('currentUser');
-    const token = currentUser ? JSON.parse(currentUser)?.token : undefined;
-    
-    const headers: any = { 'Content-Type': 'application/json' };
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    
-    return { headers };
-  }
-
-  getMunicipios(): Observable<Municipio[]> {
-    return this.municipios$;
-  }
-
-  getMunicipioById(id: number): Municipio | undefined {
-    return this.municipiosSubject.value.find(m => m.id === id);
-  }
+  
 
   refreshMunicipios(): void {
     this.loadMunicipios();

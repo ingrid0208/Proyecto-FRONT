@@ -73,7 +73,7 @@ export class ModulePageComponent implements OnInit {
   cargarModules(esDespuesDeOperacion: boolean = false): void {
     console.log('Cargando módulos desde la API...'); // Para depuración
     
-    this.moduleService.getModules().subscribe({
+    this.moduleService.genericService.getAll<Module>(this.moduleService.endpoint).subscribe({
       next: (modules: Module[]) => {
         console.log('Módulos cargados:', modules); // Para depuración
         this.modules = modules || []; // Asegurar que modules sea un array
@@ -167,7 +167,7 @@ export class ModulePageComponent implements OnInit {
 
     console.log('Creando módulo:', this.nuevoModule); // Para depuración
 
-    this.moduleService.createModule(this.nuevoModule).subscribe({
+    this.moduleService.genericService.create<Module>(this.moduleService.endpoint, this.nuevoModule).subscribe({
       next: (moduleCreado: Module) => {
         console.log('Módulo creado exitosamente:', moduleCreado); // Para depuración
         this.cerrarModal();
@@ -186,7 +186,7 @@ export class ModulePageComponent implements OnInit {
     if (this.moduleSeleccionado && this.moduleSeleccionado.id) {
       console.log('Actualizando módulo:', this.moduleSeleccionado);
       
-      this.moduleService.updateModule(this.moduleSeleccionado.id, this.moduleSeleccionado).subscribe({
+      this.moduleService.genericService.update<Module>(this.moduleService.endpoint, this.moduleSeleccionado.id, this.moduleSeleccionado).subscribe({
         next: (moduleActualizado: Module) => {
           console.log('Módulo actualizado exitosamente:', moduleActualizado);
           this.cerrarModalActualizar();
@@ -218,7 +218,7 @@ export class ModulePageComponent implements OnInit {
     if (this.moduleAEliminar && this.moduleAEliminar.id) {
       console.log('Eliminando módulo:', this.moduleAEliminar); // Para depuración
       
-      this.moduleService.deleteModule(this.moduleAEliminar.id).subscribe({
+      this.moduleService.genericService.delete(this.moduleService.endpoint, this.moduleAEliminar.id).subscribe({
         next: () => {
           console.log('Módulo eliminado exitosamente'); // Para depuración
           this.mostrarAlerta('Módulo eliminado correctamente.', 'eliminado');

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PermissionService, Permission } from '../../core/services/servicesGeneric/permission.service';
+import { PermissionService, Permission } from '../../core/services/permission.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
@@ -36,7 +36,7 @@ export class PermisosPageComponent implements OnInit {
   }
 
   obtenerPermisos() {
-    this.permissionService.getPermissions().subscribe((data: Permission[]) => {
+    this.permissionService.genericService.getAll<Permission>(this.permissionService.endpoint).subscribe((data: Permission[]) => {
       this.permisos = data;
     });
   }
@@ -61,7 +61,7 @@ export class PermisosPageComponent implements OnInit {
     if (this.permisoEditando) {
       // Actualizar
       const permisoActualizado = { ...this.permisoEditando, ...permisoData };
-      this.permissionService.updatePermission(permisoActualizado).subscribe({
+      this.permissionService.genericService.update<Permission>(this.permissionService.endpoint, permisoActualizado.id, permisoActualizado).subscribe({
         next: () => {
           this.successMsg = 'Permiso actualizado correctamente';
           this.obtenerPermisos();
@@ -78,7 +78,7 @@ export class PermisosPageComponent implements OnInit {
       });
     } else {
       // Crear
-      this.permissionService.createPermission(permisoData).subscribe({
+      this.permissionService.genericService.create<Permission>(this.permissionService.endpoint, permisoData).subscribe({
         next: () => {
           this.successMsg = 'Permiso creado correctamente';
           this.obtenerPermisos();
@@ -106,7 +106,7 @@ export class PermisosPageComponent implements OnInit {
 
   eliminarPermiso(permiso: Permission) {
     if (confirm('¿Seguro que deseas eliminar este permiso?')) {
-      this.permissionService.deletePermission(permiso.id).subscribe({
+      this.permissionService.genericService.delete(this.permissionService.endpoint, permiso.id).subscribe({
         next: () => {
           this.successMsg = 'Permiso eliminado correctamente';
           this.obtenerPermisos();

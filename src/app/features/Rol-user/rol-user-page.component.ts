@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RolUserService, RolUser } from '../../core/services/rol-user.service';
-import { UsuariosService, Usuario } from '../usuarios-page/usuarios.service';
+import { ServiceGenericService } from '../../core/services/servicesGeneric/service-generic.service';
 
 @Component({
   selector: 'app-rol-user-page',
@@ -13,7 +13,7 @@ import { UsuariosService, Usuario } from '../usuarios-page/usuarios.service';
 })
 export class RolUserPageComponent implements OnInit {
   rolUsers: RolUser[] = [];
-  usuarios: Usuario[] = [];
+  usuarios: any[] = [];
   showForm = false;
   rolUserForm: FormGroup;
   loading = false;
@@ -23,7 +23,7 @@ export class RolUserPageComponent implements OnInit {
 
   constructor(
     private rolUserService: RolUserService,
-    private usuariosService: UsuariosService,
+    private serviceGeneric: ServiceGenericService,
     private fb: FormBuilder
   ) {
     this.rolUserForm = this.fb.group({
@@ -33,15 +33,15 @@ export class RolUserPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usuariosService.getUsuarios().subscribe((usuarios: Usuario[]) => {
+    this.serviceGeneric.getAll<any>('Users').subscribe((usuarios: any[]) => {
       this.usuarios = usuarios;
       this.obtenerRolUsers();
     });
   }
 
   obtenerRolUsers() {
-    this.rolUserService.getRolUsers().subscribe((data: RolUser[]) => {
-      // Mapear el nombre del usuario a cada relación
+    this.rolUserService.genericService.getAll<RolUser>(this.rolUserService.endpoint).subscribe((data: RolUser[]) => {
+      // Mapear el nombre/email del usuario a cada relación
       this.rolUsers = data.map(ru => ({
         ...ru,
         userName: this.usuarios.find(u => u.id === ru.userId)?.email || ru.userId.toString()
@@ -69,7 +69,7 @@ export class RolUserPageComponent implements OnInit {
     this.errorMsg = '';
     this.successMsg = '';
     const rolUserData = this.rolUserForm.value;
-    this.rolUserService.createRolUser(rolUserData).subscribe({
+    this.rolUserService.genericService.create<RolUser>(this.rolUserService.endpoint, rolUserData).subscribe({
       next: (nuevoRolUser: RolUser) => {
         this.successMsg = 'Rol-Usuario creado correctamente';
         this.obtenerRolUsers();
@@ -99,7 +99,7 @@ export class RolUserPageComponent implements OnInit {
     this.errorMsg = '';
     this.successMsg = '';
     const rolUserData = { ...this.rolUserEditando, ...this.rolUserForm.value };
-    this.rolUserService.updateRolUser(rolUserData).subscribe({
+    this.rolUserService.genericService.update<RolUser>(this.rolUserService.endpoint, rolUserData.id, rolUserData).subscribe({
       next: (rolUserActualizado: RolUser) => {
         this.successMsg = 'Rol-Usuario actualizado correctamente';
         this.obtenerRolUsers();
@@ -115,7 +115,7 @@ export class RolUserPageComponent implements OnInit {
 
   eliminarRolUser(rolUser: RolUser) {
     if (!rolUser.id) return;
-    this.rolUserService.deleteRolUser(rolUser.id).subscribe({
+    this.rolUserService.genericService.delete(this.rolUserService.endpoint, rolUser.id).subscribe({
       next: () => {
         this.successMsg = 'Rol-Usuario eliminado correctamente';
         this.obtenerRolUsers();

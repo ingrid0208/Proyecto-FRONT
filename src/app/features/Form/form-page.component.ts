@@ -68,7 +68,7 @@ export class FormPageComponent implements OnInit {
   cargarForms(esDespuesDeOperacion: boolean = false): void {
     console.log('Cargando formularios desde la API...'); // Para depuración
     
-    this.formService.getForms().subscribe({
+    this.formService.genericService.getAll<Form>(this.formService.endpoint).subscribe({
       next: (forms: Form[]) => {
         console.log('Formularios cargados:', forms); // Para depuración
         this.forms = forms || []; // Asegurar que forms sea un array
@@ -157,7 +157,7 @@ export class FormPageComponent implements OnInit {
 
     console.log('Creando formulario:', this.nuevoForm); // Para depuración
 
-    this.formService.createForm(this.nuevoForm).subscribe({
+    this.formService.genericService.create<Form>(this.formService.endpoint, this.nuevoForm).subscribe({
       next: (formCreado: Form) => {
         console.log('Formulario creado exitosamente:', formCreado); // Para depuración
         this.cerrarModal();
@@ -176,7 +176,7 @@ export class FormPageComponent implements OnInit {
     if (this.formSeleccionado && this.formSeleccionado.id) {
       console.log('Actualizando formulario:', this.formSeleccionado);
       
-      this.formService.updateForm(this.formSeleccionado.id, this.formSeleccionado).subscribe({
+      this.formService.genericService.update<Form>(this.formService.endpoint, this.formSeleccionado.id, this.formSeleccionado).subscribe({
         next: (formActualizado: Form) => {
           console.log('Formulario actualizado exitosamente:', formActualizado);
           this.cerrarModalActualizar();
@@ -208,7 +208,7 @@ export class FormPageComponent implements OnInit {
     if (this.formAEliminar && this.formAEliminar.id) {
       console.log('Eliminando formulario:', this.formAEliminar); // Para depuración
       
-      this.formService.deleteForm(this.formAEliminar.id).subscribe({
+      this.formService.genericService.delete(this.formService.endpoint, this.formAEliminar.id).subscribe({
         next: () => {
           console.log('Formulario eliminado exitosamente'); // Para depuración
           this.mostrarAlerta('Formulario eliminado correctamente.', 'eliminado');
