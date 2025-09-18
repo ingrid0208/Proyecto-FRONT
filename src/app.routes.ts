@@ -10,7 +10,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./app/layout/shell/app.layout').then(m => m.AppLayout),
     children: [
-  { path: 'permisos', loadChildren: () => import('./app/features/permisos/permisos-page.routes').then(m => m.PERMISOS_ROUTES) },
+  { path: 'permisos', loadChildren: () => import('./app/features/modelo-de-seguridad/permisos/permisos-page.routes').then(m => m.PERMISOS_ROUTES) },
 
       { path: 'home',            loadChildren: () => import('./app/feature/home/pages/password/home.routes').then(m => m.HOMEPASSWORD_ROUTES) },
       { path: 'consultar-ingresar', loadChildren: () => import('./app/feature/Consulta-Ingresar/consultar.routes').then(m => m.CONSULTAR_ROUTES) },
@@ -22,15 +22,15 @@ export const routes: Routes = [
       { path: 'perfil',          loadChildren: () => import('./app/feature/perfil/perfil.routes').then(m => m.PERFIL_ROUTES) },
       { path: 'mensajes',        loadChildren: () => import('./app/feature/mensajes/pages/messages.routes').then(m => m.MENSAJES_ROUTES) },
       { path: 'crud',            loadChildren: () => import('./app/feature/crud/crud.routes').then(m => m.CRUD_ROUTES) },
-  { path: 'roles',           loadChildren: () => import('./app/features/roles-page/roles-page.routes').then(m => m.ROLES_ROUTES) },
+  { path: 'roles',           loadChildren: () => import('./app/features/modelo-de-seguridad/roles-page/roles-page.routes').then(m => m.ROLES_ROUTES) },
   // Ruta deshabilitada temporalmente: { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/module-form.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },
-  { path: 'usuarios', loadChildren: () => import('./app/features/usuarios-page/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
-  { path: 'personas',        loadChildren: () => import('./app/features/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
-  { path: 'formularios',     loadChildren: () => import('./app/features/Form/form.routes').then(m => m.FORM_ROUTES) },
-  { path: 'modulos',         loadChildren: () => import('./app/features/module/module.routes').then(m => m.MODULE_ROUTES) },
-  { path: 'form-modules',    loadChildren: () => import('./app/features/form-module/form-module.routes').then(m => m.FORM_MODULE_ROUTES) },
-  { path: 'rol-form-permission', loadChildren: () => import('./app/features/Rol-Form-Permission/rol-form-permission.routes').then(m => m.ROL_FORM_PERMISSION_ROUTES) },
-  { path: 'rol-user', loadChildren: () => import('./app/features/Rol-user/rol-user.routes').then(m => m.rolUserRoutes) },
+  { path: 'usuarios', loadChildren: () => import('./app/features/modelo-de-seguridad/usuarios-page/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
+  { path: 'personas',        loadChildren: () => import('./app/features/modelo-de-seguridad/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
+  { path: 'formularios',     loadChildren: () => import('./app/features/modelo-de-seguridad/Form/form.routes').then(m => m.FORM_ROUTES) },
+  { path: 'modulos',         loadChildren: () => import('./app/features/modelo-de-seguridad/module/module.routes').then(m => m.MODULE_ROUTES) },
+  { path: 'form-modules',    loadChildren: () => import('./app/features/modelo-de-seguridad/form-module/form-module.routes').then(m => m.FORM_MODULE_ROUTES) },
+  { path: 'rol-form-permission', loadChildren: () => import('./app/features/modelo-de-seguridad/Rol-Form-Permission/rol-form-permission.routes').then(m => m.ROL_FORM_PERMISSION_ROUTES) },
+  { path: 'rol-user', loadChildren: () => import('./app/features/modelo-de-seguridad/Rol-user/rol-user.routes').then(m => m.rolUserRoutes) },
   { path: 'parameters',      loadChildren: () => import('./app/feature/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
   { path: 'inspectora/generar-multa', loadChildren: () => import('./app/feature/Inspectora/generar-multa.routes').then(m => m.GENERAR_MULTA_ROUTES) },
     ]

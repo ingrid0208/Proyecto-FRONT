@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RolUserService, RolUser } from '../../core/services/rol-user.service';
-import { ServiceGenericService } from '../../core/services/servicesGeneric/service-generic.service';
+import { RolUserService, RolUser } from '../../../core/services/rol-user.service';
+import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
 
 @Component({
   selector: 'app-rol-user-page',

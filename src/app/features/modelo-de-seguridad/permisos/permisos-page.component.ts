@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PermissionService, Permission } from '../../core/services/permission.service';
+import { PermissionService, Permission } from '../../../core/services/permission.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';

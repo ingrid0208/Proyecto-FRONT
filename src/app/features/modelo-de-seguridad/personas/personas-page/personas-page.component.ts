@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PersonaService } from '../../../core/services/persona.service';
-import { MunicipioService } from '../../../core/services/municipio.service';
-import { DocumentTypeService } from '../../../core/services/document-type.service';
-import { Persona } from '../../../shared/Models/persona.model';
-import { Municipio } from '../../../shared/Models/municipio.model';
-import { DocumentType } from '../../../shared/Models/parameter/document-type.models';
+import { PersonaService } from '../../../../core/services/persona.service';
+import { MunicipioService } from '../../../../core/services/municipio.service';
+import { DocumentTypeService } from '../../../../core/services/document-type.service';
+import { Persona } from '../../../../shared/Models/persona.model';
+import { Municipio } from '../../../../shared/Models/municipio.model';
+import { DocumentType } from '../../../../shared/Models/parameter/document-type.models';
 
 @Component({
   selector: 'app-personas-page',

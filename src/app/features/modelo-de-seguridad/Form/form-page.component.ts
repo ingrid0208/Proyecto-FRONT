@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { FormService, Form } from '../../core/services/form.service';
+import { FormService, Form } from '../../../core/services/form.service';
 
 @Component({
   selector: 'app-form-page',

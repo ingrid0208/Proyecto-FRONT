@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RolesService, Rol } from '../../core/services/roles.service';
+import { RolesService, Rol } from '../../../core/services/roles.service';
 
 @Component({
   selector: 'app-roles-page',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FormModuleService, FormModule } from '../../core/services/formmodule.service';
+import { FormModuleService, FormModule } from '../../../core/services/formmodule.service';
 
 @Component({
   selector: 'app-form-module-page',
