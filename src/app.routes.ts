@@ -10,6 +10,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./app/layout/shell/app.layout').then(m => m.AppLayout),
     children: [
+  { path: 'permisos', loadChildren: () => import('./app/features/permisos/permisos-page.routes').then(m => m.PERMISOS_ROUTES) },
 
       { path: 'home',            loadChildren: () => import('./app/feature/home/pages/password/home.routes').then(m => m.HOMEPASSWORD_ROUTES) },
       { path: 'consultar-ingresar', loadChildren: () => import('./app/feature/Consulta-Ingresar/consultar.routes').then(m => m.CONSULTAR_ROUTES) },

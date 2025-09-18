@@ -1,0 +1,51 @@
+<div class="permisos-container">
+  <div class="permisos-header">
+    <div class="header-title">
+      <span class="icon"><i class="material-icons">lock_open</i></span>
+      <span class="title">Permisos del Sistema</span>
+    </div>
+    <button class="add-btn" (click)="abrirFormulario()">+ Agregar Permiso</button>
+  </div>
+  <div *ngIf="successMsg" class="success-message">{{ successMsg }}</div>
+  <!-- Modal para agregar permiso (placeholder) -->
+  <div *ngIf="showForm" class="modal-overlay">
+    <div class="modal-content permiso-form">
+      <h2>Crear Permiso</h2>
+      <form [formGroup]="permisoForm" (ngSubmit)="crearPermiso()">
+        <div class="form-group">
+          <label for="name">Nombre</label>
+          <input id="name" formControlName="name" type="text" />
+          <div class="error" *ngIf="permisoForm.get('name')?.touched && permisoForm.get('name')?.invalid">
+            <span *ngIf="permisoForm.get('name')?.errors?.['required']">El nombre es requerido.</span>
+            <span *ngIf="permisoForm.get('name')?.errors?.['maxlength']">Máximo 50 caracteres.</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea id="description" formControlName="description"></textarea>
+          <div class="error" *ngIf="permisoForm.get('description')?.touched && permisoForm.get('description')?.invalid">
+            <span *ngIf="permisoForm.get('description')?.errors?.['required']">La descripción es requerida.</span>
+            <span *ngIf="permisoForm.get('description')?.errors?.['maxlength']">Máximo 200 caracteres.</span>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" [disabled]="loading">Crear</button>
+          <button type="button" (click)="cerrarFormulario()">Cancelar</button>
+        </div>
+        <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+      </form>
+    </div>
+  </div>
+  <div class="permisos-list">
+    <div class="permiso-row" *ngFor="let permiso of permisos">
+      <div class="permiso-content">
+        <div class="permiso-nombre">{{ permiso.name }}</div>
+        <div class="permiso-descripcion">{{ permiso.description }}</div>
+      </div>
+      <div class="permiso-actions">
+        <button class="edit-btn" (click)="editarPermiso(permiso)"><i class="material-icons">edit</i></button>
+        <button class="delete-btn" (click)="eliminarPermiso(permiso)"><i class="material-icons">delete</i></button>
+      </div>
+    </div>
+  </div>
+</div>

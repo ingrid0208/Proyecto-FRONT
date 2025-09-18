@@ -49,13 +49,13 @@ import { AppMenuitem } from './app.menuitem';
 }`]
 })
 export class AppMenu {
-    model: MenuItem[] = [];
-
+    public model: MenuItem[] = [];
     ngOnInit() {
         this.model = [
             {
                 label: 'Gestión',
                 items: [
+                    { label: 'Permisos', icon: 'pi pi-fw pi-lock-open', routerLink: ['/permisos'] },
                     { label: 'Generar Multa', icon: 'pi pi-fw pi-file-edit', routerLink: ['/inspectora/generar-multa'] }
                 ]
             },
@@ -69,6 +69,19 @@ export class AppMenu {
                     { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoMultas'] },
                     { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/NotificacionMultas'] },
                     { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
+                ]
+            },
+            {
+                label: 'Gestión Avanzada',
+                icon: 'pi pi-fw pi-cog',
+                items: [
+                    { label: 'Formularios', icon: 'pi pi-fw pi-file', routerLink: ['/formularios'] },
+                    { label: 'Form Modules', icon: 'pi pi-fw pi-clone', routerLink: ['/form-modules'] },
+                    { label: 'Módulos', icon: 'pi pi-fw pi-th-large', routerLink: ['/modulos'] },
+                    { label: 'Personas', icon: 'pi pi-fw pi-users', routerLink: ['/personas'] },
+                    { label: 'Rol Form Permission', icon: 'pi pi-fw pi-key', routerLink: ['/rol-form-permission'] },
+                    { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/roles'] },
+                    { label: 'Usuarios', icon: 'pi pi-fw pi-user', routerLink: ['/usuarios'] }
                 ]
             },
             {
