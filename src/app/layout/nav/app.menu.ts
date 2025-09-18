@@ -81,7 +81,8 @@ export class AppMenu {
                     { label: 'Personas', icon: 'pi pi-fw pi-users', routerLink: ['/personas'] },
                     { label: 'Rol Form Permission', icon: 'pi pi-fw pi-key', routerLink: ['/rol-form-permission'] },
                     { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/roles'] },
-                    { label: 'Usuarios', icon: 'pi pi-fw pi-user', routerLink: ['/usuarios'] }
+                    { label: 'Usuarios', icon: 'pi pi-fw pi-user', routerLink: ['/usuarios'] },
+                    { label: 'Rol-Usuario', icon: 'pi pi-fw pi-user-plus', routerLink: ['/rol-user'] }
                 ]
             },
             {

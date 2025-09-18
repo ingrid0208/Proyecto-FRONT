@@ -1,0 +1,91 @@
+
+.rol-user-container {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(120deg, #f0f7fa 0%, #e0eafc 100%);
+  min-height: 100vh;
+}
+.rol-user-header .title {
+  letter-spacing: 1px;
+}
+.modal-content {
+  border: 1px solid #e0eafc;
+  box-shadow: 0 8px 32px rgba(67, 167, 255, 0.10);
+}
+.rol-user-row {
+  border-left: 5px solid #43a7ff;
+  background: #fafdff;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.rol-user-row:hover {
+  box-shadow: 0 8px 32px rgba(67, 167, 255, 0.13);
+  transform: translateY(-2px) scale(1.01);
+}
+.rol-user-nombre {
+  color: #1976d2;
+}
+.rol-user-actions .edit-btn, .rol-user-actions .delete-btn {
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.rol-user-actions .edit-btn {
+  background: linear-gradient(135deg, #43a7ff 0%, #38c9f9 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(67, 167, 255, 0.15);
+}
+.rol-user-actions .edit-btn:hover {
+  background: linear-gradient(135deg, #1199e6 0%, #38b7ef 100%);
+  box-shadow: 0 4px 16px rgba(67, 167, 255, 0.25);
+}
+.rol-user-actions .delete-btn {
+  background: linear-gradient(135deg, #ff5858 0%, #f09819 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(255, 88, 88, 0.15);
+}
+.rol-user-actions .delete-btn:hover {
+  background: linear-gradient(135deg, #ff5858 0%, #ffae00 100%);
+  box-shadow: 0 4px 16px rgba(255, 88, 88, 0.25);
+}
+.add-btn {
+  background: linear-gradient(90deg, #43a7ff 0%, #38c9f9 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.3rem;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(67, 167, 255, 0.12);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.add-btn:hover {
+  background: linear-gradient(90deg, #1199e6 0%, #38b7ef 100%);
+  box-shadow: 0 4px 16px rgba(67, 167, 255, 0.22);
+}
+.success-message {
+  background: linear-gradient(90deg, #43a7ff 0%, #38c9f9 100%);
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(67, 167, 255, 0.10);
+  text-align: center;
+}
+.error-message {
+  background: linear-gradient(90deg, #ff5858 0%, #f09819 100%);
+  color: #fff;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(255, 88, 88, 0.10);
+  text-align: center;
+}
