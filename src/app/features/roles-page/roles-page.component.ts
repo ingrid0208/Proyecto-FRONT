@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RolesService, Rol } from './roles.service';
+import { RolesService, Rol } from '../../core/services/roles.service';
 
 @Component({
   selector: 'app-roles-page',
@@ -59,13 +59,13 @@ export class RolesPageComponent implements OnInit {
     console.log('Cargando roles desde la API...'); // Para depuración
     
     this.rolesService.getRoles().subscribe({
-      next: (roles) => {
+      next: (roles: Rol[]) => {
         console.log('Roles cargados:', roles); // Para depuración
         this.roles = roles || []; // Asegurar que roles sea un array
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al cargar roles:', error);
         this.mostrarAlerta('Error al cargar los roles: ' + (error.error?.message || error.message), 'error');
         
@@ -110,13 +110,13 @@ export class RolesPageComponent implements OnInit {
 
   crearRol() {
     // Validar que los campos no estén vacíos
-    if (!this.nuevoRol.name || !this.nuevoRol.description) {
+    if (!this.nuevoRol["name"] || !this.nuevoRol["description"]) {
       this.mostrarAlerta('Por favor, complete todos los campos', 'error');
       return;
     }
 
     // Validar que no estén solo con espacios en blanco
-    if (this.nuevoRol.name.trim() === '' || this.nuevoRol.description.trim() === '') {
+    if (this.nuevoRol["name"].trim() === '' || this.nuevoRol["description"].trim() === '') {
       this.mostrarAlerta('Los campos no pueden estar vacíos', 'error');
       return;
     }
@@ -124,14 +124,14 @@ export class RolesPageComponent implements OnInit {
     console.log('Creando rol:', this.nuevoRol); // Para depuración
 
     this.rolesService.createRol(this.nuevoRol).subscribe({
-      next: (rolCreado) => {
+      next: (rolCreado: Rol) => {
         console.log('Rol creado exitosamente:', rolCreado); // Para depuración
         this.cerrarModal();
         this.mostrarAlerta('Rol creado exitosamente.', 'creado');
         // Recargar la lista completa desde la API para asegurar sincronización
         this.cargarRoles(true);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al crear rol:', error);
         this.mostrarAlerta('Error al crear el rol: ' + (error.error?.message || error.message), 'error');
       }
@@ -141,14 +141,14 @@ export class RolesPageComponent implements OnInit {
   actualizarRol() {
     if (this.rolSeleccionado && this.rolSeleccionado.id) {
       this.rolesService.updateRol(this.rolSeleccionado.id, this.rolSeleccionado).subscribe({
-        next: (rolActualizado) => {
+        next: (rolActualizado: Rol) => {
           console.log('Rol actualizado exitosamente:', rolActualizado);
           this.cerrarModalActualizar();
           this.mostrarAlerta('Rol actualizado exitosamente.', 'creado');
           // Recargar la lista completa desde la API para asegurar sincronización
           this.cargarRoles(true);
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al actualizar rol:', error);
           this.mostrarAlerta('Error al actualizar el rol: ' + (error.error?.message || error.message), 'error');
         }
@@ -181,7 +181,7 @@ export class RolesPageComponent implements OnInit {
           // Recargar la lista completa desde la API para asegurar sincronización
           this.cargarRoles(true);
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error al eliminar rol:', error);
           this.mostrarAlerta('Error al eliminar el rol: ' + (error.error?.message || error.message), 'error');
           this.showConfirm = false;

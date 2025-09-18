@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PermissionService, Permission } from './permission.service';
+import { PermissionService, Permission } from '../../core/services/servicesGeneric/permission.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
@@ -36,7 +36,7 @@ export class PermisosPageComponent implements OnInit {
   }
 
   obtenerPermisos() {
-    this.permissionService.getPermissions().subscribe(data => {
+    this.permissionService.getPermissions().subscribe((data: Permission[]) => {
       this.permisos = data;
     });
   }
