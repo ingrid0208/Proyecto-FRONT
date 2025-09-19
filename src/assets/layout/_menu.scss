@@ -27,7 +27,7 @@
             font-size: 0.857rem;
             text-transform: uppercase;
             font-weight: 700;
-            color: var(--text-color);
+            color: #ffffff !important;
             margin: 0.75rem 0;
         }
 
@@ -64,7 +64,7 @@
             align-items: center;
             position: relative;
             outline: 0 none;
-            color: var(--text-color);
+            color: #ffffff !important;
             cursor: pointer;
             padding: 0.75rem 1rem;
             border-radius: var(--content-border-radius);
@@ -74,25 +74,52 @@
 
             .layout-menuitem-icon {
                 margin-right: 0.5rem;
+                color: #ffffff !important;
+            }
+
+            .layout-menuitem-text {
+                color: #ffffff !important;
             }
 
             .layout-submenu-toggler {
                 font-size: 75%;
                 margin-left: auto;
                 transition: transform var(--element-transition-duration);
+                color: #ffffff !important;
             }
 
             &.active-route {
                 font-weight: 700;
-                color: var(--primary-color);
+                color: #ffffff !important;
+                background-color: rgba(255, 255, 255, 0.1);
+                
+                .layout-menuitem-icon,
+                .layout-menuitem-text,
+                .layout-submenu-toggler {
+                    color: #ffffff !important;
+                }
             }
 
             &:hover {
-                background-color: var(--surface-hover);
+                background-color: rgba(255, 255, 255, 0.1);
+                color: #ffffff !important;
+                
+                .layout-menuitem-icon,
+                .layout-menuitem-text,
+                .layout-submenu-toggler {
+                    color: #ffffff !important;
+                }
             }
 
             &:focus {
                 @include focused-inset();
+                color: #ffffff !important;
+                
+                .layout-menuitem-icon,
+                .layout-menuitem-text,
+                .layout-submenu-toggler {
+                    color: #ffffff !important;
+                }
             }
         }
 
@@ -159,17 +186,68 @@
     transition: max-height 1s ease-in-out;
 }
 .layout-sidebar {
-  background-color: #01763C !important; // verde oscuro
-  color: #fff;
+  background-color: #01763C !important;
+  color: #ffffff !important;
 
-  a {
-    color: #ffffff;
+  .layout-menu {
+    a, span, i {
+      color: #ffffff !important;
+    }
 
-    &.router-link-active {
-      background-color: #21d883;
-      color: #fff;
+    .layout-menuitem-root-text {
+      color: #ffffff !important;
+    }
+
+    .layout-menuitem-icon {
+      color: #ffffff !important;
+    }
+
+    .layout-menuitem-text {
+      color: #ffffff !important;
+    }
+
+    .layout-submenu-toggler {
+      color: #ffffff !important;
+    }
+
+    &.router-link-active,
+    .active-route {
+      background-color: rgba(255, 255, 255, 0.2) !important;
+      color: #ffffff !important;
+      
+      .layout-menuitem-icon,
+      .layout-menuitem-text,
+      .layout-submenu-toggler {
+        color: #ffffff !important;
+      }
     }
   }
+}
+
+// Asegurar que todos los elementos del menú sean blancos
+.layout-sidebar * {
+  color: #ffffff !important;
+}
+
+.layout-sidebar a * {
+  color: #ffffff !important;
+}
+
+.layout-sidebar li * {
+  color: #ffffff !important;
+}
+
+.layout-sidebar ul * {
+  color: #ffffff !important;
+}
+
+// Reglas específicas para elementos del menú
+app-menu * {
+  color: #ffffff !important;
+}
+
+[app-menuitem] * {
+  color: #ffffff !important;
 }
 
 

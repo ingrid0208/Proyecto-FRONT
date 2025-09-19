@@ -16,10 +16,35 @@ import { AppMenu } from '../nav/app.menu';
   height: 100vh;
   width: 300px;
   background: #2d8659;
+  color: #ffffff;
   z-index: 999;
   transition: transform 0.3s ease;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.layout-sidebar * {
+  color: #ffffff !important;
+}
+
+.layout-sidebar .layout-menu a {
+  color: #ffffff !important;
+}
+
+.layout-sidebar .layout-menuitem-root-text {
+  color: #ffffff !important;
+}
+
+.layout-sidebar .layout-menuitem-icon {
+  color: #ffffff !important;
+}
+
+.layout-sidebar .layout-menuitem-text {
+  color: #ffffff !important;
+}
+
+.layout-sidebar .layout-submenu-toggler {
+  color: #ffffff !important;
 }
 
 .layout-overlay .layout-sidebar,

@@ -40,11 +40,36 @@ import { AppMenuitem } from './app.menuitem';
   list-style: none;
   padding: 0;
   margin: 0;
+  color: #ffffff;
+}
+
+.layout-menu * {
+  color: #ffffff !important;
+}
+
+.layout-menu a {
+  color: #ffffff !important;
+}
+
+.layout-menu .layout-menuitem-root-text {
+  color: #ffffff !important;
+}
+
+.layout-menu .layout-menuitem-icon {
+  color: #ffffff !important;
+}
+
+.layout-menu .layout-menuitem-text {
+  color: #ffffff !important;
+}
+
+.layout-menu .layout-submenu-toggler {
+  color: #ffffff !important;
 }
 
 .menu-separator {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.3);
   margin: 0.5rem 1rem;
 }`]
 })
