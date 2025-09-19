@@ -20,6 +20,8 @@ export const routes: Routes = [
       { path: 'calendario',      loadChildren: () => import('./app/feature/calendario/calendario.routes').then(m => m.CALENDARIO_ROUTES) },
       { path: 'perfil',          loadChildren: () => import('./app/feature/perfil/perfil.routes').then(m => m.PERFIL_ROUTES) },
       { path: 'mensajes',        loadChildren: () => import('./app/feature/mensajes/pages/messages.routes').then(m => m.MENSAJES_ROUTES) },
+      { path: 'anexar-multas', loadChildren: () => import('./app/feature/anexar-multas/anexar-multas.routes').then(m => m.ANEXAR_MULTAS_ROUTES) },
+
       { path: 'crud',            loadChildren: () => import('./app/feature/crud/crud.routes').then(m => m.CRUD_ROUTES) },
   { path: 'roles',           loadChildren: () => import('./app/features/roles-page/roles-page.routes').then(m => m.ROLES_ROUTES) },
   { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/modulos-permisos-page.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },

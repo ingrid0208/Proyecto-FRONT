@@ -155,4 +155,13 @@ export class ServiceGenericService {
     return this.http.get<PaymentAgreementInitDto | PaymentAgreementInitDto[]>(url, this.optsJwt());
   }
 
+  createInfraction(body: any) {
+  return this.http.post<any>(
+    this.url('UserInfraction', 'create-with-person'), 
+    body,
+    this.optsJwt()
+  );
+}
+
+
 }

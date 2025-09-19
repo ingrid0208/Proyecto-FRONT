@@ -100,7 +100,7 @@ export class Registrar {
           icon: 'success',
           title: '¡Registro exitoso!',
           text: 'Ahora inicia sesión.'
-        }).then(() => this.router.navigate(['/auth/verify-code']));
+        }).then(() => this.router.navigate(['/auth/login']));
       },
       error: async (err: HttpErrorResponse) => {
         const payload = await this.normalizeErrorPayload(err);
