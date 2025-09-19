@@ -1,96 +1,116 @@
+// Estilos estandarizados para modales
 .alert-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.08);
+  background: rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: flex-start;
   justify-content: center;
   z-index: 2000;
 }
+
 .alert-modal-content {
-  margin-top: 3.5rem;
+  margin-top: 3rem;
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 24px rgba(67,160,71,0.13);
-  padding: 1.3rem 2.2rem 1.1rem 2.2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem 2rem;
   display: flex;
   align-items: center;
-  gap: 1.1rem;
-  font-size: 1.15rem;
+  gap: 1rem;
+  font-size: 1rem;
   font-weight: 500;
   min-width: 320px;
-  border: 2px solid #43a047;
-  animation: modalIn 0.25s cubic-bezier(.4,0,.2,1);
+  animation: modalFadeIn 0.3s ease-out;
 }
+
 .alert-modal-content.bienvenida {
-  border-color: #43a047;
+  border-left: 4px solid #43a047;
 }
 .alert-modal-content.creado {
-  border-color: #1e88e5;
+  border-left: 4px solid #43a047;
 }
 .alert-modal-content.eliminado {
-  border-color: #e53935;
+  border-left: 4px solid #e53935;
 }
 .alert-modal-content.error {
-  border-color: #d32f2f;
+  border-left: 4px solid #d32f2f;
 }
+
 .alert-icon {
-  font-size: 2.1rem;
+  font-size: 2rem;
   margin-right: 0.5rem;
 }
+
 .alert-msg {
   color: #333;
 }
-@keyframes modalIn {
-  from { transform: translateY(-40px) scale(0.98); opacity: 0; }
-  to   { transform: translateY(0) scale(1); opacity: 1; }
+
+@keyframes modalFadeIn {
+  from { 
+    transform: translateY(-20px) scale(0.95); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0) scale(1); 
+    opacity: 1; 
+  }
 }
+// Estilos estandarizados para contenedores
 .usuarios-container {
   background: #fff;
-  border-radius: 14px;
+  border-radius: 8px;
   max-width: 900px;
-  margin: 2.5rem auto;
-  padding: 2.5rem 2rem;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  margin: 2rem auto;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .usuarios-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 2rem;
+  
   .icon {
     background: #43a047;
     color: #fff;
     border-radius: 50%;
     padding: 0.5rem;
-    font-size: 1.7rem;
-    margin-right: 0.7rem;
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
+  
   .title {
     color: #43a047;
     font-weight: 600;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     margin-right: auto;
-    margin-left: 0.7rem;
+    margin-left: 0.75rem;
   }
+  
   .add-usuario-btn {
     background: #43a047;
     color: #fff;
     border: none;
-    border-radius: 6px;
-    padding: 0.7rem 1.5rem;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
     font-weight: 500;
     font-size: 1rem;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(67, 160, 71, 0.2);
+    
     &:hover {
       background: #388e3c;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
     }
   }
 }
@@ -166,32 +186,41 @@
   margin-top: 0.7rem;
 }
 .blue-btn {
-  background: #1e88e5;
+  background: #4caf50;
   color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 0.4rem 1.1rem;
-  font-size: 0.98rem;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
 }
+
 .blue-btn:hover {
-  background: #1565c0;
+  background: #45a049;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
+
 .red-btn {
-  background: #e53935;
+  background: #2e7d32;
   color: #fff;
   border: none;
-  border-radius: 5px;
-  padding: 0.4rem 1.1rem;
-  font-size: 0.98rem;
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
 }
+
 .red-btn:hover {
-  background: #b71c1c;
+  background: #1b5e20;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
 }
 
 // --- Estilos para Modales ---

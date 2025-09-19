@@ -1,8 +1,10 @@
 
-// SCSS personalizado para detalles visuales y compatibilidad con Tailwind
+// Estilos estandarizados para el módulo de permisos
 .permisos-container {
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
+
+// Botones de acción estandarizados
 .edit-btn, .delete-btn {
   border: none;
   border-radius: 50%;
@@ -11,43 +13,52 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: background 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
 }
+
 .edit-btn {
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: #4caf50;
   color: #fff;
-  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.15);
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+  
+  &:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+  }
 }
-.edit-btn:hover {
-  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-  box-shadow: 0 4px 16px rgba(67, 233, 123, 0.25);
-}
+
 .delete-btn {
-  background: linear-gradient(135deg, #ff5858 0%, #f09819 100%);
+  background: #2e7d32;
   color: #fff;
-  box-shadow: 0 2px 8px rgba(255, 88, 88, 0.15);
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
+  
+  &:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
+  }
 }
-.delete-btn:hover {
-  background: linear-gradient(135deg, #ff5858 0%, #ffae00 100%);
-  box-shadow: 0 4px 16px rgba(255, 88, 88, 0.25);
-}
+
 .add-btn {
-  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  background: #43a047;
   color: #fff;
   border: none;
-  border-radius: 6px;
-  padding: 0.6rem 1.3rem;
-  font-weight: 600;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.12);
-  transition: background 0.2s, box-shadow 0.2s;
-}
-.add-btn:hover {
-  background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
-  box-shadow: 0 4px 16px rgba(67, 233, 123, 0.22);
+  box-shadow: 0 2px 4px rgba(67, 160, 71, 0.2);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #388e3c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
+  }
 }
 .success-message {
   background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);

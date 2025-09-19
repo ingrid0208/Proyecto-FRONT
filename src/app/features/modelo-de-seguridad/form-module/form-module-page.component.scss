@@ -1,11 +1,11 @@
-// Estilos para modales de alerta y confirmación
+// Estilos estandarizados para modales de alerta y confirmación
 .alert-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.25);
+  background: rgba(0, 0, 0, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,39 +14,40 @@
 
 .alert-modal-content {
   background: #fff;
-  border-radius: 1.2rem;
-  box-shadow: 0 2px 24px 0 rgba(0,0,0,0.18);
-  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
   min-width: 320px;
   min-height: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1rem;
   position: relative;
-  animation: popin 0.18s cubic-bezier(.4,2,.6,1) 1;
+  animation: modalFadeIn 0.3s ease-out;
 }
 
 .alert-modal-content.bienvenida {
-  border-left: 6px solid #1976d2;
+  border-left: 4px solid #43a047;
 }
 .alert-modal-content.creado {
-  border-left: 6px solid #43a047;
+  border-left: 4px solid #43a047;
 }
 .alert-modal-content.eliminado {
-  border-left: 6px solid #e53935;
+  border-left: 4px solid #e53935;
 }
 .alert-modal-content.error {
-  border-left: 6px solid #e53935;
+  border-left: 4px solid #e53935;
 }
 
 .alert-icon {
-  font-size: 2.2rem;
+  font-size: 2rem;
 }
 .alert-msg {
-  font-size: 1.1rem;
-  color: #222;
+  font-size: 1rem;
+  color: #333;
   text-align: center;
+  font-weight: 500;
 }
 
 // Container principal
@@ -82,21 +83,21 @@
 }
 
 .add-btn {
-  background: linear-gradient(135deg, #1976d2, #1565c0);
+  background: #43a047;
   color: #fff;
   border: none;
-  border-radius: 0.5rem;
-  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(25, 118, 210, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(67, 160, 71, 0.2);
 }
 
 .add-btn:hover {
-  background: linear-gradient(135deg, #1565c0, #0d47a1);
+  background: #388e3c;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4);
+  box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
 }
 
 // Loading
@@ -174,39 +175,43 @@
   flex: 1;
 }
 
-// Botones
+// Botones estandarizados
 .blue-btn {
-  background: #1976d2;
+  background: #4caf50;
   color: #fff;
   border: none;
-  border-radius: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
 }
 
 .blue-btn:hover {
-  background: #1565c0;
+  background: #45a049;
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
 }
 
 .red-btn {
-  background: #e53935;
+  background: #2e7d32;
   color: #fff;
   border: none;
-  border-radius: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
 }
 
 .red-btn:hover {
-  background: #d32f2f;
+  background: #1b5e20;
   transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
 }
 
 // Modal
@@ -318,13 +323,18 @@
 }
 
 .modal-actions button[type="submit"] {
-  background: #1976d2;
+  background: #43a047;
   color: #fff;
   border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(67, 160, 71, 0.2);
+  transition: all 0.3s ease;
 }
 
 .modal-actions button[type="submit"]:hover:not(:disabled) {
-  background: #1565c0;
+  background: #388e3c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
 }
 
 .modal-actions button:disabled {

@@ -95,22 +95,26 @@
       height: 2.5rem;
       
       &.p-button-warning {
-        background: var(--orange-500);
-        border-color: var(--orange-500);
+        background: #4caf50;
+        border-color: #4caf50;
+        box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
         
         &:hover {
-          background: var(--orange-600);
-          border-color: var(--orange-600);
+          background: #45a049;
+          border-color: #45a049;
+          box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
         }
       }
       
       &.p-button-danger {
-        background: var(--red-500);
-        border-color: var(--red-500);
+        background: #2e7d32;
+        border-color: #2e7d32;
+        box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
         
         &:hover {
-          background: var(--red-600);
-          border-color: var(--red-600);
+          background: #1b5e20;
+          border-color: #1b5e20;
+          box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
         }
       }
     }

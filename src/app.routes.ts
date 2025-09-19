@@ -10,7 +10,7 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./app/layout/shell/app.layout').then(m => m.AppLayout),
     children: [
-  { path: 'permisos', loadChildren: () => import('./app/features/modelo-de-seguridad/permisos/permisos-page.routes').then(m => m.PERMISOS_ROUTES) },
+  
 
       { path: 'home',            loadChildren: () => import('./app/feature/home/pages/password/home.routes').then(m => m.HOMEPASSWORD_ROUTES) },
       { path: 'consultar-ingresar', loadChildren: () => import('./app/feature/Consulta-Ingresar/consultar.routes').then(m => m.CONSULTAR_ROUTES) },
@@ -33,6 +33,7 @@ export const routes: Routes = [
   { path: 'rol-user', loadChildren: () => import('./app/features/modelo-de-seguridad/Rol-user/rol-user.routes').then(m => m.rolUserRoutes) },
   { path: 'parameters',      loadChildren: () => import('./app/features/parameters/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
   { path: 'inspectora/generar-multa', loadChildren: () => import('./app/feature/Inspectora/generar-multa.routes').then(m => m.GENERAR_MULTA_ROUTES) },
+  { path: 'permisos', loadChildren: () => import('./app/features/modelo-de-seguridad/permisos/permisos-page.routes').then(m => m.PERMISOS_ROUTES) },
     ]
   },
 
