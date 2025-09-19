@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { ColumnDef } from '../../../shared/Models/table.Generic';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
-import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
+import { MunicipalityService } from '../../../core/services/municipality.service';
 import { finalize } from 'rxjs/operators';
 import { AppTopbar } from '../../../feature/topbar/topbar.component';
 import { Municipality } from '../../../shared/Models/parameter/municipality.models';
@@ -21,7 +21,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 })
 export class MunicipalityComponent implements OnInit {
   private router = inject(Router);
-  private api = inject(ServiceGenericService);
+  private service = inject(MunicipalityService);
   private fb = inject(FormBuilder);
 
   municipios: Municipality[] = [];
@@ -68,7 +68,7 @@ export class MunicipalityComponent implements OnInit {
   private cargarMunicipios(): void {
     this.loading = true;
     this.errorMsg = '';
-    this.api.getAll<Municipality>('municipality', 'GetAll')
+    this.service.genericService.getAll<Municipality>(this.service.endpoint, 'GetAll')
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: r => this.municipios = r,
@@ -98,7 +98,7 @@ export class MunicipalityComponent implements OnInit {
       
       const municipalityData = this.municipalityForm.value;
       
-      this.api.create<Municipality>('municipality', municipalityData)
+      this.service.genericService.create<Municipality>(this.service.endpoint, municipalityData)
         .pipe(finalize(() => this.loading = false))
         .subscribe({
           next: (nuevoMunicipio: Municipality) => {
@@ -148,7 +148,7 @@ export class MunicipalityComponent implements OnInit {
         ...this.updateForm.value
       };
       
-      this.api.update<Municipality>('municipality', this.municipalitySeleccionado.id, municipalityActualizado)
+      this.service.genericService.update<Municipality>(this.service.endpoint, this.municipalitySeleccionado.id, municipalityActualizado)
         .pipe(finalize(() => this.loading = false))
         .subscribe({
           next: (municipalityActualizado: Municipality) => {
@@ -185,7 +185,7 @@ export class MunicipalityComponent implements OnInit {
       this.errorMsg = '';
       this.successMsg = '';
       
-      this.api.delete('municipality', this.municipalityAEliminar.id)
+      this.service.genericService.delete(this.service.endpoint, this.municipalityAEliminar.id)
         .pipe(finalize(() => this.loading = false))
         .subscribe({
           next: () => {

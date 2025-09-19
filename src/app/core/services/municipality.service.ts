@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ServiceGenericService } from './servicesGeneric/service-generic.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Municipio } from '../../shared/Models/municipio.model';
-// ...existing code...
 
 @Injectable({ providedIn: 'root' })
 export class MunicipalityService {
   readonly endpoint = 'municipality';
+  public genericService = inject(ServiceGenericService);
+  
   private municipalitiesSubject = new BehaviorSubject<Municipio[]>([]);
   municipalities$ = this.municipalitiesSubject.asObservable();
 
-  constructor(public genericService: ServiceGenericService) {
+  constructor() {
     this.loadMunicipios();
   }
 

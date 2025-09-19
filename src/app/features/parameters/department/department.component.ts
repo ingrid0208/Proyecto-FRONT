@@ -9,7 +9,7 @@ import { AppTopbar } from '../../../feature/topbar/topbar.component';
 import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { ColumnDef } from '../../../shared/Models/table.Generic';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
-import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
+import { DepartmentService } from '../../../core/services/department.service';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 // DTO que esperas del backend
@@ -37,7 +37,7 @@ export interface Department {
 })
 export class DepartmentComponent implements OnInit {
   private router = inject(Router);
-  private api = inject(ServiceGenericService);
+  private service = inject(DepartmentService);
 
   departamentos: Department[] = [];
   loading = false;
@@ -59,13 +59,13 @@ export class DepartmentComponent implements OnInit {
     this.errorMsg = '';
 
     // 👇 Endpoint del backend: api/department (según tu controlador departmentController)
-    this.api.getAll<Department>('department', 'GetAll')
+    this.service.genericService.getAll<Department>(this.service.endpoint, 'GetAll')
       .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: (rows) => {
+        next: (rows: Department[]) => {
           this.departamentos = rows; // no hace falta mapear, ya coincide con la interfaz
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error cargando departamentos', err);
           this.errorMsg = 'No fue posible cargar los departamentos.';
         }
