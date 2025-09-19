@@ -46,14 +46,6 @@
       </div>
       <div class="card-content">
         <div class="info-row">
-          <span class="label">Form ID:</span>
-          <span class="value">{{ formModule.formid }}</span>
-        </div>
-        <div class="info-row">
-          <span class="label">Module ID:</span>
-          <span class="value">{{ formModule.moduleid }}</span>
-        </div>
-        <div class="info-row">
           <span class="label">Form Name:</span>
           <span class="value">{{ formModule.formName }}</span>
         </div>
@@ -72,20 +64,20 @@
       <h2>{{ isEditing ? 'Editar Form-Module' : 'Agregar Form-Module' }}</h2>
       <form (ngSubmit)="guardarFormModule()" autocomplete="off">
         <label>
-          Form ID:
-          <input type="number" [(ngModel)]="nuevoFormModule.formid" name="formid" required placeholder="ID del formulario" min="1" />
-        </label>
-        <label>
-          Module ID:
-          <input type="number" [(ngModel)]="nuevoFormModule.moduleid" name="moduleid" required placeholder="ID del módulo" min="1" />
-        </label>
-        <label>
           Form Name:
           <input type="text" [(ngModel)]="nuevoFormModule.formName" name="formName" required placeholder="Nombre del formulario" />
         </label>
         <label>
           Module Name:
           <input type="text" [(ngModel)]="nuevoFormModule.moduleName" name="moduleName" required placeholder="Nombre del módulo" />
+        </label>
+        <label>
+          Form ID:
+          <input type="number" [(ngModel)]="nuevoFormModule.formid" name="formid" required placeholder="ID del formulario" min="1" />
+        </label>
+        <label>
+          Module ID:
+          <input type="number" [(ngModel)]="nuevoFormModule.moduleid" name="moduleid" required placeholder="ID del módulo" min="1" />
         </label>
         <div class="modal-actions">
           <button type="button" (click)="cerrarModal()">Cancelar</button>

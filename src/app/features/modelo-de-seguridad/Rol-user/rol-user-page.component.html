@@ -39,8 +39,7 @@
   <div class="rol-user-list space-y-4">
     <div class="rol-user-row flex items-center justify-between p-4 rounded-lg shadow bg-white border-l-4 border-blue-400 hover:shadow-lg transition-all duration-200" *ngFor="let ru of rolUsers">
       <div class="rol-user-content">
-  <div class="rol-user-nombre text-lg font-semibold text-blue-700">Usuario: {{ ru.userName }} | Rol: {{ ru.rolName || ru.rolId }}</div>
-        <div class="rol-user-id text-gray-500 text-sm">ID: {{ ru.id }}</div>
+        <div class="rol-user-nombre text-lg font-semibold text-blue-700">Usuario: {{ ru.userName }} | Rol: {{ ru.rolName || ru.rolId }}</div>
       </div>
       <div class="rol-user-actions flex gap-2">
         <button class="edit-btn" (click)="editarRolUser(ru)"><i class="material-icons">edit</i></button>
