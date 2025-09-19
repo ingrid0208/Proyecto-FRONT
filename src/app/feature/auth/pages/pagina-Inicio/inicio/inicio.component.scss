@@ -36,7 +36,39 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
   padding: 20px 40px;
   background: rgba(255,255,255,.1); backdrop-filter: blur(10px);
 
-  .logo { font-size: 24px; font-weight: 600; color: #fff; text-decoration: none; }
+  .nav-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    
+    .nav-logo {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+    
+    .nav-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      
+      .logo { 
+        font-size: 24px; 
+        font-weight: 600; 
+        color: #fff; 
+        text-decoration: none;
+        margin: 0;
+        line-height: 1.2;
+      }
+      
+      .municipality {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0;
+        line-height: 1.1;
+      }
+    }
+  }
 
   .nav-links {
     display: flex; gap: 40px; align-items: center;
@@ -126,6 +158,113 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
   font-weight: 800;
   line-height: 1.1;
   margin: 0;
+}
+
+// ===================== Carrusel de imágenes =====================
+.carousel-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-carousel-main {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.carousel-container-main {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0,0,0,.15);
+}
+
+.carousel-image-main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  
+  &.active {
+    opacity: 1;
+  }
+}
+
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  color: $text-dark;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+  }
+  
+  &.prev {
+    left: 15px;
+  }
+  
+  &.next {
+    right: 15px;
+  }
+}
+
+.carousel-indicators-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.indicator-main {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(76, 175, 80, 0.4);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &.active {
+    background-color: $primary-green;
+    transform: scale(1.2);
+  }
+  
+  &:hover {
+    background-color: rgba(76, 175, 80, 0.7);
+  }
+}
+
+.carousel-description {
+  margin-top: 15px;
+  padding: 15px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid $primary-green;
+  
+  p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: $text-gray;
+    font-style: italic;
+  }
 }
 
 /* Texto por defecto */
@@ -363,16 +502,78 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
 }
 
 @media (max-width: 768px) {
-  .navbar { padding: 15px 20px; .nav-links { gap: 20px; } }
+  .navbar { 
+    padding: 15px 20px; 
+    .nav-links { gap: 20px; }
+    
+    .nav-logo-section {
+      gap: 10px;
+      
+      .nav-logo {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .nav-text {
+        .logo { font-size: 20px; }
+        .municipality { font-size: 12px; }
+      }
+    }
+  }
+  
   .multas-section {
     padding: 60px 0;
     .container { padding: 0 20px; }
     .section-title { font-size: 36px; margin-bottom: 40px; }
   }
+  
+  // Carrusel responsivo
+  .carousel-container-main {
+    height: 200px;
+  }
+  
+  .carousel-nav {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+    
+    &.prev { left: 10px; }
+    &.next { right: 10px; }
+  }
 }
 
 @media (max-width: 480px) {
-  .navbar { .nav-links { a:not(.login-btn) { display: none; } } }
+  .navbar { 
+    .nav-links { a:not(.login-btn) { display: none; } }
+    
+    .nav-logo-section {
+      .nav-text {
+        .logo { font-size: 18px; }
+        .municipality { display: none; } // Ocultar en móviles muy pequeños
+      }
+    }
+  }
+  
   .hero h1 { font-size: 36px; }
   .hero p  { font-size: 16px; }
+  
+  // Carrusel móvil
+  .carousel-container-main {
+    height: 180px;
+  }
+  
+  .carousel-nav {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+    
+    &.prev { left: 8px; }
+    &.next { right: 8px; }
+  }
+  
+  .carousel-description {
+    padding: 12px;
+    
+    p { font-size: 13px; }
+  }
 }

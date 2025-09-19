@@ -1,4 +1,4 @@
-import { Component, ViewChildren, QueryList, OnInit } from '@angular/core';
+import { Component, ViewChildren, QueryList, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -16,6 +16,12 @@ import { TypeInfractionSelectDto } from '../../../../../shared/Models/Entities/T
 interface SubItem { title: string; text: string; }
 interface Category { title: string; items: SubItem[]; }
 
+interface CarouselImage {
+  src: string;
+  alt: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-inicio',
   standalone: true,
@@ -23,7 +29,7 @@ interface Category { title: string; items: SubItem[]; }
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.scss'],
 })
-export class InicioComponent implements OnInit {
+export class InicioComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private api: ServiceGenericService   // ⬅️ tu servicio genérico
@@ -38,14 +44,70 @@ export class InicioComponent implements OnInit {
   // datos renderizados
   categories: Category[] = [];
 
+  // Carrusel
+  currentImageIndex: number = 0;
+  private intervalId: any;
+  
+  carouselImages: CarouselImage[] = [
+    {
+      src: 'assets/demo/multa-transito.svg',
+      alt: 'Normas de Tránsito',
+      description: 'Infracciones de tránsito: exceso de velocidad, no respetar señales, estacionamiento indebido y más.'
+    },
+    {
+      src: 'assets/demo/multa-convivencia.svg',
+      alt: 'Convivencia Ciudadana',
+      description: 'Multas por alteración del orden público, ruido excesivo, consumo de alcohol en espacios públicos.'
+    },
+    {
+      src: 'assets/demo/multa-comercio.svg',
+      alt: 'Comercio y Espacio Público',
+      description: 'Sanciones por comercio no autorizado, ocupación indebida del espacio público y permisos.'
+    }
+  ];
+
   steps: StepCard[] = [
-    { number: '01', icon: 'edit_note', title: 'Ingresa tus datos', description: 'Completa el formulario con tu tipo y número de documento' },
-    { number: '02', icon: 'search', title: 'Consulta instantánea', description: 'Nuestro sistema busca todas tus infracciones en tiempo real' },
-    { number: '03', icon: 'assignment', title: 'Revisa los detalles', description: 'Ve fecha, lugar, valor y estado de cada multa' },
+    { number: '01', icon: 'edit_note', title: 'Ingresa tus datos', description: 'Completa el formulario con tu tipo y número de documento de identidad' },
+    { number: '02', icon: 'search', title: 'Consulta de multas', description: 'El sistema busca automáticamente todas tus infracciones y comparendos' },
+    { number: '03', icon: 'assignment', title: 'Revisa los detalles', description: 'Consulta fecha, lugar, tipo de infracción, valor y estado de cada multa' },
   ];
 
   ngOnInit(): void {
     this.loadTypeInfractions();
+    this.startCarousel();
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  // Métodos del carrusel
+  startCarousel(): void {
+    this.intervalId = setInterval(() => {
+      this.nextImage();
+    }, 5000); // Cambia cada 5 segundos
+  }
+
+  nextImage(): void {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+  }
+
+  previousImage(): void {
+    this.currentImageIndex = this.currentImageIndex === 0 
+      ? this.carouselImages.length - 1 
+      : this.currentImageIndex - 1;
+  }
+
+  setCurrentImage(index: number): void {
+    this.currentImageIndex = index;
+    
+    // Reiniciar el interval cuando el usuario selecciona manualmente
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.startCarousel();
+    }
   }
 
   private loadTypeInfractions(): void {
