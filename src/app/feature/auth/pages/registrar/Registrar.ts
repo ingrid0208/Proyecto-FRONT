@@ -8,8 +8,6 @@ import { ServiceGenericService } from '../../../../core/services/servicesGeneric
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
 
-
-
 @Component({
   selector: 'app-Registrar',
   standalone: true,
@@ -35,7 +33,7 @@ import { HttpErrorResponse } from '@angular/common/http';
       <div class="input-group">
         <label class="input-label">
           <i class="pi pi-envelope input-icon"></i>
-          <input #emailInput  pInputText placeholder="Correo electrónico" [(ngModel)]="email" class="styled-input" />
+          <input #emailInput pInputText placeholder="Correo electrónico" [(ngModel)]="email" class="styled-input" />
         </label>
       </div>
 
@@ -70,7 +68,6 @@ export class Registrar {
   password = '';
   loading = false;
 
-  // (opcional) para enfocar el input que falló:
   @ViewChild('fullNameInput') fullNameRef!: ElementRef<HTMLInputElement>;
   @ViewChild('emailInput') emailRef!: ElementRef<HTMLInputElement>;
   @ViewChild('passwordInput') passwordRef!: ElementRef<HTMLInputElement>;
@@ -85,13 +82,19 @@ export class Registrar {
     if (!this.canSubmit()) return;
     this.loading = true;
 
-    const payloadCamel = {
-      nombreCompleto: this.fullName.trim(),
+    // Dividir "Nombre completo" en firstName + lastName
+    const [firstName, ...rest] = this.fullName.trim().split(' ');
+    const lastName = rest.join(' ');
+
+    const payload = {
       email: this.email.trim(),
-      password: this.password
+      password: this.password,
+      firstName: firstName || '',
+      lastName: lastName || ''
     };
 
-    this.api.registrar(payloadCamel).subscribe({
+    // ✅ Solo pasamos el body, la URL ya está en el service
+    this.api.registrar(payload).subscribe({
       next: () => {
         Swal.fire({
           icon: 'success',
@@ -100,27 +103,19 @@ export class Registrar {
         }).then(() => this.router.navigate(['/auth/verify-code']));
       },
       error: async (err: HttpErrorResponse) => {
-        // 1) Convertir a objeto en caso de HTML/Blob
         const payload = await this.normalizeErrorPayload(err);
-
-        // 2) Tomar SOLO el primer error (por prioridad)
         const firstError = this.pickFirstError(payload?.errors);
         if (firstError) {
           const { field, message } = firstError;
-
           await Swal.fire({
             icon: 'error',
             title: 'Validación',
             text: message,
             confirmButtonText: 'Corregir'
           });
-
-          // 3) (opcional) Enfocar el campo correspondiente
           this.focusField(field);
           return;
         }
-
-        // Fallback si no vino estructura de FluentValidation
         Swal.fire({
           icon: 'error',
           title: `Error ${err.status || ''}`,
@@ -131,12 +126,8 @@ export class Registrar {
     });
   }
 
-  // --- Helpers ---
+  private fieldOrder = ['firstName', 'lastName', 'email', 'password'];
 
-  /** Orden de prioridad de campos */
-  private fieldOrder = ['NombreCompleto', 'email', 'password'];
-
-  /** Normaliza el error por si vino text/html o Blob y no JSON */
   private async normalizeErrorPayload(err: HttpErrorResponse): Promise<any> {
     if (err?.error instanceof Blob) {
       try { return JSON.parse(await err.error.text()); } catch { return {}; }
@@ -147,35 +138,23 @@ export class Registrar {
     return err?.error ?? {};
   }
 
-  /**
-   * Toma SOLO el primer error del objeto errors de FluentValidation,
-   * según el orden deseado (NombreCompleto → email → password).
-   * Estructura esperada:
-   * { errors: { NombreCompleto: [msg1, msg2], email: [...], password: [...] } }
-   */
-  private pickFirstError(errors: Record<string, string[]> | undefined):
-    { field: string; message: string } | null {
+  private pickFirstError(errors: Record<string, string[]> | undefined): { field: string; message: string } | null {
     if (!errors) return null;
-
-    // 1) Buscar por prioridad explícita
     for (const f of this.fieldOrder) {
       const list = errors[f];
       if (list?.length) return { field: f, message: list[0] };
     }
-
-    // 2) Si vino otra clave no prevista, tomar la primera disponible
     for (const key of Object.keys(errors)) {
       const list = errors[key];
       if (list?.length) return { field: key, message: list[0] };
     }
-
     return null;
   }
 
-  /** Enfoca el input del campo con error (si definiste los #refs en el template) */
   private focusField(field: string) {
     const map: Record<string, ElementRef<HTMLInputElement> | undefined> = {
-      NombreCompleto: this.fullNameRef,
+      firstName: this.fullNameRef,
+      lastName: this.fullNameRef,
       email: this.emailRef,
       password: this.passwordRef
     };

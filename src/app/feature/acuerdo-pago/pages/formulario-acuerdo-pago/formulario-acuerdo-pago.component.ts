@@ -32,7 +32,7 @@ import Swal from 'sweetalert2';
 })
 export class FormularioAcuerdoPagoComponent implements OnInit {
   step: number = 1;
-  today: string = new Date().toISOString().split('T')[0];
+  today: string = this.getToday();
 
   form: any = {
     address: '',
@@ -234,4 +234,10 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
       }
     });
   }
+
+  getToday(): string {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // elimina la hora
+  return today.toISOString().split('T')[0]; 
+}
 }

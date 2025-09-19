@@ -7,5 +7,5 @@ export interface PaymentAgreementInitDto {
   valorSMDLV: number;
   baseAmount: number;
   infractionId: number;
-  userId?: number; // 👈 Agregar userId como opcional por si lo necesitas
+  userId?: number; 
 }

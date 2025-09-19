@@ -102,12 +102,13 @@ export class ServiceGenericService {
 
 
   registrar(body: RegisterRequestDto) {
-    return this.http.post<any>(
-      this.url('Login', 'Registrarse'),
-      body,
-      { headers: this.getHeaders(true) } // true => **no** Authorization
-    );
-  }
+  return this.http.post<any>(
+    this.url('Auth', 'register'),       // ✅ apunta al endpoint real
+    body,
+    { headers: this.getHeaders(true) }  // se envía sin token
+  );
+}
+
 
   // ======================
   // SESIÓN POR DOCUMENTO (Cookie) — con withCredentials
