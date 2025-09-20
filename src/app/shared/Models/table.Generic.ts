@@ -1,4 +1,4 @@
-export type ColumnType = 'text' | 'date' | 'currency' | 'chip';
+export type ColumnType = 'text' | 'date' | 'currency' | 'chip' | 'actions';
 
 export interface ColumnDef {
   key: string;               // ID único de la columna (matColumnDef)

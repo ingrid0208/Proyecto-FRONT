@@ -8,7 +8,41 @@
 
   <mat-card-content>
     <ng-container *ngIf="!loading && !errorMsg; else estado">
-      <app-generic-multas-table [data]="frecuencias" [columns]="columns"></app-generic-multas-table>
+      <!-- Tabla personalizada para frecuencias de pago -->
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Intervalo</th>
+              <th>Día de corte</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let frecuencia of frecuencias">
+              <td>{{ frecuencia.intervalPage }}</td>
+              <td>{{ frecuencia.dueDayOfMonth }}</td>
+              <td class="actions-cell">
+                <button
+                  class="btn btn-sm btn-primary"
+                  (click)="abrirFormularioActualizar(frecuencia)"
+                  title="Editar frecuencia de pago">
+                  Editar
+                </button>
+                <button
+                  class="btn btn-sm btn-danger ml-2"
+                  (click)="confirmarEliminacion(frecuencia)"
+                  title="Eliminar frecuencia de pago">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="frecuencias.length === 0">
+              <td colspan="3" class="text-center">No hay frecuencias de pago para mostrar</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </ng-container>
 
     <ng-template #estado>
@@ -20,6 +54,218 @@
   <app-button
     texto="Agregar nueva frecuencia de pago"
     color="accent"
-    (clicked)="onClickGenerar()">
+    (clicked)="abrirFormulario()">
   </app-button>
 </mat-card>
+
+<!-- Mensajes de éxito y error -->
+<div *ngIf="successMsg" class="alert alert-success">
+  {{ successMsg }}
+</div>
+
+<div *ngIf="errorMsg" class="alert alert-error">
+  {{ errorMsg }}
+</div>
+
+<!-- Modal para crear frecuencia de pago -->
+<div *ngIf="showForm" class="modal-overlay" (click)="cerrarFormulario()">
+  <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="header-content">
+        <div class="header-icon create-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="header-text">
+          <h3>Crear Nueva Frecuencia de Pago</h3>
+          <p>Ingresa la información de la nueva frecuencia de pago</p>
+        </div>
+      </div>
+      <button class="close-btn" (click)="cerrarFormulario()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="paymentFrequencyForm" (ngSubmit)="crearPaymentFrequency()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="intervalPage">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
+                <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
+              </svg>
+              Intervalo
+            </label>
+            <input
+              type="text"
+              id="intervalPage"
+              formControlName="intervalPage"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('intervalPage')"
+              placeholder="Ej: Mensual">
+            <div *ngIf="isFieldInvalid('intervalPage')" class="invalid-feedback">
+              {{ getFieldError('intervalPage') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="dueDayOfMonth">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Día de corte
+            </label>
+            <input
+              type="number"
+              id="dueDayOfMonth"
+              formControlName="dueDayOfMonth"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('dueDayOfMonth')"
+              placeholder="Ej: 30"
+              min="1"
+              max="31">
+            <div *ngIf="isFieldInvalid('dueDayOfMonth')" class="invalid-feedback">
+              {{ getFieldError('dueDayOfMonth') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modern-btn" (click)="cerrarFormulario()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || paymentFrequencyForm.invalid">
+            <svg *ngIf="!loading" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div *ngIf="loading" class="loading-spinner"></div>
+            <span *ngIf="loading">Creando...</span>
+            <span *ngIf="!loading">Crear Frecuencia de Pago</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para actualizar frecuencia de pago -->
+<div *ngIf="showUpdateForm" class="modal-overlay" (click)="cerrarFormularioActualizar()">
+  <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="header-content">
+        <div class="header-icon edit-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="header-text">
+          <h3>Actualizar Frecuencia de Pago</h3>
+          <p>Modifica la información de la frecuencia de pago</p>
+        </div>
+      </div>
+      <button class="close-btn" (click)="cerrarFormularioActualizar()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="updateForm" (ngSubmit)="actualizarPaymentFrequency()">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="update-intervalPage">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
+                <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
+              </svg>
+              Intervalo
+            </label>
+            <input
+              type="text"
+              id="update-intervalPage"
+              formControlName="intervalPage"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('intervalPage', updateForm)"
+              placeholder="Ej: Mensual">
+            <div *ngIf="isFieldInvalid('intervalPage', updateForm)" class="invalid-feedback">
+              {{ getFieldError('intervalPage', updateForm) }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="update-dueDayOfMonth">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Día de corte
+            </label>
+            <input
+              type="number"
+              id="update-dueDayOfMonth"
+              formControlName="dueDayOfMonth"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('dueDayOfMonth', updateForm)"
+              placeholder="Ej: 30"
+              min="1"
+              max="31">
+            <div *ngIf="isFieldInvalid('dueDayOfMonth', updateForm)" class="invalid-feedback">
+              {{ getFieldError('dueDayOfMonth', updateForm) }}
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary modern-btn" (click)="cerrarFormularioActualizar()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || updateForm.invalid">
+            <svg *ngIf="!loading" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div *ngIf="loading" class="loading-spinner"></div>
+            <span *ngIf="loading">Actualizando...</span>
+            <span *ngIf="!loading">Actualizar Frecuencia de Pago</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div *ngIf="showConfirm" class="modal-overlay">
+  <div class="modal-content modal-sm">
+    <div class="modal-header">
+      <h3>Confirmar Eliminación</h3>
+    </div>
+
+    <div class="modal-body">
+      <p>¿Está seguro que desea eliminar la frecuencia de pago con intervalo <strong>{{ paymentFrequencyAEliminar?.intervalPage }}</strong>?</p>
+      <p class="text-warning">Esta acción no se puede deshacer.</p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancelarEliminacion()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-danger" (click)="eliminarPaymentFrequency()" [disabled]="loading">
+        <span *ngIf="loading">Eliminando...</span>
+        <span *ngIf="!loading">Eliminar</span>
+      </button>
+    </div>
+  </div>
+</div>
