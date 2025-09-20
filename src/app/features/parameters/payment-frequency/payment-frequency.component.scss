@@ -436,6 +436,28 @@
       border-color: #dc2626;
     }
   }
+
+  &.btn-success {
+    color: white;
+    background-color: #10b981;
+    border-color: #10b981;
+
+    &:hover:not(:disabled) {
+      background-color: #059669;
+      border-color: #059669;
+    }
+  }
+
+  &.btn-success-dark {
+    color: white;
+    background-color: #059669;
+    border-color: #059669;
+
+    &:hover:not(:disabled) {
+      background-color: #047857;
+      border-color: #047857;
+    }
+  }
 }
 
 // Estilos para alertas mejoradas
