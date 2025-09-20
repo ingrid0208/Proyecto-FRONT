@@ -95,10 +95,10 @@
     <div class="hero-inner">
       <!-- Izquierda -->
       <div class="hero-copy">
-        <h1>
-          Tus multas.<br />
-          Organizadas. Sin<br />
-          esfuerzo
+        <h1 class="typing">
+          <span class="line">Tus multas.</span><br />
+          <span class="line">Organizadas. Sin</span><br />
+          <span class="line">esfuerzo</span>
         </h1>
 
         <p>
@@ -114,6 +114,22 @@
     </div>
   </main>
 </div> <!-- ⬅️ Cerramos el contenedor verde -->
+
+<!-- ESTADÍSTICAS ANIMADAS -->
+<section class="stats-section" aria-label="Estadísticas del sistema">
+  <div class="stats-container">
+    <div class="stat-item" *ngFor="let stat of stats; let i = index" [attr.data-index]="i">
+      <div class="stat-icon">
+        <span class="material-symbols-outlined">{{ stat.icon }}</span>
+      </div>
+      <div class="stat-content">
+        <span class="stat-number" [attr.data-target]="stat.value">0</span>
+        <span class="stat-suffix">{{ stat.suffix }}</span>
+        <p class="stat-label">{{ stat.label }}</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- BANDA FULL-WIDTH BLANCA: ¿Cómo funciona? -->
 <section class="howto-band" aria-label="Cómo funciona">
