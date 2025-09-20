@@ -1,6 +1,6 @@
 // ===================== Variables =====================
-$primary-green: #4CAF50;
-$primary-green-dark: #45a049;
+$primary-green: #01763C;
+$primary-green-dark: #015930;
 $text-dark: #2c3e50;
 $text-gray: #495057;
 $text-light-gray: #6c757d;
@@ -26,63 +26,149 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
 
 .landing-container {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, $primary-green 0%, $primary-green-dark 100%);
+  background:
+    radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(69, 160, 73, 0.4) 0%, transparent 50%),
+    linear-gradient(135deg, $primary-green 0%, $primary-green-dark 100%);
   min-height: 0vh;
+  position: relative;
+  overflow: hidden;
+
+  // Partículas flotantes animadas
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px, 80px 80px;
+    animation: float-particles 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes float-particles {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-10px) translateX(5px); }
+  50% { transform: translateY(-5px) translateX(-5px); }
+  75% { transform: translateY(-15px) translateX(10px); }
 }
 
 // ===================== Navbar =====================
 .navbar {
   display: flex; justify-content: space-between; align-items: center;
   padding: 20px 40px;
-  background: rgba(255,255,255,.1); backdrop-filter: blur(10px);
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  position: relative;
+
+  // Efecto glassmorphism mejorado
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+      rgba(255,255,255,.2) 0%,
+      rgba(255,255,255,.05) 50%,
+      rgba(255,255,255,.15) 100%);
+    border-radius: 0;
+    pointer-events: none;
+  }
 
   .nav-logo-section {
     display: flex;
     align-items: center;
     gap: 15px;
-    
+    position: relative;
+    z-index: 2;
+
     .nav-logo {
       width: 50px;
       height: 50px;
       object-fit: contain;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.1));
+      @include transition(transform);
+
+      &:hover {
+        transform: scale(1.05);
+      }
     }
-    
+
     .nav-text {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      
-      .logo { 
-        font-size: 24px; 
-        font-weight: 600; 
-        color: #fff; 
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        color: #fff;
         text-decoration: none;
         margin: 0;
         line-height: 1.2;
+        text-shadow: 0 2px 8px rgba(0,0,0,.3);
+        @include transition(color);
+
+        &:hover {
+          color: rgba(255,255,255,.9);
+        }
       }
-      
+
       .municipality {
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.85);
         margin: 0;
         line-height: 1.1;
+        font-weight: 300;
+        text-shadow: 0 1px 4px rgba(0,0,0,.2);
       }
     }
   }
 
   .nav-links {
     display: flex; gap: 40px; align-items: center;
+    position: relative;
+    z-index: 2;
 
     a {
       color: #fff; text-decoration: none; font-size: 16px; font-weight: 400;
-      @include transition(opacity);
-      &:hover { opacity: .8; }
+      @include transition(all, 0.3s);
+      position: relative;
+
+      &:hover {
+        color: rgba(255,255,255,.9);
+        text-shadow: 0 2px 8px rgba(0,0,0,.3);
+      }
 
       &.login-btn {
-        background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.3);
-        padding: 12px 24px; border-radius: 8px; font-weight: 500; cursor: pointer;
-        @include transition();
-        &:hover { background: rgba(255,255,255,.25); transform: translateY(-1px); opacity: 1 !important; }
+        background: linear-gradient(135deg, rgba(255,255,255,.25), rgba(255,255,255,.15));
+        border: 1px solid rgba(255,255,255,.4);
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        @include transition(all, 0.3s);
+        box-shadow: 0 4px 15px rgba(0,0,0,.1);
+        backdrop-filter: blur(10px);
+
+        &:hover {
+          background: linear-gradient(135deg, rgba(255,255,255,.35), rgba(255,255,255,.25));
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba(0,0,0,.15);
+          border-color: rgba(255,255,255,.5);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
       }
     }
   }
@@ -92,26 +178,69 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
 /* Modo por defecto (si NO usas .intro-contrast) */
 .intro-split {
   padding: clamp(16px, 3vw, 28px) clamp(16px, 4vw, 40px) 0;
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.3s forwards;
 }
 
 /* —— CAMBIO: franja a todo el ancho y sin borde redondeado —— */
 .intro-split.intro-contrast {
   position: relative;
   width: 100%;
-  margin: 0;                      /* sin separación para que “pegue” a los límites */
+  margin: 0;                      /* sin separación para que "pegue" a los límites */
   padding: clamp(32px, 5vw, 56px) clamp(16px, 4vw, 40px);
   background: linear-gradient(135deg, $split-mint-1 0%, $split-mint-2 100%);
   border-radius: 0;               /* sin bordes redondeados */
   border: 0;                      /* sin borde */
   box-shadow: none;               /* sin sombra */
+  overflow: hidden;
 
-  /* Decor sutil opcional (sin radius) */
+  /* Decor sutil mejorado con animación */
   &::after {
     content: "";
     position: absolute; inset: 0;
     background: radial-gradient(80% 60% at 80% 0%, rgba(255,255,255,.35) 0%, rgba(255,255,255,0) 60%);
+    opacity: 0.8;
+    animation: subtle-pulse 4s ease-in-out infinite;
     pointer-events: none;
   }
+
+  /* Efecto de ondas animadas */
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    animation: float-bg 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+// Animaciones
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+@keyframes float-bg {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(-10px, -10px) rotate(1deg); }
+  66% { transform: translate(10px, -5px) rotate(-1deg); }
 }
 
 .split-inner {
@@ -137,8 +266,34 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
   color: #ffffff;
   backdrop-filter: blur(8px);
   box-shadow: 0 10px 26px rgba(0, 0, 0, .12);
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  animation: slideInCard 0.8s ease-out forwards;
+  @include transition(all, 0.3s);
+
+  &:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .2);
+  }
+
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.3s; }
 }
-.split-card.alt { background: rgba(255, 255, 255, 0.18); }
+
+.split-card.alt {
+  background: rgba(255, 255, 255, 0.18);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+@keyframes slideInCard {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
 
 /* Cards cuando la sección usa el fondo “mint” */
 .intro-split.intro-contrast .split-card {
@@ -237,7 +392,7 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: rgba(76, 175, 80, 0.4);
+  background-color: rgba(1, 118, 60, 0.4);
   cursor: pointer;
   transition: all 0.3s ease;
   
@@ -247,7 +402,7 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
   }
   
   &:hover {
-    background-color: rgba(76, 175, 80, 0.7);
+    background-color: rgba(1, 118, 60, 0.7);
   }
 }
 
@@ -347,7 +502,10 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
 .hero {
   padding: clamp(40px, 6vw, 96px) clamp(20px, 4vw, 40px);
   min-height: calc(100vh - 120px);
+  position: relative;
+  z-index: 1;
 }
+
 .hero-inner {
   width: min(1200px, 92vw);
   margin: 0 auto;
@@ -357,31 +515,111 @@ $split-mint-2: mix(#fff, $primary-green, 82%);
   gap: clamp(24px, 4vw, 56px);
   text-align: left;
 }
-.hero-inner .hero-copy { grid-column: 1; }
+
+.hero-inner .hero-copy {
+  grid-column: 1;
+  opacity: 0;
+  transform: translateX(-30px);
+  animation: slideInLeft 1s ease-out 0.5s forwards;
+}
+
 .hero h1 {
   font-size: clamp(36px, 6vw, 64px);
   font-weight: 700;
   color: #fff;
   line-height: 1.05;
   margin-bottom: clamp(16px, 2.5vw, 24px);
-  text-shadow: 0 4px 20px rgba(0,0,0,.1);
+  text-shadow: 0 4px 20px rgba(0,0,0,.3);
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), transparent);
+    border-radius: 2px;
+  }
 }
+
 .hero p {
   font-size: clamp(16px, 1.8vw, 20px);
-  color: rgba(255,255,255,.9);
+  color: rgba(255,255,255,.95);
   max-width: 52ch;
   line-height: 1.6;
   margin-bottom: clamp(20px, 3vw, 32px);
+  text-shadow: 0 2px 10px rgba(0,0,0,.2);
 }
+
 .hero .cta-button {
-  background: #fff; color: $primary-green; border: 0;
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  color: $primary-green;
+  border: 0;
   padding: clamp(12px, 1.8vw, 18px) clamp(20px, 3vw, 32px);
   font-size: clamp(14px, 1.6vw, 18px);
-  font-weight: 600; border-radius: 12px; cursor: pointer; text-transform: uppercase;
-  letter-spacing: .5px; @include transition(); @include shadow-light;
-  &:hover { transform: translateY(-2px); @include shadow-strong; background: #f8f9fa; }
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  @include transition(all, 0.3s);
+  @include shadow-light;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-3px) scale(1.02);
+    @include shadow-strong;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(-1px) scale(1);
+  }
 }
-.hero-inner .hero-form { grid-column: 2; align-self: start; }
+
+.hero-inner .hero-form {
+  grid-column: 2;
+  align-self: start;
+  opacity: 0;
+  transform: translateX(30px);
+  animation: slideInRight 1s ease-out 0.7s forwards;
+}
+
+@keyframes slideInLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
 
 /* Overrides del wrapper del componente de identificación */
 :host ::ng-deep app-identification > div {
