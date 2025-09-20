@@ -108,36 +108,25 @@ export class Identificacion implements OnInit {
   async onSubmit() {
     this.isSubmitting = true;
     try {
-      const action = 'documento';
-      const recaptchaToken = await this.recaptcha.getToken(action);
-
-      const body: LoginDocumentoRequest = {
-        documentTypeId: this.selectedDocType as number, // puede venir undefined, el back lo validará
-        documentNumber: (this.documentNumber ?? '').trim(), // el back valida longitud/numérico/>0
-        recaptchaToken,
-        recaptchaAction: action
-      };
-
-      // 1) Login por documento: si hay errores de DTO, FluentValidation devuelve 400 con errors:{...}
-      const resp = await this.auth.loginDocumento(body).toPromise();
-      if (!resp?.isSuccess) {
-        await this.showError(resp?.message ?? 'No fue posible iniciar sesión.');
+      // Validaciones básicas en el frontend
+      if (!this.selectedDocType || !this.documentNumber?.trim()) {
+        await this.showError('Por favor selecciona el tipo de documento e ingresa el número.');
         return;
       }
 
-      // 2) Guarda doc para fallback
-      sessionStorage.setItem('docTypeId', String(body.documentTypeId ?? ''));
-      sessionStorage.setItem('docNumber', body.documentNumber ?? '');
+      // Obtener token de recaptcha
+      const action = 'documento';
+      const recaptchaToken = await this.recaptcha.getToken(action);
 
-      // 3) Consultar multas
-      const r = await this.auth.getMultasByDocument(body.documentTypeId!, body.documentNumber!).toPromise();
+      // 1) Consultar multas directamente (sin login previo)
+      const r = await this.auth.getMultasByDocument(this.selectedDocType!, this.documentNumber!.trim()).toPromise();
       const data = r?.data ?? [];
       if (!data.length) {
         await this.showInfo('Este usuario no tiene multas registradas.', 'Sin resultados');
         return;
       }
 
-      // 4) Mapear a la interfaz de la tabla
+      // 2) Mapear a la interfaz de la tabla
       const multas = data.map((x: any) => ({
         tipo:        x.typeInfractionName ?? '—',
         fecha:       x.dateInfraction ?? '',
@@ -148,10 +137,14 @@ export class Identificacion implements OnInit {
       const first = data[0];
       const ciudadano = [first?.firstName, first?.lastName].filter(Boolean).join(' ');
 
-      // 5) Iniciar ping de sesión (idle)
+      // 3) Guardar datos para referencia futura
+      sessionStorage.setItem('docTypeId', String(this.selectedDocType));
+      sessionStorage.setItem('docNumber', this.documentNumber.trim());
+
+      // 4) Iniciar ping de sesión (idle)
       this.sessionPing.start(60000);
 
-      // 6) Navegar con state
+      // 5) Navegar con state
       if (this.redirectTo) {
         this.router.navigateByUrl(this.redirectTo, { state: { multas, ciudadano } });
       }
