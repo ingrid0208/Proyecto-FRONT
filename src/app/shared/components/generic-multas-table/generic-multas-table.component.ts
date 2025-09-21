@@ -4,9 +4,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { ColumnDef } from '../../Models/table.Generic';
-import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
-import { SessionPingService } from '../../../core/services/session-ping.service'; // si usas el ping
+import { ColumnDef } from '../../models/table.Generic';
+import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
 
 @Component({
   selector: 'app-generic-multas-table',
@@ -22,9 +21,7 @@ export class GenericMultasTableComponent {
 
   constructor(
     private auth: ServiceGenericService,
-    private router: Router,
-    private sessionPing: SessionPingService // opcional
-    
+    private router: Router
   ) {}
 
   get displayedColumnKeys(): string[] {

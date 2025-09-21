@@ -1,5 +1,11 @@
 export interface LoginDocumentoResponse {
-  isSuccess: boolean;
-  message?: string;
-  recaptchaScore?: number;
+  success: boolean;
+  message: string;
+  token?: string;
+  sessionId?: string;
+  userData?: {
+    id: number;
+    name: string;
+    document: string;
+  };
 }

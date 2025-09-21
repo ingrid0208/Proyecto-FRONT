@@ -1,7 +1,10 @@
 export interface RegisterRequestDto {
-  // Si tu backend usa camelCase por defecto:
-  nombreCompleto: string;
   email: string;
   password: string;
-
+  confirmPassword?: string;
+  firstName?: string;
+  lastName?: string;
+  documentType?: string;
+  documentNumber?: string;
+  nombreCompleto?: string;
 }

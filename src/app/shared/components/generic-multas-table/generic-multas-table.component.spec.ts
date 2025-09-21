@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { GenericMultasTableComponent } from './generic-multas-table.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service'; // ajusta la ruta real!
+import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
 
 describe('GenericMultasTableComponent', () => {
   let fixture: ComponentFixture<GenericMultasTableComponent>;

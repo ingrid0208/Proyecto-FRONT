@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ServiceGenericService } from './servicesGeneric/service-generic.service';
+import { ServiceGenericService } from './utils/generic/service-generic.service';
 
 export interface Permission {
   id: number;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServiceGenericService } from './servicesGeneric/service-generic.service';
+import { ServiceGenericService } from './utils/generic/service-generic.service';
 
 export interface FormModule {
   id?: number;

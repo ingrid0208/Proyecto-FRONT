@@ -1,4 +1,10 @@
 export interface LoginEmailResponse {
-  isSuccess: boolean;
-  message: string; // <-- agregar esta propiedad
+  success: boolean;
+  message: string;
+  token?: string;
+  user?: {
+    id: number;
+    email: string;
+    name: string;
+  };
 }

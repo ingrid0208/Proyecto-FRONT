@@ -1,6 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Persona } from '../../Models/persona.model';
+import { Persona } from '../../models/entities/persona.model';
 
 @Component({
   selector: 'app-persona-card',
