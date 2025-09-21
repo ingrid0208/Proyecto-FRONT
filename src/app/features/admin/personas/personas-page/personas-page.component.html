@@ -121,7 +121,7 @@
           <div class="persona-ids" style="display: flex; gap: 15px;">
             <div class="id-item">
               <span class="id-label" style="font-weight: 500; margin-right: 5px;">Municipio:</span>
-              <span class="id-value">{{ getMunicipioNombre(persona.municipalityId) }}</span>
+              <span class="id-value">{{ persona.municipalityId ? getMunicipioNombre(persona.municipalityId) : 'Sin municipio' }}</span>
             </div>
           </div>
         </div>
