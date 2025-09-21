@@ -113,6 +113,25 @@
           </div>
 
           <div class="form-group">
+            <label for="code">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2H14V14H2V2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              Código
+            </label>
+            <input
+              type="text"
+              id="code"
+              formControlName="code"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('code')"
+              placeholder="Ej: MENSUAL">
+            <div *ngIf="isFieldInvalid('code')" class="invalid-feedback">
+              {{ getFieldError('code') }}
+            </div>
+          </div>
+
+          <div class="form-group">
             <label for="daysInterval">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
@@ -199,6 +218,25 @@
               placeholder="Ej: Mensual">
             <div *ngIf="isFieldInvalid('name', updateForm)" class="invalid-feedback">
               {{ getFieldError('name', updateForm) }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="update-code">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 2H14V14H2V2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              Código
+            </label>
+            <input
+              type="text"
+              id="update-code"
+              formControlName="code"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('code', updateForm)"
+              placeholder="Ej: MENSUAL">
+            <div *ngIf="isFieldInvalid('code', updateForm)" class="invalid-feedback">
+              {{ getFieldError('code', updateForm) }}
             </div>
           </div>
 

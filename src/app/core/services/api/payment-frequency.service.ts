@@ -5,7 +5,7 @@ import { ServiceGenericService } from '../utils/generic/service-generic.service'
   providedIn: 'root'
 })
 export class PaymentFrequencyService {
-  readonly endpoint = 'paymentFrequency';
+  readonly endpoint = 'PaymentFrequency';
 
   public genericService = inject(ServiceGenericService);
 
