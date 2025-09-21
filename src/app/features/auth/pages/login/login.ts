@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -13,6 +14,7 @@ import { LoginEmailResponse } from '../../../../shared/models/auth/LoginEmailRes
   selector: 'app-login',
   standalone: true,
   imports: [
+    CommonModule,
     ButtonModule,
     CheckboxModule,
     InputTextModule,
@@ -68,6 +70,10 @@ import { LoginEmailResponse } from '../../../../shared/models/auth/LoginEmailRes
       <div class="login-links">
         <a (click)="goToRecovery($event)">¿Olvidaste tu contraseña?</a>
         <a (click)="goToRegister($event)">¿Deseas Registrarte?</a>
+        <a (click)="goToHome($event)" [class.loading]="navigatingHome">
+          <span *ngIf="!navigatingHome">Volver al inicio</span>
+          <span *ngIf="navigatingHome">Cargando...</span>
+        </a>
       </div>
 
       <img src="../../../assets/demo/login_Abajo.png" class="corner corner-bottom-left" alt="" />
@@ -80,6 +86,7 @@ export class Login {
   email = '';
   password = '';
   loading = false;
+  navigatingHome = false;
 
   constructor(private router: Router, private api: ServiceGenericService) {}
 
@@ -126,5 +133,16 @@ export class Login {
   goToRegister(e?: Event) {
     e?.preventDefault();
     this.router.navigate(['/auth/registrar']);
+  }
+
+  goToHome(e?: Event) {
+    e?.preventDefault();
+    this.navigatingHome = true;
+
+    setTimeout(() => {
+      this.router.navigate(['/']).finally(() => {
+        this.navigatingHome = false;
+      });
+    }, 500);
   }
 }

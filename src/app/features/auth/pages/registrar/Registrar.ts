@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -13,7 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'app-Registrar',
   standalone: true,
-  imports: [ButtonModule, InputTextModule, PasswordModule, FormsModule, RouterModule],
+  imports: [CommonModule, ButtonModule, InputTextModule, PasswordModule, FormsModule, RouterModule],
   template: `
 <div class="login-wrapper animate-fade-in">
   <div class="login-card">
@@ -56,6 +57,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 
       <div class="login-links">
         <a [routerLink]="'/auth/login'">¿Ya tienes cuenta?</a>
+        <a (click)="goToHome($event)" [class.loading]="navigatingHome">
+          <span *ngIf="!navigatingHome">Volver al inicio</span>
+          <span *ngIf="navigatingHome">Cargando...</span>
+        </a>
       </div>
 
       <img src="../../../assets/demo/login_Abajo.png" class="corner corner-bottom-left" />
@@ -69,6 +74,7 @@ export class Registrar {
   email = '';
   password = '';
   loading = false;
+  navigatingHome = false;
 
   // (opcional) para enfocar el input que falló:
   @ViewChild('fullNameInput') fullNameRef!: ElementRef<HTMLInputElement>;
@@ -183,5 +189,16 @@ export class Registrar {
     if (ref?.nativeElement) {
       setTimeout(() => ref.nativeElement.focus(), 0);
     }
+  }
+
+  goToHome(e?: Event) {
+    e?.preventDefault();
+    this.navigatingHome = true;
+
+    setTimeout(() => {
+      this.router.navigate(['/']).finally(() => {
+        this.navigatingHome = false;
+      });
+    }, 500);
   }
 }
