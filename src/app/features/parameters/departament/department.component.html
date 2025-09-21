@@ -25,7 +25,7 @@
               <td class="actions-cell">
                 <button
                   class="btn btn-sm btn-success"
-                  (click)="abrirFormularioActualizar(departamento)"
+                  (click)="confirmarActualizacion(departamento)"
                   title="Editar departamento">
                   Editar
                 </button>
@@ -105,7 +105,8 @@
               formControlName="name"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('name')"
-              placeholder="Ej: Antioquia">
+              placeholder="Ej: Antioquia"
+              maxlength="50">
             <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
               {{ getFieldError('name') }}
             </div>
@@ -125,7 +126,8 @@
               formControlName="daneCode"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('daneCode')"
-              placeholder="Ej: 05">
+              placeholder="Ej: 05"
+              maxlength="5">
             <div *ngIf="isFieldInvalid('daneCode')" class="invalid-feedback">
               {{ getFieldError('daneCode') }}
             </div>
@@ -192,7 +194,8 @@
               formControlName="name"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('name', updateForm)"
-              placeholder="Ej: Antioquia">
+              placeholder="Ej: Antioquia"
+              maxlength="50">
             <div *ngIf="isFieldInvalid('name', updateForm)" class="invalid-feedback">
               {{ getFieldError('name', updateForm) }}
             </div>
@@ -212,7 +215,8 @@
               formControlName="daneCode"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('daneCode', updateForm)"
-              placeholder="Ej: 05">
+              placeholder="Ej: 05"
+              maxlength="5">
             <div *ngIf="isFieldInvalid('daneCode', updateForm)" class="invalid-feedback">
               {{ getFieldError('daneCode', updateForm) }}
             </div>
@@ -248,8 +252,18 @@
     </div>
 
     <div class="modal-body">
-      <p>¿Está seguro que desea eliminar el departamento <strong>{{ departmentAEliminar?.name }}</strong>?</p>
-      <p class="text-warning">Esta acción no se puede deshacer.</p>
+      <div class="warning-content">
+        <div class="warning-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="warning-text">
+          <h4>¿Está seguro que desea eliminar?</h4>
+          <p>Va a eliminar permanentemente el departamento <strong>"{{ departmentAEliminar?.name }}"</strong></p>
+          <p class="text-warning"><strong>⚠️ Esta acción no se puede deshacer.</strong></p>
+        </div>
+      </div>
     </div>
 
     <div class="modal-footer">
@@ -259,6 +273,40 @@
       <button type="button" class="btn btn-danger" (click)="eliminarDepartamento()" [disabled]="loading">
         <span *ngIf="loading">Eliminando...</span>
         <span *ngIf="!loading">Eliminar</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm" class="modal-overlay">
+  <div class="modal-content modal-sm">
+    <div class="modal-header">
+      <h3>Confirmar Actualización</h3>
+    </div>
+
+    <div class="modal-body">
+      <div class="warning-content">
+        <div class="warning-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="warning-text">
+          <h4>¿Desea actualizar este departamento?</h4>
+          <p>Va a editar la información del departamento <strong>"{{ departmentAActualizar?.name }}"</strong></p>
+          <p class="text-info"><strong>📝 Se abrirá el formulario de edición.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancelarActualizacion()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary" (click)="abrirFormularioActualizar()">
+        Sí, Editar
       </button>
     </div>
   </div>

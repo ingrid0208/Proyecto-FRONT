@@ -27,7 +27,9 @@ export class PersonasPageComponent implements OnInit {
   showForm: boolean = false;
   showInfoModal: boolean = false;
   showUpdateModal: boolean = false;
+  showUpdateConfirm: boolean = false;
   personaSeleccionada: PersonaDto | null = null;
+  personaAActualizar: PersonaDto | null = null;
   
   // Formularios reactivos
   personaForm: FormGroup;
@@ -48,19 +50,19 @@ export class PersonasPageComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.personaForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      address: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
+      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       municipalityId: [null, [Validators.required, Validators.min(1)]],
       documentTypeId: [null, [Validators.required, Validators.min(1)]]
     });
 
     this.updateForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      phoneNumber: ['', Validators.required],
-      address: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
+      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       municipalityId: [null, [Validators.required, Validators.min(1)]],
       documentTypeId: [null, [Validators.required, Validators.min(1)]]
     });
@@ -209,10 +211,24 @@ export class PersonasPageComponent implements OnInit {
     this.personaAEliminar = null;
   }
 
-  abrirModalActualizar(persona: PersonaDto) {
-    this.personaSeleccionada = { ...persona }; // Crear una copia para editar
-    this.updateForm.patchValue(persona); // Cargar datos en el formulario
-    this.showUpdateModal = true;
+  confirmarActualizacion(persona: PersonaDto) {
+    this.personaAActualizar = persona;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion() {
+    this.personaAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirModalActualizar() {
+    if (this.personaAActualizar) {
+      this.personaSeleccionada = { ...this.personaAActualizar }; // Crear una copia para editar
+      this.updateForm.patchValue(this.personaAActualizar); // Cargar datos en el formulario
+      this.showUpdateModal = true;
+      this.showUpdateConfirm = false;
+      this.personaAActualizar = null;
+    }
   }
 
   cerrarModalActualizar() {

@@ -47,8 +47,10 @@ export class DepartmentComponent implements OnInit {
   showForm = false;
   showUpdateForm = false;
   showConfirm = false;
+  showUpdateConfirm = false;
   departmentAEliminar: Department | null = null;
   departmentSeleccionado: Department | null = null;
+  departmentAActualizar: Department | null = null;
 
   // Formularios reactivos
   departmentForm: FormGroup;
@@ -64,13 +66,13 @@ export class DepartmentComponent implements OnInit {
   constructor() {
     // Inicializar formularios reactivos
     this.departmentForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      daneCode: ['', [Validators.required, Validators.pattern(/^\d+$/)]]
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      daneCode: ['', [Validators.required, Validators.pattern(/^\d{1,5}$/), Validators.maxLength(5)]]
     });
 
     this.updateForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      daneCode: ['', [Validators.required, Validators.pattern(/^\d+$/)]]
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      daneCode: ['', [Validators.required, Validators.pattern(/^\d{1,5}$/), Validators.maxLength(5)]]
     });
   }
 
@@ -140,15 +142,29 @@ export class DepartmentComponent implements OnInit {
   }
 
   // Métodos para editar departamento
-  abrirFormularioActualizar(department: Department): void {
-    this.departmentSeleccionado = { ...department };
-    this.updateForm.patchValue({
-      name: department.name,
-      daneCode: department.daneCode
-    });
-    this.showUpdateForm = true;
-    this.errorMsg = '';
-    this.successMsg = '';
+  confirmarActualizacion(department: Department): void {
+    this.departmentAActualizar = department;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion(): void {
+    this.departmentAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirFormularioActualizar(): void {
+    if (this.departmentAActualizar) {
+      this.departmentSeleccionado = { ...this.departmentAActualizar };
+      this.updateForm.patchValue({
+        name: this.departmentAActualizar.name,
+        daneCode: this.departmentAActualizar.daneCode
+      });
+      this.showUpdateForm = true;
+      this.showUpdateConfirm = false;
+      this.departmentAActualizar = null;
+      this.errorMsg = '';
+      this.successMsg = '';
+    }
   }
 
   cerrarFormularioActualizar(): void {

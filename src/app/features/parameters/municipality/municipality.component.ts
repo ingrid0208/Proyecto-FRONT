@@ -33,8 +33,10 @@ export class MunicipalityComponent implements OnInit {
   showForm = false;
   showUpdateForm = false;
   showConfirm = false;
+  showUpdateConfirm = false;
   municipalityAEliminar: Municipality | null = null;
   municipalitySeleccionado: Municipality | null = null;
+  municipalityAActualizar: Municipality | null = null;
   
   // Formularios reactivos
   municipalityForm: FormGroup;
@@ -49,14 +51,14 @@ export class MunicipalityComponent implements OnInit {
   constructor() {
     // Inicializar formularios reactivos
     this.municipalityForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      daneCode: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(60)]],
+      daneCode: ['', [Validators.required, Validators.pattern(/^\d{1,5}$/), Validators.maxLength(5)]],
       departmentId: ['', [Validators.required]]
     });
 
     this.updateForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
-      daneCode: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(60)]],
+      daneCode: ['', [Validators.required, Validators.pattern(/^\d{1,5}$/), Validators.maxLength(5)]],
       departmentId: ['', [Validators.required]]
     });
   }
@@ -119,16 +121,30 @@ export class MunicipalityComponent implements OnInit {
   }
 
   // Métodos para editar municipio
-  abrirFormularioActualizar(municipality: Municipality): void {
-    this.municipalitySeleccionado = { ...municipality };
-    this.updateForm.patchValue({
-      name: municipality.name,
-      daneCode: municipality.daneCode,
-      departmentId: municipality.departmentId
-    });
-    this.showUpdateForm = true;
-    this.errorMsg = '';
-    this.successMsg = '';
+  confirmarActualizacion(municipality: Municipality): void {
+    this.municipalityAActualizar = municipality;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion(): void {
+    this.municipalityAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirFormularioActualizar(): void {
+    if (this.municipalityAActualizar) {
+      this.municipalitySeleccionado = { ...this.municipalityAActualizar };
+      this.updateForm.patchValue({
+        name: this.municipalityAActualizar.name,
+        daneCode: this.municipalityAActualizar.daneCode,
+        departmentId: this.municipalityAActualizar.departmentId
+      });
+      this.showUpdateForm = true;
+      this.showUpdateConfirm = false;
+      this.municipalityAActualizar = null;
+      this.errorMsg = '';
+      this.successMsg = '';
+    }
   }
 
   cerrarFormularioActualizar(): void {
