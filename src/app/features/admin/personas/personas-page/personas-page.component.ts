@@ -1,0 +1,322 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PersonaService } from '../../../../core/services/api/persona.service';
+import { MunicipalityService } from '../../../../core/services/api/municipality.service';
+import { DocumentTypeService } from '../../../../core/services/api/document-type.service';
+// Nota: no usamos la interfaz `Persona` original aquí porque el componente trabaja con un DTO
+// que incluye campos como phoneNumber, municipalityId y documentTypeId.
+import { Municipio } from '../../../../shared/models/parameters/municipality.models';
+import { DocumentTypeDto as DocumentType } from '../../../../shared/models/parameters/document-type.models';
+
+@Component({
+  selector: 'app-personas-page',
+  templateUrl: './personas-page.component.html',
+  styleUrls: ['./personas-page.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule, ReactiveFormsModule]
+})
+export class PersonasPageComponent implements OnInit {
+  // El backend devuelve/consume un DTO con campos adicionales (phoneNumber, municipalityId, documentTypeId)
+  // que no existen en la interfaz `Persona` original. Definimos un tipo local que representa el DTO usado
+  // por este componente para evitar conflictos de tipos con `Persona` existente.
+  personas: PersonaDto[] = [];
+  filteredPersonas: PersonaDto[] = [];
+  municipios: Municipio[] = [];
+  documentTypes: DocumentType[] = [];
+  showForm: boolean = false;
+  showInfoModal: boolean = false;
+  showUpdateModal: boolean = false;
+  personaSeleccionada: PersonaDto | null = null;
+  
+  // Formularios reactivos
+  personaForm: FormGroup;
+  updateForm: FormGroup;
+  
+
+  // Modales de alerta y confirmación
+  showAlert = false;
+  alertMsg = '';
+  alertType: string = 'bienvenida';
+  showConfirm = false;
+  personaAEliminar: PersonaDto | null = null;
+
+  constructor(
+    private personaService: PersonaService,
+    private municipioService: MunicipalityService,
+    private documentTypeService: DocumentTypeService,
+    private fb: FormBuilder
+  ) {
+    this.personaForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      address: ['', Validators.required],
+      municipalityId: [null, [Validators.required, Validators.min(1)]],
+      documentTypeId: [null, [Validators.required, Validators.min(1)]]
+    });
+
+    this.updateForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      address: ['', Validators.required],
+      municipalityId: [null, [Validators.required, Validators.min(1)]],
+      documentTypeId: [null, [Validators.required, Validators.min(1)]]
+    });
+  }
+
+  ngOnInit() {
+    // Cargar personas (la petición ahora la lanza el componente, no el constructor del servicio)
+    this.personaService.personas$.subscribe((personas: any) => {
+      this.personas = personas;
+      this.filteredPersonas = personas;
+    });
+    // Solicitar la carga explícita de personas
+    this.personaService.refreshPersonas();
+
+    // Cargar municipios
+    this.municipioService.municipalities$.subscribe((municipios: any) => {
+      this.municipios = municipios;
+    });
+
+    // Cargar tipos de documento
+    this.documentTypeService.genericService.getAll<any>(this.documentTypeService.endpoint).subscribe((documentTypes: any) => {
+      this.documentTypes = documentTypes;
+    });
+    
+    this.mostrarAlerta('¡Bienvenido a la gestión de personas!', 'bienvenida');
+  }
+
+  onSearch(term: string) {
+    this.filteredPersonas = this.personas.filter(p =>
+      (p.firstName + ' ' + p.lastName).toLowerCase().includes(term.toLowerCase())
+    );
+  }
+
+  abrirFormulario() {
+    this.showForm = true;
+  }
+
+  cerrarFormulario() {
+    this.showForm = false;
+    this.personaForm.reset();
+  }
+
+  crearPersona() {
+    if (this.personaForm.valid) {
+      const formValue = this.personaForm.value;
+      
+      // Asegurar que los IDs sean números válidos
+      const nuevaPersona: PersonaDto = {
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        phoneNumber: formValue.phoneNumber,
+        address: formValue.address,
+        municipalityId: Number(formValue.municipalityId),
+        documentTypeId: Number(formValue.documentTypeId)
+      };
+      
+      // Validación adicional
+      if (!nuevaPersona.municipalityId || nuevaPersona.municipalityId <= 0) {
+        this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
+        return;
+      }
+      
+      if (!nuevaPersona.documentTypeId || nuevaPersona.documentTypeId <= 0) {
+        this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
+        return;
+      }
+      
+      // Log para debugging
+      console.log('Datos a enviar:', nuevaPersona);
+      
+      this.personaService.genericService.create<any>(this.personaService.endpoint, nuevaPersona).subscribe({
+        next: (persona: any) => {
+          this.mostrarAlerta('Persona creada exitosamente.', 'creado');
+          this.cerrarFormulario();
+        },
+        error: (error: any) => {
+          console.error('Error al crear persona:', error);
+          
+          // Intentar extraer mensaje específico del error
+          let errorMessage = 'Error al crear la persona.';
+          if (error?.error) {
+            if (typeof error.error === 'string') {
+              errorMessage = error.error;
+            } else if (error.error.message) {
+              errorMessage = error.error.message;
+            } else if (error.error.errors) {
+              // Errores de validación del backend
+              const validationErrors = Object.keys(error.error.errors).map(key => 
+                `${key}: ${error.error.errors[key].join(', ')}`
+              ).join('; ');
+              errorMessage = `Errores de validación: ${validationErrors}`;
+            }
+          }
+          
+          console.log('Mensaje de error procesado:', errorMessage);
+          this.mostrarAlerta(errorMessage, 'eliminado');
+        }
+      });
+    } else {
+      this.mostrarAlerta('Por favor completa todos los campos requeridos.', 'eliminado');
+    }
+  }
+
+  abrirInfoModal(persona: PersonaDto) {
+    this.personaSeleccionada = persona;
+    this.showInfoModal = true;
+  }
+
+  cerrarInfoModal() {
+    this.showInfoModal = false;
+    this.personaSeleccionada = null;
+  }
+
+  mostrarAlerta(msg: string, tipo: string) {
+    this.alertMsg = msg;
+    this.alertType = tipo;
+    this.showAlert = true;
+    setTimeout(() => this.showAlert = false, 2500);
+  }
+
+  pedirConfirmacionEliminar(persona: PersonaDto) {
+    this.personaAEliminar = persona;
+    this.showConfirm = true;
+  }
+
+  confirmarEliminar() {
+    if (this.personaAEliminar && this.personaAEliminar.id) {
+      this.personaService.genericService.delete(this.personaService.endpoint, this.personaAEliminar.id).subscribe({
+        next: () => {
+          this.mostrarAlerta('Persona eliminada correctamente.', 'eliminado');
+        },
+        error: (error: any) => {
+          console.error('Error al eliminar persona:', error);
+          this.mostrarAlerta('Error al eliminar la persona.', 'eliminado');
+        }
+      });
+    } else {
+      this.mostrarAlerta('No se puede eliminar: ID de persona no encontrado.', 'eliminado');
+    }
+    this.showConfirm = false;
+    this.personaAEliminar = null;
+  }
+
+  cancelarEliminar() {
+    this.showConfirm = false;
+    this.personaAEliminar = null;
+  }
+
+  abrirModalActualizar(persona: PersonaDto) {
+    this.personaSeleccionada = { ...persona }; // Crear una copia para editar
+    this.updateForm.patchValue(persona); // Cargar datos en el formulario
+    this.showUpdateModal = true;
+  }
+
+  cerrarModalActualizar() {
+    this.showUpdateModal = false;
+    this.updateForm.reset();
+    this.personaSeleccionada = null;
+  }
+
+  actualizarPersona() {
+    if (this.updateForm.valid && this.personaSeleccionada) {
+      const formValue = this.updateForm.value;
+      
+      // Asegurar que los IDs sean números válidos
+      const personaActualizada: PersonaDto = {
+        id: this.personaSeleccionada.id,
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        phoneNumber: formValue.phoneNumber,
+        address: formValue.address,
+        municipalityId: Number(formValue.municipalityId),
+        documentTypeId: Number(formValue.documentTypeId)
+      };
+      
+      // Validación adicional
+      if (!personaActualizada.municipalityId || personaActualizada.municipalityId <= 0) {
+        this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
+        return;
+      }
+      
+      if (!personaActualizada.documentTypeId || personaActualizada.documentTypeId <= 0) {
+        this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
+        return;
+      }
+      
+      // Log para debugging
+      console.log('Datos a actualizar:', personaActualizada);
+      
+      if (personaActualizada.id) {
+        this.personaService.genericService.update<any>(this.personaService.endpoint, personaActualizada.id, personaActualizada).subscribe({
+          next: (persona: any) => {
+            this.mostrarAlerta('Persona actualizada exitosamente.', 'creado');
+            this.cerrarModalActualizar();
+          },
+          error: (error: any) => {
+            console.error('Error al actualizar persona:', error);
+            
+            // Intentar extraer mensaje específico del error
+            let errorMessage = 'Error al actualizar la persona.';
+            if (error?.error) {
+              if (typeof error.error === 'string') {
+                errorMessage = error.error;
+              } else if (error.error.message) {
+                errorMessage = error.error.message;
+              } else if (error.error.errors) {
+                // Errores de validación del backend
+                const validationErrors = Object.keys(error.error.errors).map(key => 
+                  `${key}: ${error.error.errors[key].join(', ')}`
+                ).join('; ');
+                errorMessage = `Errores de validación: ${validationErrors}`;
+              }
+            }
+            
+            console.log('Mensaje de error procesado:', errorMessage);
+            this.mostrarAlerta(errorMessage, 'eliminado');
+          }
+        });
+      } else {
+        this.mostrarAlerta('ID de persona no encontrado.', 'eliminado');
+      }
+    } else {
+      this.mostrarAlerta('Por favor completa todos los campos requeridos.', 'eliminado');
+    }
+  }
+
+  // Método helper para obtener el nombre del municipio por ID
+  getMunicipioNombre(municipioId: number): string {
+    if (this.municipios.length === 0) {
+      return 'No se encuentran municipios';
+    }
+    const municipio = this.municipios.find(m => m.id === municipioId);
+    return municipio ? municipio.name : `Municipio ID: ${municipioId}`;
+  }
+
+  // Método helper para obtener el nombre del tipo de documento por ID
+  getDocumentTypeNombre(documentTypeId: number): string {
+    if (this.documentTypes.length === 0) {
+      return 'No se encuentran tipos de documento';
+    }
+    const documentType = this.documentTypes.find(dt => dt.id === documentTypeId);
+    return documentType ? documentType.name : `Tipo de documento ID: ${documentTypeId}`;
+  }
+}
+
+// DTO local que contiene los campos que este componente espera del backend
+interface PersonaDto {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  address?: string;
+  municipalityId?: number;
+  documentTypeId?: number;
+  // campos opcionales/mapeos con la interfaz Persona existente
+  email?: string;
+  documentType?: string;
+  documentNumber?: string;
+}

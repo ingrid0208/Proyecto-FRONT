@@ -10,7 +10,9 @@ export class PersonaService {
   personas$ = this.personasSubject.asObservable();
 
   constructor(public genericService: ServiceGenericService) {
-    this.loadPersonas();
+    // Nota: no cargar personas automáticamente en el constructor para evitar
+    // peticiones HTTP que puedan provocar redirecciones (por ejemplo, interceptores
+    // que reaccionan a 401). La carga se realizará explícitamente desde el componente.
   }
 
   private loadPersonas(): void {

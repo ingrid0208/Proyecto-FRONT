@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'roles',           loadChildren: () => import('./app/features/admin/roles/roles-page.routes').then(m => m.ROLES_ROUTES) },
   // Ruta deshabilitada temporalmente: { path: 'modulos-permisos', loadChildren: () => import('./app/features/modulos-permisos-page/module-form.routes').then(m => m.MODULOS_PERMISOS_ROUTES) },
   { path: 'usuarios', loadChildren: () => import('./app/features/admin/users/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
-  // { path: 'personas', loadChildren: () => import('./app/features/admin/users/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
+  { path: 'personas', loadChildren: () => import('./app/features/admin/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },
   { path: 'formularios',     loadChildren: () => import('./app/features/admin/forms/form.routes').then(m => m.FORM_ROUTES) },
   // { path: 'modulos', loadChildren: () => import('./app/features/admin/forms/module.routes').then(m => m.MODULE_ROUTES) },
   // { path: 'form-modules', loadChildren: () => import('./app/features/admin/forms/form-module.routes').then(m => m.FORM_MODULE_ROUTES) },

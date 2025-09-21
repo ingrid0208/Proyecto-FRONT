@@ -92,6 +92,17 @@ export class Login {
       next: (res: LoginEmailResponse & { isSuccess?: boolean }) => {
         if (res.success || res.isSuccess) {
           console.log('✅ Login exitoso:', res.message);
+          // Guardar token y datos del usuario en localStorage para que ServiceGenericService
+          // pueda añadir el Authorization: Bearer <token> en las peticiones JWT.
+          try {
+            const currentUser = { token: res.token, user: res.user };
+            if (res.token) {
+              localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+          } catch (e) {
+            console.warn('No se pudo guardar currentUser en localStorage', e);
+          }
+
           this.router.navigate(['/uikit/media']);
         } else {
           console.error('Login fallido:', res);

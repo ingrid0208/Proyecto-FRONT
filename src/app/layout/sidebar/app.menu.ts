@@ -80,8 +80,9 @@ export class AppMenu {
             {
                 label: 'Gestión',
                 items: [
-                    { label: 'Permisos', icon: 'pi pi-fw pi-lock-open', routerLink: ['/permisos'] },
-                    { label: 'Generar Multa', icon: 'pi pi-fw pi-file-edit', routerLink: ['/inspectora/generar-multa'] }
+          { label: 'Permisos', icon: 'pi pi-fw pi-lock-open', routerLink: ['/permisos'] },
+          // La ruta de generar multa está comentada en app.routes.ts; mantener el ítem deshabilitado evita enlaces rotos
+          // { label: 'Generar Multa', icon: 'pi pi-fw pi-file-edit', routerLink: ['/inspectora/generar-multa'] }
                 ]
             },
             {
