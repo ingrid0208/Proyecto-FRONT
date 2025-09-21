@@ -41,7 +41,9 @@ export class RolesPageComponent implements OnInit {
   // Modal y formulario
   showModal: boolean = false;
   showUpdateModal: boolean = false;
+  showUpdateConfirm: boolean = false;
   rolSeleccionado: Rol | null = null;
+  rolAActualizar: Rol | null = null;
   
   nuevoRol: Omit<Rol, 'id'> = {
     name: '',
@@ -98,9 +100,23 @@ export class RolesPageComponent implements OnInit {
     };
   }
 
-  abrirModalActualizar(rol: Rol) {
-    this.rolSeleccionado = { ...rol };
-    this.showUpdateModal = true;
+  confirmarActualizacion(rol: Rol) {
+    this.rolAActualizar = rol;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion() {
+    this.rolAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirModalActualizar() {
+    if (this.rolAActualizar) {
+      this.rolSeleccionado = { ...this.rolAActualizar };
+      this.showUpdateModal = true;
+      this.showUpdateConfirm = false;
+      this.rolAActualizar = null;
+    }
   }
 
   cerrarModalActualizar() {
@@ -118,6 +134,17 @@ export class RolesPageComponent implements OnInit {
     // Validar que no estén solo con espacios en blanco
     if (this.nuevoRol["name"].trim() === '' || this.nuevoRol["description"].trim() === '') {
       this.mostrarAlerta('Los campos no pueden estar vacíos', 'error');
+      return;
+    }
+
+    // Validar límites de longitud
+    if (this.nuevoRol["name"].length < 2 || this.nuevoRol["name"].length > 50) {
+      this.mostrarAlerta('El nombre debe tener entre 2 y 50 caracteres', 'error');
+      return;
+    }
+
+    if (this.nuevoRol["description"].length < 5 || this.nuevoRol["description"].length > 200) {
+      this.mostrarAlerta('La descripción debe tener entre 5 y 200 caracteres', 'error');
       return;
     }
 
@@ -140,6 +167,16 @@ export class RolesPageComponent implements OnInit {
 
   actualizarRol() {
     if (this.rolSeleccionado && this.rolSeleccionado.id) {
+      // Validar límites de longitud para actualización
+      if (this.rolSeleccionado.name.length < 2 || this.rolSeleccionado.name.length > 50) {
+        this.mostrarAlerta('El nombre debe tener entre 2 y 50 caracteres', 'error');
+        return;
+      }
+
+      if (this.rolSeleccionado.description.length < 5 || this.rolSeleccionado.description.length > 200) {
+        this.mostrarAlerta('La descripción debe tener entre 5 y 200 caracteres', 'error');
+        return;
+      }
       this.rolesService.genericService.update<Rol>(this.rolesService.endpoint, this.rolSeleccionado.id, this.rolSeleccionado).subscribe({
         next: (rolActualizado: Rol) => {
           console.log('Rol actualizado exitosamente:', rolActualizado);

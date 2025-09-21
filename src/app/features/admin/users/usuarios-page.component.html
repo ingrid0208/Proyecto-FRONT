@@ -35,7 +35,7 @@
         <span><b>Infracciones:</b> {{ (usuario.userInfractions?.length || 0) }} registradas</span>
       </div>
       <div class="usuario-actions">
-        <button class="blue-btn" (click)="abrirModalActualizar(usuario)">+ Actualizar</button>
+        <button class="blue-btn" (click)="confirmarActualizacion(usuario)">+ Actualizar</button>
         <button class="red-btn" (click)="pedirConfirmacionEliminar(usuario)">= Eliminar</button>
       </div>
     </div>
@@ -58,15 +58,15 @@
       <label>
         Email:
         <input type="email" [(ngModel)]="nuevoUsuario.email" name="email" required 
-               #emailInput="ngModel" maxlength="100" />
+               #emailInput="ngModel" maxlength="150" />
         <div *ngIf="emailInput.invalid && emailInput.touched" class="error-msg">
           El email es requerido y debe ser válido
         </div>
       </label>
       <label>
         Contraseña:
-        <input type="password" [(ngModel)]="nuevoUsuario.password" name="password" required 
-               #passwordInput="ngModel" minlength="6" />
+        <input type="password" [(ngModel)]="nuevoUsuario.password" name="password" required
+               #passwordInput="ngModel" minlength="6" maxlength="50" />
         <div *ngIf="passwordInput.invalid && passwordInput.touched" class="error-msg">
           La contraseña es requerida (mínimo 6 caracteres)
         </div>
@@ -103,15 +103,15 @@
       <label>
         Email:
         <input type="email" [(ngModel)]="usuarioSeleccionado.email" name="email" required 
-               #emailUpdateInput="ngModel" maxlength="100" />
+               #emailUpdateInput="ngModel" maxlength="150" />
         <div *ngIf="emailUpdateInput.invalid && emailUpdateInput.touched" class="error-msg">
           El email es requerido y debe ser válido
         </div>
       </label>
       <label>
         Contraseña:
-        <input type="password" [(ngModel)]="usuarioSeleccionado.password" name="password" required 
-               #passwordUpdateInput="ngModel" minlength="6" />
+        <input type="password" [(ngModel)]="usuarioSeleccionado.password" name="password" required
+               #passwordUpdateInput="ngModel" minlength="6" maxlength="50" />
         <div *ngIf="passwordUpdateInput.invalid && passwordUpdateInput.touched" class="error-msg">
           La contraseña es requerida (mínimo 6 caracteres)
         </div>
@@ -129,5 +129,17 @@
         <button type="submit" [disabled]="updateForm.invalid || !usuarioSeleccionado.name.trim() || !usuarioSeleccionado.email.trim() || !usuarioSeleccionado.password.trim()">Actualizar</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+  <div class="alert-modal-content eliminado">
+    <span class="alert-icon">✏️</span>
+    <span class="alert-msg">¿Está seguro que desea actualizar el usuario "{{ usuarioAActualizar?.name }}"?</span>
+    <div class="modal-actions">
+      <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+      <button class="blue-btn" (click)="abrirModalActualizar()">Sí, Editar</button>
+    </div>
   </div>
 </div>

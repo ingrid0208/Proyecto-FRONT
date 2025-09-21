@@ -32,7 +32,7 @@
         <span class="rol-dot" style="background: #43a047"></span>
         <span class="rol-nombre">{{ rol.name }}</span>
         <div class="rol-actions-right">
-          <button class="blue-btn" (click)="abrirModalActualizar(rol)">+ Actualizar</button>
+          <button class="blue-btn" (click)="confirmarActualizacion(rol)">+ Actualizar</button>
           <button class="red-btn" (click)="pedirConfirmacionEliminar(rol)">= Eliminar</button>
         </div>
       </div>
@@ -80,17 +80,29 @@
     <form (ngSubmit)="actualizarRol()" autocomplete="off">
       <label>
         Nombre del Rol:
-        <input type="text" [(ngModel)]="rolSeleccionado.name" name="nombreRol" required />
+        <input type="text" [(ngModel)]="rolSeleccionado.name" name="nombreRol" required maxlength="50" />
       </label>
       <label>
         Descripción:
-        <textarea [(ngModel)]="rolSeleccionado.description" name="descripcionRol" required rows="3" 
-                  style="resize: vertical; min-height: 60px; font-family: inherit;"></textarea>
+        <textarea [(ngModel)]="rolSeleccionado.description" name="descripcionRol" required rows="3"
+                  style="resize: vertical; min-height: 60px; font-family: inherit;" maxlength="200"></textarea>
       </label>
       <div class="modal-actions">
         <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
         <button type="submit" [disabled]="!rolSeleccionado.name || !rolSeleccionado.description">Actualizar</button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+  <div class="alert-modal-content eliminado">
+    <span class="alert-icon">✏️</span>
+    <span class="alert-msg">¿Está seguro que desea actualizar el rol "{{ rolAActualizar?.name }}"?</span>
+    <div class="modal-actions">
+      <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+      <button class="blue-btn" (click)="abrirModalActualizar()">Sí, Editar</button>
+    </div>
   </div>
 </div>

@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="persona-actions">
-      <button (click)="abrirModalActualizar(form)" class="btn-editar">
+      <button (click)="confirmarActualizacion(form)" class="btn-editar">
         <i class="pi pi-pencil"></i>
         Editar
       </button>
@@ -63,7 +63,7 @@
         <label>
           Descripción:
           <textarea [(ngModel)]="nuevoForm.description" name="description" required 
-                   #descriptionInput="ngModel" maxlength="500" rows="4" 
+                   #descriptionInput="ngModel" maxlength="300" rows="4" 
                    placeholder="Describe el propósito y uso del formulario..."></textarea>
           <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-msg">
             La descripción es requerida
@@ -93,7 +93,7 @@
         <label>
           Descripción:
           <textarea [(ngModel)]="formSeleccionado.description" name="description" required 
-                   #descriptionUpdateInput="ngModel" maxlength="500" rows="4"></textarea>
+                   #descriptionUpdateInput="ngModel" maxlength="300" rows="4"></textarea>
           <div *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched" class="error-msg">
             La descripción es requerida
           </div>
@@ -115,6 +115,18 @@
       <div class="modal-actions">
         <button type="button" (click)="cancelarEliminar()" class="btn-secundario">Cancelar</button>
         <button type="button" (click)="confirmarEliminar()" class="btn-peligro">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para actualizar -->
+  <div *ngIf="showUpdateConfirm && formAActualizar" class="modal-overlay">
+    <div class="modal-content confirm-modal">
+      <h2>Confirmar Actualización</h2>
+      <p>¿Está seguro de que desea actualizar el formulario <strong>"{{ formAActualizar.name }}"</strong>?</p>
+      <div class="modal-actions">
+        <button type="button" (click)="cancelarActualizacion()" class="btn-secundario">Cancelar</button>
+        <button type="button" (click)="abrirModalActualizar()" class="btn-primario">Sí, Editar</button>
       </div>
     </div>
   </div>

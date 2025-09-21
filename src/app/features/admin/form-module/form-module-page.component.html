@@ -40,7 +40,7 @@
       <div class="card-header">
         <h3>{{ formModule.formName }} - {{ formModule.moduleName }}</h3>
         <div class="card-actions">
-          <button class="blue-btn" (click)="abrirModalEditar(i)">Editar</button>
+          <button class="blue-btn" (click)="confirmarActualizacion(i)">Editar</button>
           <button class="red-btn" (click)="pedirConfirmacionEliminar(i)">Eliminar</button>
         </div>
       </div>
@@ -65,11 +65,11 @@
       <form (ngSubmit)="guardarFormModule()" autocomplete="off">
         <label>
           Form Name:
-          <input type="text" [(ngModel)]="nuevoFormModule.formName" name="formName" required placeholder="Nombre del formulario" />
+          <input type="text" [(ngModel)]="nuevoFormModule.formName" name="formName" required placeholder="Nombre del formulario" maxlength="100" />
         </label>
         <label>
           Module Name:
-          <input type="text" [(ngModel)]="nuevoFormModule.moduleName" name="moduleName" required placeholder="Nombre del módulo" />
+          <input type="text" [(ngModel)]="nuevoFormModule.moduleName" name="moduleName" required placeholder="Nombre del módulo" maxlength="80" />
         </label>
         <label>
           Form ID:
@@ -87,6 +87,18 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para actualizar -->
+  <div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">✏️</span>
+      <span class="alert-msg">¿Está seguro que desea actualizar este form-module?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+        <button class="blue-btn" (click)="abrirModalEditar()">Sí, Editar</button>
+      </div>
     </div>
   </div>
 </div>

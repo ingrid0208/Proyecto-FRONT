@@ -18,7 +18,9 @@ export class FormModulePageComponent implements OnInit {
   // Modal y formulario
   showModal: boolean = false;
   isEditing: boolean = false;
+  showUpdateConfirm: boolean = false;
   formModuleEditando: number | null = null;
+  formModuleAActualizar: number | null = null;
   nuevoFormModule: FormModule = { 
     formid: 0, 
     moduleid: 0, 
@@ -66,18 +68,32 @@ export class FormModulePageComponent implements OnInit {
     };
   }
 
-  abrirModalEditar(idx: number) {
-    const formModule = this.formModules[idx];
-    this.showModal = true;
-    this.isEditing = true;
-    this.formModuleEditando = idx;
-    this.nuevoFormModule = {
-      id: formModule.id,
-      formid: formModule.formid,
-      moduleid: formModule.moduleid,
-      formName: formModule.formName,
-      moduleName: formModule.moduleName
-    };
+  confirmarActualizacion(idx: number) {
+    this.formModuleAActualizar = idx;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion() {
+    this.formModuleAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirModalEditar() {
+    if (this.formModuleAActualizar !== null) {
+      const formModule = this.formModules[this.formModuleAActualizar];
+      this.showModal = true;
+      this.isEditing = true;
+      this.formModuleEditando = this.formModuleAActualizar;
+      this.nuevoFormModule = {
+        id: formModule.id,
+        formid: formModule.formid,
+        moduleid: formModule.moduleid,
+        formName: formModule.formName,
+        moduleName: formModule.moduleName
+      };
+      this.showUpdateConfirm = false;
+      this.formModuleAActualizar = null;
+    }
   }
 
   mostrarAlerta(msg: string, tipo: string) {
@@ -134,6 +150,17 @@ export class FormModulePageComponent implements OnInit {
     // Validar que los campos de texto no estén vacíos
     if (this.nuevoFormModule.formName.trim() === '' || this.nuevoFormModule.moduleName.trim() === '') {
       this.mostrarAlerta('Los nombres no pueden estar vacíos', 'error');
+      return;
+    }
+
+    // Validar límites de longitud
+    if (this.nuevoFormModule.formName.length < 3 || this.nuevoFormModule.formName.length > 100) {
+      this.mostrarAlerta('El nombre del formulario debe tener entre 3 y 100 caracteres', 'error');
+      return;
+    }
+
+    if (this.nuevoFormModule.moduleName.length < 3 || this.nuevoFormModule.moduleName.length > 80) {
+      this.mostrarAlerta('El nombre del módulo debe tener entre 3 y 80 caracteres', 'error');
       return;
     }
 

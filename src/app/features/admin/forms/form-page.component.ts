@@ -24,7 +24,9 @@ export class FormPageComponent implements OnInit {
   // Modal y formulario
   showModal: boolean = false;
   showUpdateModal: boolean = false;
+  showUpdateConfirm: boolean = false;
   formSeleccionado: Form | null = null;
+  formAActualizar: Form | null = null;
   
   nuevoForm: {
     name: string;
@@ -116,14 +118,28 @@ export class FormPageComponent implements OnInit {
     };
   }
 
-  abrirModalActualizar(form: Form) {
-    this.formSeleccionado = { 
-      ...form,
-      // Asegurar que los campos tengan valores válidos
-      name: form.name || '',
-      description: form.description || ''
-    };
-    this.showUpdateModal = true;
+  confirmarActualizacion(form: Form) {
+    this.formAActualizar = form;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion() {
+    this.formAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirModalActualizar() {
+    if (this.formAActualizar) {
+      this.formSeleccionado = {
+        ...this.formAActualizar,
+        // Asegurar que los campos tengan valores válidos
+        name: this.formAActualizar.name || '',
+        description: this.formAActualizar.description || ''
+      };
+      this.showUpdateModal = true;
+      this.showUpdateConfirm = false;
+      this.formAActualizar = null;
+    }
   }
 
   cerrarModalActualizar() {
@@ -144,14 +160,14 @@ export class FormPageComponent implements OnInit {
       return;
     }
 
-    // Validar longitud mínima
-    if (this.nuevoForm.name.length < 3) {
-      this.mostrarAlerta('El nombre debe tener al menos 3 caracteres', 'error');
+    // Validar límites de longitud
+    if (this.nuevoForm.name.length < 3 || this.nuevoForm.name.length > 100) {
+      this.mostrarAlerta('El nombre debe tener entre 3 y 100 caracteres', 'error');
       return;
     }
 
-    if (this.nuevoForm.description.length < 10) {
-      this.mostrarAlerta('La descripción debe tener al menos 10 caracteres', 'error');
+    if (this.nuevoForm.description.length < 10 || this.nuevoForm.description.length > 300) {
+      this.mostrarAlerta('La descripción debe tener entre 10 y 300 caracteres', 'error');
       return;
     }
 
@@ -174,6 +190,17 @@ export class FormPageComponent implements OnInit {
 
   actualizarForm() {
     if (this.formSeleccionado && this.formSeleccionado.id) {
+      // Validar límites para actualización
+      if (this.formSeleccionado.name.length < 3 || this.formSeleccionado.name.length > 100) {
+        this.mostrarAlerta('El nombre debe tener entre 3 y 100 caracteres', 'error');
+        return;
+      }
+
+      if (this.formSeleccionado.description.length < 10 || this.formSeleccionado.description.length > 300) {
+        this.mostrarAlerta('La descripción debe tener entre 10 y 300 caracteres', 'error');
+        return;
+      }
+
       console.log('Actualizando formulario:', this.formSeleccionado);
       
       this.formService.genericService.update<Form>(this.formService.endpoint, this.formSeleccionado.id, this.formSeleccionado).subscribe({

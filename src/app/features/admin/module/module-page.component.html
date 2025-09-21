@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="persona-actions">
-      <button (click)="abrirModalActualizar(module)" class="btn-editar">
+      <button (click)="confirmarActualizacion(module)" class="btn-editar">
         <i class="pi pi-pencil"></i>
         Editar
       </button>
@@ -55,7 +55,7 @@
         <label>
           Nombre del Módulo:
           <input type="text" [(ngModel)]="nuevoModule.name" name="name" required 
-                 #nameInput="ngModel" maxlength="100" placeholder="Ej: Módulo de Usuarios" />
+                 #nameInput="ngModel" maxlength="80" placeholder="Ej: Módulo de Usuarios" />
           <div *ngIf="nameInput.invalid && nameInput.touched" class="error-msg">
             El nombre es requerido
           </div>
@@ -63,7 +63,7 @@
         <label>
           Descripción:
           <textarea [(ngModel)]="nuevoModule.description" name="description" required 
-                   #descriptionInput="ngModel" maxlength="500" rows="4" 
+                   #descriptionInput="ngModel" maxlength="250" rows="4" 
                    placeholder="Describe la funcionalidad del módulo..."></textarea>
           <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-msg">
             La descripción es requerida
@@ -85,7 +85,7 @@
         <label>
           Nombre del Módulo:
           <input type="text" [(ngModel)]="moduleSeleccionado.name" name="name" required 
-                 #nameUpdateInput="ngModel" maxlength="100" />
+                 #nameUpdateInput="ngModel" maxlength="80" />
           <div *ngIf="nameUpdateInput.invalid && nameUpdateInput.touched" class="error-msg">
             El nombre es requerido
           </div>
@@ -93,7 +93,7 @@
         <label>
           Descripción:
           <textarea [(ngModel)]="moduleSeleccionado.description" name="description" required 
-                   #descriptionUpdateInput="ngModel" maxlength="500" rows="4"></textarea>
+                   #descriptionUpdateInput="ngModel" maxlength="250" rows="4"></textarea>
           <div *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched" class="error-msg">
             La descripción es requerida
           </div>
@@ -103,6 +103,18 @@
           <button type="submit" [disabled]="updateForm.invalid || !moduleSeleccionado.name.trim() || !moduleSeleccionado.description.trim()">Actualizar</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para actualizar -->
+  <div *ngIf="showUpdateConfirm && moduleAActualizar" class="modal-overlay">
+    <div class="modal-content confirm-modal">
+      <h2>Confirmar Actualización</h2>
+      <p>¿Está seguro de que desea actualizar el módulo <strong>"{{ moduleAActualizar.name }}"</strong>?</p>
+      <div class="modal-actions">
+        <button type="button" (click)="cancelarActualizacion()" class="btn-secundario">Cancelar</button>
+        <button type="button" (click)="abrirModalActualizar()" class="btn-primario">Sí, Editar</button>
+      </div>
     </div>
   </div>
 

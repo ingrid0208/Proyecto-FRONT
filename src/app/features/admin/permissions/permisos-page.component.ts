@@ -19,15 +19,20 @@ export class PermisosPageComponent implements OnInit {
   errorMsg = '';
   successMsg = '';
 
+  // Variables para modales
+  showUpdateConfirm = false;
+  showDeleteConfirm = false;
   permisoEditando: Permission | null = null;
+  permisoAActualizar: Permission | null = null;
+  permisoAEliminar: Permission | null = null;
 
   constructor(
     private permissionService: PermissionService,
     private fb: FormBuilder
   ) {
     this.permisoForm = this.fb.group({
-      name: ['', [Validators.required, Validators.maxLength(50)]],
-      description: ['', [Validators.required, Validators.maxLength(200)]]
+      name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      description: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]]
     });
   }
 
@@ -95,25 +100,51 @@ export class PermisosPageComponent implements OnInit {
     }
   }
 
-  editarPermiso(permiso: Permission) {
-    this.permisoEditando = permiso;
-    this.showForm = true;
-    this.permisoForm.patchValue({
-      name: permiso.name,
-      description: permiso.description
-    });
+  confirmarActualizacion(permiso: Permission) {
+    this.permisoAActualizar = permiso;
+    this.showUpdateConfirm = true;
   }
 
-  eliminarPermiso(permiso: Permission) {
-    if (confirm('¿Seguro que deseas eliminar este permiso?')) {
-      this.permissionService.genericService.delete(this.permissionService.endpoint, permiso.id).subscribe({
+  cancelarActualizacion() {
+    this.permisoAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  editarPermiso() {
+    if (this.permisoAActualizar) {
+      this.permisoEditando = this.permisoAActualizar;
+      this.showForm = true;
+      this.permisoForm.patchValue({
+        name: this.permisoAActualizar.name,
+        description: this.permisoAActualizar.description
+      });
+      this.showUpdateConfirm = false;
+      this.permisoAActualizar = null;
+    }
+  }
+
+  confirmarEliminacion(permiso: Permission) {
+    this.permisoAEliminar = permiso;
+    this.showDeleteConfirm = true;
+  }
+
+  cancelarEliminacion() {
+    this.permisoAEliminar = null;
+    this.showDeleteConfirm = false;
+  }
+
+  eliminarPermiso() {
+    if (this.permisoAEliminar) {
+      this.permissionService.genericService.delete(this.permissionService.endpoint, this.permisoAEliminar.id).subscribe({
         next: () => {
           this.successMsg = 'Permiso eliminado correctamente';
           this.obtenerPermisos();
+          this.cancelarEliminacion();
           setTimeout(() => this.successMsg = '', 2500);
         },
         error: () => {
           this.errorMsg = 'Error al eliminar el permiso';
+          this.cancelarEliminacion();
         }
       });
     }

@@ -38,28 +38,28 @@
       <form [formGroup]="personaForm" (ngSubmit)="crearPersona()">
         <label>
           Nombre:
-          <input type="text" formControlName="firstName" required />
+          <input type="text" formControlName="firstName" required maxlength="50" />
           <div *ngIf="personaForm.get('firstName')?.invalid && personaForm.get('firstName')?.touched" class="error-msg">
             El nombre es requerido
           </div>
         </label>
         <label>
           Apellido:
-          <input type="text" formControlName="lastName" required />
+          <input type="text" formControlName="lastName" required maxlength="50" />
           <div *ngIf="personaForm.get('lastName')?.invalid && personaForm.get('lastName')?.touched" class="error-msg">
             El apellido es requerido
           </div>
         </label>
         <label>
           Número de Teléfono:
-          <input type="text" formControlName="phoneNumber" required />
+          <input type="text" formControlName="phoneNumber" required maxlength="15" />
           <div *ngIf="personaForm.get('phoneNumber')?.invalid && personaForm.get('phoneNumber')?.touched" class="error-msg">
             El teléfono es requerido
           </div>
         </label>
         <label>
           Dirección:
-          <input type="text" formControlName="address" required />
+          <input type="text" formControlName="address" required maxlength="100" />
           <div *ngIf="personaForm.get('address')?.invalid && personaForm.get('address')?.touched" class="error-msg">
             La dirección es requerida
           </div>
@@ -127,7 +127,7 @@
         </div>
       </div>
       <div class="persona-actions">
-        <button class="update-btn" (click)="$event.stopPropagation(); abrirModalActualizar(persona);">✏️ Actualizar</button>
+        <button class="update-btn" (click)="$event.stopPropagation(); confirmarActualizacion(persona);">✏️ Actualizar</button>
         <button class="delete-btn" (click)="pedirConfirmacionEliminar(persona)">🗑️ Eliminar</button>
       </div>
     </div>
@@ -140,28 +140,28 @@
       <form [formGroup]="updateForm" (ngSubmit)="actualizarPersona()">
         <label>
           Nombre:
-          <input type="text" formControlName="firstName" required />
+          <input type="text" formControlName="firstName" required maxlength="50" />
           <div *ngIf="updateForm.get('firstName')?.invalid && updateForm.get('firstName')?.touched" class="error-msg">
             El nombre es requerido
           </div>
         </label>
         <label>
           Apellido:
-          <input type="text" formControlName="lastName" required />
+          <input type="text" formControlName="lastName" required maxlength="50" />
           <div *ngIf="updateForm.get('lastName')?.invalid && updateForm.get('lastName')?.touched" class="error-msg">
             El apellido es requerido
           </div>
         </label>
         <label>
           Número de Teléfono:
-          <input type="text" formControlName="phoneNumber" required />
+          <input type="text" formControlName="phoneNumber" required maxlength="15" />
           <div *ngIf="updateForm.get('phoneNumber')?.invalid && updateForm.get('phoneNumber')?.touched" class="error-msg">
             El teléfono es requerido
           </div>
         </label>
         <label>
           Dirección:
-          <input type="text" formControlName="address" required />
+          <input type="text" formControlName="address" required maxlength="100" />
           <div *ngIf="updateForm.get('address')?.invalid && updateForm.get('address')?.touched" class="error-msg">
             La dirección es requerida
           </div>
@@ -197,6 +197,18 @@
           <button type="submit" [disabled]="updateForm.invalid">Actualizar</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para actualizar -->
+  <div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">✏️</span>
+      <span class="alert-msg">¿Está seguro que desea actualizar la persona "{{ personaAActualizar?.firstName }} {{ personaAActualizar?.lastName }}"?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+        <button class="blue-btn" (click)="abrirModalActualizar()">Sí, Editar</button>
+      </div>
     </div>
   </div>
 

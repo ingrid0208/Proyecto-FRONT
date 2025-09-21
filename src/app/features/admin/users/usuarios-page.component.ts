@@ -24,7 +24,9 @@ export class UsuariosPageComponent implements OnInit {
   // Modal y formulario
   showModal: boolean = false;
   showUpdateModal: boolean = false;
+  showUpdateConfirm: boolean = false;
   usuarioSeleccionado: Usuario | null = null;
+  usuarioAActualizar: Usuario | null = null;
   
   nuevoUsuario: {
     name: string;
@@ -136,16 +138,30 @@ export class UsuariosPageComponent implements OnInit {
     };
   }
 
-  abrirModalActualizar(usuario: Usuario) {
-    this.usuarioSeleccionado = { 
-      ...usuario,
-      // Asegurar que los campos tengan valores válidos
-      name: usuario.name || '',
-      password: usuario.password || '',
-      email: usuario.email || '',
-      personId: usuario.personId || 1
-    };
-    this.showUpdateModal = true;
+  confirmarActualizacion(usuario: Usuario) {
+    this.usuarioAActualizar = usuario;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion() {
+    this.usuarioAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirModalActualizar() {
+    if (this.usuarioAActualizar) {
+      this.usuarioSeleccionado = {
+        ...this.usuarioAActualizar,
+        // Asegurar que los campos tengan valores válidos
+        name: this.usuarioAActualizar.name || '',
+        password: this.usuarioAActualizar.password || '',
+        email: this.usuarioAActualizar.email || '',
+        personId: this.usuarioAActualizar.personId || 1
+      };
+      this.showUpdateModal = true;
+      this.showUpdateConfirm = false;
+      this.usuarioAActualizar = null;
+    }
   }
 
   cerrarModalActualizar() {
@@ -172,9 +188,21 @@ export class UsuariosPageComponent implements OnInit {
       return;
     }
 
-    // Validar longitud mínima de contraseña
-    if (this.nuevoUsuario.password.length < 6) {
-      this.mostrarAlerta('La contraseña debe tener al menos 6 caracteres', 'error');
+    // Validar longitud de contraseña
+    if (this.nuevoUsuario.password.length < 6 || this.nuevoUsuario.password.length > 50) {
+      this.mostrarAlerta('La contraseña debe tener entre 6 y 50 caracteres', 'error');
+      return;
+    }
+
+    // Validar longitud de nombre
+    if (this.nuevoUsuario.name.length < 2 || this.nuevoUsuario.name.length > 100) {
+      this.mostrarAlerta('El nombre debe tener entre 2 y 100 caracteres', 'error');
+      return;
+    }
+
+    // Validar longitud de email
+    if (this.nuevoUsuario.email.length > 150) {
+      this.mostrarAlerta('El email no puede exceder 150 caracteres', 'error');
       return;
     }
 
@@ -197,6 +225,22 @@ export class UsuariosPageComponent implements OnInit {
 
   actualizarUsuario() {
     if (this.usuarioSeleccionado && this.usuarioSeleccionado.id) {
+      // Validar límites para actualización
+      if (this.usuarioSeleccionado.name.length < 2 || this.usuarioSeleccionado.name.length > 100) {
+        this.mostrarAlerta('El nombre debe tener entre 2 y 100 caracteres', 'error');
+        return;
+      }
+
+      if (this.usuarioSeleccionado.email.length > 150) {
+        this.mostrarAlerta('El email no puede exceder 150 caracteres', 'error');
+        return;
+      }
+
+      if (this.usuarioSeleccionado.password && (this.usuarioSeleccionado.password.length < 6 || this.usuarioSeleccionado.password.length > 50)) {
+        this.mostrarAlerta('La contraseña debe tener entre 6 y 50 caracteres', 'error');
+        return;
+      }
+
       console.log('Actualizando usuario:', this.usuarioSeleccionado);
       
       this.usuariosService.updateUsuario(this.usuarioSeleccionado.id, this.usuarioSeleccionado).subscribe({

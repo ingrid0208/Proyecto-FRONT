@@ -23,7 +23,9 @@ export class ModulePageComponent implements OnInit {
   // Modal y formulario
   showModal: boolean = false;
   showUpdateModal: boolean = false;
+  showUpdateConfirm: boolean = false;
   moduleSeleccionado: Module | null = null;
+  moduleAActualizar: Module | null = null;
   
   nuevoModule: {
     name: string;
@@ -125,14 +127,28 @@ export class ModulePageComponent implements OnInit {
     };
   }
 
-  abrirModalActualizar(module: Module) {
-    this.moduleSeleccionado = { 
-      ...module,
-      // Asegurar que los campos tengan valores válidos
-      name: module.name || '',
-      description: module.description || ''
-    };
-    this.showUpdateModal = true;
+  confirmarActualizacion(module: Module) {
+    this.moduleAActualizar = module;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion() {
+    this.moduleAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirModalActualizar() {
+    if (this.moduleAActualizar) {
+      this.moduleSeleccionado = {
+        ...this.moduleAActualizar,
+        // Asegurar que los campos tengan valores válidos
+        name: this.moduleAActualizar.name || '',
+        description: this.moduleAActualizar.description || ''
+      };
+      this.showUpdateModal = true;
+      this.showUpdateConfirm = false;
+      this.moduleAActualizar = null;
+    }
   }
 
   cerrarModalActualizar() {
@@ -153,14 +169,14 @@ export class ModulePageComponent implements OnInit {
       return;
     }
 
-    // Validar longitud mínima
-    if (this.nuevoModule.name.length < 3) {
-      this.mostrarAlerta('El nombre debe tener al menos 3 caracteres', 'error');
+    // Validar límites de longitud
+    if (this.nuevoModule.name.length < 3 || this.nuevoModule.name.length > 80) {
+      this.mostrarAlerta('El nombre debe tener entre 3 y 80 caracteres', 'error');
       return;
     }
 
-    if (this.nuevoModule.description.length < 10) {
-      this.mostrarAlerta('La descripción debe tener al menos 10 caracteres', 'error');
+    if (this.nuevoModule.description.length < 10 || this.nuevoModule.description.length > 250) {
+      this.mostrarAlerta('La descripción debe tener entre 10 y 250 caracteres', 'error');
       return;
     }
 
@@ -183,6 +199,17 @@ export class ModulePageComponent implements OnInit {
 
   actualizarModule() {
     if (this.moduleSeleccionado && this.moduleSeleccionado.id) {
+      // Validar límites para actualización
+      if (this.moduleSeleccionado.name.length < 3 || this.moduleSeleccionado.name.length > 80) {
+        this.mostrarAlerta('El nombre debe tener entre 3 y 80 caracteres', 'error');
+        return;
+      }
+
+      if (this.moduleSeleccionado.description.length < 10 || this.moduleSeleccionado.description.length > 250) {
+        this.mostrarAlerta('La descripción debe tener entre 10 y 250 caracteres', 'error');
+        return;
+      }
+
       console.log('Actualizando módulo:', this.moduleSeleccionado);
       
       this.moduleService.genericService.update<Module>(this.moduleService.endpoint, this.moduleSeleccionado.id, this.moduleSeleccionado).subscribe({
