@@ -3,23 +3,35 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FormService, Form } from '../../../core/services/form.service';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
   styleUrls: ['./form-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent],
   providers: [FormService]
 })
 export class FormPageComponent implements OnInit {
   
   constructor(
     private formService: FormService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private paginationService: PaginationService
   ) {}
 
   forms: Form[] = [];
+  paginatedForms: Form[] = [];
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
   
   // Modal y formulario
   showModal: boolean = false;
@@ -51,17 +63,18 @@ export class FormPageComponent implements OnInit {
       if (this.forms.length === 0) {
         console.log('No se cargaron formularios de la API, agregando datos de prueba');
         this.forms = [
-          { 
-            id: 1, 
+          {
+            id: 1,
             name: 'Formulario de acuerdo de pago',
             description: 'Formulario de creación de acuerdo de pago'
           },
-          { 
-            id: 2, 
+          {
+            id: 2,
             name: 'Formulario de registro de multas',
             description: 'Formulario para registrar nuevas multas'
           }
         ];
+        this.updatePagination();
       }
     }, 2000);
   }
@@ -74,6 +87,7 @@ export class FormPageComponent implements OnInit {
       next: (forms: Form[]) => {
         console.log('Formularios cargados:', forms); // Para depuración
         this.forms = forms || []; // Asegurar que forms sea un array
+        this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
       },
@@ -96,6 +110,7 @@ export class FormPageComponent implements OnInit {
               description: 'Formulario para registrar nuevas multas'
             }
           ];
+          this.updatePagination();
         }
       }
     });
@@ -262,5 +277,20 @@ export class FormPageComponent implements OnInit {
   cancelarEliminar() {
     this.showConfirm = false;
     this.formAEliminar = null;
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.forms.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedForms = this.paginationService.getPaginatedItems(this.forms, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 }

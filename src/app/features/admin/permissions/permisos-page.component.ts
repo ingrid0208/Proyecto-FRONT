@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PermissionService, Permission } from '../../../core/services/permission.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,15 +11,24 @@ import { ReactiveFormsModule } from '@angular/forms';
   selector: 'app-permisos-page',
   templateUrl: './permisos-page.component.html',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, PaginationComponent],
 })
 export class PermisosPageComponent implements OnInit {
   permisos: Permission[] = [];
+  paginatedPermisos: Permission[] = [];
   showForm = false;
   permisoForm: FormGroup;
   loading = false;
   errorMsg = '';
   successMsg = '';
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
 
   // Variables para modales
   showUpdateConfirm = false;
@@ -28,7 +39,8 @@ export class PermisosPageComponent implements OnInit {
 
   constructor(
     private permissionService: PermissionService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private paginationService: PaginationService
   ) {
     this.permisoForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -43,7 +55,23 @@ export class PermisosPageComponent implements OnInit {
   obtenerPermisos() {
     this.permissionService.genericService.getAll<Permission>(this.permissionService.endpoint).subscribe((data: Permission[]) => {
       this.permisos = data;
+      this.updatePagination();
     });
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.permisos.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedPermisos = this.paginationService.getPaginatedItems(this.permisos, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 
   abrirFormulario() {

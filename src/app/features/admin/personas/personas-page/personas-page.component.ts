@@ -8,13 +8,15 @@ import { DocumentTypeService } from '../../../../core/services/api/document-type
 // que incluye campos como phoneNumber, municipalityId y documentTypeId.
 import { Municipio } from '../../../../shared/models/parameters/municipality.models';
 import { DocumentTypeDto as DocumentType } from '../../../../shared/models/parameters/document-type.models';
+import { PaginationService, PaginationConfig } from '../../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-personas-page',
   templateUrl: './personas-page.component.html',
   styleUrls: ['./personas-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, PaginationComponent]
 })
 export class PersonasPageComponent implements OnInit {
   // El backend devuelve/consume un DTO con campos adicionales (phoneNumber, municipalityId, documentTypeId)
@@ -22,6 +24,15 @@ export class PersonasPageComponent implements OnInit {
   // por este componente para evitar conflictos de tipos con `Persona` existente.
   personas: PersonaDto[] = [];
   filteredPersonas: PersonaDto[] = [];
+  paginatedPersonas: PersonaDto[] = [];
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
   municipios: Municipio[] = [];
   documentTypes: DocumentType[] = [];
   showForm: boolean = false;
@@ -47,7 +58,8 @@ export class PersonasPageComponent implements OnInit {
     private personaService: PersonaService,
     private municipioService: MunicipalityService,
     private documentTypeService: DocumentTypeService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private paginationService: PaginationService
   ) {
     this.personaForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
@@ -73,6 +85,7 @@ export class PersonasPageComponent implements OnInit {
     this.personaService.personas$.subscribe((personas: any) => {
       this.personas = personas;
       this.filteredPersonas = personas;
+      this.updatePagination();
     });
     // Solicitar la carga explícita de personas
     this.personaService.refreshPersonas();
@@ -94,6 +107,7 @@ export class PersonasPageComponent implements OnInit {
     this.filteredPersonas = this.personas.filter(p =>
       (p.firstName + ' ' + p.lastName).toLowerCase().includes(term.toLowerCase())
     );
+    this.updatePagination();
   }
 
   abrirFormulario() {
@@ -319,6 +333,21 @@ export class PersonasPageComponent implements OnInit {
     }
     const documentType = this.documentTypes.find(dt => dt.id === documentTypeId);
     return documentType ? documentType.name : `Tipo de documento ID: ${documentTypeId}`;
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredPersonas.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedPersonas = this.paginationService.getPaginatedItems(this.filteredPersonas, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 }
 

@@ -4,19 +4,22 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RolesService, Rol } from '../../../core/services/api/roles.service';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-roles-page',
   templateUrl: './roles-page.component.html',
   styleUrls: ['./roles-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule]
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent]
 })
 export class RolesPageComponent implements OnInit {
   
   constructor(
     private rolesService: RolesService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private paginationService: PaginationService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +40,15 @@ export class RolesPageComponent implements OnInit {
   }
 
   roles: Rol[] = [];
+  paginatedRoles: Rol[] = [];
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
   
   // Modal y formulario
   showModal: boolean = false;
@@ -64,6 +76,7 @@ export class RolesPageComponent implements OnInit {
       next: (roles: Rol[]) => {
         console.log('Roles cargados:', roles); // Para depuración
         this.roles = roles || []; // Asegurar que roles sea un array
+        this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
       },
@@ -236,5 +249,20 @@ export class RolesPageComponent implements OnInit {
   cancelarEliminar() {
     this.showConfirm = false;
     this.rolAEliminar = null;
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.roles.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedRoles = this.paginationService.getPaginatedItems(this.roles, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 }

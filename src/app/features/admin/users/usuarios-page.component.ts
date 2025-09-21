@@ -3,23 +3,35 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { UsuariosService, Usuario, UserInfraction } from './usuarios.service';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-usuarios-page',
   templateUrl: './usuarios-page.component.html',
   styleUrls: ['./usuarios-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent],
   providers: [UsuariosService]
 })
 export class UsuariosPageComponent implements OnInit {
   
   constructor(
     private usuariosService: UsuariosService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private paginationService: PaginationService
   ) {}
 
   usuarios: Usuario[] = [];
+  paginatedUsuarios: Usuario[] = [];
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
   
   // Modal y formulario
   showModal: boolean = false;
@@ -55,23 +67,24 @@ export class UsuariosPageComponent implements OnInit {
       if (this.usuarios.length === 0) {
         console.log('No se cargaron usuarios de la API, agregando datos de prueba');
         this.usuarios = [
-          { 
-            id: 1, 
+          {
+            id: 1,
             name: 'Administrador Sistema',
-            email: 'admin@ejemplo.com', 
+            email: 'admin@ejemplo.com',
             password: '********',
             personId: 1,
             userInfractions: []
           },
-          { 
-            id: 2, 
+          {
+            id: 2,
             name: 'Usuario Normal',
-            email: 'usuario@ejemplo.com', 
+            email: 'usuario@ejemplo.com',
             password: '********',
             personId: 2,
             userInfractions: []
           }
         ];
+        this.updatePagination();
       }
     }, 2000);
   }
@@ -84,6 +97,7 @@ export class UsuariosPageComponent implements OnInit {
       next: (usuarios: Usuario[]) => {
         console.log('Usuarios cargados:', usuarios); // Para depuración
         this.usuarios = usuarios || []; // Asegurar que usuarios sea un array
+        this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
       },
@@ -302,5 +316,20 @@ export class UsuariosPageComponent implements OnInit {
   cancelarEliminar() {
     this.showConfirm = false;
     this.usuarioAEliminar = null;
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.usuarios.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedUsuarios = this.paginationService.getPaginatedItems(this.usuarios, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 }

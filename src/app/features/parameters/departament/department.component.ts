@@ -43,6 +43,12 @@ export class DepartmentComponent implements OnInit {
   errorMsg = '';
   successMsg = '';
 
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+  paginatedDepartamentos: Department[] = [];
+
   // Variables para modales
   showForm = false;
   showUpdateForm = false;
@@ -91,6 +97,7 @@ export class DepartmentComponent implements OnInit {
       .subscribe({
         next: (rows: Department[]) => {
           this.departamentos = rows; // no hace falta mapear, ya coincide con la interfaz
+          this.updatePagination();
         },
         error: (err: any) => {
           console.error('Error cargando departamentos', err);
@@ -213,6 +220,50 @@ export class DepartmentComponent implements OnInit {
   cancelarEliminacion(): void {
     this.departmentAEliminar = null;
     this.showConfirm = false;
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.departamentos.length / this.itemsPerPage);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedDepartamentos = this.departamentos.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedItems();
+    }
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const maxVisible = 5;
+    let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
+    let end = Math.min(this.totalPages, start + maxVisible - 1);
+
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
   }
 
   eliminarDepartamento(): void {

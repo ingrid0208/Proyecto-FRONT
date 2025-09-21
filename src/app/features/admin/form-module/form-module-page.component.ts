@@ -2,18 +2,29 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FormModuleService, FormModule } from '../../../core/services/formmodule.service';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-form-module-page',
   templateUrl: './form-module-page.component.html',
   styleUrls: ['./form-module-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   providers: [FormModuleService]
 })
 export class FormModulePageComponent implements OnInit {
   formModules: FormModule[] = [];
+  paginatedFormModules: FormModule[] = [];
   isLoading: boolean = false;
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
   
   // Modal y formulario
   showModal: boolean = false;
@@ -35,7 +46,10 @@ export class FormModulePageComponent implements OnInit {
   showConfirm: boolean = false;
   formModuleAEliminar: number | null = null;
 
-  constructor(private formModuleService: FormModuleService) {}
+  constructor(
+    private formModuleService: FormModuleService,
+    private paginationService: PaginationService
+  ) {}
 
   ngOnInit() {
     this.loadFormModules();
@@ -46,6 +60,7 @@ export class FormModulePageComponent implements OnInit {
     this.formModuleService.genericService.getAll<FormModule>(this.formModuleService.endpoint).subscribe({
       next: (formModules: FormModule[]) => {
         this.formModules = formModules;
+        this.updatePagination();
         this.isLoading = false;
       },
       error: (error: any) => {
@@ -114,6 +129,7 @@ export class FormModulePageComponent implements OnInit {
       this.formModuleService.genericService.delete(this.formModuleService.endpoint, formModuleId).subscribe({
         next: () => {
           this.formModules.splice(this.formModuleAEliminar!, 1);
+          this.updatePagination();
           this.mostrarAlerta('Form-Module eliminado correctamente.', 'eliminado');
           this.showConfirm = false;
           this.formModuleAEliminar = null;
@@ -188,6 +204,7 @@ export class FormModulePageComponent implements OnInit {
         this.formModuleService.genericService.create<FormModule>(this.formModuleService.endpoint, formModuleData).subscribe({
           next: (createdFormModule: FormModule) => {
             this.formModules.push(createdFormModule);
+            this.updatePagination();
             this.mostrarAlerta('Form-Module creado exitosamente.', 'creado');
             this.cerrarModal();
           },
@@ -212,6 +229,7 @@ export class FormModulePageComponent implements OnInit {
       this.formModuleService.genericService.update<FormModule>(this.formModuleService.endpoint, this.nuevoFormModule.id, formModuleData).subscribe({
         next: (updatedFormModule: FormModule) => {
           this.formModules[this.formModuleEditando!] = updatedFormModule;
+          this.updatePagination();
           this.mostrarAlerta('Form-Module actualizado exitosamente.', 'creado');
           this.cerrarModal();
         },
@@ -221,5 +239,20 @@ export class FormModulePageComponent implements OnInit {
         }
       });
     }
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.formModules.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedFormModules = this.paginationService.getPaginatedItems(this.formModules, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 }

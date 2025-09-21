@@ -36,7 +36,7 @@
 
   <!-- Lista de Form-Modules -->
   <div class="form-modules-list" *ngIf="!isLoading">
-    <div class="form-module-card" *ngFor="let formModule of formModules; let i = index">
+    <div class="form-module-card" *ngFor="let formModule of paginatedFormModules; let i = index">
       <div class="card-header">
         <h3>{{ formModule.formName }} - {{ formModule.moduleName }}</h3>
         <div class="card-actions">
@@ -57,7 +57,18 @@
     </div>
   </div>
 
-  <!-- Modal para crear/editar form-module -->
+  <!-- Paginación -->
+  <app-pagination
+    *ngIf="!isLoading"
+    [currentPage]="paginationConfig.currentPage"
+    [totalPages]="paginationConfig.totalPages"
+    [totalItems]="paginationConfig.totalItems"
+    [itemsPerPage]="paginationConfig.itemsPerPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>
+
+<!-- Modal para crear/editar form-module -->
   <div *ngIf="showModal" class="modal-overlay">
     <div class="modal-content">
       <button class="modal-close" (click)="cerrarModal()" title="Cerrar">&times;</button>
@@ -101,4 +112,3 @@
       </div>
     </div>
   </div>
-</div>

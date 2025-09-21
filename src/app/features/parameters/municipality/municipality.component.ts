@@ -28,6 +28,12 @@ export class MunicipalityComponent implements OnInit {
   loading = false;
   errorMsg = '';
   successMsg = '';
+
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+  paginatedMunicipios: Municipality[] = [];
   
   // Variables para modales
   showForm = false;
@@ -73,7 +79,10 @@ export class MunicipalityComponent implements OnInit {
     this.service.genericService.getAll<Municipality>(this.service.endpoint, 'GetAll')
       .pipe(finalize(() => this.loading = false))
         .subscribe({
-          next: (r: Municipality[]) => this.municipios = r,
+          next: (r: Municipality[]) => {
+            this.municipios = r;
+            this.updatePagination();
+          },
           error: (e: any) => this.errorMsg = 'No fue posible cargar los municipios.'
         });
   }
@@ -193,6 +202,50 @@ export class MunicipalityComponent implements OnInit {
   cancelarEliminacion(): void {
     this.municipalityAEliminar = null;
     this.showConfirm = false;
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.municipios.length / this.itemsPerPage);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedMunicipios = this.municipios.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedItems();
+    }
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const maxVisible = 5;
+    let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
+    let end = Math.min(this.totalPages, start + maxVisible - 1);
+
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
   }
 
   eliminarMunicipio(): void {

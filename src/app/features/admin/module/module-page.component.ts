@@ -2,23 +2,35 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModuleService, Module } from '../../../core/services/module.service';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-module-page',
   templateUrl: './module-page.component.html',
   styleUrls: ['./module-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   providers: [ModuleService]
 })
 export class ModulePageComponent implements OnInit {
   
   constructor(
     private moduleService: ModuleService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private paginationService: PaginationService
   ) {}
 
   modules: Module[] = [];
+  paginatedModules: Module[] = [];
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
   
   // Modal y formulario
   showModal: boolean = false;
@@ -50,22 +62,23 @@ export class ModulePageComponent implements OnInit {
       if (this.modules.length === 0) {
         console.log('No se cargaron módulos de la API, agregando datos de prueba');
         this.modules = [
-          { 
-            id: 1, 
+          {
+            id: 1,
             name: 'Módulo de Usuarios',
             description: 'Módulo para gestionar usuarios del sistema'
           },
-          { 
-            id: 2, 
+          {
+            id: 2,
             name: 'Módulo de Reportes',
             description: 'Módulo para generar y visualizar reportes'
           },
-          { 
-            id: 3, 
+          {
+            id: 3,
             name: 'Módulo de Configuración',
             description: 'Módulo para configurar parámetros del sistema'
           }
         ];
+        this.updatePagination();
       }
     }, 2000);
   }
@@ -78,6 +91,7 @@ export class ModulePageComponent implements OnInit {
       next: (modules: Module[]) => {
         console.log('Módulos cargados:', modules); // Para depuración
         this.modules = modules || []; // Asegurar que modules sea un array
+        this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
       },
@@ -105,6 +119,7 @@ export class ModulePageComponent implements OnInit {
               description: 'Módulo para configurar parámetros del sistema'
             }
           ];
+          this.updatePagination();
         }
       }
     });
@@ -271,5 +286,20 @@ export class ModulePageComponent implements OnInit {
   cancelarEliminar() {
     this.showConfirm = false;
     this.moduleAEliminar = null;
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.modules.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedModules = this.paginationService.getPaginatedItems(this.modules, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 }

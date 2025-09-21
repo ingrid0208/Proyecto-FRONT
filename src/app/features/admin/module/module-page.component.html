@@ -8,7 +8,7 @@
   </button>
 
   <!-- Tabla de módulos -->
-  <div *ngFor="let module of modules" class="persona-card">
+  <div *ngFor="let module of paginatedModules" class="persona-card">
     <div class="persona-info">
       <div class="info-row">
         <span class="label">Nombre:</span>
@@ -47,7 +47,17 @@
     <span>{{ alertMsg }}</span>
   </div>
 
-  <!-- Modal para crear nuevo módulo -->
+  <!-- Paginación -->
+  <app-pagination
+    [currentPage]="paginationConfig.currentPage"
+    [totalPages]="paginationConfig.totalPages"
+    [totalItems]="paginationConfig.totalItems"
+    [itemsPerPage]="paginationConfig.itemsPerPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>
+
+<!-- Modal para crear nuevo módulo -->
   <div *ngIf="showModal" class="modal-overlay">
     <div class="modal-content persona-form">
       <h2>Agregar Nuevo Módulo</h2>
@@ -130,4 +140,3 @@
       </div>
     </div>
   </div>
-</div>

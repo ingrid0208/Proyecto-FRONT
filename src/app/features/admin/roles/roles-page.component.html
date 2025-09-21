@@ -27,7 +27,7 @@
   <button class="add-role-btn" (click)="abrirModal()">+ Agregar Roles</button>
   </div>
     <div class="roles-list">
-      <div class="rol-card" *ngFor="let rol of roles">
+      <div class="rol-card" *ngFor="let rol of paginatedRoles">
       <div class="rol-header">
         <span class="rol-dot" style="background: #43a047"></span>
         <span class="rol-nombre">{{ rol.name }}</span>
@@ -93,6 +93,15 @@
       </div>
     </form>
   </div>
+
+  <!-- Paginación -->
+  <app-pagination
+    [currentPage]="paginationConfig.currentPage"
+    [totalPages]="paginationConfig.totalPages"
+    [totalItems]="paginationConfig.totalItems"
+    [itemsPerPage]="paginationConfig.itemsPerPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
 </div>
 
 <!-- Modal de confirmación para actualizar -->

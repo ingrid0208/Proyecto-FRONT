@@ -99,7 +99,7 @@
   </div>
 
   <div class="personas-list">
-    <div class="persona-row" *ngFor="let persona of filteredPersonas" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
+    <div class="persona-row" *ngFor="let persona of paginatedPersonas" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
       <div class="persona-content" style="display: flex; align-items: center; flex: 1;">
         <div class="avatar" style="margin-right: 15px;">
           {{ persona.firstName[0] }}{{ persona.lastName[0] }}
@@ -133,7 +133,17 @@
     </div>
   </div>
 
-  <!-- Modal para actualizar persona -->
+  <!-- Paginación -->
+  <app-pagination
+    [currentPage]="paginationConfig.currentPage"
+    [totalPages]="paginationConfig.totalPages"
+    [totalItems]="paginationConfig.totalItems"
+    [itemsPerPage]="paginationConfig.itemsPerPage"
+    (pageChange)="onPageChange($event)">
+  </app-pagination>
+</div>
+
+<!-- Modal para actualizar persona -->
   <div *ngIf="showUpdateModal && personaSeleccionada" class="modal-overlay">
     <div class="modal-content persona-form">
       <h2>Actualizar Usuario</h2>

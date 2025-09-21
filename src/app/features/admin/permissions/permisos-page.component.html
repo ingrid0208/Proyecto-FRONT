@@ -40,7 +40,7 @@
     </div>
   </div>
   <div class="permisos-list space-y-4">
-    <div class="permiso-row flex items-center justify-between p-4 rounded-lg shadow bg-white border-l-4 border-emerald-400 hover:shadow-lg transition-all duration-200" *ngFor="let permiso of permisos">
+    <div class="permiso-row flex items-center justify-between p-4 rounded-lg shadow bg-white border-l-4 border-emerald-400 hover:shadow-lg transition-all duration-200" *ngFor="let permiso of paginatedPermisos">
       <div class="permiso-content">
         <div class="permiso-nombre text-lg font-semibold text-emerald-700">{{ permiso.name }}</div>
         <div class="permiso-descripcion text-gray-500 text-sm">{{ permiso.description }}</div>
@@ -50,6 +50,14 @@
         <button class="delete-btn" (click)="confirmarEliminacion(permiso)"><i class="material-icons">delete</i></button>
       </div>
     </div>
+    <!-- Paginación -->
+    <app-pagination
+      [currentPage]="paginationConfig.currentPage"
+      [totalPages]="paginationConfig.totalPages"
+      [totalItems]="paginationConfig.totalItems"
+      [itemsPerPage]="paginationConfig.itemsPerPage"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
   </div>
 
   <!-- Modal de confirmación para actualizar -->
