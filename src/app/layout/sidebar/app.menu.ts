@@ -86,15 +86,15 @@ export class AppMenu {
             },
             {
                 label: 'Inicio',
-                items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/consultar-ingresar/consultar-ingresar'] }]
+                items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/consultar-ingresar'] }]
             },
             {
                 label: 'Contenido',
-                items: [
-                    { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoMultas'] },
-                    { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/NotificacionMultas'] },
-                    { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-                ]
+        items: [
+          { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/tipomultas'] },
+          { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/notificacionmultas'] },
+          { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
+        ]
             },
             {
                 label: 'Gestión Avanzada',

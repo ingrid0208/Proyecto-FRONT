@@ -89,10 +89,10 @@ export class Login {
 
    this.api.loginEmail({ email: this.email.trim(), password: this.password })
     .subscribe({
-      next: (res: LoginEmailResponse) => {
-        if (res.success) {
+      next: (res: LoginEmailResponse & { isSuccess?: boolean }) => {
+        if (res.success || res.isSuccess) {
           console.log('✅ Login exitoso:', res.message);
-          this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+          this.router.navigate(['/uikit/media']);
         } else {
           console.error('Login fallido:', res);
           alert(res.message || 'No se pudo iniciar sesión.');
