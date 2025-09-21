@@ -2,15 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { GenericMultasTableComponent } from '../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../shared/models/table.Generic';
-import { CardHeaderComponent } from '../../shared/components/card-header/card-header.component';
-import { MunicipalityService } from '../../core/services/api/municipality.service';
+import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
+import { ColumnDef } from '../../../shared/models/table.Generic';
+import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
+import { MunicipalityService } from '../../../core/services/api/municipality.service';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../layout/header/topbar.component';
-import { Municipality } from '../../shared/models/parameters/municipality.models';
+import { AppTopbar } from '../../../layout/header/topbar.component';
+import { Municipality } from '../../../shared/models/parameters/municipality.models';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-municipality',
@@ -70,10 +70,10 @@ export class MunicipalityComponent implements OnInit {
     this.errorMsg = '';
     this.service.genericService.getAll<Municipality>(this.service.endpoint, 'GetAll')
       .pipe(finalize(() => this.loading = false))
-      .subscribe({
-        next: r => this.municipios = r,
-        error: e => this.errorMsg = 'No fue posible cargar los municipios.'
-      });
+        .subscribe({
+          next: (r: Municipality[]) => this.municipios = r,
+          error: (e: any) => this.errorMsg = 'No fue posible cargar los municipios.'
+        });
   }
 
   // Métodos para manejar formularios

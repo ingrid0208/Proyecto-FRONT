@@ -138,11 +138,10 @@ export class AppMenu {
                     },
                 ]
             },
-            {
-                label: 'Modulo de parametro',
-                icon: 'pi pi-fw pi-briefcase',
-                routerLink: ['/pages'],
-                items: [
+      {
+        label: 'Modulo de parametro',
+        icon: 'pi pi-fw pi-briefcase',
+        items: [
                     {
                         label: 'parametro',
                         icon: 'pi pi-fw pi-user',

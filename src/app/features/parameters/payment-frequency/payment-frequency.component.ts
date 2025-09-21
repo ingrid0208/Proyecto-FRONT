@@ -2,15 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { GenericMultasTableComponent } from '../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../shared/models/table.Generic';
-import { CardHeaderComponent } from '../../shared/components/card-header/card-header.component';
-import { PaymentFrequencyService } from '../../core/services/api/payment-frequency.service';
+import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
+import { ColumnDef } from '../../../shared/models/table.Generic';
+import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
+import { PaymentFrequencyService } from '../../../core/services/api/payment-frequency.service';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../layout/header/topbar.component';
-import { PaymentFrequency } from '../../shared/models/parameters/payment-frequency.models';
+import { AppTopbar } from '../../../layout/header/topbar.component';
+import { PaymentFrequency } from '../../../shared/models/parameters/payment-frequency.models';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-payment-frequency',
@@ -70,8 +70,8 @@ export class PaymentFrequencyComponent implements OnInit {
     this.service.genericService.getAll<PaymentFrequency>(this.service.endpoint, 'GetAll')
       .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: r => this.frecuencias = r,
-        error: e => this.errorMsg = 'No fue posible cargar las frecuencias de pago.'
+        next: (r: PaymentFrequency[]) => { this.frecuencias = r; },
+        error: (e: any) => { this.errorMsg = 'No fue posible cargar las frecuencias de pago.'; }
       });
   }
 
@@ -108,7 +108,7 @@ export class PaymentFrequencyComponent implements OnInit {
           },
           error: (error: any) => {
             console.error('Error al crear frecuencia de pago:', error);
-            this.errorMsg = error.error?.message || 'Error al crear la frecuencia de pago.';
+            this.errorMsg = error?.error?.message || 'Error al crear la frecuencia de pago.';
             setTimeout(() => this.errorMsg = '', 3000);
           }
         });
@@ -157,7 +157,7 @@ export class PaymentFrequencyComponent implements OnInit {
           },
           error: (error: any) => {
             console.error('Error al actualizar frecuencia de pago:', error);
-            this.errorMsg = error.error?.message || 'Error al actualizar la frecuencia de pago.';
+            this.errorMsg = error?.error?.message || 'Error al actualizar la frecuencia de pago.';
             setTimeout(() => this.errorMsg = '', 3000);
           }
         });
@@ -194,7 +194,7 @@ export class PaymentFrequencyComponent implements OnInit {
           },
           error: (error: any) => {
             console.error('Error al eliminar frecuencia de pago:', error);
-            this.errorMsg = error.error?.message || 'Error al eliminar la frecuencia de pago.';
+            this.errorMsg = error?.error?.message || 'Error al eliminar la frecuencia de pago.';
             setTimeout(() => this.errorMsg = '', 3000);
           }
         });

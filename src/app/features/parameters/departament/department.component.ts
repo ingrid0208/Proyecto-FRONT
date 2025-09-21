@@ -6,13 +6,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
-import { AppTopbar } from '../../layout/header/topbar.component';
-import { GenericMultasTableComponent } from '../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../shared/models/table.Generic';
-import { CardHeaderComponent } from '../../shared/components/card-header/card-header.component';
-import { DepartmentService } from '../../core/services/api/department.service';
-import { ButtonComponent } from '../../shared/components/button/button.component';
-import { Department } from '../../shared/models/parameters/department.models';
+import { AppTopbar } from '../../../layout/header/topbar.component';
+import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
+import { ColumnDef } from '../../../shared/models/table.Generic';
+import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
+import { DepartmentService } from '../../../core/services/api/department.service';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { Department } from '../../../shared/models/parameters/department.models';
 
 
 @Component({

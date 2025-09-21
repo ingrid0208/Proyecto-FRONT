@@ -2,14 +2,14 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { ColumnDef } from '../../shared/models/table.Generic';
-import { CardHeaderComponent } from '../../shared/components/card-header/card-header.component';
-import { DocumentTypeService } from '../../core/services/api/document-type.service';
+import { ColumnDef } from '../../../shared/models/table.Generic';
+import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
+import { DocumentTypeService } from '../../../core/services/api/document-type.service';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../layout/header/topbar.component';
+import { AppTopbar } from '../../../layout/header/topbar.component';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../shared/components/button/button.component';
-import { DocumentTypeDto } from '../../shared/models/parameters/document-type.models';
+import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { DocumentTypeDto } from '../../../shared/models/parameters/document-type.models';
 
 
 @Component({
