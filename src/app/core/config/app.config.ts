@@ -4,7 +4,7 @@ import {
   provideRouter,
   withEnabledBlockingInitialNavigation,
   withInMemoryScrolling,
-  withRouterConfig,                // ⬅️ importa esto
+  withRouterConfig,
 } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -13,6 +13,9 @@ import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from '../../../app.routes';
 import { authExpiredInterceptor } from '../Interceptor/AuthExpiredInterceptor';
+
+// 👇 importa MessageService
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,8 +27,7 @@ export const appConfig: ApplicationConfig = {
       }),
       withEnabledBlockingInitialNavigation(),
       withRouterConfig({
-        onSameUrlNavigation: 'reload',   // ⬅️ fuerza destruir/recrear el componente
-        // urlUpdateStrategy: 'deferred', // opcional (por defecto)
+        onSameUrlNavigation: 'reload',
       }),
     ),
     provideHttpClient(
@@ -36,5 +38,6 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       theme: { preset: Aura, options: { darkModeSelector: '.app-dark' } },
     }),
+    MessageService, // 👈 agregado
   ],
 };

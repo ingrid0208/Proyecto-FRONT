@@ -49,37 +49,28 @@ export class InicioComponent implements OnInit {
   }
 
   private loadTypeInfractions(): void {
-    this.loadingTypes = true;
-    this.loadError = '';
+  this.loadingTypes = true;
+  this.loadError = '';
 
-    // ⬇️ consumo directo del genérico
-    this.api.getAll<TypeInfractionSelectDto>('TypeInfraction').subscribe({
-      next: (items) => {
-        const groups = new Map<string, SubItem[]>();
-
-        for (const t of (items ?? [])) {
-          const groupKey = (t.type_Infraction || 'Otros').trim();
-
-          const list = groups.get(groupKey) ?? [];
-          list.push({
-            title: `${t.numer_smldv} SMLDV`,
-            text: t.description || ''
-          });
-          groups.set(groupKey, list);
-        }
-
-        // (Opcional) Ordena las categorías por número de tipo si sigue el patrón "Multas de Tipo X"
-        // this.categories = this.sortCategories(Array.from(groups.entries()));
-        this.categories = Array.from(groups.entries()).map(([title, items]) => ({ title, items }));
-
-        this.loadingTypes = false;
-      },
-      error: (err) => {
+  this.api.getAll<TypeInfractionSelectDto>('TypeInfraction').subscribe({
+    next: (items) => {
+      // ... tu lógica de éxito
+      this.loadingTypes = false;
+    },
+    error: (err) => {
+      // Verifica si es un error de red
+      if (err.status === 0) {
+        // 🔹 Aquí controlas solo un mensaje si el servidor está caído
+        console.warn('Servidor no disponible.');
+        this.loadError = 'El servidor no está disponible en este momento. Intenta más tarde.';
+      } else {
         this.loadError = err?.error?.message || 'No fue posible cargar los tipos de infracción.';
-        this.loadingTypes = false;
       }
-    });
-  }
+      this.loadingTypes = false;
+    }
+  });
+}
+
 
   
   onParentOpened(index: number): void {

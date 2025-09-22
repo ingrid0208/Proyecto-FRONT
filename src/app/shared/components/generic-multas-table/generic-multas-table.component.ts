@@ -6,8 +6,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { ColumnDef } from '../../Models/table.Generic';
 import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
-import { SessionPingService } from '../../../core/services/session-ping.service'; // si usas el ping
 import Swal from 'sweetalert2';
+import { SessionPingService } from '../../../core/services/servicesGeneric/session-ping.service';
 
 @Component({
   selector: 'app-generic-multas-table',

@@ -8,7 +8,7 @@ import { ColumnDef } from '../../../../../shared/Models/table.Generic';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { ServiceGenericService } from '../../../../../core/services/servicesGeneric/service-generic.service';
 import { AppTopbar } from '../../../../topbar/topbar.component';
-import { SessionPingService } from '../../../../../core/services/session-ping.service';
+import { SessionPingService } from '../../../../../core/services/servicesGeneric/session-ping.service';
 
 interface MultaTableRow {
   id: number;              // id de la multa (infractionId)

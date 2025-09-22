@@ -7,8 +7,8 @@ import { Router, RouterModule } from '@angular/router';
 import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { ServiceGenericService } from '../../../../../core/services/servicesGeneric/service-generic.service';
-import { SessionPingService } from '../../../../../core/services/session-ping.service';
 import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/userInfractionSelectDto';
+import { SessionPingService } from '../../../../../core/services/servicesGeneric/session-ping.service';
 
 @Component({
   selector: 'app-contenido-documento',

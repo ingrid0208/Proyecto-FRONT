@@ -9,9 +9,9 @@ import { Router } from '@angular/router';
 import { RecaptchaService } from '../../../../core/services/recaptcha.service';
 import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
 import { LoginDocumentoRequest } from '../../../../shared/Models/LoginDocumentoRequest';
-import { SessionPingService } from '../../../../core/services/session-ping.service';
 import { DocumentTypeDto } from '../../../../shared/Models/parameter/document-type.models';
 import Swal from 'sweetalert2';
+import { SessionPingService } from '../../../../core/services/servicesGeneric/session-ping.service';
 
 @Component({
   selector: 'app-identification',
