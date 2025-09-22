@@ -9,6 +9,7 @@ import { LoginEmailRequest } from '../../../shared/Models/auth/LoginEmailRequest
 import { LoginEmailResponse } from '../../../shared/Models/auth/LoginEmailResponse';
 import { RegisterRequestDto } from '../../../shared/Models/auth/RegisterRequestDto';
 import { PaymentAgreementInitDto } from '../../../shared/Models/Init/PaymentAgreementInitDto';
+import { PaymentAgreementCreateResponse } from '../../../shared/Models/Entities/PaymentAgreementCreateResponse';
 
 type getAllType = 'GetAll' | 'GetAllDeletes';
 type DeleteType = 'Persistent' | 'Logical';
@@ -160,6 +161,58 @@ export class ServiceGenericService {
     this.url('UserInfraction', 'create-with-person'), 
     body,
     this.optsJwt()
+  );
+}
+
+createPaymentAgreement(body: any) {
+  return this.http.post<PaymentAgreementCreateResponse>(
+    this.url('PaymentAgreement'),
+    body,
+    this.optsJwt()
+  );
+}
+
+
+// ======================
+// VERIFICACIÓN DE CORREO
+// ======================
+sendVerification(nombre: string, email: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'send'),
+    { nombre, email },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+validateCode(email: string, code: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'validate'),
+    { email, code },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+sendReactivation(email: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'send-reactivation'),
+    { email },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+reactivateAccount(email: string, code: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'reactivate'),
+    { email, code },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+sendMonthly(nombre: string, email: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'send-monthly'),
+    { nombre, email },
+    { headers: this.getHeaders(true) }
   );
 }
 

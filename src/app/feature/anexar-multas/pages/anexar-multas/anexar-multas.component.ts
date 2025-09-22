@@ -90,6 +90,18 @@ export class AnexarMultasComponent implements OnInit {
       next: (resp: any) => {
         if (resp?.isSuccess) {
           Swal.fire('✅', resp.message || 'Multa registrada exitosamente', 'success');
+
+          // 🚀 Si hay PDF, lo abrimos en nueva pestaña
+          if (resp.pdfUrl) {
+            const link = document.createElement('a');
+            link.href = resp.pdfUrl;
+            link.download = `Multa_${resp.data.id}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+
+
           this.resetForm();
         } else {
           Swal.fire('⚠️', resp?.message || 'No se pudo registrar la multa', 'warning');
@@ -99,16 +111,13 @@ export class AnexarMultasComponent implements OnInit {
         console.error('❌ Error al crear multa:', err);
 
         if (err.error?.errors) {
-          // 🔹 Convertimos a pares [campo, listaMensajes]
           const errores = Object.entries(err.error.errors);
-
-          // 🔹 Tomar SOLO el primer error
           const [campo, listaMensajes] = errores[0];
           const mensaje = (listaMensajes as string[])[0];
 
           await Swal.fire({
             icon: 'warning',
-            title: `Validacion`,
+            title: 'Validación',
             text: `⚠️ ${mensaje}`,
             confirmButtonColor: '#d33'
           });
@@ -118,7 +127,6 @@ export class AnexarMultasComponent implements OnInit {
       }
     });
   }
-
 
   resetForm() {
     this.form = {

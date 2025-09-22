@@ -1,4 +1,6 @@
 export interface LoginEmailResponse {
   isSuccess: boolean;
-  message: string; // <-- agregar esta propiedad
+  message: string;
+  token?: string;
+  lastVerificationSentAt?: string | null; 
 }

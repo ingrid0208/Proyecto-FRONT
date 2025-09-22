@@ -1,4 +1,3 @@
- <app-topbar></app-topbar>
 <div class="multas-container">
     <!-- Header con botones de navegación -->
     <div class="multas-header">
@@ -10,16 +9,7 @@
             </button>
         </div>
 
-        <div class="search-container">
-            <div class="p-input-icon-left">
-                <i class="pi pi-search"></i>
-                <input type="text" pInputText placeholder="Buscar" class="search-input" />
-            </div>
-        </div>
-    </div>
-
-    <!-- Botones de tipo de multa -->
-    <div class="multas-nav">
+           <div class="multas-nav">
         <button
             class="nav-btn"
             *ngFor="let tipo of tiposMultas; let i = index"
@@ -28,6 +18,10 @@
             Multa tipo {{ i + 1 }}
         </button>
     </div>
+    </div>
+
+    <!-- Botones de tipo de multa -->
+
 
     <div class="content-wrapper">
         <!-- Contenido principal -->

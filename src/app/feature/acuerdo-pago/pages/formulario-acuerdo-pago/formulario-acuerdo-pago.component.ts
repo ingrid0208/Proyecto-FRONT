@@ -12,6 +12,7 @@ import { AppTopbar } from '../../../topbar/topbar.component';
 import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
 import { PaymentAgreementInitDto } from '../../../../shared/Models/Init/PaymentAgreementInitDto';
 import Swal from 'sweetalert2';
+import { environment } from '../../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-formulario-acuerdo-pago',
@@ -181,20 +182,34 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
 
     console.log("📤 Payload FINAL al backend:", payload);
 
-    this.serviceGeneric.create<any>('PaymentAgreement', payload).subscribe({
+    this.serviceGeneric.createPaymentAgreement(payload).subscribe({
       next: (res) => {
         console.log("✅ Respuesta backend:", res);
-        this.form.baseAmount = res.baseAmount;
-        this.form.monthlyFee = res.monthlyFee;
-        this.agreementStart = res.agreementStart;
-        this.agreementEnd = res.agreementEnd;
+
+        // Guardar datos del acuerdo
+        this.form.baseAmount = res.agreement.baseAmount;
+        this.form.monthlyFee = res.agreement.monthlyFee;
+        this.agreementStart = res.agreement.agreementStart;
+        this.agreementEnd = res.agreement.agreementEnd;
 
         Swal.fire({
           icon: 'success',
           title: '¡Éxito!',
-          text: '✅ Acuerdo creado con éxito',
+          text: '✅ Acuerdo creado con éxito. Se abrirá el comprobante en PDF.',
           confirmButtonColor: '#006400'
         });
+
+        // 🚀 Abrir el PDF en una nueva pestaña
+        if (res.pdfUrl) {
+          const link = document.createElement('a');
+          link.href = res.pdfUrl;  // 👈 ya viene completa desde el back
+          link.download = `AcuerdoPago_${res.agreement.id}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+
+
 
         this.step = 3;
       },
@@ -208,15 +223,7 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
         });
       }
     });
-  }
 
-  onDownload() {
-    Swal.fire({
-      icon: 'info',
-      title: 'Descarga',
-      text: '📄 Aquí podrías implementar la descarga del comprobante en PDF.',
-      confirmButtonColor: '#006400'
-    });
   }
 
   goHome() {
@@ -236,8 +243,8 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
   }
 
   getToday(): string {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // elimina la hora
-  return today.toISOString().split('T')[0]; 
-}
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // elimina la hora
+    return today.toISOString().split('T')[0];
+  }
 }

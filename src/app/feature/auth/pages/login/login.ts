@@ -8,6 +8,7 @@ import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
 import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
 import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -81,18 +82,42 @@ export class Login {
   password = '';
   loading = false;
 
-  constructor(private router: Router, private api: ServiceGenericService) {}
+  constructor(private router: Router, private api: ServiceGenericService) { }
 
   onLogin(): void {
-    if (!this.email || !this.password) return;
-    this.loading = true;
+  if (!this.email || !this.password) return;
+  this.loading = true;
 
-   this.api.loginEmail({ email: this.email.trim(), password: this.password })
+  this.api.loginEmail({ email: this.email.trim(), password: this.password })
     .subscribe({
       next: (res: LoginEmailResponse) => {
         if (res.isSuccess) {
-          console.log('✅ Login exitoso:', res.message);
-          this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+          const today = new Date();
+
+          // Última verificación desde backend
+          const lastVerification = res.lastVerificationSentAt
+            ? new Date(res.lastVerificationSentAt)
+            : null;
+
+          const esDia4 = today.getDate() === 4;
+          const yaVerificadoEsteMes =
+            lastVerification &&
+            lastVerification.getMonth() === today.getMonth() &&
+            lastVerification.getFullYear() === today.getFullYear();
+
+          if (esDia4 && !yaVerificadoEsteMes) {
+            Swal.fire({
+              icon: 'info',
+              title: 'Verificación mensual requerida',
+              text: 'Debes verificar tu correo electrónico para seguir usando tu cuenta.',
+              confirmButtonText: 'Verificar ahora'
+            }).then(() => {
+              this.router.navigate(['/auth/verify-email']);
+            });
+          } else {
+            // ✅ flujo normal
+            this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+          }
         } else {
           alert('No se pudo iniciar sesión.');
         }
@@ -101,9 +126,11 @@ export class Login {
         console.error('Login error', err);
         alert(err?.error?.message ?? 'Error al iniciar sesión');
       },
-      complete: () => this.loading = false
+      complete: () => (this.loading = false)
     });
-  }
+}
+
+
 
   goToRecovery(e?: Event) {
     e?.preventDefault();

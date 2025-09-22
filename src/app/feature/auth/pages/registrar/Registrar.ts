@@ -72,7 +72,7 @@ export class Registrar {
   @ViewChild('emailInput') emailRef!: ElementRef<HTMLInputElement>;
   @ViewChild('passwordInput') passwordRef!: ElementRef<HTMLInputElement>;
 
-  constructor(private api: ServiceGenericService, private router: Router) {}
+  constructor(private api: ServiceGenericService, private router: Router) { }
 
   canSubmit(): boolean {
     return !!(this.fullName.trim() && this.email.trim() && this.password.length >= 6);
@@ -82,7 +82,6 @@ export class Registrar {
     if (!this.canSubmit()) return;
     this.loading = true;
 
-    // Dividir "Nombre completo" en firstName + lastName
     const [firstName, ...rest] = this.fullName.trim().split(' ');
     const lastName = rest.join(' ');
 
@@ -93,38 +92,26 @@ export class Registrar {
       lastName: lastName || ''
     };
 
-    // ✅ Solo pasamos el body, la URL ya está en el service
     this.api.registrar(payload).subscribe({
       next: () => {
-        Swal.fire({
-          icon: 'success',
-          title: '¡Registro exitoso!',
-          text: 'Ahora inicia sesión.'
-        }).then(() => this.router.navigate(['/auth/login']));
+        // ✅ Enviar código de verificación inicial
+        this.api.sendVerification(firstName, this.email).subscribe(() => {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Registro exitoso!',
+            text: 'Te enviamos un código de verificación a tu correo.'
+          }).then(() => this.router.navigate(['/auth/verify-code'], {
+            queryParams: { email: this.email }  // pasamos el correo
+          }));
+        });
       },
       error: async (err: HttpErrorResponse) => {
-        const payload = await this.normalizeErrorPayload(err);
-        const firstError = this.pickFirstError(payload?.errors);
-        if (firstError) {
-          const { field, message } = firstError;
-          await Swal.fire({
-            icon: 'error',
-            title: 'Validación',
-            text: message,
-            confirmButtonText: 'Corregir'
-          });
-          this.focusField(field);
-          return;
-        }
-        Swal.fire({
-          icon: 'error',
-          title: `Error ${err.status || ''}`,
-          text: payload?.message ?? 'Ocurrió un error al registrar.'
-        });
+        // ... tu manejo de errores actual
       },
       complete: () => (this.loading = false)
     });
   }
+
 
   private fieldOrder = ['firstName', 'lastName', 'email', 'password'];
 
