@@ -11,6 +11,7 @@ import { StepCard } from '../../../../../shared/models/StepCard';
 
 // ⬇️ usa tu servicio genérico
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
+import { UserInfractionService, UserInfractionDto } from '../../../../../core/services/api/user-infraction.service';
 import { TypeInfractionSelectDto } from '../../../../../shared/models/entities/TypeInfractionSelectDto';
 
 interface SubItem { title: string; text: string; }
@@ -49,6 +50,8 @@ export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
     private api: ServiceGenericService,   // ⬅️ tu servicio genérico
     private elementRef: ElementRef,
     private fb: FormBuilder
+  ,
+    private userInfractionService: UserInfractionService
   ) {}
 
   @ViewChildren('subAcc') subAccordions!: QueryList<MatAccordion>;
@@ -234,8 +237,143 @@ export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.idForm.invalid) return;
 
     const payload = this.idForm.value;
-    // Por ahora solo navegamos o mostramos en consola; integrar la búsqueda real requiere el endpoint
     console.log('Consulta de multas para:', payload);
-    // Ejemplo: this.router.navigate(['/consultar-ingresar'], { queryParams: payload });
+
+    // Llamar al servicio para buscar infracciones
+    this.loadingInfractions = true;
+    this.infractionsError = '';
+    this.infractions = [];
+
+    const typeId = payload.documentType;
+    const number = payload.documentNumber;
+
+    this.userInfractionService.getByDocument(typeId, number).subscribe({
+      next: (items: UserInfractionDto[]) => {
+        this.infractions = items || [];
+        console.debug('InicioComponent: infracciones recibidas:', this.infractions);
+        this.loadingInfractions = false;
+        if (!this.infractions.length) {
+          this.infractionsError = 'No se encontraron infracciones para los datos proporcionados.';
+        } else {
+          this.infractionsError = '';
+          // Mostrar el modal con la primera infracción por defecto
+          this.openInfractionModal(this.infractions[0]);
+        }
+      },
+      error: (err) => {
+        this.infractionsError = err?.message || 'No fue posible consultar las infracciones';
+        this.loadingInfractions = false;
+      }
+    });
+  }
+
+  // Estado de resultados
+  infractions: UserInfractionDto[] = [];
+  loadingInfractions = false;
+  infractionsError = '';
+
+  // Modal state
+  showInfractionModal = false;
+  selectedInfraction: UserInfractionDto | null = null;
+
+  openInfractionModal(infraction: UserInfractionDto) {
+    this.selectedInfraction = infraction;
+    console.debug('InicioComponent: abrir modal con infracción:', infraction);
+    this.showInfractionModal = true;
+  }
+
+  // Helpers para leer campos con nombres variados que pueda devolver el backend
+  private getFieldValue(keys: string[]): any {
+    if (!this.selectedInfraction) return null;
+    for (const k of keys) {
+      const v = (this.selectedInfraction as any)[k];
+      if (v !== undefined && v !== null && v !== '') return v;
+    }
+    return null;
+  }
+
+  displayDate(keys: string[]): string {
+    const val = this.getFieldValue(keys);
+    if (!val) return '-';
+    try {
+      const d = new Date(val);
+      if (!isNaN(d.getTime())) return d.toLocaleDateString();
+    } catch (e) {
+      // ignore
+    }
+    return String(val);
+  }
+
+  displayCurrency(keys: string[]): string {
+    const val = this.getFieldValue(keys);
+    if (val === null || val === undefined || val === '') return '-';
+    const num = Number(val);
+    if (isNaN(num)) return String(val);
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(num);
+  }
+
+  displayText(keys: string[]): string {
+    const val = this.getFieldValue(keys);
+    if (val === null || val === undefined || val === '') return '-';
+    return String(val);
+  }
+
+  // Devuelve array de { key, value } formateado para renderizar dinámicamente
+  getInfractionEntries(): Array<{ key: string; value: string }> {
+    if (!this.selectedInfraction) return [];
+    const obj = this.selectedInfraction as any;
+    const entries: Array<{ key: string; value: string }> = [];
+    for (const k of Object.keys(obj)) {
+      // Omitir campos que representan identificadores internos
+      if (k.toLowerCase() === 'id') continue;
+      let raw = obj[k];
+      if (raw === null || raw === undefined) raw = '';
+
+      // Formateos básicos
+      if (typeof raw === 'number') {
+        entries.push({ key: k, value: new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(raw) });
+        continue;
+      }
+
+      // Intentar parsear fecha ISO
+      const asDate = new Date(raw);
+      if (raw && !isNaN(asDate.getTime())) {
+        entries.push({ key: k, value: asDate.toLocaleString() });
+        continue;
+      }
+
+      entries.push({ key: k, value: String(raw) });
+    }
+
+    return entries;
+  }
+
+  // Construir nombre completo a partir de campos comunes
+  getFullName(): string {
+    if (!this.selectedInfraction) return '-';
+    const obj: any = this.selectedInfraction;
+    const first = obj.firstName ?? obj.first_name ?? obj.firstname ?? obj.irstName ?? obj.first ?? '';
+    const last = obj.lastName ?? obj.last_name ?? obj.lastname ?? obj.last ?? '';
+    const name = `${first || ''}`.trim();
+    const surname = `${last || ''}`.trim();
+    const full = `${name} ${surname}`.trim();
+    return full || '-';
+  }
+
+  getTypeInfractionName(): string {
+    if (!this.selectedInfraction) return '-';
+    const obj: any = this.selectedInfraction;
+    return (obj.typeInfractionName ?? obj.typeInfraction ?? obj.typeInfraction_name ?? obj.typeName ?? obj.typeName ?? obj.type ?? obj.type_infraction_name) || '-';
+  }
+
+  getObservations(): string {
+    if (!this.selectedInfraction) return '-';
+    const obj: any = this.selectedInfraction;
+    return (obj.observations ?? obj.observation ?? obj.observacion ?? obj.observaciones ?? obj.details ?? obj.description) || '-';
+  }
+
+  closeInfractionModal() {
+    this.showInfractionModal = false;
+    this.selectedInfraction = null;
   }
 }

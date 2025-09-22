@@ -124,6 +124,30 @@
           <button type="submit" class="btn primary" [disabled]="idForm.invalid">Consultar Multas</button>
 
           <p class="recaptcha-note">Este sitio está protegido por reCAPTCHA y aplican la Política de privacidad y los Términos de servicio de Google.</p>
+          
+          <!-- Resultados -->
+          <div class="results-block" *ngIf="loadingInfractions">Cargando infracciones...</div>
+          <div class="results-block error" *ngIf="infractionsError">{{ infractionsError }}</div>
+
+          <div class="results-list" *ngIf="!loadingInfractions && infractions?.length">
+            <h4 class="results-title">Infracciones encontradas ({{ infractions.length }})</h4>
+            <ul>
+              <li *ngFor="let inf of infractions" class="infraction-item">
+                <div class="inf-row">
+                  <strong>{{ inf.infractionType || '-' }}</strong>
+                  <span class="inf-value">{{ inf.value | currency:'COP' }}</span>
+                </div>
+                <div class="inf-row small">
+                  <span class="inf-date">{{ inf.infractionDate | date:'shortDate' }}</span>
+                  <span class="inf-state">{{ inf.state }}</span>
+                </div>
+                <p class="inf-desc">{{ inf.description }}</p>
+                <div class="inf-actions">
+                  <button class="btn" (click)="openInfractionModal(inf)">Ver detalle</button>
+                </div>
+              </li>
+            </ul>
+          </div>
         </form>
       </div>
     </div>
@@ -183,4 +207,32 @@
     </mat-accordion>
   </div>
 </section>
+
+<!-- Modal para mostrar detalles de la infracción -->
+<div *ngIf="showInfractionModal" class="modal-overlay" (click)="closeInfractionModal()">
+  <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Detalle de la Infracción</h3>
+      <button class="close-btn" (click)="closeInfractionModal()" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="selectedInfraction; else noData">
+        <div class="selected-simple">
+          <p><strong>Nombre:</strong> {{ getFullName() }}</p>
+          <p><strong>Tipo de Infracción:</strong> {{ getTypeInfractionName() }}</p>
+          <p><strong>Observaciones:</strong></p>
+          <p class="infraction-full-desc">{{ getObservations() }}</p>
+        </div>
+      </ng-container>
+      <ng-template #noData>
+        <p>No hay datos para mostrar.</p>
+      </ng-template>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" (click)="closeInfractionModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+<!-- DEBUG: mostrar JSON completo dentro del modal (solo en desarrollo) -->
+<pre *ngIf="showInfractionModal && selectedInfraction" style="max-width:680px;margin:8px auto;padding:12px;background:#f4f6f8;border-radius:8px;overflow:auto;">{{ selectedInfraction | json }}</pre>
 
