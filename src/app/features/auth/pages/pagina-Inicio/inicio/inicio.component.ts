@@ -1,5 +1,6 @@
 import { Component, ViewChildren, QueryList, OnInit, OnDestroy, AfterViewInit, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { MatExpansionModule, MatAccordion } from '@angular/material/expansion';
@@ -31,15 +32,23 @@ interface StatItem {
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, MatExpansionModule, MatIconModule, StepCardComponent],
+  imports: [CommonModule, ReactiveFormsModule, MatExpansionModule, MatIconModule, StepCardComponent],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.scss'],
 })
 export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
+  idForm!: FormGroup;
+  documentTypes = [
+    { value: 'cc', label: 'Cédula de ciudadanía' },
+    { value: 'ti', label: 'Tarjeta de identidad' },
+    { value: 'ce', label: 'Cédula de extranjería' },
+  ];
+
   constructor(
     private router: Router,
     private api: ServiceGenericService,   // ⬅️ tu servicio genérico
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private fb: FormBuilder
   ) {}
 
   @ViewChildren('subAcc') subAccordions!: QueryList<MatAccordion>;
@@ -84,6 +93,14 @@ export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.loadTypeInfractions();
     this.startCarousel();
+    this.buildForm();
+  }
+
+  private buildForm(): void {
+    this.idForm = this.fb.group({
+      documentType: ['', Validators.required],
+      documentNumber: ['', [Validators.required, Validators.minLength(4)]],
+    });
   }
 
   ngAfterViewInit(): void {
@@ -211,5 +228,14 @@ export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
   onLogin(e?: Event): void {
     e?.preventDefault();
     this.router.navigate(['/auth/login']);
+  }
+
+  onSubmit(): void {
+    if (this.idForm.invalid) return;
+
+    const payload = this.idForm.value;
+    // Por ahora solo navegamos o mostramos en consola; integrar la búsqueda real requiere el endpoint
+    console.log('Consulta de multas para:', payload);
+    // Ejemplo: this.router.navigate(['/consultar-ingresar'], { queryParams: payload });
   }
 }

@@ -107,12 +107,24 @@
         </p>
       </div>
 
-      <!-- Derecha: formulario placeholder -->
+      <!-- Derecha: formulario real -->
       <div class="hero-form">
-        <div class="placeholder-form">
-          <h3>Formulario de Identificación</h3>
-          <p>Formulario temporalmente deshabilitado</p>
-        </div>
+        <form class="card form-card" [formGroup]="idForm" (ngSubmit)="onSubmit()" aria-label="Formulario de identificación ciudadana">
+          <h3 class="form-title">Identificación ciudadana</h3>
+
+          <label class="form-label">Tipo de documento</label>
+          <select formControlName="documentType" class="form-select" aria-label="Tipo de documento">
+            <option value="">Selecciona</option>
+            <option *ngFor="let t of documentTypes" [value]="t.value">{{ t.label }}</option>
+          </select>
+
+          <label class="form-label">Número de documento</label>
+          <input formControlName="documentNumber" type="text" class="form-input" placeholder="Ingresa tu número" aria-label="Número de documento" />
+
+          <button type="submit" class="btn primary" [disabled]="idForm.invalid">Consultar Multas</button>
+
+          <p class="recaptcha-note">Este sitio está protegido por reCAPTCHA y aplican la Política de privacidad y los Términos de servicio de Google.</p>
+        </form>
       </div>
     </div>
   </main>
