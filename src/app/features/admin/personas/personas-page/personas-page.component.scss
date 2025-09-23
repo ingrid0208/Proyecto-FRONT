@@ -25,6 +25,12 @@
   gap: 1rem;
   position: relative;
   animation: modalFadeIn 0.3s ease-out;
+
+  @media (max-width: 480px) {
+    min-width: 280px;
+    padding: 1.5rem 1rem;
+    margin: 1rem;
+  }
 }
 
 .alert-modal-content.bienvenida {
@@ -127,6 +133,19 @@
   width: 400px;
   position: relative;
   animation: modalIn 0.25s cubic-bezier(.4,0,.2,1);
+
+  @media (max-width: 768px) {
+    width: 90vw;
+    max-width: 500px;
+    padding: 2rem 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    width: 95vw;
+    padding: 1.5rem 1rem;
+    border-radius: 8px;
+    min-width: auto;
+  }
 }
 
 @keyframes modalIn {
@@ -147,6 +166,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+
+  @media (max-width: 480px) {
+    gap: 0.5rem;
+  }
 }
 
 .persona-form label {
@@ -155,6 +178,10 @@
   font-size: 1rem;
   color: #333;
   font-weight: 500;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+  }
 }
 
 .persona-form input,
@@ -166,6 +193,11 @@
   font-size: 1rem;
   background: #f9f9f9;
   transition: border 0.2s;
+
+  @media (max-width: 480px) {
+    padding: 0.6rem 0.5rem;
+    font-size: 0.9rem;
+  }
 }
 .persona-form input:focus,
 .persona-form select:focus {
@@ -196,6 +228,11 @@
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 1.2rem;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
 .modal-actions button {
   padding: 0.5rem 1.2rem;
@@ -205,6 +242,11 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s;
+
+  @media (max-width: 480px) {
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+  }
 }
 .modal-actions button[type="button"] {
   background: #e0e0e0;
@@ -234,6 +276,18 @@
   max-width: 700px;
   padding: 2rem 2.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  @media (max-width: 768px) {
+    margin: 1rem;
+    padding: 1rem;
+    max-width: none;
+  }
+
+  @media (max-width: 480px) {
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+  }
 }
 
 .personas-header {
@@ -242,9 +296,24 @@
   align-items: center;
   margin-bottom: 1.5rem;
 
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 1rem;
+  }
+
   .header-title {
     display: flex;
     align-items: center;
+
+    @media (max-width: 600px) {
+      justify-content: center;
+    }
+
     .icon {
       background: #43a047;
       color: #fff;
@@ -255,11 +324,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
+
+      @media (max-width: 480px) {
+        font-size: 1.2rem;
+        padding: 0.3rem;
+      }
     }
     .title {
       color: #43a047;
       font-weight: 600;
       font-size: 1.3rem;
+
+      @media (max-width: 480px) {
+        font-size: 1.1rem;
+      }
     }
   }
 
@@ -273,6 +351,12 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.2s;
+
+    @media (max-width: 480px) {
+      padding: 0.8rem 1rem;
+      font-size: 0.95rem;
+    }
+
     &:hover {
       background: #388e3c;
     }
@@ -306,6 +390,23 @@
     padding: 0.7rem 1rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 0.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .persona-content {
+      @media (max-width: 768px) {
+        margin-bottom: 1rem;
+      }
+    }
+
     .avatar {
       width: 40px;
       height: 40px;
@@ -319,6 +420,41 @@
       font-size: 1.1rem;
       margin-right: 1.2rem;
       border: 2px solid #43a047;
+
+      @media (max-width: 768px) {
+        margin-right: 0.8rem;
+      }
+
+      @media (max-width: 480px) {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+    }
+
+    .persona-info {
+      @media (max-width: 480px) {
+        .persona-nombre {
+          font-size: 1rem;
+          margin-bottom: 6px;
+        }
+
+        .persona-detalles {
+          .detalle-row {
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+          }
+        }
+
+        .persona-ids {
+          flex-direction: column;
+          gap: 5px;
+
+          .id-item {
+            font-size: 0.9rem;
+          }
+        }
+      }
     }
 
     .persona-nombre {
@@ -333,6 +469,18 @@
       flex-direction: column;
       gap: 8px;
       margin-left: 20px;
+
+      @media (max-width: 768px) {
+        flex-direction: row;
+        justify-content: center;
+        margin-left: 0;
+        gap: 1rem;
+      }
+
+      @media (max-width: 480px) {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
     }
 
     .update-btn {
@@ -346,7 +494,17 @@
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
-      
+
+      @media (max-width: 768px) {
+        margin-right: 0;
+        flex: 1;
+      }
+
+      @media (max-width: 480px) {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+      }
+
       &:hover {
         background: #45a049;
         transform: translateY(-1px);
@@ -364,7 +522,16 @@
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
-      
+
+      @media (max-width: 768px) {
+        flex: 1;
+      }
+
+      @media (max-width: 480px) {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+      }
+
       &:hover {
         background: #1b5e20;
         transform: translateY(-1px);

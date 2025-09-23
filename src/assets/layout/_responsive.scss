@@ -1,9 +1,15 @@
-@media screen and (min-width: 1960px) {
-    .layout-main{}
+@use 'variables-responsive' as *;
 
+// Desktop y pantallas grandes
+@include xxl-up {
+    .layout-main {
+        max-width: 1920px;
+        margin: 0 auto;
+    }
 }
 
-@media (min-width: 992px) {
+// Desktop (992px+)
+@include desktop-up {
     .layout-wrapper {
         &.layout-overlay {
             .layout-main-container {
@@ -19,13 +25,10 @@
                 border-top-left-radius: 0;
                 border-bottom-left-radius: 0;
                 border-right: 1px solid var(--surface-border);
-                transition:
-                    transform 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99),
-                    left 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
-                box-shadow:
-                    0px 3px 5px rgba(0, 0, 0, 0.02),
-                    0px 0px 2px rgba(0, 0, 0, 0.05),
-                    0px 1px 4px rgba(0, 0, 0, 0.08);
+                transition: transform 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+                box-shadow: 0 3px 5px rgba(0, 0, 0, 0.02),
+                           0 0 2px rgba(0, 0, 0, 0.05),
+                           0 1px 4px rgba(0, 0, 0, 0.08);
             }
 
             &.layout-overlay-active {
@@ -59,7 +62,8 @@
     }
 }
 
-@media (max-width: 991px) {
+// Mobile y tablet (menos de 992px)
+@include mobile-tablet {
     .blocked-scroll {
         overflow: hidden;
     }
@@ -67,19 +71,39 @@
     .layout-wrapper {
         .layout-main-container {
             margin-left: 0;
-            padding-left: 2rem;
+            padding: 0 2rem;
+
+            @include tablet-up {
+                padding: 0 1.5rem;
+            }
+
+            @include mobile-up {
+                padding: 0 1rem;
+            }
         }
 
         .layout-sidebar {
+            position: fixed;
             transform: translateX(-100%);
             left: 0;
             top: 0;
             height: 100vh;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-            transition:
-                transform 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99),
-                left 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+            width: 280px;
+            z-index: 999;
+            border-radius: 0 16px 16px 0;
+            transition: transform 0.4s cubic-bezier(0.05, 0.74, 0.2, 0.99);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+
+            @include mobile-up {
+                width: 90%;
+                max-width: 300px;
+                border-radius: 0 20px 20px 0;
+                box-shadow: 8px 0 25px rgba(0, 0, 0, 0.15);
+            }
+
+            &.sidebar-active {
+                transform: translateX(0);
+            }
         }
 
         .layout-mask {
@@ -90,7 +114,15 @@
             z-index: 998;
             width: 100%;
             height: 100%;
-            background-color: var(--maskbg);
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            transition: all 0.3s ease;
+            opacity: 0;
+
+            &.mask-active {
+                display: block;
+                opacity: 1;
+            }
         }
 
         &.layout-mobile-active {
@@ -100,6 +132,7 @@
 
             .layout-mask {
                 display: block;
+                opacity: 1;
             }
         }
     }

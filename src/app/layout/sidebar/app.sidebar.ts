@@ -1,74 +1,58 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, ChangeDetectorRef, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AppMenu } from './app.menu';
+import { LayoutService } from '../services/layout.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-sidebar',
     standalone: true,
-    imports: [AppMenu],
-    template: ` <div class="layout-sidebar">
+    imports: [AppMenu, CommonModule],
+    template: ` <div class="layout-sidebar" [ngClass]="sidebarClass">
         <app-menu></app-menu>
     </div>`,
-    styles: [`
-        .layout-sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100vh;
-  width: 300px;
-  background: #2d8659;
-  color: #ffffff;
-  z-index: 999;
-  transition: transform 0.3s ease;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.layout-sidebar * {
-  color: #ffffff !important;
-}
-
-.layout-sidebar .layout-menu a {
-  color: #ffffff !important;
-}
-
-.layout-sidebar .layout-menuitem-root-text {
-  color: #ffffff !important;
-}
-
-.layout-sidebar .layout-menuitem-icon {
-  color: #ffffff !important;
-}
-
-.layout-sidebar .layout-menuitem-text {
-  color: #ffffff !important;
-}
-
-.layout-sidebar .layout-submenu-toggler {
-  color: #ffffff !important;
-}
-
-.layout-overlay .layout-sidebar,
-.layout-static-inactive .layout-sidebar {
-  transform: translateX(-100%);
-}
-
-.layout-overlay-active .layout-sidebar,
-.layout-mobile-active .layout-sidebar,
-.layout-static .layout-sidebar {
-  transform: translateX(0);
-}
-
-@media (max-width: 991px) {
-  .layout-sidebar {
-    transform: translateX(-100%);
-  }
-  
-  .layout-overlay-active .layout-sidebar,
-  .layout-mobile-active .layout-sidebar {
-    transform: translateX(0);
-  }
-}`]
+    styles: []
 })
-export class AppSidebar {
-    constructor(public el: ElementRef) {}
+export class AppSidebar implements OnInit, OnDestroy {
+    private stateSubscription?: Subscription;
+    public isVisible = false;
+
+    constructor(
+        public el: ElementRef,
+        public layoutService: LayoutService,
+        private cdr: ChangeDetectorRef
+    ) {}
+
+    ngOnInit() {
+        // Suscribirse a cambios de estado
+        this.stateSubscription = this.layoutService.state$.subscribe(state => {
+            const isDesktop = window.innerWidth > 991;
+            const newVisibility = isDesktop ? !state.staticMenuDesktopInactive : state.staticMenuMobileActive;
+
+            console.log('Sidebar recibió cambio de estado:', state);
+            console.log('Es desktop:', isDesktop);
+            console.log('Visibilidad anterior:', this.isVisible);
+            console.log('Nueva visibilidad:', newVisibility);
+
+            this.isVisible = newVisibility;
+            this.cdr.detectChanges();
+        });
+    }
+
+    ngOnDestroy() {
+        this.stateSubscription?.unsubscribe();
+    }
+
+    get sidebarClass() {
+        const state = this.layoutService.layoutState();
+        const config = this.layoutService.layoutConfig();
+        const isDesktop = window.innerWidth > 991;
+
+        return {
+            'sidebar-hidden': isDesktop ? state.staticMenuDesktopInactive : !state.staticMenuMobileActive,
+            'sidebar-visible': isDesktop ? !state.staticMenuDesktopInactive : state.staticMenuMobileActive,
+            'sidebar-overlay': config.menuMode === 'overlay',
+            'sidebar-static': config.menuMode === 'static'
+        };
+    }
 }

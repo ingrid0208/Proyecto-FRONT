@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { LayoutService } from '../../core/services/layout.service';
+import { LayoutService } from '../services/layout.service';
 
 @Component({
   selector: 'app-topbar',
@@ -38,5 +38,10 @@ export class AppTopbar {
   logout() {
     localStorage.clear();
     this.router.navigate(['/auth/login']);
+  }
+
+  onMenuClick() {
+    console.log('Botón de menú clickeado!');
+    this.layoutService.onMenuToggle();
   }
 }

@@ -13,11 +13,12 @@ import { AppSidebar } from './sidebar/app.sidebar';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, AppSidebar],               // ← se importa y se USA
+  imports: [CommonModule, RouterModule, AppSidebar, AppTopbar],               // ← se importa y se USA
   template: `
   <div class="layout-wrapper" [ngClass]="containerClass">
     <app-sidebar></app-sidebar>
     <div class="layout-main-container">                                            <!-- ← USADO: quita el warning -->
+      <app-topbar></app-topbar>
       <div class="layout-main">
         <router-outlet></router-outlet>
       </div>
@@ -33,19 +34,58 @@ import { AppSidebar } from './sidebar/app.sidebar';
   styles: [`
     :host { display:block; height:100vh; width:100vw; overflow:hidden; }
     .layout-wrapper { display:flex; height:100vh; width:100vw; position:relative; overflow:hidden; }
-    .layout-main-container { flex:1; display:flex; flex-direction:column; height:100vh; overflow:hidden; margin-left:0; transition: margin-left .3s ease; }
+    .layout-main-container {
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      height:100vh;
+      overflow:hidden;
+      margin-left:20rem;
+      transition: margin-left .3s ease;
+    }
     .layout-main-container app-topbar { flex-shrink:0; z-index:997; }
-    .layout-main { flex:1; background:#f3f4f6; overflow-y:auto; overflow-x:hidden; padding:0; }
-    .layout-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:998; display:none; }
-    .layout-static .layout-main-container { margin-left:300px; }
+    .layout-main {
+      flex:1;
+      background:#f8f9fa;
+      overflow-y:auto;
+      overflow-x:hidden;
+      padding:1.5rem;
+      margin-top: 4rem; /* Espacio para el topbar fijo */
+    }
+    .layout-mask {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.5);
+      z-index:998;
+      display:none;
+      backdrop-filter: blur(3px);
+    }
+
+    /* Estados del menú */
+    .layout-static .layout-main-container { margin-left:20rem; }
     .layout-static-inactive .layout-main-container { margin-left:0; }
     .layout-overlay .layout-main-container { margin-left:0; }
-    .layout-overlay-active .layout-mask, .layout-mobile-active .layout-mask { display:block; }
+    .layout-overlay-active .layout-mask,
+    .layout-mobile-active .layout-mask { display:block; }
+
+    /* Responsive */
     @media (max-width: 991px) {
-      .layout-static .layout-main-container,
-      .layout-static-inactive .layout-main-container { margin-left:0; }
+      .layout-main-container {
+        margin-left:0 !important;
+      }
+      .layout-main {
+        padding: 1rem;
+      }
     }
-    .animate-fadein { animation: fadein .15s; }
+
+    @media (max-width: 480px) {
+      .layout-main {
+        padding: 0.75rem;
+      }
+    }
+
+    /* Animaciones */
+    .animate-fadein { animation: fadein .3s ease; }
     @keyframes fadein { from{opacity:0} to{opacity:1} }
   `]
 })

@@ -1,110 +1,192 @@
-    .topbar {
+@use '../../../assets/layout/variables-responsive' as *;
+
+.topbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 3.5rem;
-    height: 5rem;
-    background: white;
-    border-bottom: 1px solid #e9ecef;
+    padding: 0 2rem;
+    height: 4rem;
+    background: $topbar-bg;
+    border-bottom: 1px solid $border-color;
+
+    @include tablet-up {
+        padding: 0 1.5rem;
     }
 
-    .menu-btn, .icon-btn {
+    @include mobile-up {
+        padding: 0 1rem;
+    }
+}
+
+.menu-btn {
+    background: $primary-color;
+    border: 2px solid $primary-color;
+    padding: 0.75rem;
+    cursor: pointer;
+    border-radius: 8px;
+    color: $primary-color-text;
+    width: 3rem;
+    height: 3rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(1, 118, 60, 0.4);
+    transition: all 0.2s ease;
+    font-weight: bold;
+
+    i {
+        font-size: 1.3rem;
+        color: $primary-color-text;
+    }
+
+    &:hover {
+        background: $primary-color-hover;
+        transform: scale(1.05);
+        box-shadow: 0 6px 16px rgba(1, 118, 60, 0.6);
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+
+    &:focus {
+        outline: 2px solid rgba(0, 255, 136, 0.8);
+        outline-offset: 2px;
+    }
+
+    @include mobile-tablet {
+        display: flex;
+        width: 2.8rem;
+        height: 2.8rem;
+    }
+
+    @include mobile-up {
+        width: 2.5rem;
+        height: 2.5rem;
+
+        i {
+            font-size: 1.1rem;
+        }
+    }
+}
+
+.icon-btn {
     background: none;
     border: none;
     padding: 0.5rem;
     cursor: pointer;
-    border-radius: 0.5rem;
-    color: #666;
-    }
+    border-radius: 8px;
+    color: $text-color-secondary;
+    transition: background-color 0.2s ease;
 
-    .menu-btn:hover, .icon-btn:hover {
-    background: #f5f5f5;
+    &:hover {
+        background: $hover-bg;
     }
+}
 
-    .search-box {
+.search-box {
     flex: 1;
     max-width: 600px;
     margin: 0 2rem;
     position: relative;
     display: flex;
     align-items: center;
+
+    @include tablet-up {
+        margin: 0 1rem;
+        max-width: 400px;
     }
 
-    .search-box i {
-    position: absolute;
-    left: 1rem;
-    color: #999;
+    @include mobile-up {
+        margin: 0 0.5rem;
+        max-width: none;
     }
 
-    .search-box input {
-    width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.75rem;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-    background: #f9f9f9;
-    font-size: 0.875rem;
+    i {
+        position: absolute;
+        left: 1rem;
+        color: #999;
+        z-index: 1;
     }
 
-    .search-box input:focus {
-    outline: none;
-    border-color: #007bff;
-    background: white;
-    }
+    input {
+        width: 100%;
+        padding: 0.75rem 1rem 0.75rem 2.75rem;
+        border: 1px solid $border-color;
+        border-radius: 8px;
+        background: #f9f9f9;
+        font-size: $font-size-small-desktop;
+        transition: all 0.2s ease;
 
-    .right-section {
+        &:focus {
+            outline: none;
+            border-color: $primary-color;
+            background: $surface-card;
+            box-shadow: 0 0 0 3px rgba(1, 118, 60, 0.1);
+        }
+    }
+}
+
+.right-section {
     display: flex;
     align-items: center;
     gap: 1rem;
-    }
 
-    .profile-btn {
+    @include mobile-up {
+        gap: 0.5rem;
+    }
+}
+
+.profile-btn {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    // padding: 0.5rem 1rem;
     background: none;
     border: none;
     cursor: pointer;
-    border-radius: 0.5rem;
+    border-radius: 8px;
+    padding: 0.5rem;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background: $hover-bg;
     }
 
-    .profile-btn:hover {
-    background: #f5f5f5;
+    img {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        border: 2px solid $border-color;
     }
+}
 
-    .profile-btn img {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    }
-
-    .user-name {
-    font-size: 0.875rem;
+.user-name {
+    font-size: $font-size-small-desktop;
     font-weight: 500;
-    color: #333;
-    }
+    color: $text-color;
 
-    .menu-item {
+    @include tablet-up {
+        display: none;
+    }
+}
+
+.menu-item {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
     cursor: pointer;
-    border-radius: 0.375rem;
+    border-radius: 8px;
     margin: 0.25rem 0;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: $hover-bg;
     }
 
-    .menu-item:hover {
-    background: #f5f5f5;
+    &.logout:hover {
+        background: #fef2f2;
+        color: #dc2626;
     }
+}
 
-    .menu-item.logout:hover {
-    background: #fef2f2;
-    color: #dc2626;
-    }
-
-    @media (max-width: 768px) {
-    .topbar { padding: 0 1rem; }
-    .search-box { margin: 0 1rem; }
-    .user-name { display: none; }
-    }

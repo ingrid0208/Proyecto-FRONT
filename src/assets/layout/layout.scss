@@ -3,6 +3,7 @@
 @use './variables/_light' as *;
 @use './variables/_dark' as *;
 @use './variables/_profile' as *;
+@use './_variables-responsive' as *;
 
 // utilidades y mixins
 @use './_mixins';
@@ -14,6 +15,7 @@
 @use './_menu';
 @use './_footer';
 @use './_responsive';
+@use './_global-responsive';
 @use './_typography';
 @use './_utils';
 @use './_topbar';
