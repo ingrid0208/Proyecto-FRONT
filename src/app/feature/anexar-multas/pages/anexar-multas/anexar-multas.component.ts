@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
 import Swal from 'sweetalert2';
+import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
 
 @Component({
   selector: 'app-anexar-multas',

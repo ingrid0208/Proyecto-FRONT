@@ -8,11 +8,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
-import { AppTopbar } from '../../../topbar/topbar.component';
-import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
-import { PaymentAgreementInitDto } from '../../../../shared/Models/Init/PaymentAgreementInitDto';
 import Swal from 'sweetalert2';
-import { environment } from '../../../../../environments/environment.prod';
+import { PaymentAgreementInitDto } from '../../../../../shared/Models/PaymentAgreementInitDto';
+import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
+import { AppTopbar } from '../../../../../layout/header/topbar.component';
+
 
 @Component({
   selector: 'app-formulario-acuerdo-pago',
@@ -26,6 +26,7 @@ import { environment } from '../../../../../environments/environment.prod';
     MatButtonModule,
     CommonModule,
     FormsModule,
+    AppTopbar
   ],
   templateUrl: './formulario-acuerdo-pago.component.html',
   styleUrls: ['./formulario-acuerdo-pago.component.scss'],
@@ -96,8 +97,8 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
 
           this.form.userInfractionId = this.initData.infractionId;
 
-          // ✅ ya no lo piso, me quedo con el calculado en InitData
-          this.totalAmount = this.initData.baseAmount;
+
+          //this.totalAmount = this.initData.baseAmount;
 
           this.form.agreementDescription = this.initData.infringement;
           this.form.isPaid = false;

@@ -1,7 +1,7 @@
 export interface PaymentAgreementInitDto {
   id?: number;
   description?: string;
-  amount?: number;
+  baseAmount?: number;
   paymentFrequency?: string;
   startDate?: Date;
   endDate?: Date;

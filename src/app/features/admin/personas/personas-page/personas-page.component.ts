@@ -7,7 +7,7 @@ import { DocumentTypeService } from '../../../../core/services/api/document-type
 // Nota: no usamos la interfaz `Persona` original aquí porque el componente trabaja con un DTO
 // que incluye campos como phoneNumber, municipalityId y documentTypeId.
 import { Municipio } from '../../../../shared/models/parameters/municipality.models';
-import { DocumentTypeDto as DocumentType } from '../../../../shared/models/parameters/document-type.models';
+import { DocumentTypeDto as DocumentType } from '../../../../shared/Models/parameters/document-type.models';
 import { PaginationService, PaginationConfig } from '../../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 

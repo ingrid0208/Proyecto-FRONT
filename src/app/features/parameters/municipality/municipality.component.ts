@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../../shared/models/table.Generic';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { MunicipalityService } from '../../../core/services/api/municipality.service';
 import { finalize } from 'rxjs/operators';
@@ -11,6 +10,7 @@ import { AppTopbar } from '../../../layout/header/topbar.component';
 import { Municipality } from '../../../shared/models/parameters/municipality.models';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ColumnDef } from '../../../shared/Models/table.Generic';
 
 @Component({
   selector: 'app-municipality',

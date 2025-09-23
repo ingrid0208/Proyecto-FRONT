@@ -85,16 +85,14 @@ export class AppMenu {
       },
             {
                 label: 'Inicio',
-                items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/consultar-ingresar'] }]
+                items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/consultar-ingresar/consultar-ingresar'] }]
             },
             {
                 label: 'Contenido',
         items: [
-          { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/tipomultas'] },
-          { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/notificacionmultas'] },
-          { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
-          { label: 'Anexar multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/anexar-multas/multas'] },
-          
+          { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoMultas'] },
+          { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/NotificacionMultas'] },
+          { label: 'Anexar multas', icon: 'pi pi-fw pi-image', routerLink: ['/anexar-multas/multas'] },
         ]
             },
             {
@@ -110,6 +108,7 @@ export class AppMenu {
                     { label: 'Roles', icon: 'pi pi-fw pi-users', routerLink: ['/roles'] },
                     { label: 'Usuarios', icon: 'pi pi-fw pi-user', routerLink: ['/usuarios'] },
                     { label: 'Rol-Usuario', icon: 'pi pi-fw pi-user-plus', routerLink: ['/rol-user'] }
+
                 ]
             },
             {

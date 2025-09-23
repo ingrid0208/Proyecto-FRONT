@@ -1,6 +1,6 @@
 // core/services/servicesGeneric/session-ping.service.ts
 import { Injectable, OnDestroy } from '@angular/core';
-import { interval as rxInterval, Subscription, of, switchMap, catchError } from 'rxjs';
+import { interval as rxInterval, Subscription, of, switchMap, catchError, interval } from 'rxjs';
 import { ServiceGenericService } from './generic/service-generic.service';
 
 @Injectable({ providedIn: 'root' })

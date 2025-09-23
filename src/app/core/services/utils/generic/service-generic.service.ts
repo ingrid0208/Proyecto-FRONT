@@ -2,14 +2,15 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environments/environment.development';
-import { LoginDocumentoRequest } from '../../../shared/Models/LoginDocumentoRequest';
-import { LoginDocumentoResponse } from '../../../shared/Models/LoginDocumentoResponse';
-import { LoginEmailRequest } from '../../../shared/Models/auth/LoginEmailRequest';
-import { LoginEmailResponse } from '../../../shared/Models/auth/LoginEmailResponse';
-import { RegisterRequestDto } from '../../../shared/Models/auth/RegisterRequestDto';
-import { PaymentAgreementInitDto } from '../../../shared/Models/Init/PaymentAgreementInitDto';
-import { PaymentAgreementCreateResponse } from '../../../shared/Models/Entities/PaymentAgreementCreateResponse';
+import { environment } from '../../../../../environments/environment.development';
+import { LoginEmailRequest } from '../../../../shared/Models/auth/LoginEmailRequest';
+import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
+import { RegisterRequestDto } from '../../../../shared/Models/auth/RegisterRequestDto';
+import { LoginDocumentoRequest } from '../../../../shared/Models/LoginDocumentoRequest';
+import { LoginDocumentoResponse } from '../../../../shared/Models/LoginDocumentoResponse';
+import { PaymentAgreementInitDto } from '../../../../shared/Models/PaymentAgreementInitDto';
+import { PaymentAgreementCreateResponse } from '../../../../shared/Models/Entities/PaymentAgreementCreateResponse';
+
 
 type getAllType = 'GetAll' | 'GetAllDeletes';
 type DeleteType = 'Persistent' | 'Logical';

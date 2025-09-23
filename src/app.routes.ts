@@ -12,7 +12,7 @@ export const routes: Routes = [
     children: [
   
 
-      // { path: 'home', loadChildren: () => import('./app/features/auth/pages/recovery-password/home.routes').then(m => m.HOMEPASSWORD_ROUTES) },
+      { path: 'home', loadChildren: () => import('./app/features/home/pages/password/home.routes').then(m => m.HOMEPASSWORD_ROUTES) },
       { path: 'consultar-ingresar', loadChildren: () => import('./app/features/multas/consultas/consultar.routes').then(m => m.CONSULTAR_ROUTES) },
       { path: 'notificaciones',  loadChildren: () => import('./app/features/multas/notificaciones/pages/notificacion-multas.routes').then(m => m.NOTIFICACION_ROUTES) },
       { path: 'acuerdo-pago',    loadChildren: () => import('./app/features/multas/acuerdos-pago/acuerdo-pago.routes').then(m => m.ACUERDO_PAGO_ROUTES) },

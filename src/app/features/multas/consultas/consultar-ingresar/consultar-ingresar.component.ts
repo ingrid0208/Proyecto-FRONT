@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Identificacion } from '../../../auth/pages/identificacion/Identificacion';
 
 @Component({
   selector: 'app-consultar-ingresar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [Identificacion],
   template: `
-    <div class="consultar-container">
-      <h2>Consultar e Ingresar</h2>
-      <p>Módulo para consultar información e ingresar datos</p>
-    </div>
+    <app-identification
+      [redirectTo]="'/home/contenido'">
+    </app-identification>
   `,
   styles: [`:host{display:block;padding:1rem;}`]
 })

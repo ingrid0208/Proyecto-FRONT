@@ -5,9 +5,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { ColumnDef } from '../../Models/table.Generic';
-import { ServiceGenericService } from '../../../core/services/servicesGeneric/service-generic.service';
+
 import Swal from 'sweetalert2';
-import { SessionPingService } from '../../../core/services/servicesGeneric/session-ping.service';
+import { SessionPingService } from '../../../core/services/utils/session-ping.service';
+import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
+
 
 @Component({
   selector: 'app-generic-multas-table',

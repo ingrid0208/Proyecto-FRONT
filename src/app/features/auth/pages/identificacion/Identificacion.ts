@@ -8,11 +8,9 @@ import { Router } from '@angular/router';
 
 import { RecaptchaService } from '../../../../core/services/utils/recaptcha.service';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
-import { LoginDocumentoRequest } from '../../../../shared/models/LoginDocumentoRequest';
-import { SessionPingService } from '../../../../core/services/utils/session-ping.service';
-import { DocumentTypeDto } from '../../../../shared/models/parameters/document-type.models';
 import Swal from 'sweetalert2';
-import { SessionPingService } from '../../../../core/services/servicesGeneric/session-ping.service';
+import { SessionPingService } from '../../../../core/services/utils/session-ping.service';
+import { DocumentTypeDto } from '../../../../shared/Models/parameters/document-type.models';
 
 @Component({
   selector: 'app-identification',

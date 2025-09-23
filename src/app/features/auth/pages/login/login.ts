@@ -7,9 +7,9 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
-import { ServiceGenericService } from '../../../../core/services/servicesGeneric/service-generic.service';
 import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
 import Swal from 'sweetalert2';
+import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
 
 @Component({
   selector: 'app-login',

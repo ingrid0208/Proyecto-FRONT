@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../../shared/models/table.Generic';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { PaymentFrequencyService } from '../../../core/services/api/payment-frequency.service';
 import { finalize } from 'rxjs/operators';
 import { AppTopbar } from '../../../layout/header/topbar.component';
-import { PaymentFrequency } from '../../../shared/models/parameters/payment-frequency.models';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
+import { ColumnDef } from '../../../shared/Models/table.Generic';
+import { PaymentFrequency } from '../../../shared/Models/parameters/payment-frequency.models';
 
 @Component({
   selector: 'app-payment-frequency',
