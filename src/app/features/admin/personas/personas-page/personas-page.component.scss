@@ -263,9 +263,10 @@
   background: #388e3c;
 }
 .personas-page {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
 
 .personas-container {
