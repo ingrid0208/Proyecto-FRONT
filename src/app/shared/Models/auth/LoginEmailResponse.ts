@@ -1,7 +1,8 @@
 export interface LoginEmailResponse {
-  success: boolean;
+  isSuccess: boolean;
   message: string;
   token?: string;
+  lastVerificationSentAt?: string | null; 
   user?: {
     id: number;
     email: string;

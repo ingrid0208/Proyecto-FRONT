@@ -33,5 +33,10 @@ export const AUTH_ROUTES: Routes = [
     path: 'inicio',
     loadComponent: () =>
       import('../auth/pages/pagina-Inicio/inicio/inicio.component').then(m => m.InicioComponent)
+  },
+    {
+    path: 'verify-email',
+    loadComponent: () =>
+      import('../auth/pages/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
   }
 ];

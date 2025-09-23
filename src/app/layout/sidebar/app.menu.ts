@@ -93,6 +93,8 @@ export class AppMenu {
           { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/tipomultas'] },
           { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/notificacionmultas'] },
           { label: 'Media', icon: 'pi pi-fw pi-image', routerLink: ['/uikit/media'] },
+          { label: 'Anexar multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/anexar-multas/multas'] },
+          
         ]
             },
             {

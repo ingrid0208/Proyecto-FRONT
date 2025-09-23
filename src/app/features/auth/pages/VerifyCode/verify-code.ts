@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
@@ -53,8 +53,11 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class VerifyCodeComponent {
   code: string = '';
+  email: string = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {
+    this.email = this.route.snapshot.queryParamMap.get('email') ?? '';
+  }
 
   verifyCode() {
     if (!this.code?.trim()) {
@@ -62,15 +65,16 @@ export class VerifyCodeComponent {
       return;
     }
 
-    this.http.post<any>('https://localhost:7286/api/Login/verify-code', {
+    this.http.post<any>('https://localhost:7286/api/verificacion/validate', {
+      email: this.email.trim(),
       code: this.code.trim()
     }).subscribe({
       next: (res) => {
-        if (res.isSuccess) {
+        if (res.valid) {
           Swal.fire('¡Éxito!', 'Correo verificado correctamente.', 'success')
             .then(() => this.router.navigate(['auth/login']));
         } else {
-          Swal.fire('Error', res.message || 'Código incorrecto.', 'error');
+          Swal.fire('Error', res.message || 'Código incorrecto o expirado.', 'error');
         }
       },
       error: (err) => {

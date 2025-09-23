@@ -12,6 +12,7 @@ import { LoginDocumentoRequest } from '../../../../shared/models/LoginDocumentoR
 import { SessionPingService } from '../../../../core/services/utils/session-ping.service';
 import { DocumentTypeDto } from '../../../../shared/models/parameters/document-type.models';
 import Swal from 'sweetalert2';
+import { SessionPingService } from '../../../../core/services/servicesGeneric/session-ping.service';
 
 @Component({
   selector: 'app-identification',

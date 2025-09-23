@@ -2,13 +2,14 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../../environments/environment.development';
-import { LoginDocumentoRequest } from '../../../../shared/models/LoginDocumentoRequest';
-import { LoginDocumentoResponse } from '../../../../shared/models/LoginDocumentoResponse';
-import { LoginEmailRequest } from '../../../../shared/models/auth/LoginEmailRequest';
-import { LoginEmailResponse } from '../../../../shared/models/auth/LoginEmailResponse';
-import { RegisterRequestDto } from '../../../../shared/models/auth/RegisterRequestDto';
-import { PaymentAgreementInitDto } from '../../../../shared/models/PaymentAgreementInitDto';
+import { environment } from '../../../../environments/environment.development';
+import { LoginDocumentoRequest } from '../../../shared/Models/LoginDocumentoRequest';
+import { LoginDocumentoResponse } from '../../../shared/Models/LoginDocumentoResponse';
+import { LoginEmailRequest } from '../../../shared/Models/auth/LoginEmailRequest';
+import { LoginEmailResponse } from '../../../shared/Models/auth/LoginEmailResponse';
+import { RegisterRequestDto } from '../../../shared/Models/auth/RegisterRequestDto';
+import { PaymentAgreementInitDto } from '../../../shared/Models/Init/PaymentAgreementInitDto';
+import { PaymentAgreementCreateResponse } from '../../../shared/Models/Entities/PaymentAgreementCreateResponse';
 
 type getAllType = 'GetAll' | 'GetAllDeletes';
 type DeleteType = 'Persistent' | 'Logical';
@@ -102,12 +103,13 @@ export class ServiceGenericService {
 
 
   registrar(body: RegisterRequestDto) {
-    return this.http.post<any>(
-      this.url('Login', 'Registrarse'),
-      body,
-      { headers: this.getHeaders(true) } // true => **no** Authorization
-    );
-  }
+  return this.http.post<any>(
+    this.url('Auth', 'register'),       // ✅ apunta al endpoint real
+    body,
+    { headers: this.getHeaders(true) }  // se envía sin token
+  );
+}
+
 
   // ======================
   // SESIÓN POR DOCUMENTO (Cookie) — con withCredentials
@@ -153,5 +155,66 @@ export class ServiceGenericService {
     }
     return this.http.get<PaymentAgreementInitDto | PaymentAgreementInitDto[]>(url, this.optsJwt());
   }
+
+  createInfraction(body: any) {
+  return this.http.post<any>(
+    this.url('UserInfraction', 'create-with-person'), 
+    body,
+    this.optsJwt()
+  );
+}
+
+createPaymentAgreement(body: any) {
+  return this.http.post<PaymentAgreementCreateResponse>(
+    this.url('PaymentAgreement'),
+    body,
+    this.optsJwt()
+  );
+}
+
+
+// ======================
+// VERIFICACIÓN DE CORREO
+// ======================
+sendVerification(nombre: string, email: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'send'),
+    { nombre, email },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+validateCode(email: string, code: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'validate'),
+    { email, code },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+sendReactivation(email: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'send-reactivation'),
+    { email },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+reactivateAccount(email: string, code: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'reactivate'),
+    { email, code },
+    { headers: this.getHeaders(true) }
+  );
+}
+
+sendMonthly(nombre: string, email: string) {
+  return this.http.post<any>(
+    this.url('verificacion', 'send-monthly'),
+    { nombre, email },
+    { headers: this.getHeaders(true) }
+  );
+}
+
 
 }
