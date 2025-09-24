@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { ServiceGenericService } from '../utils/generic/service-generic.service';
+import { environment } from '../../../../environments/environment';
 
 export interface UserInfractionDto {
   id?: number;
@@ -52,7 +53,7 @@ export class UserInfractionService {
         if (trimmed.startsWith('<')) {
           console.warn('UserInfraction: la respuesta parece HTML. Reintentando con la URL absoluta del backend.');
           // Construir parámetros ya normalizados
-          const absoluteUrl = `https://localhost:7286/api/${this.endpoint}/by-document`;
+          const absoluteUrl = `${environment.apiURL}/api/${this.endpoint}/by-document`;
           return this.retryWithAbsoluteUrl(absoluteUrl, httpParams as HttpParams);
         }
 
