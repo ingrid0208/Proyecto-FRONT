@@ -1,5 +1,10 @@
-<div class="multas-container">
-    <!-- Header con botones de navegación -->
+<!-- Header con botones de navegación -->
+<div class="page-header">
+    <h1 class="page-title">Gestión de Multas</h1>
+    <p class="page-subtitle">Administra los diferentes tipos de multas e infracciones</p>
+</div>
+
+<div class="module-card">
     <div class="multas-header">
         <div class="multas-dropdown">
             <button class="dropdown-btn active">
@@ -9,21 +14,18 @@
             </button>
         </div>
 
-           <div class="multas-nav">
-        <button
-            class="nav-btn"
-            *ngFor="let tipo of tiposMultas; let i = index"
-            [ngClass]="{ 'active': selectedIndex === i }"
-            (click)="cambiarTipo(i)">
-            Multa tipo {{ i + 1 }}
-        </button>
+        <div class="multas-nav">
+            <button
+                class="nav-btn"
+                *ngFor="let tipo of tiposMultas; let i = index"
+                [ngClass]="{ 'active': selectedIndex === i }"
+                (click)="cambiarTipo(i)">
+                Multa tipo {{ i + 1 }}
+            </button>
+        </div>
     </div>
-    </div>
 
-    <!-- Botones de tipo de multa -->
-
-
-    <div class="content-wrapper">
+    <div class="multas-content-wrapper">
         <!-- Contenido principal -->
         <div class="main-content">
             <!-- Título dinámico -->

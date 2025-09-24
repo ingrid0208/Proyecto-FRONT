@@ -31,7 +31,9 @@ import { AppSidebar } from './sidebar/app.sidebar';
     <app-sidebar></app-sidebar>
     <div class="layout-main-container">
       <div class="layout-main">
-        <router-outlet></router-outlet>
+        <div class="content-wrapper">
+          <router-outlet></router-outlet>
+        </div>
       </div>
     </div>
 
@@ -47,7 +49,7 @@ import { AppSidebar } from './sidebar/app.sidebar';
     .layout-wrapper { display:flex; height:100vh; width:100vw; position:relative; overflow:hidden; }
     .layout-main-container { flex:1; display:flex; flex-direction:column; height:100vh; overflow:hidden; margin-left:0; transition: margin-left .3s ease; }
     .layout-main-container app-topbar { flex-shrink:0; z-index:997; }
-    .layout-main { flex:1; background:#f3f4f6; overflow-y:auto; overflow-x:hidden; padding:0; }
+    .layout-main { flex:1; background:#f3f4f6; overflow-y:auto; overflow-x:hidden; padding:0; display:flex; justify-content:center; align-items:flex-start; }
     .layout-mask { position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:998; display:none; }
     .layout-static .layout-main-container { margin-left:300px; }
     .layout-static-inactive .layout-main-container { margin-left:0; }

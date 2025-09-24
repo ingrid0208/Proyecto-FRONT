@@ -1,0 +1,266 @@
+/* Centered Content Layout */
+
+/* Main content wrapper for all modules */
+.content-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Page headers */
+.page-header {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: #6b7280;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Cards and containers */
+.module-card {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  overflow: hidden;
+}
+
+.card-content {
+  padding: 2rem;
+}
+
+/* Forms in modules */
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Tables in modules */
+.table-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Action buttons container */
+.actions-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+/* Button groups */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Statistics cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+/* Info panels */
+.info-panel {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border-left: 4px solid #3b82f6;
+  text-align: center;
+}
+
+/* List containers */
+.list-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Search and filter bar */
+.search-filter-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+
+  .module-card {
+    margin-bottom: 1.5rem;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .actions-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button-group {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .search-filter-bar {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .card-content {
+    padding: 1rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+  }
+
+  .info-panel {
+    padding: 1rem;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+}
+
+/* Layout adjustments when sidebar is present */
+@media (min-width: 992px) {
+  .layout-static .content-wrapper {
+    margin-left: 0;
+  }
+}
+
+/* Utility classes for specific modules */
+.center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.center-block {
+  margin: 0 auto;
+}
+
+/* For existing components that need centering */
+app-personas-page,
+.personas-page,
+.admin-page,
+.module-page,
+.form-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+app-personas-page > *,
+.personas-page > *,
+.admin-page > *,
+.module-page > *,
+.form-page > * {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
