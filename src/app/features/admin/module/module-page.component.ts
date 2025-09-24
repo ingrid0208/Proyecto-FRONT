@@ -5,13 +5,14 @@ import { ModuleService, Module } from '../../../core/services/module.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { ConfirmationModalComponent, ConfirmationModalConfig } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-module-page',
   templateUrl: './module-page.component.html',
   styleUrls: ['./module-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent, SearchBarComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent, SearchBarComponent, ConfirmationModalComponent],
   providers: [ModuleService]
 })
 export class ModulePageComponent implements OnInit {
@@ -54,6 +55,24 @@ export class ModulePageComponent implements OnInit {
   alertType: string = 'bienvenida';
   showConfirm = false;
   moduleAEliminar: Module | null = null;
+
+  // Configuración de modales de confirmación
+  showDeleteModal = false;
+  showUpdateConfirmModal = false;
+  deleteModalConfig: ConfirmationModalConfig = {
+    title: 'Eliminar Módulo',
+    message: '¿Está seguro que desea eliminar este módulo? Esta acción no se puede deshacer.',
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar',
+    type: 'delete'
+  };
+  updateModalConfig: ConfirmationModalConfig = {
+    title: 'Confirmar Actualización',
+    message: '¿Está seguro que desea actualizar este módulo?',
+    confirmText: 'Actualizar',
+    cancelText: 'Cancelar',
+    type: 'update'
+  };
 
   ngOnInit() {
     this.mostrarAlerta('¡Bienvenido a la gestión de módulos!', 'bienvenida');
@@ -148,12 +167,13 @@ export class ModulePageComponent implements OnInit {
 
   confirmarActualizacion(module: Module) {
     this.moduleAActualizar = module;
-    this.showUpdateConfirm = true;
+    this.updateModalConfig.message = `¿Está seguro que desea actualizar el módulo "${module.name}"?`;
+    this.showUpdateConfirmModal = true;
   }
 
   cancelarActualizacion() {
     this.moduleAActualizar = null;
-    this.showUpdateConfirm = false;
+    this.showUpdateConfirmModal = false;
   }
 
   abrirModalActualizar() {
@@ -165,7 +185,7 @@ export class ModulePageComponent implements OnInit {
         description: this.moduleAActualizar.description || ''
       };
       this.showUpdateModal = true;
-      this.showUpdateConfirm = false;
+      this.showUpdateConfirmModal = false;
       this.moduleAActualizar = null;
     }
   }
@@ -256,18 +276,19 @@ export class ModulePageComponent implements OnInit {
 
   pedirConfirmacionEliminar(module: Module) {
     this.moduleAEliminar = module;
-    this.showConfirm = true;
+    this.deleteModalConfig.message = `¿Está seguro que desea eliminar el módulo "${module.name}"? Esta acción no se puede deshacer.`;
+    this.showDeleteModal = true;
   }
 
   confirmarEliminar() {
     if (this.moduleAEliminar && this.moduleAEliminar.id) {
       console.log('Eliminando módulo:', this.moduleAEliminar); // Para depuración
-      
+
       this.moduleService.genericService.delete(this.moduleService.endpoint, this.moduleAEliminar.id).subscribe({
         next: () => {
           console.log('Módulo eliminado exitosamente'); // Para depuración
           this.mostrarAlerta('Módulo eliminado correctamente.', 'eliminado');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.moduleAEliminar = null;
           // Recargar la lista completa desde la API para asegurar sincronización
           this.cargarModules(true);
@@ -275,20 +296,20 @@ export class ModulePageComponent implements OnInit {
         error: (error: any) => {
           console.error('Error al eliminar módulo:', error);
           this.mostrarAlerta('Error al eliminar el módulo: ' + (error.error?.message || error.message), 'error');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.moduleAEliminar = null;
         }
       });
     } else {
       console.error('No se puede eliminar: módulo sin ID válido');
       this.mostrarAlerta('Error: No se puede eliminar el módulo', 'error');
-      this.showConfirm = false;
+      this.showDeleteModal = false;
       this.moduleAEliminar = null;
     }
   }
 
   cancelarEliminar() {
-    this.showConfirm = false;
+    this.showDeleteModal = false;
     this.moduleAEliminar = null;
   }
 
@@ -313,5 +334,26 @@ export class ModulePageComponent implements OnInit {
   onPageChange(page: number): void {
     this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
     this.updatePaginatedItems();
+  }
+
+  // Métodos auxiliares para alertas
+  getAlertClass(): string {
+    const classMap: { [key: string]: string } = {
+      'bienvenida': 'info',
+      'creado': 'success',
+      'eliminado': 'success',
+      'error': 'error'
+    };
+    return classMap[this.alertType] || 'info';
+  }
+
+  getAlertIcon(): string {
+    const iconMap: { [key: string]: string } = {
+      'bienvenida': 'pi-info-circle',
+      'creado': 'pi-check-circle',
+      'eliminado': 'pi-check-circle',
+      'error': 'pi-exclamation-triangle'
+    };
+    return iconMap[this.alertType] || 'pi-info-circle';
   }
 }

@@ -1,147 +1,213 @@
-<div class="personas-container">
-  <h1 class="page-title">Gestión de Módulos</h1>
-
-  <!-- Botón para agregar nuevo módulo -->
-  <button (click)="abrirModal()" class="btn-agregar">
-    <i class="pi pi-plus" style="margin-right: 0.5rem;"></i>
-    Agregar Módulo
-  </button>
+<div class="admin-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <div class="admin-header-content">
+      <div class="header-icon">
+        <i class="pi pi-th-large"></i>
+      </div>
+      <div class="header-text">
+        <h1>Gestión de Módulos</h1>
+        <p>Administra los módulos y componentes del sistema</p>
+      </div>
+    </div>
+    <button class="btn-add" (click)="abrirModal()">
+      <i class="pi pi-plus"></i>
+      Agregar Módulo
+    </button>
+  </div>
 
   <!-- Barra de búsqueda -->
-  <div class="search-bar">
-    <app-search-bar (search)="onSearch($event)" placeholder="Buscar módulos..."></app-search-bar>
-  </div>
-
-  <!-- Tabla de módulos -->
-  <div *ngFor="let module of paginatedModules" class="persona-card">
-    <div class="persona-info">
-      <div class="info-row">
-        <span class="label">Nombre:</span>
-        <span class="value">{{ module.name }}</span>
-      </div>
-      <div class="info-row">
-        <span class="label">Descripción:</span>
-        <span class="value">{{ module.description }}</span>
-      </div>
-    </div>
-    <div class="persona-actions">
-      <button (click)="confirmarActualizacion(module)" class="btn-editar">
-        <i class="pi pi-pencil"></i>
-        Editar
-      </button>
-      <button (click)="pedirConfirmacionEliminar(module)" class="btn-eliminar">
-        <i class="pi pi-trash"></i>
-        Eliminar
-      </button>
+  <div class="search-container">
+    <div class="search-wrapper">
+      <app-search-bar (search)="onSearch($event)" placeholder="Buscar módulos..."></app-search-bar>
     </div>
   </div>
 
-  <div *ngIf="modules.length === 0" class="no-data">
-    <i class="pi pi-info-circle"></i>
-    <p>No hay módulos registrados</p>
-    <small>Haga clic en "Agregar Módulo" para comenzar</small>
+  <!-- Alertas -->
+  <div *ngIf="showAlert" class="admin-alert" [ngClass]="'alert-' + getAlertClass()">
+    <i class="pi" [ngClass]="getAlertIcon()"></i>
+    {{ alertMsg }}
   </div>
 
-  <!-- Alerta -->
-  <div *ngIf="showAlert" class="alert" [ngClass]="alertType">
-    <i class="pi" [ngClass]="{
-      'pi-check-circle': alertType === 'creado' || alertType === 'bienvenida',
-      'pi-exclamation-triangle': alertType === 'error',
-      'pi-trash': alertType === 'eliminado'
-    }"></i>
-    <span>{{ alertMsg }}</span>
+  <!-- Lista de módulos -->
+  <div class="admin-list-container">
+    <div *ngIf="paginatedModules.length === 0 && !showAlert" class="admin-empty-state">
+      <div class="empty-icon">
+        <i class="pi pi-th-large"></i>
+      </div>
+      <h3>No hay módulos registrados</h3>
+      <p>Comience agregando un nuevo módulo al sistema</p>
+    </div>
+
+    <div *ngFor="let module of paginatedModules" class="admin-item-card">
+      <div class="admin-item-content">
+        <h3 class="item-title">{{ module.name }}</h3>
+        <p class="item-subtitle">{{ module.description }}</p>
+        <div class="item-meta">
+          <span class="meta-item">
+            <i class="pi pi-key"></i>
+            ID: {{ module.id }}
+          </span>
+        </div>
+      </div>
+
+      <div class="admin-item-actions">
+        <button class="btn-action btn-edit" (click)="confirmarActualizacion(module)" title="Editar módulo">
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button class="btn-action btn-delete" (click)="pedirConfirmacionEliminar(module)" title="Eliminar módulo">
+          <i class="pi pi-trash"></i>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Paginación -->
-  <app-pagination
-    [currentPage]="paginationConfig.currentPage"
-    [totalPages]="paginationConfig.totalPages"
-    [totalItems]="paginationConfig.totalItems"
-    [itemsPerPage]="paginationConfig.itemsPerPage"
-    (pageChange)="onPageChange($event)">
-  </app-pagination>
+  <div class="admin-pagination">
+    <app-pagination
+      [currentPage]="paginationConfig.currentPage"
+      [totalPages]="paginationConfig.totalPages"
+      [totalItems]="paginationConfig.totalItems"
+      [itemsPerPage]="paginationConfig.itemsPerPage"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  </div>
 </div>
 
-<!-- Modal para crear nuevo módulo -->
-  <div *ngIf="showModal" class="modal-overlay">
-    <div class="modal-content persona-form">
-      <h2>Agregar Nuevo Módulo</h2>
-      <form (ngSubmit)="crearModule()" autocomplete="off" #createForm="ngForm">
-        <label>
-          Nombre del Módulo:
-          <input type="text" [(ngModel)]="nuevoModule.name" name="name" required 
-                 #nameInput="ngModel" maxlength="80" placeholder="Ej: Módulo de Usuarios" />
-          <div *ngIf="nameInput.invalid && nameInput.touched" class="error-msg">
-            El nombre es requerido
-          </div>
-        </label>
-        <label>
-          Descripción:
-          <textarea [(ngModel)]="nuevoModule.description" name="description" required 
-                   #descriptionInput="ngModel" maxlength="250" rows="4" 
-                   placeholder="Describe la funcionalidad del módulo..."></textarea>
-          <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-msg">
-            La descripción es requerida
-          </div>
-        </label>
-        <div class="modal-actions">
-          <button type="button" (click)="cerrarModal()">Cancelar</button>
-          <button type="submit" [disabled]="createForm.invalid || !nuevoModule.name.trim() || !nuevoModule.description.trim()">Crear</button>
-        </div>
-      </form>
-    </div>
-  </div>
+<!-- Modal para crear/editar módulo -->
+<div *ngIf="showModal" class="admin-form-modal">
+  <div class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Crear Módulo</h2>
+      </div>
 
-  <!-- Modal para actualizar módulo -->
-  <div *ngIf="showUpdateModal && moduleSeleccionado" class="modal-overlay">
-    <div class="modal-content persona-form">
-      <h2>Actualizar Módulo</h2>
-      <form (ngSubmit)="actualizarModule()" autocomplete="off" #updateForm="ngForm">
-        <label>
-          Nombre del Módulo:
-          <input type="text" [(ngModel)]="moduleSeleccionado.name" name="name" required 
-                 #nameUpdateInput="ngModel" maxlength="80" />
-          <div *ngIf="nameUpdateInput.invalid && nameUpdateInput.touched" class="error-msg">
-            El nombre es requerido
+      <div class="modal-body">
+        <form (ngSubmit)="crearModule()" autocomplete="off">
+          <div class="form-group">
+            <label for="nombreModule">Nombre del Módulo</label>
+            <input
+              id="nombreModule"
+              type="text"
+              [(ngModel)]="nuevoModule.name"
+              name="nombreModule"
+              maxlength="80"
+              placeholder="Ingrese el nombre del módulo"
+              [class.error]="!nuevoModule.name.trim()"
+            />
+            <div *ngIf="!nuevoModule.name.trim()" class="error-message">
+              El nombre del módulo es requerido
+            </div>
           </div>
-        </label>
-        <label>
-          Descripción:
-          <textarea [(ngModel)]="moduleSeleccionado.description" name="description" required 
-                   #descriptionUpdateInput="ngModel" maxlength="250" rows="4"></textarea>
-          <div *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched" class="error-msg">
-            La descripción es requerida
-          </div>
-        </label>
-        <div class="modal-actions">
-          <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
-          <button type="submit" [disabled]="updateForm.invalid || !moduleSeleccionado.name.trim() || !moduleSeleccionado.description.trim()">Actualizar</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
-  <!-- Modal de confirmación para actualizar -->
-  <div *ngIf="showUpdateConfirm && moduleAActualizar" class="modal-overlay">
-    <div class="modal-content confirm-modal">
-      <h2>Confirmar Actualización</h2>
-      <p>¿Está seguro de que desea actualizar el módulo <strong>"{{ moduleAActualizar.name }}"</strong>?</p>
+          <div class="form-group">
+            <label for="descripcionModule">Descripción</label>
+            <textarea
+              id="descripcionModule"
+              [(ngModel)]="nuevoModule.description"
+              name="descripcionModule"
+              rows="4"
+              maxlength="250"
+              placeholder="Ingrese la descripción del módulo"
+              [class.error]="!nuevoModule.description.trim()"
+            ></textarea>
+            <div *ngIf="!nuevoModule.description.trim()" class="error-message">
+              La descripción es requerida
+            </div>
+          </div>
+        </form>
+      </div>
+
       <div class="modal-actions">
-        <button type="button" (click)="cancelarActualizacion()" class="btn-secundario">Cancelar</button>
-        <button type="button" (click)="abrirModalActualizar()" class="btn-primario">Sí, Editar</button>
+        <button type="button" class="btn btn-secondary" (click)="cerrarModal()">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="crearModule()"
+          [disabled]="!nuevoModule.name.trim() || !nuevoModule.description.trim()"
+        >
+          Crear Módulo
+        </button>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Modal de confirmación para eliminar -->
-  <div *ngIf="showConfirm && moduleAEliminar" class="modal-overlay">
-    <div class="modal-content confirm-modal">
-      <h2>Confirmar Eliminación</h2>
-      <p>¿Está seguro de que desea eliminar el módulo <strong>"{{ moduleAEliminar.name }}"</strong>?</p>
-      <p class="warning-text">Esta acción no se puede deshacer.</p>
+<!-- Modal para actualizar módulo -->
+<div *ngIf="showUpdateModal && moduleSeleccionado" class="admin-form-modal">
+  <div class="modal-overlay" (click)="cerrarModalActualizar()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Actualizar Módulo</h2>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="actualizarModule()" autocomplete="off">
+          <div class="form-group">
+            <label for="nombreModuleUpdate">Nombre del Módulo</label>
+            <input
+              id="nombreModuleUpdate"
+              type="text"
+              [(ngModel)]="moduleSeleccionado.name"
+              name="nombreModuleUpdate"
+              maxlength="80"
+              placeholder="Ingrese el nombre del módulo"
+              [class.error]="!moduleSeleccionado.name.trim()"
+            />
+            <div *ngIf="!moduleSeleccionado.name.trim()" class="error-message">
+              El nombre del módulo es requerido
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descripcionModuleUpdate">Descripción</label>
+            <textarea
+              id="descripcionModuleUpdate"
+              [(ngModel)]="moduleSeleccionado.description"
+              name="descripcionModuleUpdate"
+              rows="4"
+              maxlength="250"
+              placeholder="Ingrese la descripción del módulo"
+              [class.error]="!moduleSeleccionado.description.trim()"
+            ></textarea>
+            <div *ngIf="!moduleSeleccionado.description.trim()" class="error-message">
+              La descripción es requerida
+            </div>
+          </div>
+        </form>
+      </div>
+
       <div class="modal-actions">
-        <button type="button" (click)="cancelarEliminar()" class="btn-secundario">Cancelar</button>
-        <button type="button" (click)="confirmarEliminar()" class="btn-peligro">Eliminar</button>
+        <button type="button" class="btn btn-secondary" (click)="cerrarModalActualizar()">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="actualizarModule()"
+          [disabled]="!moduleSeleccionado.name.trim() || !moduleSeleccionado.description.trim()"
+        >
+          Actualizar Módulo
+        </button>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<app-confirmation-modal
+  [show]="showDeleteModal"
+  [config]="deleteModalConfig"
+  (confirmed)="confirmarEliminar()"
+  (cancelled)="cancelarEliminar()">
+</app-confirmation-modal>
+
+<!-- Modal de confirmación para actualizar -->
+<app-confirmation-modal
+  [show]="showUpdateConfirmModal"
+  [config]="updateModalConfig"
+  (confirmed)="abrirModalActualizar()"
+  (cancelled)="cancelarActualizacion()">
+</app-confirmation-modal>

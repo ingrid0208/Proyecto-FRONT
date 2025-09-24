@@ -7,13 +7,14 @@ import { RolesService, Rol } from '../../../core/services/api/roles.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { ConfirmationModalComponent, ConfirmationModalConfig } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-roles-page',
   templateUrl: './roles-page.component.html',
   styleUrls: ['./roles-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent]
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent, ConfirmationModalComponent]
 })
 export class RolesPageComponent implements OnInit {
   
@@ -69,6 +70,24 @@ export class RolesPageComponent implements OnInit {
   alertType: string = 'bienvenida';
   showConfirm = false;
   rolAEliminar: Rol | null = null;
+
+  // Configuración de modales de confirmación
+  showDeleteModal = false;
+  showUpdateConfirmModal = false;
+  deleteModalConfig: ConfirmationModalConfig = {
+    title: 'Eliminar Rol',
+    message: '¿Está seguro que desea eliminar este rol? Esta acción no se puede deshacer.',
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar',
+    type: 'delete'
+  };
+  updateModalConfig: ConfirmationModalConfig = {
+    title: 'Confirmar Actualización',
+    message: '¿Está seguro que desea actualizar este rol?',
+    confirmText: 'Actualizar',
+    cancelText: 'Cancelar',
+    type: 'update'
+  };
   
   // Cargar roles desde la API
   cargarRoles(esDespuesDeOperacion: boolean = false): void {
@@ -119,19 +138,20 @@ export class RolesPageComponent implements OnInit {
 
   confirmarActualizacion(rol: Rol) {
     this.rolAActualizar = rol;
-    this.showUpdateConfirm = true;
+    this.updateModalConfig.message = `¿Está seguro que desea actualizar el rol "${rol.name}"?`;
+    this.showUpdateConfirmModal = true;
   }
 
   cancelarActualizacion() {
     this.rolAActualizar = null;
-    this.showUpdateConfirm = false;
+    this.showUpdateConfirmModal = false;
   }
 
   abrirModalActualizar() {
     if (this.rolAActualizar) {
       this.rolSeleccionado = { ...this.rolAActualizar };
       this.showUpdateModal = true;
-      this.showUpdateConfirm = false;
+      this.showUpdateConfirmModal = false;
       this.rolAActualizar = null;
     }
   }
@@ -219,7 +239,8 @@ export class RolesPageComponent implements OnInit {
 
   pedirConfirmacionEliminar(rol: Rol) {
     this.rolAEliminar = rol;
-    this.showConfirm = true;
+    this.deleteModalConfig.message = `¿Está seguro que desea eliminar el rol "${rol.name}"? Esta acción no se puede deshacer.`;
+    this.showDeleteModal = true;
   }
 
   confirmarEliminar() {
@@ -230,7 +251,7 @@ export class RolesPageComponent implements OnInit {
         next: () => {
           console.log('Rol eliminado exitosamente'); // Para depuración
           this.mostrarAlerta('Rol eliminado correctamente.', 'eliminado');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.rolAEliminar = null;
           // Recargar la lista completa desde la API para asegurar sincronización
           this.cargarRoles(true);
@@ -238,20 +259,20 @@ export class RolesPageComponent implements OnInit {
         error: (error: any) => {
           console.error('Error al eliminar rol:', error);
           this.mostrarAlerta('Error al eliminar el rol: ' + (error.error?.message || error.message), 'error');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.rolAEliminar = null;
         }
       });
     } else {
       console.error('No se puede eliminar: rol sin ID válido');
       this.mostrarAlerta('Error: No se puede eliminar el rol', 'error');
-      this.showConfirm = false;
+      this.showDeleteModal = false;
       this.rolAEliminar = null;
     }
   }
 
   cancelarEliminar() {
-    this.showConfirm = false;
+    this.showDeleteModal = false;
     this.rolAEliminar = null;
   }
 
@@ -276,5 +297,26 @@ export class RolesPageComponent implements OnInit {
   onPageChange(page: number): void {
     this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
     this.updatePaginatedItems();
+  }
+
+  // Métodos auxiliares para alertas
+  getAlertClass(): string {
+    const classMap: { [key: string]: string } = {
+      'bienvenida': 'info',
+      'creado': 'success',
+      'eliminado': 'success',
+      'error': 'error'
+    };
+    return classMap[this.alertType] || 'info';
+  }
+
+  getAlertIcon(): string {
+    const iconMap: { [key: string]: string } = {
+      'bienvenida': 'pi-info-circle',
+      'creado': 'pi-check-circle',
+      'eliminado': 'pi-check-circle',
+      'error': 'pi-exclamation-triangle'
+    };
+    return iconMap[this.alertType] || 'pi-info-circle';
   }
 }

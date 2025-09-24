@@ -1,0 +1,475 @@
+// Variables comunes para módulos admin
+$primary-color: #198754;
+$secondary-color: #6c757d;
+$success-color: #28a745;
+$danger-color: #dc3545;
+$warning-color: #ffc107;
+$info-color: #17a2b8;
+$light-color: #f8f9fa;
+$dark-color: #343a40;
+
+// Mixins para efectos comunes
+@mixin button-hover {
+  transition: all 0.2s ease-in-out;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@mixin card-shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+@mixin gradient-button($start-color, $end-color) {
+  background: linear-gradient(135deg, $start-color, $end-color);
+  border: none;
+  color: white;
+
+  &:hover {
+    background: linear-gradient(135deg, darken($start-color, 8%), darken($end-color, 8%));
+    @include button-hover;
+  }
+}
+
+// Estilos base para contenedores de módulos admin
+.admin-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// Header común para todos los módulos
+.admin-header {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  @include card-shadow;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.admin-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+  }
+
+  .header-text {
+    h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: $dark-color;
+      line-height: 1.2;
+    }
+
+    p {
+      margin: 0.25rem 0 0;
+      color: $secondary-color;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// Botón agregar común
+.btn-add {
+  @include gradient-button($primary-color, darken($primary-color, 10%));
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Barra de búsqueda común
+.search-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  @include card-shadow;
+
+  .search-wrapper {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+// Contenedor de lista común
+.admin-list-container {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  @include card-shadow;
+  margin-bottom: 2rem;
+}
+
+// Tarjetas de elementos comunes
+.admin-item-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  @include card-shadow;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.admin-item-content {
+  flex: 1;
+
+  .item-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $dark-color;
+    margin: 0 0 0.5rem;
+  }
+
+  .item-subtitle {
+    color: $secondary-color;
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .item-meta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      color: $secondary-color;
+
+      i {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+// Acciones de elementos comunes
+.admin-item-actions {
+  display: flex;
+  gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+.btn-action {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 16px;
+
+  &.btn-edit {
+    background: linear-gradient(135deg, $info-color, darken($info-color, 10%));
+    color: white;
+
+    &:hover {
+      @include button-hover;
+      background: linear-gradient(135deg, darken($info-color, 8%), darken($info-color, 18%));
+    }
+  }
+
+  &.btn-delete {
+    background: linear-gradient(135deg, $danger-color, darken($danger-color, 10%));
+    color: white;
+
+    &:hover {
+      @include button-hover;
+      background: linear-gradient(135deg, darken($danger-color, 8%), darken($danger-color, 18%));
+    }
+  }
+
+  &.btn-view {
+    background: linear-gradient(135deg, $secondary-color, darken($secondary-color, 10%));
+    color: white;
+
+    &:hover {
+      @include button-hover;
+      background: linear-gradient(135deg, darken($secondary-color, 8%), darken($secondary-color, 18%));
+    }
+  }
+}
+
+// Estado vacío común
+.admin-empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: $secondary-color;
+
+  .empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    border-radius: 50%;
+    background: $light-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: $secondary-color;
+  }
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    color: $dark-color;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
+
+// Mensajes de alerta comunes
+.admin-alert {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+
+  &.alert-success {
+    background: #d1eddf;
+    color: #0f5132;
+    border: 1px solid #b3d3c7;
+  }
+
+  &.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f1aeb5;
+  }
+
+  &.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+  }
+
+  &.alert-info {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #b8daff;
+  }
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+// Modal de formulario común
+.admin-form-modal {
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+  }
+
+  .modal-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    background: linear-gradient(135deg, $primary-color, darken($primary-color, 5%));
+    color: white;
+    border-radius: 12px 12px 0 0;
+
+    h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: $dark-color;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+      }
+
+      &.error {
+        border-color: $danger-color;
+        box-shadow: 0 0 0 2px rgba($danger-color, 0.2);
+      }
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .error-message {
+      margin-top: 0.25rem;
+      color: $danger-color;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+  }
+
+  .modal-actions {
+    padding: 1.5rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 100px;
+
+      &.btn-primary {
+        @include gradient-button($primary-color, darken($primary-color, 10%));
+      }
+
+      &.btn-secondary {
+        background: #f8f9fa;
+        color: $secondary-color;
+        border: 1px solid #dee2e6;
+
+        &:hover {
+          background: #e9ecef;
+          border-color: #ced4da;
+        }
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+
+        &:hover {
+          transform: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+
+// Paginación común
+.admin-pagination {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}

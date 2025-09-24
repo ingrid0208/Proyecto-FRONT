@@ -1,21 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MessageService, ConfirmationService } from 'primeng/api';
-
-// PrimeNG imports
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
-import { DialogModule } from 'primeng/dialog';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToolbarModule } from 'primeng/toolbar';
-import { CardModule } from 'primeng/card';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { ConfirmationModalComponent, ConfirmationModalConfig } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 import { RolFormPermissionService } from './rol-form-permission.service';
 import { 
@@ -35,18 +26,10 @@ import {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    TableModule,
-    ButtonModule,
-    InputTextModule,
-    DropdownModule,
-    DialogModule,
-    ToastModule,
-    ConfirmDialogModule,
-    ToolbarModule,
-    CardModule,
-    ProgressSpinnerModule
+    PaginationComponent,
+    SearchBarComponent,
+    ConfirmationModalComponent
   ],
-  providers: [MessageService, ConfirmationService],
   templateUrl: './rol-form-permission.component.html',
   styleUrls: ['./rol-form-permission.component.scss']
 })
@@ -57,12 +40,26 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   rolFormPermissions: RolFormPermission[] = [];
   displayData: RolFormPermissionDisplay[] = [];
   filteredData: RolFormPermissionDisplay[] = [];
+  paginatedData: RolFormPermissionDisplay[] = [];
+
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
   
-  // Dialog properties
-  displayDialog = false;
-  dialogTitle = '';
+  // Modal properties
+  showModal: boolean = false;
+  showUpdateModal: boolean = false;
+  showDeleteModal = false;
+  showUpdateConfirmModal = false;
   isEditMode = false;
   selectedItemId: number | null = null;
+  itemAActualizar: RolFormPermission | null = null;
+  itemAEliminar: RolFormPermission | null = null;
+  itemSeleccionado: RolFormPermission | null = null;
   
   // Form
   rolFormPermissionForm!: FormGroup;
@@ -75,19 +72,38 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   formOptions: { label: string; value: number }[] = [];
   permissionOptions: { label: string; value: number }[] = [];
   
-  // Search
-  globalFilter = '';
+  // Alertas
+  showAlert = false;
+  alertMsg = '';
+  alertType: string = 'bienvenida';
+
+  // Configuración de modales de confirmación
+  deleteModalConfig: ConfirmationModalConfig = {
+    title: 'Eliminar Permiso',
+    message: '¿Está seguro que desea eliminar este permiso? Esta acción no se puede deshacer.',
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar',
+    type: 'delete'
+  };
+  updateModalConfig: ConfirmationModalConfig = {
+    title: 'Confirmar Actualización',
+    message: '¿Está seguro que desea actualizar este permiso?',
+    confirmText: 'Actualizar',
+    cancelText: 'Cancelar',
+    type: 'update'
+  };
 
   constructor(
     private rolFormPermissionService: RolFormPermissionService,
     private fb: FormBuilder,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private cdr: ChangeDetectorRef,
+    private paginationService: PaginationService
   ) {
     this.initForm();
   }
 
   ngOnInit(): void {
+    this.mostrarAlerta('¡Bienvenido a la gestión de permisos!', 'bienvenida');
     this.loadData();
     this.loadDropdownOptions();
   }
@@ -118,15 +134,13 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
             formName: item.formName
           }));
           this.filteredData = [...this.displayData];
+          this.updatePagination();
           this.loading = false;
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error('Error loading data:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error al cargar los datos'
-          });
+          this.mostrarAlerta('Error al cargar los datos: ' + (error.error?.message || error.message), 'error');
           this.loading = false;
         }
       });
@@ -155,36 +169,28 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
       });
   }
 
-  onGlobalFilter(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.globalFilter = target.value;
-    this.applyGlobalFilter();
-  }
-
-  private applyGlobalFilter(): void {
-    if (!this.globalFilter) {
-      this.filteredData = [...this.displayData];
-      return;
-    }
-
-    const filterValue = this.globalFilter.toLowerCase();
+  onSearch(term: string) {
     this.filteredData = this.displayData.filter(item =>
-      item.rolName.toLowerCase().includes(filterValue) ||
-      item.formName.toLowerCase().includes(filterValue) ||
-      item.permissionName.toLowerCase().includes(filterValue)
+      item.rolName.toLowerCase().includes(term.toLowerCase()) ||
+      item.formName.toLowerCase().includes(term.toLowerCase()) ||
+      item.permissionName.toLowerCase().includes(term.toLowerCase())
     );
+    this.updatePagination();
   }
 
-  openNew(): void {
+  abrirModal(): void {
     this.isEditMode = false;
     this.selectedItemId = null;
-    this.dialogTitle = 'Nuevo Rol-Formulario-Permiso';
     this.rolFormPermissionForm.reset();
-    this.displayDialog = true;
+    this.showModal = true;
   }
 
-  editItem(rowData: RolFormPermissionDisplay): void {
-    // Find the original item with ID
+  cerrarModal(): void {
+    this.showModal = false;
+    this.rolFormPermissionForm.reset();
+  }
+
+  confirmarActualizacion(rowData: RolFormPermissionDisplay): void {
     const originalItem = this.rolFormPermissions.find(item =>
       item.rolName === rowData.rolName &&
       item.formName === rowData.formName &&
@@ -192,22 +198,40 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
     );
 
     if (originalItem) {
+      this.itemAActualizar = originalItem;
+      this.updateModalConfig.message = `¿Está seguro que desea actualizar el permiso "${rowData.permissionName}"?`;
+      this.showUpdateConfirmModal = true;
+    }
+  }
+
+  cancelarActualizacion(): void {
+    this.itemAActualizar = null;
+    this.showUpdateConfirmModal = false;
+  }
+
+  abrirModalActualizar(): void {
+    if (this.itemAActualizar) {
+      this.itemSeleccionado = { ...this.itemAActualizar };
       this.isEditMode = true;
-      this.selectedItemId = originalItem.id;
-      this.dialogTitle = 'Editar Rol-Formulario-Permiso';
-      
+      this.selectedItemId = this.itemAActualizar.id;
       this.rolFormPermissionForm.patchValue({
-        rolid: originalItem.rolid,
-        formid: originalItem.formid,
-        permissionid: originalItem.permissionid
+        rolid: this.itemAActualizar.rolid,
+        formid: this.itemAActualizar.formid,
+        permissionid: this.itemAActualizar.permissionid
       });
-      
-      this.displayDialog = true;
+      this.showUpdateModal = true;
+      this.showUpdateConfirmModal = false;
+      this.itemAActualizar = null;
     }
   }
 
-  deleteItem(rowData: RolFormPermissionDisplay): void {
-    // Find the original item with ID
+  cerrarModalActualizar(): void {
+    this.showUpdateModal = false;
+    this.itemSeleccionado = null;
+    this.rolFormPermissionForm.reset();
+  }
+
+  pedirConfirmacionEliminar(rowData: RolFormPermissionDisplay): void {
     const originalItem = this.rolFormPermissions.find(item =>
       item.rolName === rowData.rolName &&
       item.formName === rowData.formName &&
@@ -215,38 +239,36 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
     );
 
     if (originalItem) {
-      this.confirmationService.confirm({
-        message: `¿Está seguro de eliminar el permiso "${rowData.permissionName}" para el rol "${rowData.rolName}" en el formulario "${rowData.formName}"?`,
-        header: 'Confirmar Eliminación',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-          this.performDelete(originalItem.id);
-        }
-      });
+      this.itemAEliminar = originalItem;
+      this.deleteModalConfig.message = `¿Está seguro de eliminar el permiso "${rowData.permissionName}"? Esta acción no se puede deshacer.`;
+      this.showDeleteModal = true;
     }
   }
 
-  private performDelete(id: number): void {
-    this.rolFormPermissionService.delete(id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Éxito',
-            detail: 'Registro eliminado correctamente'
-          });
-          this.loadData();
-        },
-        error: (error) => {
-          console.error('Error deleting item:', error);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Error al eliminar el registro'
-          });
-        }
-      });
+  confirmarEliminar(): void {
+    if (this.itemAEliminar && this.itemAEliminar.id) {
+      this.rolFormPermissionService.delete(this.itemAEliminar.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.mostrarAlerta('Permiso eliminado correctamente.', 'eliminado');
+            this.showDeleteModal = false;
+            this.itemAEliminar = null;
+            this.loadData();
+          },
+          error: (error) => {
+            console.error('Error deleting item:', error);
+            this.mostrarAlerta('Error al eliminar el permiso: ' + (error.error?.message || error.message), 'error');
+            this.showDeleteModal = false;
+            this.itemAEliminar = null;
+          }
+        });
+    }
+  }
+
+  cancelarEliminar(): void {
+    this.showDeleteModal = false;
+    this.itemAEliminar = null;
   }
 
   saveItem(): void {
@@ -265,21 +287,13 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Registro actualizado correctamente'
-              });
-              this.closeDialog();
+              this.mostrarAlerta('Permiso actualizado correctamente.', 'creado');
+              this.cerrarModalActualizar();
               this.loadData();
             },
             error: (error: any) => {
               console.error('Error updating item:', error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al actualizar el registro'
-              });
+              this.mostrarAlerta('Error al actualizar el permiso: ' + (error.error?.message || error.message), 'error');
             }
           });
       } else {
@@ -293,21 +307,13 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Éxito',
-                detail: 'Registro creado correctamente'
-              });
-              this.closeDialog();
+              this.mostrarAlerta('Permiso creado correctamente.', 'creado');
+              this.cerrarModal();
               this.loadData();
             },
             error: (error: any) => {
               console.error('Error creating item:', error);
-              this.messageService.add({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Error al crear el registro'
-              });
+              this.mostrarAlerta('Error al crear el permiso: ' + (error.error?.message || error.message), 'error');
             }
           });
       }
@@ -323,11 +329,47 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
     });
   }
 
-  closeDialog(): void {
-    this.displayDialog = false;
-    this.rolFormPermissionForm.reset();
-    this.isEditMode = false;
-    this.selectedItemId = null;
+  mostrarAlerta(msg: string, tipo: string): void {
+    this.alertMsg = msg;
+    this.alertType = tipo;
+    this.showAlert = true;
+    setTimeout(() => this.showAlert = false, 2500);
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredData.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedData = this.paginationService.getPaginatedItems(this.filteredData, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
+  }
+
+  // Métodos auxiliares para alertas
+  getAlertClass(): string {
+    const classMap: { [key: string]: string } = {
+      'bienvenida': 'info',
+      'creado': 'success',
+      'eliminado': 'success',
+      'error': 'error'
+    };
+    return classMap[this.alertType] || 'info';
+  }
+
+  getAlertIcon(): string {
+    const iconMap: { [key: string]: string } = {
+      'bienvenida': 'pi-info-circle',
+      'creado': 'pi-check-circle',
+      'eliminado': 'pi-check-circle',
+      'error': 'pi-exclamation-triangle'
+    };
+    return iconMap[this.alertType] || 'pi-info-circle';
   }
 
   isFieldInvalid(fieldName: string): boolean {

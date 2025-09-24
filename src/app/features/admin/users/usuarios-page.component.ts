@@ -6,13 +6,14 @@ import { UsuariosService, Usuario, UserInfraction } from './usuarios.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { ConfirmationModalComponent, ConfirmationModalConfig } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-usuarios-page',
   templateUrl: './usuarios-page.component.html',
   styleUrls: ['./usuarios-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent],
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent, ConfirmationModalComponent],
   providers: [UsuariosService]
 })
 export class UsuariosPageComponent implements OnInit {
@@ -59,6 +60,24 @@ export class UsuariosPageComponent implements OnInit {
   alertType: string = 'bienvenida';
   showConfirm = false;
   usuarioAEliminar: Usuario | null = null;
+
+  // Configuración de modales de confirmación
+  showDeleteModal = false;
+  showUpdateConfirmModal = false;
+  deleteModalConfig: ConfirmationModalConfig = {
+    title: 'Eliminar Usuario',
+    message: '¿Está seguro que desea eliminar este usuario? Esta acción no se puede deshacer.',
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar',
+    type: 'delete'
+  };
+  updateModalConfig: ConfirmationModalConfig = {
+    title: 'Confirmar Actualización',
+    message: '¿Está seguro que desea actualizar este usuario?',
+    confirmText: 'Actualizar',
+    cancelText: 'Cancelar',
+    type: 'update'
+  };
 
   ngOnInit() {
     this.mostrarAlerta('¡Bienvenido a la gestión de usuarios!', 'bienvenida');
@@ -158,12 +177,13 @@ export class UsuariosPageComponent implements OnInit {
 
   confirmarActualizacion(usuario: Usuario) {
     this.usuarioAActualizar = usuario;
-    this.showUpdateConfirm = true;
+    this.updateModalConfig.message = `¿Está seguro que desea actualizar el usuario "${usuario.name}"?`;
+    this.showUpdateConfirmModal = true;
   }
 
   cancelarActualizacion() {
     this.usuarioAActualizar = null;
-    this.showUpdateConfirm = false;
+    this.showUpdateConfirmModal = false;
   }
 
   abrirModalActualizar() {
@@ -177,7 +197,7 @@ export class UsuariosPageComponent implements OnInit {
         personId: this.usuarioAActualizar.personId || 1
       };
       this.showUpdateModal = true;
-      this.showUpdateConfirm = false;
+      this.showUpdateConfirmModal = false;
       this.usuarioAActualizar = null;
     }
   }
@@ -286,18 +306,19 @@ export class UsuariosPageComponent implements OnInit {
 
   pedirConfirmacionEliminar(usuario: Usuario) {
     this.usuarioAEliminar = usuario;
-    this.showConfirm = true;
+    this.deleteModalConfig.message = `¿Está seguro que desea eliminar el usuario "${usuario.name}"? Esta acción no se puede deshacer.`;
+    this.showDeleteModal = true;
   }
 
   confirmarEliminar() {
     if (this.usuarioAEliminar && this.usuarioAEliminar.id) {
       console.log('Eliminando usuario:', this.usuarioAEliminar); // Para depuración
-      
+
       this.usuariosService.deleteUsuario(this.usuarioAEliminar.id).subscribe({
         next: () => {
           console.log('Usuario eliminado exitosamente'); // Para depuración
           this.mostrarAlerta('Usuario eliminado correctamente.', 'eliminado');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.usuarioAEliminar = null;
           // Recargar la lista completa desde la API para asegurar sincronización
           this.cargarUsuarios(true);
@@ -305,20 +326,20 @@ export class UsuariosPageComponent implements OnInit {
         error: (error: any) => {
           console.error('Error al eliminar usuario:', error);
           this.mostrarAlerta('Error al eliminar el usuario: ' + (error.error?.message || error.message), 'error');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.usuarioAEliminar = null;
         }
       });
     } else {
       console.error('No se puede eliminar: usuario sin ID válido');
       this.mostrarAlerta('Error: No se puede eliminar el usuario', 'error');
-      this.showConfirm = false;
+      this.showDeleteModal = false;
       this.usuarioAEliminar = null;
     }
   }
 
   cancelarEliminar() {
-    this.showConfirm = false;
+    this.showDeleteModal = false;
     this.usuarioAEliminar = null;
   }
 
@@ -343,5 +364,26 @@ export class UsuariosPageComponent implements OnInit {
   onPageChange(page: number): void {
     this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
     this.updatePaginatedItems();
+  }
+
+  // Métodos auxiliares para alertas
+  getAlertClass(): string {
+    const classMap: { [key: string]: string } = {
+      'bienvenida': 'info',
+      'creado': 'success',
+      'eliminado': 'success',
+      'error': 'error'
+    };
+    return classMap[this.alertType] || 'info';
+  }
+
+  getAlertIcon(): string {
+    const iconMap: { [key: string]: string } = {
+      'bienvenida': 'pi-info-circle',
+      'creado': 'pi-check-circle',
+      'eliminado': 'pi-check-circle',
+      'error': 'pi-exclamation-triangle'
+    };
+    return iconMap[this.alertType] || 'pi-info-circle';
   }
 }

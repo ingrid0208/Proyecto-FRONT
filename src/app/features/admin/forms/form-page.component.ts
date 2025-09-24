@@ -6,13 +6,14 @@ import { FormService, Form } from '../../../core/services/form.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { ConfirmationModalComponent, ConfirmationModalConfig } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
   styleUrls: ['./form-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent],
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent, ConfirmationModalComponent],
   providers: [FormService]
 })
 export class FormPageComponent implements OnInit {
@@ -55,6 +56,24 @@ export class FormPageComponent implements OnInit {
   alertType: string = 'bienvenida';
   showConfirm = false;
   formAEliminar: Form | null = null;
+
+  // Configuración de modales de confirmación
+  showDeleteModal = false;
+  showUpdateConfirmModal = false;
+  deleteModalConfig: ConfirmationModalConfig = {
+    title: 'Eliminar Formulario',
+    message: '¿Está seguro que desea eliminar este formulario? Esta acción no se puede deshacer.',
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar',
+    type: 'delete'
+  };
+  updateModalConfig: ConfirmationModalConfig = {
+    title: 'Confirmar Actualización',
+    message: '¿Está seguro que desea actualizar este formulario?',
+    confirmText: 'Actualizar',
+    cancelText: 'Cancelar',
+    type: 'update'
+  };
 
   ngOnInit() {
     this.mostrarAlerta('¡Bienvenido a la gestión de formularios!', 'bienvenida');
@@ -139,12 +158,13 @@ export class FormPageComponent implements OnInit {
 
   confirmarActualizacion(form: Form) {
     this.formAActualizar = form;
-    this.showUpdateConfirm = true;
+    this.updateModalConfig.message = `¿Está seguro que desea actualizar el formulario "${form.name}"?`;
+    this.showUpdateConfirmModal = true;
   }
 
   cancelarActualizacion() {
     this.formAActualizar = null;
-    this.showUpdateConfirm = false;
+    this.showUpdateConfirmModal = false;
   }
 
   abrirModalActualizar() {
@@ -156,7 +176,7 @@ export class FormPageComponent implements OnInit {
         description: this.formAActualizar.description || ''
       };
       this.showUpdateModal = true;
-      this.showUpdateConfirm = false;
+      this.showUpdateConfirmModal = false;
       this.formAActualizar = null;
     }
   }
@@ -247,18 +267,19 @@ export class FormPageComponent implements OnInit {
 
   pedirConfirmacionEliminar(form: Form) {
     this.formAEliminar = form;
-    this.showConfirm = true;
+    this.deleteModalConfig.message = `¿Está seguro que desea eliminar el formulario "${form.name}"? Esta acción no se puede deshacer.`;
+    this.showDeleteModal = true;
   }
 
   confirmarEliminar() {
     if (this.formAEliminar && this.formAEliminar.id) {
       console.log('Eliminando formulario:', this.formAEliminar); // Para depuración
-      
+
       this.formService.genericService.delete(this.formService.endpoint, this.formAEliminar.id).subscribe({
         next: () => {
           console.log('Formulario eliminado exitosamente'); // Para depuración
           this.mostrarAlerta('Formulario eliminado correctamente.', 'eliminado');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.formAEliminar = null;
           // Recargar la lista completa desde la API para asegurar sincronización
           this.cargarForms(true);
@@ -266,20 +287,20 @@ export class FormPageComponent implements OnInit {
         error: (error: any) => {
           console.error('Error al eliminar formulario:', error);
           this.mostrarAlerta('Error al eliminar el formulario: ' + (error.error?.message || error.message), 'error');
-          this.showConfirm = false;
+          this.showDeleteModal = false;
           this.formAEliminar = null;
         }
       });
     } else {
       console.error('No se puede eliminar: formulario sin ID válido');
       this.mostrarAlerta('Error: No se puede eliminar el formulario', 'error');
-      this.showConfirm = false;
+      this.showDeleteModal = false;
       this.formAEliminar = null;
     }
   }
 
   cancelarEliminar() {
-    this.showConfirm = false;
+    this.showDeleteModal = false;
     this.formAEliminar = null;
   }
 
@@ -304,5 +325,26 @@ export class FormPageComponent implements OnInit {
   onPageChange(page: number): void {
     this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
     this.updatePaginatedItems();
+  }
+
+  // Métodos auxiliares para alertas
+  getAlertClass(): string {
+    const classMap: { [key: string]: string } = {
+      'bienvenida': 'info',
+      'creado': 'success',
+      'eliminado': 'success',
+      'error': 'error'
+    };
+    return classMap[this.alertType] || 'info';
+  }
+
+  getAlertIcon(): string {
+    const iconMap: { [key: string]: string } = {
+      'bienvenida': 'pi-info-circle',
+      'creado': 'pi-check-circle',
+      'eliminado': 'pi-check-circle',
+      'error': 'pi-exclamation-triangle'
+    };
+    return iconMap[this.alertType] || 'pi-info-circle';
   }
 }

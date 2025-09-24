@@ -6,13 +6,14 @@ import { ServiceGenericService } from '../../../core/services/utils/generic/serv
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
+import { ConfirmationModalComponent, ConfirmationModalConfig } from '../../../shared/components/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-rol-user-page',
   templateUrl: './rol-user-page.component.html',
   styleUrls: ['./rol-user-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PaginationComponent, SearchBarComponent]
+  imports: [CommonModule, ReactiveFormsModule, PaginationComponent, SearchBarComponent, ConfirmationModalComponent]
 })
 export class RolUserPageComponent implements OnInit {
   rolUsers: RolUser[] = [];
@@ -20,11 +21,35 @@ export class RolUserPageComponent implements OnInit {
   paginatedRolUsers: RolUser[] = [];
   usuarios: any[] = [];
   showForm = false;
+  showUpdateModal = false;
   rolUserForm: FormGroup;
   loading = false;
-  errorMsg = '';
-  successMsg = '';
   rolUserEditando: RolUser | null = null;
+  rolUserAActualizar: RolUser | null = null;
+  rolUserAEliminar: RolUser | null = null;
+
+  // Alertas
+  showAlert = false;
+  alertMsg = '';
+  alertType: string = 'bienvenida';
+
+  // Configuración de modales de confirmación
+  showDeleteModal = false;
+  showUpdateConfirmModal = false;
+  deleteModalConfig: ConfirmationModalConfig = {
+    title: 'Eliminar Asignación',
+    message: '¿Está seguro que desea eliminar esta asignación de rol? Esta acción no se puede deshacer.',
+    confirmText: 'Eliminar',
+    cancelText: 'Cancelar',
+    type: 'delete'
+  };
+  updateModalConfig: ConfirmationModalConfig = {
+    title: 'Confirmar Actualización',
+    message: '¿Está seguro que desea actualizar esta asignación?',
+    confirmText: 'Actualizar',
+    cancelText: 'Cancelar',
+    type: 'update'
+  };
 
   // Paginación
   paginationConfig: PaginationConfig = {
@@ -47,6 +72,7 @@ export class RolUserPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mostrarAlerta('¡Bienvenido a la gestión de roles de usuario!', 'bienvenida');
     this.serviceGeneric.getAll<any>('Users').subscribe((usuarios: any[]) => {
       this.usuarios = usuarios;
       this.obtenerRolUsers();
@@ -65,9 +91,14 @@ export class RolUserPageComponent implements OnInit {
     });
   }
 
-  abrirFormulario() {
+  abrirModal() {
     this.showForm = true;
     this.rolUserForm.reset({ userId: 0, rolId: 0 });
+    this.rolUserEditando = null;
+  }
+
+  cerrarModal() {
+    this.showForm = false;
     this.rolUserEditando = null;
   }
 
@@ -82,28 +113,45 @@ export class RolUserPageComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.errorMsg = '';
-    this.successMsg = '';
     const rolUserData = this.rolUserForm.value;
     this.rolUserService.genericService.create<RolUser>(this.rolUserService.endpoint, rolUserData).subscribe({
       next: (nuevoRolUser: RolUser) => {
-        this.successMsg = 'Rol-Usuario creado correctamente';
+        this.mostrarAlerta('Asignación de rol creada correctamente.', 'creado');
         this.obtenerRolUsers();
-        this.cerrarFormulario();
+        this.cerrarModal();
         this.loading = false;
-        setTimeout(() => this.successMsg = '', 2500);
       },
       error: (error: any) => {
-        this.errorMsg = error.error?.message || 'Error al crear Rol-Usuario';
+        this.mostrarAlerta('Error al crear la asignación: ' + (error.error?.message || error.message), 'error');
         this.loading = false;
       }
     });
   }
 
-  editarRolUser(rolUser: RolUser) {
-    this.rolUserEditando = rolUser;
-    this.showForm = true;
-    this.rolUserForm.setValue({ userId: rolUser.userId, rolId: rolUser.rolId });
+  confirmarActualizacion(rolUser: RolUser) {
+    this.rolUserAActualizar = rolUser;
+    this.updateModalConfig.message = `¿Está seguro que desea actualizar la asignación del usuario "${rolUser.userName}"?`;
+    this.showUpdateConfirmModal = true;
+  }
+
+  cancelarActualizacion() {
+    this.rolUserAActualizar = null;
+    this.showUpdateConfirmModal = false;
+  }
+
+  abrirModalActualizar() {
+    if (this.rolUserAActualizar) {
+      this.rolUserEditando = { ...this.rolUserAActualizar };
+      this.showUpdateModal = true;
+      this.rolUserForm.setValue({ userId: this.rolUserEditando.userId, rolId: this.rolUserEditando.rolId });
+      this.showUpdateConfirmModal = false;
+      this.rolUserAActualizar = null;
+    }
+  }
+
+  cerrarModalActualizar() {
+    this.showUpdateModal = false;
+    this.rolUserEditando = null;
   }
 
   actualizarRolUser() {
@@ -113,36 +161,48 @@ export class RolUserPageComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.errorMsg = '';
-    this.successMsg = '';
     const rolUserData = { ...this.rolUserEditando, ...this.rolUserForm.value };
     this.rolUserService.genericService.update<RolUser>(this.rolUserService.endpoint, rolUserData.id, rolUserData).subscribe({
       next: (rolUserActualizado: RolUser) => {
-        this.successMsg = 'Rol-Usuario actualizado correctamente';
+        this.mostrarAlerta('Asignación actualizada correctamente.', 'creado');
         this.obtenerRolUsers();
-        this.cerrarFormulario();
+        this.cerrarModalActualizar();
         this.loading = false;
-        setTimeout(() => this.successMsg = '', 2500);
       },
       error: (error: any) => {
-        this.errorMsg = error.error?.message || 'Error al actualizar Rol-Usuario';
+        this.mostrarAlerta('Error al actualizar la asignación: ' + (error.error?.message || error.message), 'error');
         this.loading = false;
       }
     });
   }
 
-  eliminarRolUser(rolUser: RolUser) {
-    if (!rolUser.id) return;
-    this.rolUserService.genericService.delete(this.rolUserService.endpoint, rolUser.id).subscribe({
-      next: () => {
-        this.successMsg = 'Rol-Usuario eliminado correctamente';
-        this.obtenerRolUsers();
-        setTimeout(() => this.successMsg = '', 2500);
-      },
-      error: (error: any) => {
-        this.errorMsg = error.error?.message || 'Error al eliminar Rol-Usuario';
-      }
-    });
+  pedirConfirmacionEliminar(rolUser: RolUser) {
+    this.rolUserAEliminar = rolUser;
+    this.deleteModalConfig.message = `¿Está seguro de eliminar la asignación del usuario "${rolUser.userName}"? Esta acción no se puede deshacer.`;
+    this.showDeleteModal = true;
+  }
+
+  confirmarEliminar() {
+    if (this.rolUserAEliminar && this.rolUserAEliminar.id) {
+      this.rolUserService.genericService.delete(this.rolUserService.endpoint, this.rolUserAEliminar.id).subscribe({
+        next: () => {
+          this.mostrarAlerta('Asignación eliminada correctamente.', 'eliminado');
+          this.showDeleteModal = false;
+          this.rolUserAEliminar = null;
+          this.obtenerRolUsers();
+        },
+        error: (error: any) => {
+          this.mostrarAlerta('Error al eliminar la asignación: ' + (error.error?.message || error.message), 'error');
+          this.showDeleteModal = false;
+          this.rolUserAEliminar = null;
+        }
+      });
+    }
+  }
+
+  cancelarEliminar() {
+    this.showDeleteModal = false;
+    this.rolUserAEliminar = null;
   }
 
   onSearch(term: string) {
@@ -167,5 +227,33 @@ export class RolUserPageComponent implements OnInit {
   onPageChange(page: number): void {
     this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
     this.updatePaginatedItems();
+  }
+
+  mostrarAlerta(msg: string, tipo: string): void {
+    this.alertMsg = msg;
+    this.alertType = tipo;
+    this.showAlert = true;
+    setTimeout(() => this.showAlert = false, 2500);
+  }
+
+  // Métodos auxiliares para alertas
+  getAlertClass(): string {
+    const classMap: { [key: string]: string } = {
+      'bienvenida': 'info',
+      'creado': 'success',
+      'eliminado': 'success',
+      'error': 'error'
+    };
+    return classMap[this.alertType] || 'info';
+  }
+
+  getAlertIcon(): string {
+    const iconMap: { [key: string]: string } = {
+      'bienvenida': 'pi-info-circle',
+      'creado': 'pi-check-circle',
+      'eliminado': 'pi-check-circle',
+      'error': 'pi-exclamation-triangle'
+    };
+    return iconMap[this.alertType] || 'pi-info-circle';
   }
 }
