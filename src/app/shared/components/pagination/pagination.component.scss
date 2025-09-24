@@ -1,3 +1,5 @@
+@import "../../styles/admin-common.scss";
+
 // Estilos para paginación
 .pagination-container {
   display: flex;
@@ -51,14 +53,15 @@
   }
 
   &.active {
-    background: #3b82f6;
-    border-color: #3b82f6;
+    // usar tonos verdes en lugar de azul
+    background: linear-gradient(135deg, lighten($success-color, 6%), $success-color);
+    border-color: darken($success-color, 6%);
     color: white;
     font-weight: 600;
 
     &:hover {
-      background: #2563eb;
-      border-color: #2563eb;
+      background: linear-gradient(135deg, darken(lighten($success-color, 6%), 6%), darken($success-color, 8%));
+      border-color: darken($success-color, 10%);
     }
   }
 }

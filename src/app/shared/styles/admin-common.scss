@@ -223,23 +223,26 @@ $dark-color: #343a40;
   transition: all 0.2s;
   font-size: 16px;
 
+  // Edit: verde claro (foreground white)
   &.btn-edit {
-    background: linear-gradient(135deg, $info-color, darken($info-color, 10%));
+    // usar tonos verdes claros
+    background: linear-gradient(135deg, lighten($success-color, 8%), $success-color);
     color: white;
 
     &:hover {
       @include button-hover;
-      background: linear-gradient(135deg, darken($info-color, 8%), darken($info-color, 18%));
+      background: linear-gradient(135deg, darken(lighten($success-color, 8%), 6%), darken($success-color, 8%));
     }
   }
 
+  // Delete: verde oscuro (foreground white)
   &.btn-delete {
-    background: linear-gradient(135deg, $danger-color, darken($danger-color, 10%));
+    background: linear-gradient(135deg, darken($success-color, 12%), darken($success-color, 22%));
     color: white;
 
     &:hover {
       @include button-hover;
-      background: linear-gradient(135deg, darken($danger-color, 8%), darken($danger-color, 18%));
+      background: linear-gradient(135deg, darken($success-color, 18%), darken($success-color, 28%));
     }
   }
 
