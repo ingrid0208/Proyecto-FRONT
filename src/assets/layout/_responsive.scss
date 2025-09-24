@@ -104,3 +104,32 @@
         }
     }
 }
+
+/* Additional mobile breakpoints */
+@media (max-width: 768px) {
+    .layout-wrapper {
+        .layout-main-container {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .layout-sidebar {
+            width: 85%;
+            max-width: 300px;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .layout-wrapper {
+        .layout-main-container {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+
+        .layout-sidebar {
+            width: 90%;
+            max-width: 280px;
+        }
+    }
+}

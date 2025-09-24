@@ -16,8 +16,20 @@ import { AppSidebar } from './sidebar/app.sidebar';
   imports: [CommonModule, RouterModule, AppSidebar],               // ← se importa y se USA
   template: `
   <div class="layout-wrapper" [ngClass]="containerClass">
+    <!-- Hamburger Menu Button -->
+    <button
+      class="hamburger-menu-btn"
+      (click)="toggleMenu()"
+      [class.active]="isMenuOpen"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+
     <app-sidebar></app-sidebar>
-    <div class="layout-main-container">                                            <!-- ← USADO: quita el warning -->
+    <div class="layout-main-container">
       <div class="layout-main">
         <router-outlet></router-outlet>
       </div>
@@ -41,10 +53,71 @@ import { AppSidebar } from './sidebar/app.sidebar';
     .layout-static-inactive .layout-main-container { margin-left:0; }
     .layout-overlay .layout-main-container { margin-left:0; }
     .layout-overlay-active .layout-mask, .layout-mobile-active .layout-mask { display:block; }
+
+    /* Hamburger Menu Button */
+    .hamburger-menu-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1001;
+      width: 50px;
+      height: 50px;
+      background: #2d8659;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .hamburger-menu-btn:hover {
+      background: #245a47;
+      transform: scale(1.05);
+    }
+
+    .hamburger-line {
+      width: 24px;
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    .hamburger-menu-btn.active .hamburger-line:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .hamburger-menu-btn.active .hamburger-line:nth-child(2) {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    .hamburger-menu-btn.active .hamburger-line:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* Hide hamburger on desktop */
+    @media (min-width: 992px) {
+      .hamburger-menu-btn {
+        display: none;
+      }
+    }
+
     @media (max-width: 991px) {
       .layout-static .layout-main-container,
       .layout-static-inactive .layout-main-container { margin-left:0; }
+
+      .layout-main {
+        padding-top: 4rem; /* Space for hamburger button */
+      }
     }
+
     .animate-fadein { animation: fadein .15s; }
     @keyframes fadein { from{opacity:0} to{opacity:1} }
   `]
@@ -52,6 +125,7 @@ import { AppSidebar } from './sidebar/app.sidebar';
 export class AppLayout {
   overlayMenuOpenSubscription: Subscription;
   menuOutsideClickListener: any;
+  isMenuOpen = false;
 
   @ViewChild(AppSidebar) appSidebar!: AppSidebar;
   @ViewChild(AppTopbar)  appTopBar!: AppTopbar;
@@ -81,7 +155,22 @@ export class AppLayout {
     return !(sidebarEl?.isSameNode(t) || sidebarEl?.contains(t) || topbarEl?.isSameNode(t) || topbarEl?.contains(t));
   }
 
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+    if (this.isMenuOpen) {
+      this.layoutService.updateState({
+        overlayMenuActive: false,
+        staticMenuMobileActive: true,
+        menuHoverActive: false
+      });
+      this.blockBodyScroll();
+    } else {
+      this.hideMenu();
+    }
+  }
+
   hideMenu() {
+    this.isMenuOpen = false;
     this.layoutService.updateState({
       overlayMenuActive: false,
       staticMenuMobileActive: false,

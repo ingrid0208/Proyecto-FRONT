@@ -1,0 +1,341 @@
+/* Responsive Forms Styles */
+
+/* General form styling */
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-col {
+  flex: 1;
+}
+
+/* Input field styling */
+.form-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+textarea,
+select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 16px; /* Prevents zoom on iOS */
+  line-height: 1.5;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  box-sizing: border-box;
+  min-height: 44px; /* Minimum touch target size */
+}
+
+.form-input:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Label styling */
+.form-label,
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+  font-size: 0.875rem;
+}
+
+/* Button styling for forms */
+.form-button,
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  min-height: 44px;
+  min-width: 120px;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+/* Error styling */
+.form-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-input.error,
+input.error {
+  border-color: #ef4444;
+}
+
+/* Success styling */
+.form-success {
+  color: #10b981;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+.form-input.success,
+input.success {
+  border-color: #10b981;
+}
+
+/* Checkbox and radio styling */
+.form-checkbox,
+.form-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.form-checkbox input[type="checkbox"],
+.form-radio input[type="radio"] {
+  width: auto;
+  min-height: auto;
+  margin: 0;
+}
+
+/* File input styling */
+.form-file {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.form-file input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.form-file-label {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.form-file-label:hover {
+  background-color: #e5e7eb;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .form-container {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .form-input,
+  input,
+  textarea,
+  select {
+    padding: 0.875rem 1rem;
+    font-size: 16px;
+    min-height: 48px;
+  }
+
+  .form-button,
+  .btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    min-height: 48px;
+    font-size: 1.1rem;
+  }
+
+  .form-label,
+  label {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 0.75rem;
+  }
+
+  .form-input,
+  input,
+  textarea,
+  select {
+    padding: 1rem;
+    min-height: 52px;
+    border-radius: 8px;
+  }
+
+  .form-button,
+  .btn {
+    padding: 1.125rem 2rem;
+    min-height: 52px;
+    border-radius: 8px;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}
+
+/* PrimeNG specific overrides */
+::ng-deep {
+  .p-inputtext,
+  .p-dropdown,
+  .p-calendar input,
+  .p-inputnumber input {
+    min-height: 44px !important;
+    font-size: 16px !important;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .p-button {
+    min-height: 44px !important;
+    padding: 0.75rem 1.5rem !important;
+  }
+
+  @media (max-width: 768px) {
+    .p-inputtext,
+    .p-dropdown,
+    .p-calendar input,
+    .p-inputnumber input {
+      min-height: 48px !important;
+      padding: 0.875rem 1rem !important;
+    }
+
+    .p-button {
+      min-height: 48px !important;
+      width: 100% !important;
+    }
+
+    .p-dialog {
+      width: 95% !important;
+      margin: 1rem !important;
+    }
+
+    .p-datatable .p-datatable-tbody > tr > td {
+      padding: 0.75rem 0.5rem !important;
+    }
+
+    .p-datatable .p-datatable-thead > tr > th {
+      padding: 1rem 0.5rem !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .p-inputtext,
+    .p-dropdown,
+    .p-calendar input,
+    .p-inputnumber input {
+      min-height: 52px !important;
+      padding: 1rem !important;
+      border-radius: 8px !important;
+    }
+
+    .p-button {
+      min-height: 52px !important;
+      border-radius: 8px !important;
+    }
+
+    .p-dialog {
+      width: 98% !important;
+      margin: 0.5rem !important;
+    }
+  }
+}
+
+/* Material Design overrides */
+::ng-deep {
+  .mat-mdc-form-field {
+    width: 100%;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    min-height: 44px !important;
+  }
+
+  .mat-mdc-form-field-input-control {
+    font-size: 16px !important;
+  }
+
+  @media (max-width: 768px) {
+    .mat-mdc-text-field-wrapper {
+      min-height: 48px !important;
+    }
+
+    .mat-mdc-raised-button,
+    .mat-mdc-outlined-button,
+    .mat-mdc-unelevated-button {
+      width: 100% !important;
+      min-height: 48px !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .mat-mdc-text-field-wrapper {
+      min-height: 52px !important;
+    }
+
+    .mat-mdc-raised-button,
+    .mat-mdc-outlined-button,
+    .mat-mdc-unelevated-button {
+      min-height: 52px !important;
+      border-radius: 8px !important;
+    }
+  }
+}

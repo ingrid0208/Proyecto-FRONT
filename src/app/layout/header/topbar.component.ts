@@ -15,6 +15,7 @@ import { LayoutService } from '../../core/services/layout.service';
 
 export class AppTopbar {
   searchTerm = '';
+  isSearchHidden = true;
 
   constructor(
     public layoutService: LayoutService,
@@ -25,6 +26,10 @@ export class AppTopbar {
     if (this.searchTerm.trim()) {
       console.log('Buscando:', this.searchTerm);
     }
+  }
+
+  toggleSearch() {
+    this.isSearchHidden = !this.isSearchHidden;
   }
 
   goToProfile() {

@@ -11,3 +11,20 @@
     flex: 1 1 auto;
     padding-bottom: 2rem;
 }
+
+/* Responsive adjustments for mobile devices */
+@media (max-width: 768px) {
+    .layout-main-container {
+        padding: 5rem 1rem 0 1rem;
+    }
+
+    .layout-main {
+        padding-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .layout-main-container {
+        padding: 4rem 0.5rem 0 0.5rem;
+    }
+}

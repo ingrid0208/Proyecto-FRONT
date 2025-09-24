@@ -4,20 +4,26 @@
     </button>
 
     <!-- Buscador central -->
-    <div class="search-box">
+    <div class="search-box" [class.search-hidden]="isSearchHidden">
       <i class="pi pi-search"></i>
-      <input 
-        type="text" 
-        placeholder="Buscador" 
+      <input
+        type="text"
+        placeholder="Buscador"
         [(ngModel)]="searchTerm"
         (keyup.enter)="onSearch()"
       />
     </div>
 
+    <!-- Botón de búsqueda móvil -->
+    <button class="search-toggle-btn" (click)="toggleSearch()">
+      <i class="pi pi-search"></i>
+    </button>
+
     <!-- Notificaciones y Perfil -->
     <div class="right-section">
-      <button class="icon-btn">
+      <button class="icon-btn notification-btn">
         <i class="pi pi-bell"></i>
+        <span class="notification-badge">3</span>
       </button>
 
       <button class="profile-btn" (click)="op.toggle($event)">

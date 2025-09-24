@@ -93,6 +93,88 @@ mat-chip {
 
 /* Responsivo */
 @media (max-width: 768px) {
+  .table-container {
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   th.mat-mdc-header-cell,
-  td.mat-mdc-cell { padding: 12px; }
+  td.mat-mdc-cell {
+    padding: 12px 8px;
+    font-size: 0.875rem;
+    min-width: 120px; /* Ensure columns don't get too narrow */
+  }
+
+  /* Stack table content vertically on very small screens */
+  @media (max-width: 480px) {
+    .table-container {
+      font-size: 0.8rem;
+    }
+
+    th.mat-mdc-header-cell,
+    td.mat-mdc-cell {
+      padding: 10px 6px;
+      font-size: 0.8rem;
+      min-width: 100px;
+    }
+
+    mat-chip {
+      font-size: 0.7rem;
+      height: 24px;
+      padding-inline: 8px;
+    }
+  }
+}
+
+/* Alternative: Card view for mobile (optional implementation) */
+@media (max-width: 480px) {
+  .mobile-card-view {
+    display: none; /* Enable this for card view on mobile */
+  }
+
+  .mobile-card-view.active {
+    display: block;
+  }
+
+  .mobile-card-view .table-container {
+    overflow: visible;
+  }
+
+  .mobile-card-view table {
+    display: none;
+  }
+
+  .mobile-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .mobile-card-row:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-card-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+  }
+
+  .mobile-card-value {
+    color: #6b7280;
+    font-size: 0.875rem;
+    text-align: right;
+  }
 }
