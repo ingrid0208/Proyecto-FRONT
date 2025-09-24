@@ -519,6 +519,37 @@
   margin-left: 0.5rem;
 }
 
+// Responsive: mejorar comportamiento de modales en pantallas pequeñas
+@media (max-width: 576px) {
+  .modal-content {
+    min-width: auto !important;
+    width: 96vw !important;
+    max-width: 96vw !important;
+    max-height: 92vh !important;
+    margin: 0 2vw !important;
+    border-radius: 12px !important;
+  }
+
+  .modal-body {
+    padding: 1rem !important;
+  }
+
+  .modal-header {
+    padding: 1rem !important;
+  }
+
+  .modal-footer {
+    flex-direction: column-reverse !important;
+    gap: 0.5rem !important;
+    align-items: stretch !important;
+    padding: 1rem !important;
+
+    .btn, .modern-btn {
+      width: 100% !important;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .custom-table td.actions-cell {
     display: flex;
