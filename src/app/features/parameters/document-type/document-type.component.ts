@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { DocumentTypeService } from '../../../core/services/api/document-type.service';
 import { finalize } from 'rxjs/operators';
@@ -15,7 +16,7 @@ import { ColumnDef } from '../../../shared/Models/table.Generic';
 @Component({
   selector: 'app-document-type',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, CardHeaderComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
   templateUrl: './document-type.component.html',
   styleUrls: ['./document-type.component.scss']
 })
@@ -29,12 +30,20 @@ export class DocumentTypeComponent implements OnInit {
   errorMsg = '';
   successMsg = '';
 
+  // Paginación
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+  paginatedTipos: DocumentTypeDto[] = [];
+
   // Variables para modales
   showForm = false;
   showUpdateForm = false;
   showConfirm = false;
+  showUpdateConfirm = false;
   documentTypeAEliminar: DocumentTypeDto | null = null;
   documentTypeSeleccionado: DocumentTypeDto | null = null;
+  documentTypeAActualizar: DocumentTypeDto | null = null;
 
   // Formularios reactivos
   documentTypeForm: FormGroup;
@@ -72,6 +81,7 @@ export class DocumentTypeComponent implements OnInit {
       .subscribe({
         next: (rows) => {
           this.tipos = rows;
+          this.updatePagination();
         },
         error: (err) => {
           console.error('Error cargando tipos de documento', err);
@@ -123,15 +133,30 @@ export class DocumentTypeComponent implements OnInit {
   }
 
   // Métodos para editar tipo de documento
-  abrirFormularioActualizar(documentType: DocumentTypeDto): void {
-    this.documentTypeSeleccionado = { ...documentType };
-    this.updateForm.patchValue({
-      name: documentType.name,
-      abbreviation: documentType.abbreviation
-    });
-    this.showUpdateForm = true;
-    this.errorMsg = '';
-    this.successMsg = '';
+  confirmarActualizacion(documentType: DocumentTypeDto): void {
+    this.documentTypeAActualizar = documentType;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion(): void {
+    this.documentTypeAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirFormularioActualizar(documentType?: DocumentTypeDto): void {
+    const docType = documentType || this.documentTypeAActualizar;
+    if (docType) {
+      this.documentTypeSeleccionado = { ...docType };
+      this.updateForm.patchValue({
+        name: docType.name,
+        abbreviation: docType.abbreviation
+      });
+      this.showUpdateForm = true;
+      this.showUpdateConfirm = false;
+      this.documentTypeAActualizar = null;
+      this.errorMsg = '';
+      this.successMsg = '';
+    }
   }
 
   cerrarFormularioActualizar(): void {
@@ -223,7 +248,47 @@ export class DocumentTypeComponent implements OnInit {
     return '';
   }
 
-  onClickGenerar() {
-    this.router.navigate(['/acuerdo-pago/formulario']);
+  // Métodos de paginación
+  updatePagination(): void {
+    this.totalPages = Math.ceil(this.tipos.length / this.itemsPerPage);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedTipos = this.tipos.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePaginatedItems();
+    }
+  }
+
+  nextPage(): void {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  prevPage(): void {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  getVisiblePages(): number[] {
+    const visiblePages: number[] = [];
+    const maxVisible = 5;
+    let start = Math.max(1, this.currentPage - Math.floor(maxVisible / 2));
+    let end = Math.min(this.totalPages, start + maxVisible - 1);
+
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      visiblePages.push(i);
+    }
+
+    return visiblePages;
   }
 }

@@ -159,12 +159,13 @@ export class DepartmentComponent implements OnInit {
     this.showUpdateConfirm = false;
   }
 
-  abrirFormularioActualizar(): void {
-    if (this.departmentAActualizar) {
-      this.departmentSeleccionado = { ...this.departmentAActualizar };
+  abrirFormularioActualizar(department?: Department): void {
+    const dept = department || this.departmentAActualizar;
+    if (dept) {
+      this.departmentSeleccionado = { ...dept };
       this.updateForm.patchValue({
-        name: this.departmentAActualizar.name,
-        daneCode: this.departmentAActualizar.daneCode
+        name: dept.name,
+        daneCode: dept.daneCode
       });
       this.showUpdateForm = true;
       this.showUpdateConfirm = false;
@@ -307,7 +308,4 @@ export class DepartmentComponent implements OnInit {
     return '';
   }
 
-  onClickGenerar() {
-    this.router.navigate(['/acuerdo-pago/formulario']);
-  }
 }

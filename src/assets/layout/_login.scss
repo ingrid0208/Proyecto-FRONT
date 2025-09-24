@@ -1,8 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
+/* RESET MOBILE LOGIN */
 * {
   font-family: 'Poppins', sans-serif;
   box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* MOBILE VIEWPORT FIX */
+@media (max-width: 480px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+
+  body {
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    max-width: 100vw !important;
+  }
+
+  img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
 }
 
 /* CONTENEDOR GENERAL */
@@ -13,10 +43,22 @@
   min-height: 100vh;
   background-color: #2f5135;
   animation: fadeIn 0.8s ease-in-out;
-  padding: 1rem; /* Add padding for mobile */
+  padding: 1rem;
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+  overflow-x: hidden;
 
   @media (max-width: 480px) {
     padding: 0.5rem;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding-top: 1rem;
+  }
+
+  @media (max-width: 320px) {
+    padding: 0.25rem;
+    padding-top: 0.5rem;
   }
 }
 
@@ -30,6 +72,7 @@
   max-width: 900px;
   width: 100%;
   margin: 1rem;
+  box-sizing: border-box;
 
   /* Responsive: stack vertically on mobile */
   @media (max-width: 768px) {
@@ -37,37 +80,64 @@
     margin: 0.5rem;
     border-radius: 16px;
     max-width: none;
+    width: calc(100% - 1rem);
   }
 
   @media (max-width: 480px) {
     margin: 0.25rem;
     border-radius: 12px;
+    width: calc(100% - 0.5rem);
+    max-width: calc(100vw - 0.5rem);
+  }
+
+  @media (max-width: 320px) {
+    margin: 0.125rem;
+    width: calc(100% - 0.25rem);
+    max-width: calc(100vw - 0.25rem);
   }
 }
 
 /* IMAGEN LATERAL */
-.login-image img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-}
-
 .login-image {
   flex: 1;
   min-width: 300px;
   max-width: 450px;
+  overflow: hidden;
+  position: relative;
 
   /* Mobile: reduce image height and show only top portion */
   @media (max-width: 768px) {
     flex: none;
     min-width: auto;
     max-width: none;
+    width: 100%;
     height: 200px;
     order: -1; /* Show image first on mobile */
   }
 
   @media (max-width: 480px) {
     height: 150px;
+    width: 100%;
+  }
+
+  @media (max-width: 320px) {
+    height: 120px;
+  }
+}
+
+.login-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    object-position: center top;
   }
 }
 
@@ -384,5 +454,63 @@ button.p-button-success.login-btn:hover {
 
   button.p-button-success.login-btn {
     font-size: 0.95rem;
+  }
+}
+
+/* PREVENCIÓN DE DESBORDAMIENTO MÓVIL */
+@media (max-width: 480px) {
+  /* Contenedores principales */
+  .login-wrapper, .login-card, .login-form, .login-image {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Imagen específica */
+  .login-image {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .login-image img {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+
+  /* Formulario */
+  .login-form {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Inputs y botones */
+  .input-group, .input-label, .styled-input,
+  button.p-button-success.login-btn {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Elementos decorativos que puedan sobresalir */
+  .corner, .corner-top-right, .corner-bottom-left {
+    display: none !important;
+  }
+}
+
+/* ÚLTIMA LÍNEA DE DEFENSA CONTRA DESBORDAMIENTO */
+@media (max-width: 480px) {
+  body, html {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
   }
 }

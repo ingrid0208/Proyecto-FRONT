@@ -52,6 +52,7 @@ export class MunicipalityComponent implements OnInit {
     { key: 'name',           header: 'Municipio',      type: 'text' },
     { key: 'daneCode',       header: 'Código DANE',    type: 'text' },
     { key: 'departmentName', header: 'Departamento',   type: 'text' },
+    { key: 'actions',        header: 'Acciones',       type: 'actions' }
   ];
 
   constructor() {
@@ -140,13 +141,14 @@ export class MunicipalityComponent implements OnInit {
     this.showUpdateConfirm = false;
   }
 
-  abrirFormularioActualizar(): void {
-    if (this.municipalityAActualizar) {
-      this.municipalitySeleccionado = { ...this.municipalityAActualizar };
+  abrirFormularioActualizar(municipality?: Municipality): void {
+    const municipio = municipality || this.municipalityAActualizar;
+    if (municipio) {
+      this.municipalitySeleccionado = { ...municipio };
       this.updateForm.patchValue({
-        name: this.municipalityAActualizar.name,
-        daneCode: this.municipalityAActualizar.daneCode,
-        departmentId: this.municipalityAActualizar.departmentId
+        name: municipio.name,
+        daneCode: municipio.daneCode,
+        departmentId: municipio.departmentId
       });
       this.showUpdateForm = true;
       this.showUpdateConfirm = false;
@@ -289,8 +291,4 @@ export class MunicipalityComponent implements OnInit {
     return '';
   }
 
-  // Método comentado ya que no se necesita navegación
-  // onClickGenerar() {
-  //   this.router.navigate(['/acuerdo-pago/formulario']);
-  // }
 }

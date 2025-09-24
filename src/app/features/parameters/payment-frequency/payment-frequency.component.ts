@@ -33,8 +33,10 @@ export class PaymentFrequencyComponent implements OnInit {
   showForm = false;
   showUpdateForm = false;
   showConfirm = false;
+  showUpdateConfirm = false;
   paymentFrequencyAEliminar: PaymentFrequency | null = null;
   paymentFrequencySeleccionado: PaymentFrequency | null = null;
+  paymentFrequencyAActualizar: PaymentFrequency | null = null;
 
   // Formularios reactivos
   paymentFrequencyForm: FormGroup;
@@ -72,16 +74,18 @@ export class PaymentFrequencyComponent implements OnInit {
     this.service.genericService.getAll<PaymentFrequency>(this.service.endpoint, 'GetAll')
       .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: (r: any[]) => {
-          // El backend puede devolver un DTO diferente (p.e. intervalPage/dueDayOfMonth).
-          // Normalizamos los objetos para que la UI maneje name/daysInterval/code.
-          this.frecuencias = (r || []).map(item => ({
-            id: item.id,
-            name: item.name ?? item.intervalPage ?? item.code ?? '',
-            code: item.code ?? item.intervalPage ?? '',
-            description: item.description,
-            daysInterval: item.daysInterval ?? item.dueDayOfMonth ?? 0
-          } as PaymentFrequency));
+        next: (r: PaymentFrequency[]) => {
+          // Normalizar los datos del backend para consistencia en la UI
+          this.frecuencias = (r || []).map(item => {
+            const normalized: PaymentFrequency = {
+              id: item.id,
+              name: item.name || (item as any).intervalPage || item.code || '',
+              code: item.code || (item as any).intervalPage || '',
+              description: item.description || '',
+              daysInterval: item.daysInterval || (item as any).dueDayOfMonth || 0
+            };
+            return normalized;
+          });
         },
         error: (e: any) => { this.errorMsg = 'No fue posible cargar las frecuencias de pago.'; }
       });
@@ -109,15 +113,15 @@ export class PaymentFrequencyComponent implements OnInit {
 
       const paymentFrequencyData = this.paymentFrequencyForm.value;
 
-      // Construir payload compatible con el backend: algunos controladores esperan
-      // intervalPage (ej. 'MENSUAL') y dueDayOfMonth (número) en lugar de name/daysInterval.
-      const payload = {
-        ...paymentFrequencyData,
-        intervalPage: paymentFrequencyData.code ?? paymentFrequencyData.name,
+      // Construir payload normalizado para el backend
+      const payload: any = {
+        name: paymentFrequencyData.name,
+        code: paymentFrequencyData.code,
+        daysInterval: paymentFrequencyData.daysInterval,
+        // Campos adicionales para compatibilidad con backend legacy
+        intervalPage: paymentFrequencyData.code || paymentFrequencyData.name,
         dueDayOfMonth: paymentFrequencyData.daysInterval
       };
-
-      console.debug('Crear PaymentFrequency payload:', payload);
 
       this.service.genericService.create<PaymentFrequency>(this.service.endpoint, payload)
         .pipe(finalize(() => this.loading = false))
@@ -140,16 +144,31 @@ export class PaymentFrequencyComponent implements OnInit {
   }
 
   // Métodos para editar frecuencia de pago
-  abrirFormularioActualizar(paymentFrequency: PaymentFrequency): void {
-    this.paymentFrequencySeleccionado = { ...paymentFrequency };
-    this.updateForm.patchValue({
-      name: paymentFrequency.name,
-      daysInterval: paymentFrequency.daysInterval,
-      code: paymentFrequency.code
-    });
-    this.showUpdateForm = true;
-    this.errorMsg = '';
-    this.successMsg = '';
+  confirmarActualizacion(paymentFrequency: PaymentFrequency): void {
+    this.paymentFrequencyAActualizar = paymentFrequency;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion(): void {
+    this.paymentFrequencyAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirFormularioActualizar(paymentFrequency?: PaymentFrequency): void {
+    const freq = paymentFrequency || this.paymentFrequencyAActualizar;
+    if (freq) {
+      this.paymentFrequencySeleccionado = { ...freq };
+      this.updateForm.patchValue({
+        name: freq.name,
+        daysInterval: freq.daysInterval,
+        code: freq.code
+      });
+      this.showUpdateForm = true;
+      this.showUpdateConfirm = false;
+      this.paymentFrequencyAActualizar = null;
+      this.errorMsg = '';
+      this.successMsg = '';
+    }
   }
 
   cerrarFormularioActualizar(): void {
@@ -164,18 +183,16 @@ export class PaymentFrequencyComponent implements OnInit {
       this.errorMsg = '';
       this.successMsg = '';
 
+      const formData = this.updateForm.value;
       const paymentFrequencyActualizado = {
         ...this.paymentFrequencySeleccionado,
-        ...this.updateForm.value
+        name: formData.name,
+        code: formData.code,
+        daysInterval: formData.daysInterval,
+        // Campos adicionales para compatibilidad con backend legacy
+        intervalPage: formData.code || formData.name,
+        dueDayOfMonth: formData.daysInterval
       };
-
-      const updatePayload = {
-        ...paymentFrequencyActualizado,
-        intervalPage: (this.updateForm.value.code ?? this.updateForm.value.name ?? paymentFrequencyActualizado.code ?? paymentFrequencyActualizado.name),
-        dueDayOfMonth: this.updateForm.value.daysInterval ?? paymentFrequencyActualizado.daysInterval
-      };
-
-      console.debug('Update PaymentFrequency payload:', updatePayload);
 
       this.service.genericService.update<PaymentFrequency>(this.service.endpoint, this.paymentFrequencySeleccionado.id, paymentFrequencyActualizado)
         .pipe(finalize(() => this.loading = false))
@@ -251,7 +268,4 @@ export class PaymentFrequencyComponent implements OnInit {
     return '';
   }
 
-  onClickGenerar() {
-    this.router.navigate(['/acuerdo-pago/formulario']);
-  }
 }
