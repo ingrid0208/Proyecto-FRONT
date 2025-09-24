@@ -13,7 +13,7 @@ import { ConfirmationModalComponent, ConfirmationModalConfig } from '../../../sh
   templateUrl: './rol-user-page.component.html',
   styleUrls: ['./rol-user-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PaginationComponent, SearchBarComponent, ConfirmationModalComponent]
+  imports: [CommonModule, ReactiveFormsModule, PaginationComponent, SearchBarComponent]
 })
 export class RolUserPageComponent implements OnInit {
   rolUsers: RolUser[] = [];
@@ -32,6 +32,9 @@ export class RolUserPageComponent implements OnInit {
   showAlert = false;
   alertMsg = '';
   alertType: string = 'bienvenida';
+  // Campos compatibles con plantilla antigua
+  successMsg = '';
+  errorMsg = '';
 
   // Configuración de modales de confirmación
   showDeleteModal = false;
@@ -95,6 +98,26 @@ export class RolUserPageComponent implements OnInit {
     this.showForm = true;
     this.rolUserForm.reset({ userId: 0, rolId: 0 });
     this.rolUserEditando = null;
+  }
+
+  // Compatibilidad con plantillas que usan otros nombres
+  abrirFormulario() {
+    this.abrirModal();
+  }
+
+  editarRolUser(ru: any) {
+    this.rolUserEditando = ru;
+    this.showForm = true;
+    try {
+      this.rolUserForm.setValue({ userId: ru.userId, rolId: ru.rolId });
+    } catch (e) {
+      // si falla el setValue porque faltan campos, usar patchValue
+      this.rolUserForm.patchValue({ userId: ru.userId, rolId: ru.rolId });
+    }
+  }
+
+  eliminarRolUser(ru: any) {
+    this.pedirConfirmacionEliminar(ru);
   }
 
   cerrarModal() {
@@ -232,8 +255,20 @@ export class RolUserPageComponent implements OnInit {
   mostrarAlerta(msg: string, tipo: string): void {
     this.alertMsg = msg;
     this.alertType = tipo;
+    // mapear a successMsg / errorMsg para plantillas que usan esas propiedades
+    if (tipo === 'error') {
+      this.errorMsg = msg;
+      this.successMsg = '';
+    } else {
+      this.successMsg = msg;
+      this.errorMsg = '';
+    }
     this.showAlert = true;
-    setTimeout(() => this.showAlert = false, 2500);
+    setTimeout(() => {
+      this.showAlert = false;
+      this.successMsg = '';
+      this.errorMsg = '';
+    }, 2500);
   }
 
   // Métodos auxiliares para alertas

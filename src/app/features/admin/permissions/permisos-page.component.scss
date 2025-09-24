@@ -1,81 +1,8 @@
 
-// Estilos estandarizados para el módulo de permisos
-.permisos-container {
-  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-}
+// Importar estilos comunes para módulos admin
+@import '../../../shared/styles/admin-common.scss';
 
-// Botones de acción estandarizados
-.edit-btn, .delete-btn {
-  border: none;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.edit-btn {
-  background: #4caf50;
-  color: #fff;
-  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
-  
-  &:hover {
-    background: #45a049;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
-  }
-}
-
-.delete-btn {
-  background: #2e7d32;
-  color: #fff;
-  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
-  
-  &:hover {
-    background: #1b5e20;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
-  }
-}
-
-.add-btn {
-  background: #43a047;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-weight: 500;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(67, 160, 71, 0.2);
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: #388e3c;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(67, 160, 71, 0.3);
-  }
-}
-.success-message {
-  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
-  color: #fff;
-  border-radius: 6px;
-  padding: 0.7rem 1.2rem;
-  margin-bottom: 1rem;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.10);
-  text-align: center;
-}
-.modal-overlay {
-  z-index: 1000;
-}
-.permiso-row {
-  transition: box-shadow 0.2s;
-}
-.permiso-row:hover {
-  box-shadow: 0 6px 24px rgba(67, 233, 123, 0.10);
+// Estilos específicos para el módulo de permisos (si los hay)
+.admin-container {
+  // Puedes agregar aquí customizaciones específicas para permisos
 }

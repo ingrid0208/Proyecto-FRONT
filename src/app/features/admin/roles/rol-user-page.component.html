@@ -1,65 +1,121 @@
-<div class="rol-user-container bg-gray-50 min-h-screen py-10 px-4 md:px-16">
-  <div class="rol-user-header flex items-center justify-between mb-8">
-    <div class="header-title flex items-center gap-2">
-      <span class="icon text-3xl text-blue-500"><i class="material-icons">group</i></span>
-      <span class="title text-2xl font-bold text-gray-700">Relación Rol-Usuario</span>
+<div class="admin-container">
+  <!-- Header -->
+  <div class="admin-header">
+    <div class="admin-header-content">
+      <div class="header-icon">
+        <i class="pi pi-users"></i>
+      </div>
+      <div class="header-text">
+        <h1>Relación Rol - Usuario</h1>
+        <p>Administra las asignaciones de roles a usuarios</p>
+      </div>
     </div>
-    <button class="add-btn shadow-lg" (click)="abrirFormulario()">+ Agregar Relación</button>
+    <button class="btn-add" (click)="abrirFormulario()">
+      <i class="pi pi-plus"></i>
+      Agregar Relación
+    </button>
   </div>
 
   <!-- Barra de búsqueda -->
-  <div class="search-bar mb-6">
-    <app-search-bar (search)="onSearch($event)" placeholder="Buscar relaciones rol-usuario..."></app-search-bar>
-  </div>
-
-  <div *ngIf="successMsg" class="success-message">{{ successMsg }}</div>
-  <div *ngIf="errorMsg" class="error-message">{{ errorMsg }}</div>
-  <!-- Modal para agregar/editar -->
-  <div *ngIf="showForm" class="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-    <div class="modal-content bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
-      <h2 class="text-xl font-semibold mb-4 text-blue-600">{{ rolUserEditando ? 'Editar' : 'Crear' }} Relación</h2>
-      <form [formGroup]="rolUserForm" (ngSubmit)="rolUserEditando ? actualizarRolUser() : crearRolUser()">
-        <div class="form-group mb-4">
-          <label for="userId" class="block font-medium mb-1">ID Usuario</label>
-          <input id="userId" formControlName="userId" type="number" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <div class="error text-red-500 text-xs mt-1" *ngIf="rolUserForm.get('userId')?.touched && rolUserForm.get('userId')?.invalid">
-            <span *ngIf="rolUserForm.get('userId')?.errors?.['required']">El usuario es requerido.</span>
-            <span *ngIf="rolUserForm.get('userId')?.errors?.['min']">Debe ser mayor a 0.</span>
-          </div>
-        </div>
-        <div class="form-group mb-4">
-          <label for="rolId" class="block font-medium mb-1">ID Rol</label>
-          <input id="rolId" formControlName="rolId" type="number" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
-          <div class="error text-red-500 text-xs mt-1" *ngIf="rolUserForm.get('rolId')?.touched && rolUserForm.get('rolId')?.invalid">
-            <span *ngIf="rolUserForm.get('rolId')?.errors?.['required']">El rol es requerido.</span>
-            <span *ngIf="rolUserForm.get('rolId')?.errors?.['min']">Debe ser mayor a 0.</span>
-          </div>
-        </div>
-        <div class="modal-actions flex gap-3 mt-6">
-          <button type="submit" [disabled]="loading" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-semibold shadow">{{ rolUserEditando ? 'Actualizar' : 'Crear' }}</button>
-          <button type="button" (click)="cerrarFormulario()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded font-semibold">Cancelar</button>
-        </div>
-      </form>
+  <div class="search-container">
+    <div class="search-wrapper">
+      <app-search-bar (search)="onSearch($event)" placeholder="Buscar relaciones..."></app-search-bar>
     </div>
   </div>
-  <div class="rol-user-list space-y-4">
-    <div class="rol-user-row flex items-center justify-between p-4 rounded-lg shadow bg-white border-l-4 border-blue-400 hover:shadow-lg transition-all duration-200" *ngFor="let ru of paginatedRolUsers">
-      <div class="rol-user-content">
-        <div class="rol-user-nombre text-lg font-semibold text-blue-700">Usuario: {{ ru.userName }} | Rol: {{ ru.rolName || ru.rolId }}</div>
+
+  <!-- Alertas -->
+  <div *ngIf="successMsg" class="admin-alert alert-success">
+    <i class="pi pi-check"></i>
+    {{ successMsg }}
+  </div>
+  <div *ngIf="errorMsg" class="admin-alert alert-error">
+    <i class="pi pi-times"></i>
+    {{ errorMsg }}
+  </div>
+
+  <!-- Lista de relaciones -->
+  <div class="admin-list-container">
+    <div *ngIf="paginatedRolUsers.length === 0 && !successMsg" class="admin-empty-state">
+      <div class="empty-icon">
+        <i class="pi pi-users"></i>
       </div>
-      <div class="rol-user-actions flex gap-2">
-        <button class="edit-btn" (click)="editarRolUser(ru)"><i class="material-icons">edit</i></button>
-        <button class="delete-btn" (click)="eliminarRolUser(ru)"><i class="material-icons">delete</i></button>
+      <h3>No hay relaciones registradas</h3>
+      <p>Comience agregando una nueva relación</p>
+    </div>
+
+    <div *ngFor="let ru of paginatedRolUsers" class="admin-item-card">
+      <div class="admin-item-content">
+        <h3 class="item-title">Usuario: {{ ru.userName }}</h3>
+        <p class="item-subtitle">Rol: {{ ru.rolName || ru.rolId }}</p>
+      </div>
+      <div class="admin-item-actions">
+        <button class="btn-action btn-edit" (click)="confirmarActualizacion(ru)" title="Editar">
+          <i class="pi pi-pencil"></i>
+        </button>
+        <button class="btn-action btn-delete" (click)="pedirConfirmacionEliminar(ru)" title="Eliminar">
+          <i class="pi pi-trash"></i>
+        </button>
       </div>
     </div>
   </div>
 
   <!-- Paginación -->
-  <app-pagination
-    [currentPage]="paginationConfig.currentPage"
-    [totalPages]="paginationConfig.totalPages"
-    [totalItems]="paginationConfig.totalItems"
-    [itemsPerPage]="paginationConfig.itemsPerPage"
-    (pageChange)="onPageChange($event)">
-  </app-pagination>
+  <div class="admin-pagination">
+    <app-pagination
+      [currentPage]="paginationConfig.currentPage"
+      [totalPages]="paginationConfig.totalPages"
+      [totalItems]="paginationConfig.totalItems"
+      [itemsPerPage]="paginationConfig.itemsPerPage"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  </div>
+
+  <!-- Modal de formulario (usa clases del modal común) -->
+  <div *ngIf="showForm" class="modal-overlay">
+    <div class="modal-content admin-form-modal modal-custom">
+      <div class="modal-header">
+        <h2>{{ rolUserEditando ? 'Editar' : 'Crear' }} Relación</h2>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="rolUserForm" (ngSubmit)="rolUserEditando ? actualizarRolUser() : crearRolUser()">
+          <div class="form-group">
+            <label for="userId">ID Usuario</label>
+            <input id="userId" formControlName="userId" type="number" />
+            <div class="error-message" *ngIf="rolUserForm.get('userId')?.touched && rolUserForm.get('userId')?.invalid">
+              <span *ngIf="rolUserForm.get('userId')?.errors?.['required']">El usuario es requerido.</span>
+              <span *ngIf="rolUserForm.get('userId')?.errors?.['min']">Debe ser mayor a 0.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rolId">ID Rol</label>
+            <input id="rolId" formControlName="rolId" type="number" />
+            <div class="error-message" *ngIf="rolUserForm.get('rolId')?.touched && rolUserForm.get('rolId')?.invalid">
+              <span *ngIf="rolUserForm.get('rolId')?.errors?.['required']">El rol es requerido.</span>
+              <span *ngIf="rolUserForm.get('rolId')?.errors?.['min']">Debe ser mayor a 0.</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-primary" [disabled]="loading">{{ rolUserEditando ? 'Actualizar' : 'Crear' }}</button>
+            <button type="button" (click)="cerrarFormulario()" class="btn btn-secondary">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación eliminar -->
+  <div *ngIf="showDeleteModal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Confirmar Eliminación</h3>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro que desea eliminar la relación del usuario "{{ rolUserAEliminar?.userName }}"?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="cancelarEliminar()">Cancelar</button>
+        <button class="btn btn-primary" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+    </div>
+  </div>
 </div>
