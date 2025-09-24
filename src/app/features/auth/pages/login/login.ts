@@ -10,6 +10,7 @@ import { RippleModule } from 'primeng/ripple';
 import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
 import Swal from 'sweetalert2';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
+import { validateEmail, validatePassword } from '../../../../shared/utils/validators';
 
 @Component({
   selector: 'app-login',
@@ -92,52 +93,67 @@ export class Login {
   constructor(private router: Router, private api: ServiceGenericService) { }
 
   onLogin(): void {
-  if (!this.email || !this.password) return;
-  this.loading = true;
+    const emailError = validateEmail(this.email);
+    const passError = validatePassword(this.password);
 
-  this.api.loginEmail({ email: this.email.trim(), password: this.password })
-    .subscribe({
-      next: (res: LoginEmailResponse) => {
-        if (res.isSuccess) {
-          const today = new Date();
+    if (emailError || passError) {
+      Swal.fire('Error', emailError || passError!, 'error');
+      return;
+    }
 
-          // Última verificación desde backend
-          const lastVerification = res.lastVerificationSentAt
-            ? new Date(res.lastVerificationSentAt)
-            : null;
+    // ✅ Si todo bien, continúa login
+    this.loading = true;
+    this.api.loginEmail({ email: this.email.trim(), password: this.password })
+      .subscribe({
+        next: (res: LoginEmailResponse) => {
+          if (res.isSuccess) {
+            const today = new Date();
+            const lastVerification = res.lastVerificationSentAt
+              ? new Date(res.lastVerificationSentAt)
+              : null;
 
-          const esDia4 = today.getDate() === 4;
-          const yaVerificadoEsteMes =
-            lastVerification &&
-            lastVerification.getMonth() === today.getMonth() &&
-            lastVerification.getFullYear() === today.getFullYear();
+            const esDia4 = today.getDate() === 4;
+            const yaVerificadoEsteMes =
+              lastVerification &&
+              lastVerification.getMonth() === today.getMonth() &&
+              lastVerification.getFullYear() === today.getFullYear();
 
-          if (esDia4 && !yaVerificadoEsteMes) {
-            Swal.fire({
-              icon: 'info',
-              title: 'Verificación mensual requerida',
-              text: 'Debes verificar tu correo electrónico para seguir usando tu cuenta.',
-              confirmButtonText: 'Verificar ahora'
-            }).then(() => {
-              this.router.navigate(['/auth/verify-email']);
-            });
+            if (esDia4 && !yaVerificadoEsteMes) {
+              Swal.fire({
+                icon: 'info',
+                title: 'Verificación mensual requerida',
+                text: 'Debes verificar tu correo electrónico para seguir usando tu cuenta.',
+                confirmButtonText: 'Verificar ahora'
+              }).then(() => {
+                this.router.navigate(['/auth/verify-email']);
+              });
+            } else {
+              this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+            }
           } else {
-            // ✅ flujo normal
-            this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: res.message || 'No se pudo iniciar sesión.'
+            });
           }
-        } else {
-          console.error('Login fallido:', res);
-          alert(res.message || 'No se pudo iniciar sesión.');
-        }
-      },
-      error: (err) => {
-        console.error('Login error', err);
-        let msg = err?.error?.message || err?.message || 'Error al iniciar sesión';
-        alert(msg);
-      },
-      complete: () => (this.loading = false)
-    });
-}
+        },
+        error: (err) => {
+          // 👇 Aquí aprovechamos la respuesta limpia del middleware
+          const msg =
+            err?.error?.message ||
+            err?.message ||
+            'Error inesperado al iniciar sesión';
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Error en inicio de sesión',
+            text: msg
+          });
+        },
+        complete: () => (this.loading = false)
+      });
+  }
 
 
 
@@ -162,3 +178,5 @@ export class Login {
     }, 500);
   }
 }
+
+

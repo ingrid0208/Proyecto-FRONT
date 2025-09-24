@@ -8,6 +8,7 @@ import { PasswordModule } from 'primeng/password';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
+import { validateRegisterEmail, validateRegisterFullName, validateRegisterPassword } from '../../../../shared/utils/validators';
 
 @Component({
   selector: 'app-Registrar',
@@ -45,13 +46,14 @@ import { HttpErrorResponse } from '@angular/common/http';
         </label>
       </div>
 
-      <button
-        pButton
-        label="Registrarse"
-        class="p-button-success w-full mt-3 login-btn pulse"
-        [disabled]="!canSubmit()"
-        (click)="onRegister()">
-      </button>
+    <button
+      pButton
+      label="Registrarse"
+      class="p-button-success w-full mt-3 login-btn pulse"
+      [disabled]="loading"
+      (click)="onRegister()">
+    </button>
+
 
       <div class="login-links">
         <a [routerLink]="'/auth/login'">¿Ya tienes cuenta?</a>
@@ -85,7 +87,15 @@ export class Registrar {
   }
 
   onRegister(): void {
-    if (!this.canSubmit()) return;
+    const nameError = validateRegisterFullName(this.fullName);
+    const emailError = validateRegisterEmail(this.email);
+    const passError = validateRegisterPassword(this.password);
+
+    if (nameError || emailError || passError) {
+      Swal.fire('Error', nameError || emailError || passError!, 'error');
+      return;
+    }
+
     this.loading = true;
 
     const [firstName, ...rest] = this.fullName.trim().split(' ');
@@ -100,62 +110,36 @@ export class Registrar {
 
     this.api.registrar(payload).subscribe({
       next: () => {
-        // ✅ Enviar código de verificación inicial
-        this.api.sendVerification(firstName, this.email).subscribe(() => {
-          Swal.fire({
-            icon: 'success',
-            title: '¡Registro exitoso!',
-            text: 'Te enviamos un código de verificación a tu correo.'
-          }).then(() => this.router.navigate(['/auth/verify-code'], {
-            queryParams: { email: this.email } 
-          }));
+        // ✅ Mandamos verificación en segundo plano
+        this.api.sendVerification(firstName, this.email).subscribe();
+
+        // ✅ Mostramos alerta y redirigimos
+        Swal.fire({
+          icon: 'success',
+          title: '¡Registro exitoso!',
+          text: 'Te enviamos un código de verificación a tu correo.'
+        }).then(() => {
+          this.router.navigate(['/auth/verify-code'], {
+            queryParams: { email: this.email }
+          });
         });
       },
-      error: async (err: HttpErrorResponse) => {
-        // ... tu manejo de errores actual
+      error: (err: HttpErrorResponse) => {
+        const errorMsg =
+          err?.error?.message ||
+          err?.message ||
+          'Ocurrió un error inesperado al registrar.';
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en el registro',
+          text: errorMsg
+        });
       },
       complete: () => (this.loading = false)
     });
   }
 
-
-  private fieldOrder = ['firstName', 'lastName', 'email', 'password'];
-
-  private async normalizeErrorPayload(err: HttpErrorResponse): Promise<any> {
-    if (err?.error instanceof Blob) {
-      try { return JSON.parse(await err.error.text()); } catch { return {}; }
-    }
-    if (typeof err?.error === 'string') {
-      try { return JSON.parse(err.error); } catch { return {}; }
-    }
-    return err?.error ?? {};
-  }
-
-  private pickFirstError(errors: Record<string, string[]> | undefined): { field: string; message: string } | null {
-    if (!errors) return null;
-    for (const f of this.fieldOrder) {
-      const list = errors[f];
-      if (list?.length) return { field: f, message: list[0] };
-    }
-    for (const key of Object.keys(errors)) {
-      const list = errors[key];
-      if (list?.length) return { field: key, message: list[0] };
-    }
-    return null;
-  }
-
-  private focusField(field: string) {
-    const map: Record<string, ElementRef<HTMLInputElement> | undefined> = {
-      firstName: this.fullNameRef,
-      lastName: this.fullNameRef,
-      email: this.emailRef,
-      password: this.passwordRef
-    };
-    const ref = map[field];
-    if (ref?.nativeElement) {
-      setTimeout(() => ref.nativeElement.focus(), 0);
-    }
-  }
 
   goToHome(e?: Event) {
     e?.preventDefault();
@@ -168,3 +152,5 @@ export class Registrar {
     }, 500);
   }
 }
+
+
