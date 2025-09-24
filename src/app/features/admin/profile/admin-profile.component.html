@@ -1,0 +1,61 @@
+<!-- Header de la página -->
+<div class="page-header">
+    <h1 class="page-title">Mi Perfil</h1>
+    <p class="page-subtitle">Información personal del usuario</p>
+</div>
+
+<!-- Loader -->
+<div class="loading-container" *ngIf="loading">
+    <div class="loading-spinner">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Cargando perfil...</span>
+    </div>
+</div>
+
+<div class="profile-container" *ngIf="!loading && adminData">
+    <!-- Card de información del usuario -->
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <span class="avatar-text">{{ getUserInitials() }}</span>
+            </div>
+            <div class="profile-info">
+                <h2>{{ adminData.nombre }} {{ adminData.apellido }}</h2>
+                <p class="profile-document">{{ adminData.tipoDocumento }}</p>
+                <span class="profile-document-number">
+                    <i class="pi pi-id-card"></i>
+                    {{ adminData.numeroDocumento }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información detallada -->
+    <div class="details-card">
+        <div class="card-header">
+            <i class="pi pi-user"></i>
+            <h3>Información Personal</h3>
+        </div>
+        <div class="card-content">
+            <div class="info-item">
+                <label>Nombres:</label>
+                <span>{{ adminData.nombre }}</span>
+            </div>
+
+            <div class="info-item">
+                <label>Apellidos:</label>
+                <span>{{ adminData.apellido }}</span>
+            </div>
+
+            <div class="info-item">
+                <label>Tipo de Documento:</label>
+                <span>{{ adminData.tipoDocumento }}</span>
+            </div>
+
+            <div class="info-item">
+                <label>Número de Documento:</label>
+                <span>{{ adminData.numeroDocumento }}</span>
+            </div>
+        </div>
+    </div>
+</div>

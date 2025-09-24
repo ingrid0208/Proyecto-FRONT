@@ -78,6 +78,23 @@
     border-radius: 50%;
     }
 
+    .user-avatar {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    }
+
+    .user-initials {
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    }
+
     .user-name {
     font-size: 0.875rem;
     font-weight: 500;

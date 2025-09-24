@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
 
@@ -193,6 +193,9 @@ import { AppMenuitem } from './app.menuitem';
 })
 export class AppMenu {
     public model: MenuItem[] = [];
+
+    constructor(private router: Router) {}
+
     ngOnInit() {
         this.model = [
             {
@@ -316,19 +319,28 @@ export class AppMenu {
             },
             { separator: true },
             {
-                label: '👤 Perfil',
+                label: '👤 Mi Cuenta',
                 items: [
                     {
                         label: 'Mi Perfil',
-                        icon: 'pi pi-fw pi-user',
-                        routerLink: ['/profile'],
-                        title: 'Ver mi perfil'
+                        icon: 'pi pi-fw pi-user-edit',
+                        title: 'Ver y editar mi perfil de administrador',
+                        command: () => {
+                            console.log('Navegando a mi-perfil...');
+                            this.router.navigate(['/mi-perfil']);
+                        }
                     },
                     {
                         label: 'Configuración',
                         icon: 'pi pi-fw pi-cog',
                         routerLink: ['/settings'],
                         title: 'Configuraciones de la cuenta'
+                    },
+                    {
+                        label: 'Seguridad',
+                        icon: 'pi pi-fw pi-shield',
+                        routerLink: ['/security'],
+                        title: 'Configuración de seguridad'
                     },
                     { separator: true },
                     {

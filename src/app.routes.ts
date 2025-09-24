@@ -20,6 +20,7 @@ export const routes: Routes = [
       { path: 'uikit',           loadChildren: () => import('./app/features/auth/pages/uikit-demo/uikit.routes').then(m => m.UIKIT_ROUTES) },
       { path: 'calendario',      loadChildren: () => import('./app/features/calendar/calendario.routes').then(m => m.CALENDARIO_ROUTES) },
       { path: 'perfil',          loadChildren: () => import('./app/features/profile/perfil.routes').then(m => m.PERFIL_ROUTES) },
+      { path: 'mi-perfil',       loadComponent: () => import('./app/features/admin/profile/admin-profile.component').then(m => m.AdminProfileComponent) },
       { path: 'anexar-multas', loadChildren: () => import('./app/feature/anexar-multas/anexar-multas.routes').then(m => m.ANEXAR_MULTAS_ROUTES) },
       // { path: 'mensajes', loadChildren: () => import('./app/features/auth/pages/messages.routes').then(m => m.MENSAJES_ROUTES) },
       // { path: 'crud', loadChildren: () => import('./app/features/auth/pages/crud/crud.routes').then(m => m.CRUD_ROUTES) },

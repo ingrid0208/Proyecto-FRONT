@@ -27,7 +27,10 @@
       </button>
 
       <button class="profile-btn" (click)="op.toggle($event)">
-        <span class="user-name">Daniel Caicedo</span>
+        <div class="user-avatar">
+          <span class="user-initials">{{ getUserInitials() }}</span>
+        </div>
+        <span class="user-name">{{ getUserFullName() }}</span>
         <i class="pi pi-chevron-down"></i>
       </button>
 

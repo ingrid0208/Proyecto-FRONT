@@ -1,0 +1,325 @@
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    flex-direction: column;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: #198754;
+
+    i {
+        font-size: 2rem;
+    }
+
+    span {
+        font-weight: 500;
+        color: #6c757d;
+    }
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.profile-header {
+    background: linear-gradient(135deg, #198754 0%, #20c997 100%);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+
+    .avatar-text {
+        font-size: 1.75rem;
+        font-weight: bold;
+        color: white;
+    }
+}
+
+.profile-info {
+    flex: 1;
+
+    h2 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.75rem;
+        font-weight: 600;
+    }
+
+    .profile-document {
+        margin: 0 0 0.5rem 0;
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    .profile-document-number {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+
+        i {
+            font-size: 1rem;
+        }
+    }
+}
+
+.profile-actions {
+    display: flex;
+    gap: 0.75rem;
+
+    .btn-edit {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        transition: all 0.2s;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    }
+
+    .edit-actions {
+        display: flex;
+        gap: 0.5rem;
+
+        button {
+            padding: 0.75rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+
+            &:hover:not(:disabled) {
+                background: #218838;
+            }
+        }
+
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.3);
+            }
+        }
+    }
+}
+
+.details-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    background: #f8f9fa;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    i {
+        color: #198754;
+        font-size: 1.25rem;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #212529;
+    }
+}
+
+.card-content {
+    padding: 2rem;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    span {
+        color: #212529;
+        font-size: 1.125rem;
+        padding: 0.75rem;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+        font-weight: 500;
+    }
+
+    input, select {
+        padding: 0.875rem;
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 1rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+
+        &:focus {
+            outline: none;
+            border-color: #198754;
+            box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.1);
+        }
+
+        &::placeholder {
+            color: #6c757d;
+        }
+    }
+
+    select {
+        cursor: pointer;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .profile-container {
+        padding: 0 1rem;
+    }
+
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1.5rem;
+
+        .profile-info h2 {
+            font-size: 1.5rem;
+        }
+
+        .profile-actions {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .card-content {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-container {
+        padding: 0 0.75rem;
+    }
+
+    .profile-header {
+        padding: 1rem;
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+
+            .avatar-text {
+                font-size: 1.25rem;
+            }
+        }
+
+        .profile-info h2 {
+            font-size: 1.25rem;
+        }
+
+        .profile-info .profile-document {
+            font-size: 0.875rem;
+        }
+    }
+
+    .card-content {
+        padding: 1rem;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .edit-actions {
+            justify-content: center;
+        }
+    }
+
+    .info-item {
+        margin-bottom: 1rem;
+
+        label {
+            font-size: 0.8rem;
+        }
+
+        span {
+            font-size: 1rem;
+            padding: 0.625rem;
+        }
+    }
+}
