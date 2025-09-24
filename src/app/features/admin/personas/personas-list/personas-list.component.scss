@@ -1,4 +1,20 @@
+@import '../../../shared/styles/admin-common.scss';
+
 :host {
   display: block;
   margin-top: 1rem;
+}
+
+/* Ensure admin-item-card styles apply correctly inside this component */
+.admin-item-card {
+  margin-bottom: 1rem;
+}
+
+.admin-item-content .item-title {
+  font-size: 1.05rem;
+}
+
+.admin-item-actions {
+  display: flex;
+  gap: 0.5rem;
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Persona } from '../../../../shared/models/entities/persona.model';
 
 @Component({
@@ -11,4 +11,6 @@ import { Persona } from '../../../../shared/models/entities/persona.model';
 })
 export class PersonasListComponent {
   @Input() personas: Persona[] = [];
+  @Output() edit: EventEmitter<Persona> = new EventEmitter<Persona>();
+  @Output() remove: EventEmitter<Persona> = new EventEmitter<Persona>();
 }

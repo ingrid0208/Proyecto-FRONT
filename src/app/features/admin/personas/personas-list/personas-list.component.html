@@ -1,3 +1,14 @@
-<div *ngFor="let persona of personas">
-  {{ persona.firstName }} {{ persona.lastName }}
+<div *ngFor="let persona of personas" class="admin-item-card">
+  <div class="admin-item-content">
+    <h3 class="item-title">{{ persona.firstName }} {{ persona.lastName }}</h3>
+    <p class="item-subtitle">Tel: {{ persona.phone || '-' }} · {{ persona.address || '-' }}</p>
+  </div>
+  <div class="admin-item-actions">
+    <button type="button" class="btn-action btn-edit" (click)="edit.emit(persona)" title="Editar">
+      <i class="pi pi-pencil"></i>
+    </button>
+    <button type="button" class="btn-action btn-delete" (click)="remove.emit(persona)" title="Eliminar">
+      <i class="pi pi-trash"></i>
+    </button>
+  </div>
 </div>

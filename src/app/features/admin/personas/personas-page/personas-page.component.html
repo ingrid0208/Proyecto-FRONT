@@ -1,224 +1,165 @@
-<div class="personas-container">
-  <div class="personas-header">
-    <div class="header-title">
-      <span class="icon"><i class="material-icons">groups</i></span>
-      <span class="title">Personas del Sistema</span>
-    </div>
-      <button class="add-btn" (click)="abrirFormulario()">+ Agregar Persona</button>
-    <!-- Modal de alerta -->
-    <div *ngIf="showAlert" class="alert-modal-overlay">
-      <div class="alert-modal-content" [ngClass]="alertType">
-        <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
-        <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
-        <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
-        <span class="alert-msg">{{ alertMsg }}</span>
+<div class="admin-container">
+  <div class="admin-header">
+    <div class="admin-header-content">
+      <div class="header-icon"><i class="pi pi-users"></i></div>
+      <div class="header-text">
+        <h1>Personas del Sistema</h1>
+        <p>Administra las personas registradas</p>
       </div>
     </div>
+    <button class="btn-add" (click)="abrirFormulario()"><i class="pi pi-plus"></i> Agregar Persona</button>
+  </div>
 
-    <!-- Modal de confirmación de eliminación -->
-    <div *ngIf="showConfirm" class="alert-modal-overlay">
-      <div class="alert-modal-content eliminado">
-        <span class="alert-icon">🗑️</span>
-        <span class="alert-msg">¿Estás seguro de que deseas eliminar esta persona?</span>
-        <div class="modal-actions">
-          <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
-          <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
-        </div>
+  <!-- Alertas -->
+  <div *ngIf="showAlert" class="admin-alert" [ngClass]="{
+    'alert-success': alertType === 'creado',
+    'alert-error': alertType === 'eliminado',
+    'alert-info': alertType === 'bienvenida'
+  }">
+    <i class="pi" [ngClass]="alertType === 'creado' ? 'pi-check' : (alertType === 'eliminado' ? 'pi-times' : 'pi-info-circle')"></i>
+    <span>{{ alertMsg }}</span>
+  </div>
+
+  <!-- Confirmación eliminar -->
+  <div *ngIf="showConfirm" class="admin-form-modal modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header"><h3>Confirmar Eliminación</h3></div>
+      <div class="modal-body">
+        <p>¿Estás seguro de que deseas eliminar esta persona?</p>
       </div>
-    </div>
-  </div>
-  <div class="search-bar">
-    <app-search-bar (search)="onSearch($event)" placeholder="Buscar personas..."></app-search-bar>
-  </div>
-
-  <!-- Modal para agregar persona -->
-  <div *ngIf="showForm" class="modal-overlay">
-    <div class="modal-content persona-form">
-      <h2>Crear Usuario</h2>
-      <form [formGroup]="personaForm" (ngSubmit)="crearPersona()">
-        <label>
-          Nombre:
-          <input type="text" formControlName="firstName" required maxlength="50" />
-          <div *ngIf="personaForm.get('firstName')?.invalid && personaForm.get('firstName')?.touched" class="error-msg">
-            El nombre es requerido
-          </div>
-        </label>
-        <label>
-          Apellido:
-          <input type="text" formControlName="lastName" required maxlength="50" />
-          <div *ngIf="personaForm.get('lastName')?.invalid && personaForm.get('lastName')?.touched" class="error-msg">
-            El apellido es requerido
-          </div>
-        </label>
-        <label>
-          Número de Teléfono:
-          <input type="text" formControlName="phoneNumber" required maxlength="15" />
-          <div *ngIf="personaForm.get('phoneNumber')?.invalid && personaForm.get('phoneNumber')?.touched" class="error-msg">
-            El teléfono es requerido
-          </div>
-        </label>
-        <label>
-          Dirección:
-          <input type="text" formControlName="address" required maxlength="100" />
-          <div *ngIf="personaForm.get('address')?.invalid && personaForm.get('address')?.touched" class="error-msg">
-            La dirección es requerida
-          </div>
-        </label>
-        <label>
-          Tipo de Documento:
-          <select formControlName="documentTypeId" required>
-            <option value="">Seleccionar tipo de documento</option>
-            <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
-              {{ documentType.name }} ({{ documentType.abbreviation }})
-            </option>
-            <option *ngIf="documentTypes.length === 0" value="" disabled>No se encuentran tipos de documento</option>
-          </select>
-          <div *ngIf="personaForm.get('documentTypeId')?.invalid && personaForm.get('documentTypeId')?.touched" class="error-msg">
-            Debe seleccionar un tipo de documento
-          </div>
-        </label>
-        <label>
-          Municipio:
-          <select formControlName="municipalityId" required>
-            <option value="">Seleccionar municipio</option>
-            <option *ngFor="let municipio of municipios" [value]="municipio.id">
-              {{ municipio.name }}
-            </option>
-            <option *ngIf="municipios.length === 0" value="" disabled>No se encuentran municipios</option>
-          </select>
-          <div *ngIf="personaForm.get('municipalityId')?.invalid && personaForm.get('municipalityId')?.touched" class="error-msg">
-            Debe seleccionar un municipio
-          </div>
-        </label>
-        <div class="modal-actions">
-          <button type="button" (click)="cerrarFormulario()">Cancelar</button>
-          <button type="submit" [disabled]="personaForm.invalid">Guardar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="personas-list">
-    <div class="persona-row" *ngFor="let persona of paginatedPersonas" style="display: flex; justify-content: space-between; align-items: center; padding: 15px; margin-bottom: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
-      <div class="persona-content" style="display: flex; align-items: center; flex: 1;">
-        <div class="avatar" style="margin-right: 15px;">
-          {{ persona.firstName[0] }}{{ persona.lastName[0] }}
-        </div>
-        <div class="persona-info">
-          <div class="persona-nombre" style="font-weight: bold; margin-bottom: 8px;">
-            {{ persona.firstName }} {{ persona.lastName }}
-          </div>
-          <div class="persona-detalles" style="margin-bottom: 5px;">
-            <div class="detalle-row" style="margin-bottom: 3px;">
-              <span class="detalle-label" style="font-weight: 500; margin-right: 5px;">Teléfono:</span>
-              <span class="detalle-value">{{ persona.phoneNumber }}</span>
-            </div>
-            <div class="detalle-row" style="margin-bottom: 3px;">
-              <span class="detalle-label" style="font-weight: 500; margin-right: 5px;">Dirección:</span>
-              <span class="detalle-value">{{ persona.address }}</span>
-            </div>
-          </div>
-          <div class="persona-ids" style="display: flex; gap: 15px;">
-            <div class="id-item">
-              <span class="id-label" style="font-weight: 500; margin-right: 5px;">Municipio:</span>
-              <span class="id-value">{{ persona.municipalityId ? getMunicipioNombre(persona.municipalityId) : 'Sin municipio' }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="persona-actions">
-        <button class="update-btn" (click)="$event.stopPropagation(); confirmarActualizacion(persona);">✏️ Actualizar</button>
-        <button class="delete-btn" (click)="pedirConfirmacionEliminar(persona)">🗑️ Eliminar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Paginación -->
-  <app-pagination
-    [currentPage]="paginationConfig.currentPage"
-    [totalPages]="paginationConfig.totalPages"
-    [totalItems]="paginationConfig.totalItems"
-    [itemsPerPage]="paginationConfig.itemsPerPage"
-    (pageChange)="onPageChange($event)">
-  </app-pagination>
-</div>
-
-<!-- Modal para actualizar persona -->
-  <div *ngIf="showUpdateModal && personaSeleccionada" class="modal-overlay">
-    <div class="modal-content persona-form">
-      <h2>Actualizar Usuario</h2>
-      <form [formGroup]="updateForm" (ngSubmit)="actualizarPersona()">
-        <label>
-          Nombre:
-          <input type="text" formControlName="firstName" required maxlength="50" />
-          <div *ngIf="updateForm.get('firstName')?.invalid && updateForm.get('firstName')?.touched" class="error-msg">
-            El nombre es requerido
-          </div>
-        </label>
-        <label>
-          Apellido:
-          <input type="text" formControlName="lastName" required maxlength="50" />
-          <div *ngIf="updateForm.get('lastName')?.invalid && updateForm.get('lastName')?.touched" class="error-msg">
-            El apellido es requerido
-          </div>
-        </label>
-        <label>
-          Número de Teléfono:
-          <input type="text" formControlName="phoneNumber" required maxlength="15" />
-          <div *ngIf="updateForm.get('phoneNumber')?.invalid && updateForm.get('phoneNumber')?.touched" class="error-msg">
-            El teléfono es requerido
-          </div>
-        </label>
-        <label>
-          Dirección:
-          <input type="text" formControlName="address" required maxlength="100" />
-          <div *ngIf="updateForm.get('address')?.invalid && updateForm.get('address')?.touched" class="error-msg">
-            La dirección es requerida
-          </div>
-        </label>
-        <label>
-          Tipo de Documento:
-          <select formControlName="documentTypeId" required>
-            <option value="">Seleccionar tipo de documento</option>
-            <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
-              {{ documentType.name }} ({{ documentType.abbreviation }})
-            </option>
-            <option *ngIf="documentTypes.length === 0" value="" disabled>No se encuentran tipos de documento</option>
-          </select>
-          <div *ngIf="updateForm.get('documentTypeId')?.invalid && updateForm.get('documentTypeId')?.touched" class="error-msg">
-            Debe seleccionar un tipo de documento
-          </div>
-        </label>
-        <label>
-          Municipio:
-          <select formControlName="municipalityId" required>
-            <option value="">Seleccionar municipio</option>
-            <option *ngFor="let municipio of municipios" [value]="municipio.id">
-              {{ municipio.name }}
-            </option>
-            <option *ngIf="municipios.length === 0" value="" disabled>No se encuentran municipios</option>
-          </select>
-          <div *ngIf="updateForm.get('municipalityId')?.invalid && updateForm.get('municipalityId')?.touched" class="error-msg">
-            Debe seleccionar un municipio
-          </div>
-        </label>
-        <div class="modal-actions">
-          <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
-          <button type="submit" [disabled]="updateForm.invalid">Actualizar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal de confirmación para actualizar -->
-  <div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
-    <div class="alert-modal-content eliminado">
-      <span class="alert-icon">✏️</span>
-      <span class="alert-msg">¿Está seguro que desea actualizar la persona "{{ personaAActualizar?.firstName }} {{ personaAActualizar?.lastName }}"?</span>
       <div class="modal-actions">
-        <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
-        <button class="blue-btn" (click)="abrirModalActualizar()">Sí, Editar</button>
+        <button class="btn btn-secondary" (click)="cancelarEliminar()">Cancelar</button>
+        <button class="btn btn-primary" (click)="confirmarEliminar()">Eliminar</button>
       </div>
     </div>
   </div>
+
+  <div class="search-container">
+    <div class="search-wrapper">
+      <app-search-bar (search)="onSearch($event)" placeholder="Buscar personas..."></app-search-bar>
+    </div>
+  </div>
+
+  <!-- Modal para crear/editar persona -->
+  <div *ngIf="showForm" class="admin-form-modal modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header"><h2>Crear Persona</h2></div>
+      <div class="modal-body">
+        <form [formGroup]="personaForm" (ngSubmit)="crearPersona()">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input formControlName="firstName" />
+            <div class="error-message" *ngIf="personaForm.get('firstName')?.invalid && personaForm.get('firstName')?.touched">El nombre es requerido</div>
+          </div>
+          <div class="form-group">
+            <label>Apellido</label>
+            <input formControlName="lastName" />
+            <div class="error-message" *ngIf="personaForm.get('lastName')?.invalid && personaForm.get('lastName')?.touched">El apellido es requerido</div>
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input formControlName="phoneNumber" />
+            <div class="error-message" *ngIf="personaForm.get('phoneNumber')?.invalid && personaForm.get('phoneNumber')?.touched">El teléfono es requerido</div>
+          </div>
+          <div class="form-group">
+            <label>Dirección</label>
+            <input formControlName="address" />
+          </div>
+          <div class="form-group">
+            <label>Tipo de Documento</label>
+            <select formControlName="documentTypeId">
+              <option value="">Seleccionar tipo de documento</option>
+              <option *ngFor="let documentType of documentTypes" [value]="documentType.id">{{ documentType.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Municipio</label>
+            <select formControlName="municipalityId">
+              <option value="">Seleccionar municipio</option>
+              <option *ngFor="let municipio of municipios" [value]="municipio.id">{{ municipio.name }}</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" (click)="cerrarFormulario()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="personaForm.invalid">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-list-container">
+    <div *ngIf="paginatedPersonas.length === 0 && !showAlert" class="admin-empty-state">
+      <div class="empty-icon"><i class="pi pi-users"></i></div>
+      <h3>No hay personas registradas</h3>
+      <p>Comienza añadiendo una nueva persona</p>
+    </div>
+
+    <div *ngFor="let persona of paginatedPersonas" class="admin-item-card">
+      <div class="admin-item-content">
+        <h3 class="item-title">{{ persona.firstName }} {{ persona.lastName }}</h3>
+  <p class="item-subtitle">Tel: {{ persona.phoneNumber }} · {{ getMunicipioNombre(persona.municipalityId || 0) }}</p>
+      </div>
+      <div class="admin-item-actions">
+        <button class="btn-action btn-edit" (click)="$event.stopPropagation(); confirmarActualizacion(persona)"><i class="pi pi-pencil"></i></button>
+        <button class="btn-action btn-delete" (click)="pedirConfirmacionEliminar(persona)"><i class="pi pi-trash"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-pagination">
+    <app-pagination
+      [currentPage]="paginationConfig.currentPage"
+      [totalPages]="paginationConfig.totalPages"
+      [totalItems]="paginationConfig.totalItems"
+      [itemsPerPage]="paginationConfig.itemsPerPage"
+      (pageChange)="onPageChange($event)">
+    </app-pagination>
+  </div>
+
+  <!-- Modal actualizar -->
+  <div *ngIf="showUpdateModal && personaSeleccionada" class="admin-form-modal modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header"><h2>Actualizar Persona</h2></div>
+      <div class="modal-body">
+        <form [formGroup]="updateForm" (ngSubmit)="actualizarPersona()">
+          <div class="form-group">
+            <label>Nombre</label>
+            <input formControlName="firstName" />
+          </div>
+          <div class="form-group">
+            <label>Apellido</label>
+            <input formControlName="lastName" />
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input formControlName="phoneNumber" />
+          </div>
+          <div class="form-group">
+            <label>Dirección</label>
+            <input formControlName="address" />
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" (click)="cerrarModalActualizar()">Cancelar</button>
+            <button type="submit" class="btn btn-primary" [disabled]="updateForm.invalid">Actualizar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmación actualizar -->
+  <div *ngIf="showUpdateConfirm" class="admin-form-modal modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header"><h3>Confirmar Actualización</h3></div>
+      <div class="modal-body">
+        <p>¿Está seguro que desea actualizar la persona "{{ personaAActualizar?.firstName }} {{ personaAActualizar?.lastName }}"?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="cancelarActualizacion()">Cancelar</button>
+        <button class="btn btn-primary" (click)="abrirModalActualizar()">Sí, Editar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
