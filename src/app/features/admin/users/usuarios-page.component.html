@@ -26,7 +26,11 @@
     <span class="title">Gestión de Usuarios</span>
     <button class="add-usuario-btn" (click)="abrirModal()">+ Agregar Usuario</button>
   </div>
-  
+
+  <div class="search-bar">
+    <app-search-bar (search)="onSearch($event)" placeholder="Buscar usuarios..."></app-search-bar>
+  </div>
+
   <div class="usuarios-list">
     <div class="usuario-card" *ngFor="let usuario of paginatedUsuarios">
       <div class="usuario-info">

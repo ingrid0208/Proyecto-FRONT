@@ -3,16 +3,21 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RolUserService, RolUser } from '../../../core/services/api/rol-user.service';
 import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
+import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-rol-user-page',
   templateUrl: './rol-user-page.component.html',
   styleUrls: ['./rol-user-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, PaginationComponent, SearchBarComponent]
 })
 export class RolUserPageComponent implements OnInit {
   rolUsers: RolUser[] = [];
+  filteredRolUsers: RolUser[] = [];
+  paginatedRolUsers: RolUser[] = [];
   usuarios: any[] = [];
   showForm = false;
   rolUserForm: FormGroup;
@@ -21,10 +26,19 @@ export class RolUserPageComponent implements OnInit {
   successMsg = '';
   rolUserEditando: RolUser | null = null;
 
+  // Paginación
+  paginationConfig: PaginationConfig = {
+    currentPage: 1,
+    itemsPerPage: 5,
+    totalItems: 0,
+    totalPages: 0
+  };
+
   constructor(
     private rolUserService: RolUserService,
     private serviceGeneric: ServiceGenericService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private paginationService: PaginationService
   ) {
     this.rolUserForm = this.fb.group({
       userId: [0, [Validators.required, Validators.min(1)]],
@@ -46,6 +60,8 @@ export class RolUserPageComponent implements OnInit {
         ...ru,
         userName: this.usuarios.find(u => u.id === ru.userId)?.email || ru.userId.toString()
       }));
+      this.filteredRolUsers = [...this.rolUsers]; // Inicializar rol-users filtrados
+      this.updatePagination();
     });
   }
 
@@ -75,6 +91,7 @@ export class RolUserPageComponent implements OnInit {
         this.obtenerRolUsers();
         this.cerrarFormulario();
         this.loading = false;
+        setTimeout(() => this.successMsg = '', 2500);
       },
       error: (error: any) => {
         this.errorMsg = error.error?.message || 'Error al crear Rol-Usuario';
@@ -105,6 +122,7 @@ export class RolUserPageComponent implements OnInit {
         this.obtenerRolUsers();
         this.cerrarFormulario();
         this.loading = false;
+        setTimeout(() => this.successMsg = '', 2500);
       },
       error: (error: any) => {
         this.errorMsg = error.error?.message || 'Error al actualizar Rol-Usuario';
@@ -119,10 +137,35 @@ export class RolUserPageComponent implements OnInit {
       next: () => {
         this.successMsg = 'Rol-Usuario eliminado correctamente';
         this.obtenerRolUsers();
+        setTimeout(() => this.successMsg = '', 2500);
       },
       error: (error: any) => {
         this.errorMsg = error.error?.message || 'Error al eliminar Rol-Usuario';
       }
     });
+  }
+
+  onSearch(term: string) {
+    this.filteredRolUsers = this.rolUsers.filter(rolUser =>
+      (rolUser.userName || '').toLowerCase().includes(term.toLowerCase()) ||
+      rolUser.userId.toString().includes(term) ||
+      rolUser.rolId.toString().includes(term)
+    );
+    this.updatePagination();
+  }
+
+  // Métodos de paginación
+  updatePagination(): void {
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredRolUsers.length);
+    this.updatePaginatedItems();
+  }
+
+  updatePaginatedItems(): void {
+    this.paginatedRolUsers = this.paginationService.getPaginatedItems(this.filteredRolUsers, this.paginationConfig);
+  }
+
+  onPageChange(page: number): void {
+    this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
+    this.updatePaginatedItems();
   }
 }

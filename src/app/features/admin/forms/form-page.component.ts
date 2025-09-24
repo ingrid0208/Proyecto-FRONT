@@ -5,13 +5,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormService, Form } from '../../../core/services/form.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
   styleUrls: ['./form-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent],
   providers: [FormService]
 })
 export class FormPageComponent implements OnInit {
@@ -23,6 +24,7 @@ export class FormPageComponent implements OnInit {
   ) {}
 
   forms: Form[] = [];
+  filteredForms: Form[] = [];
   paginatedForms: Form[] = [];
 
   // Paginación
@@ -87,6 +89,7 @@ export class FormPageComponent implements OnInit {
       next: (forms: Form[]) => {
         console.log('Formularios cargados:', forms); // Para depuración
         this.forms = forms || []; // Asegurar que forms sea un array
+        this.filteredForms = [...this.forms]; // Inicializar formularios filtrados
         this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
@@ -110,6 +113,7 @@ export class FormPageComponent implements OnInit {
               description: 'Formulario para registrar nuevas multas'
             }
           ];
+          this.filteredForms = [...this.forms];
           this.updatePagination();
         }
       }
@@ -279,14 +283,22 @@ export class FormPageComponent implements OnInit {
     this.formAEliminar = null;
   }
 
+  onSearch(term: string) {
+    this.filteredForms = this.forms.filter(form =>
+      form.name.toLowerCase().includes(term.toLowerCase()) ||
+      form.description.toLowerCase().includes(term.toLowerCase())
+    );
+    this.updatePagination();
+  }
+
   // Métodos de paginación
   updatePagination(): void {
-    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.forms.length);
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredForms.length);
     this.updatePaginatedItems();
   }
 
   updatePaginatedItems(): void {
-    this.paginatedForms = this.paginationService.getPaginatedItems(this.forms, this.paginationConfig);
+    this.paginatedForms = this.paginationService.getPaginatedItems(this.filteredForms, this.paginationConfig);
   }
 
   onPageChange(page: number): void {

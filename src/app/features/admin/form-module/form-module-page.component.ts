@@ -4,17 +4,19 @@ import { FormsModule } from '@angular/forms';
 import { FormModuleService, FormModule } from '../../../core/services/formmodule.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-form-module-page',
   templateUrl: './form-module-page.component.html',
   styleUrls: ['./form-module-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent, SearchBarComponent],
   providers: [FormModuleService]
 })
 export class FormModulePageComponent implements OnInit {
   formModules: FormModule[] = [];
+  filteredFormModules: FormModule[] = [];
   paginatedFormModules: FormModule[] = [];
   isLoading: boolean = false;
 
@@ -60,6 +62,7 @@ export class FormModulePageComponent implements OnInit {
     this.formModuleService.genericService.getAll<FormModule>(this.formModuleService.endpoint).subscribe({
       next: (formModules: FormModule[]) => {
         this.formModules = formModules;
+        this.filteredFormModules = [...this.formModules]; // Inicializar form-modules filtrados
         this.updatePagination();
         this.isLoading = false;
       },
@@ -129,6 +132,7 @@ export class FormModulePageComponent implements OnInit {
       this.formModuleService.genericService.delete(this.formModuleService.endpoint, formModuleId).subscribe({
         next: () => {
           this.formModules.splice(this.formModuleAEliminar!, 1);
+          this.filteredFormModules = [...this.formModules]; // Actualizar filtrados
           this.updatePagination();
           this.mostrarAlerta('Form-Module eliminado correctamente.', 'eliminado');
           this.showConfirm = false;
@@ -204,6 +208,7 @@ export class FormModulePageComponent implements OnInit {
         this.formModuleService.genericService.create<FormModule>(this.formModuleService.endpoint, formModuleData).subscribe({
           next: (createdFormModule: FormModule) => {
             this.formModules.push(createdFormModule);
+            this.filteredFormModules = [...this.formModules]; // Actualizar filtrados
             this.updatePagination();
             this.mostrarAlerta('Form-Module creado exitosamente.', 'creado');
             this.cerrarModal();
@@ -229,6 +234,7 @@ export class FormModulePageComponent implements OnInit {
       this.formModuleService.genericService.update<FormModule>(this.formModuleService.endpoint, this.nuevoFormModule.id, formModuleData).subscribe({
         next: (updatedFormModule: FormModule) => {
           this.formModules[this.formModuleEditando!] = updatedFormModule;
+          this.filteredFormModules = [...this.formModules]; // Actualizar filtrados
           this.updatePagination();
           this.mostrarAlerta('Form-Module actualizado exitosamente.', 'creado');
           this.cerrarModal();
@@ -241,14 +247,22 @@ export class FormModulePageComponent implements OnInit {
     }
   }
 
+  onSearch(term: string) {
+    this.filteredFormModules = this.formModules.filter(formModule =>
+      formModule.formName.toLowerCase().includes(term.toLowerCase()) ||
+      formModule.moduleName.toLowerCase().includes(term.toLowerCase())
+    );
+    this.updatePagination();
+  }
+
   // Métodos de paginación
   updatePagination(): void {
-    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.formModules.length);
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredFormModules.length);
     this.updatePaginatedItems();
   }
 
   updatePaginatedItems(): void {
-    this.paginatedFormModules = this.paginationService.getPaginatedItems(this.formModules, this.paginationConfig);
+    this.paginatedFormModules = this.paginationService.getPaginatedItems(this.filteredFormModules, this.paginationConfig);
   }
 
   onPageChange(page: number): void {

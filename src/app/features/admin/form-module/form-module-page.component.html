@@ -29,6 +29,11 @@
     <button class="add-btn" (click)="abrirModal()">+ Agregar Form-Module</button>
   </div>
 
+  <!-- Barra de búsqueda -->
+  <div class="search-bar">
+    <app-search-bar (search)="onSearch($event)" placeholder="Buscar form-modules..."></app-search-bar>
+  </div>
+
   <!-- Loading -->
   <div *ngIf="isLoading" class="loading-container">
     <p>Cargando form-modules...</p>

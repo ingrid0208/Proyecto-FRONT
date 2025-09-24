@@ -7,6 +7,12 @@
     </div>
     <button class="add-btn shadow-lg" (click)="abrirFormulario()">+ Agregar Permiso</button>
   </div>
+
+  <!-- Barra de búsqueda -->
+  <div class="search-bar mb-6">
+    <app-search-bar (search)="onSearch($event)" placeholder="Buscar permisos..."></app-search-bar>
+  </div>
+
   <div *ngIf="successMsg" class="success-message"></div>
   <!-- Modal para agregar permiso -->
   <div *ngIf="showForm" class="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">

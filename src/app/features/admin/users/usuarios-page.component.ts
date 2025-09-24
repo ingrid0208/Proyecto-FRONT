@@ -5,13 +5,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { UsuariosService, Usuario, UserInfraction } from './usuarios.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-usuarios-page',
   templateUrl: './usuarios-page.component.html',
   styleUrls: ['./usuarios-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent],
   providers: [UsuariosService]
 })
 export class UsuariosPageComponent implements OnInit {
@@ -23,6 +24,7 @@ export class UsuariosPageComponent implements OnInit {
   ) {}
 
   usuarios: Usuario[] = [];
+  filteredUsuarios: Usuario[] = [];
   paginatedUsuarios: Usuario[] = [];
 
   // Paginación
@@ -97,6 +99,7 @@ export class UsuariosPageComponent implements OnInit {
       next: (usuarios: Usuario[]) => {
         console.log('Usuarios cargados:', usuarios); // Para depuración
         this.usuarios = usuarios || []; // Asegurar que usuarios sea un array
+        this.filteredUsuarios = [...this.usuarios]; // Inicializar usuarios filtrados
         this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
@@ -126,6 +129,7 @@ export class UsuariosPageComponent implements OnInit {
               userInfractions: []
             }
           ];
+          this.filteredUsuarios = [...this.usuarios];
         }
       }
     });
@@ -318,14 +322,22 @@ export class UsuariosPageComponent implements OnInit {
     this.usuarioAEliminar = null;
   }
 
+  onSearch(term: string) {
+    this.filteredUsuarios = this.usuarios.filter(usuario =>
+      usuario.name.toLowerCase().includes(term.toLowerCase()) ||
+      usuario.email.toLowerCase().includes(term.toLowerCase())
+    );
+    this.updatePagination();
+  }
+
   // Métodos de paginación
   updatePagination(): void {
-    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.usuarios.length);
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredUsuarios.length);
     this.updatePaginatedItems();
   }
 
   updatePaginatedItems(): void {
-    this.paginatedUsuarios = this.paginationService.getPaginatedItems(this.usuarios, this.paginationConfig);
+    this.paginatedUsuarios = this.paginationService.getPaginatedItems(this.filteredUsuarios, this.paginationConfig);
   }
 
   onPageChange(page: number): void {

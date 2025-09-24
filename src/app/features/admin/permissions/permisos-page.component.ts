@@ -3,6 +3,7 @@ import { PermissionService, Permission } from '../../../core/services/permission
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -11,10 +12,11 @@ import { ReactiveFormsModule } from '@angular/forms';
   selector: 'app-permisos-page',
   templateUrl: './permisos-page.component.html',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PaginationComponent],
+  imports: [CommonModule, ReactiveFormsModule, PaginationComponent, SearchBarComponent],
 })
 export class PermisosPageComponent implements OnInit {
   permisos: Permission[] = [];
+  filteredPermisos: Permission[] = [];
   paginatedPermisos: Permission[] = [];
   showForm = false;
   permisoForm: FormGroup;
@@ -55,23 +57,32 @@ export class PermisosPageComponent implements OnInit {
   obtenerPermisos() {
     this.permissionService.genericService.getAll<Permission>(this.permissionService.endpoint).subscribe((data: Permission[]) => {
       this.permisos = data;
+      this.filteredPermisos = [...this.permisos]; // Inicializar permisos filtrados
       this.updatePagination();
     });
   }
 
   // Métodos de paginación
   updatePagination(): void {
-    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.permisos.length);
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredPermisos.length);
     this.updatePaginatedItems();
   }
 
   updatePaginatedItems(): void {
-    this.paginatedPermisos = this.paginationService.getPaginatedItems(this.permisos, this.paginationConfig);
+    this.paginatedPermisos = this.paginationService.getPaginatedItems(this.filteredPermisos, this.paginationConfig);
   }
 
   onPageChange(page: number): void {
     this.paginationConfig = this.paginationService.goToPage(this.paginationConfig, page);
     this.updatePaginatedItems();
+  }
+
+  onSearch(term: string) {
+    this.filteredPermisos = this.permisos.filter(permiso =>
+      permiso.name.toLowerCase().includes(term.toLowerCase()) ||
+      permiso.description.toLowerCase().includes(term.toLowerCase())
+    );
+    this.updatePagination();
   }
 
   abrirFormulario() {

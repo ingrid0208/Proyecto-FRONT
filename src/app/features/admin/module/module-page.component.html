@@ -7,6 +7,11 @@
     Agregar Módulo
   </button>
 
+  <!-- Barra de búsqueda -->
+  <div class="search-bar">
+    <app-search-bar (search)="onSearch($event)" placeholder="Buscar módulos..."></app-search-bar>
+  </div>
+
   <!-- Tabla de módulos -->
   <div *ngFor="let module of paginatedModules" class="persona-card">
     <div class="persona-info">

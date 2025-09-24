@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { ModuleService, Module } from '../../../core/services/module.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-module-page',
   templateUrl: './module-page.component.html',
   styleUrls: ['./module-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent, SearchBarComponent],
   providers: [ModuleService]
 })
 export class ModulePageComponent implements OnInit {
@@ -22,6 +23,7 @@ export class ModulePageComponent implements OnInit {
   ) {}
 
   modules: Module[] = [];
+  filteredModules: Module[] = [];
   paginatedModules: Module[] = [];
 
   // Paginación
@@ -91,6 +93,7 @@ export class ModulePageComponent implements OnInit {
       next: (modules: Module[]) => {
         console.log('Módulos cargados:', modules); // Para depuración
         this.modules = modules || []; // Asegurar que modules sea un array
+        this.filteredModules = [...this.modules]; // Inicializar módulos filtrados
         this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
@@ -119,6 +122,7 @@ export class ModulePageComponent implements OnInit {
               description: 'Módulo para configurar parámetros del sistema'
             }
           ];
+          this.filteredModules = [...this.modules];
           this.updatePagination();
         }
       }
@@ -288,14 +292,22 @@ export class ModulePageComponent implements OnInit {
     this.moduleAEliminar = null;
   }
 
+  onSearch(term: string) {
+    this.filteredModules = this.modules.filter(module =>
+      module.name.toLowerCase().includes(term.toLowerCase()) ||
+      module.description.toLowerCase().includes(term.toLowerCase())
+    );
+    this.updatePagination();
+  }
+
   // Métodos de paginación
   updatePagination(): void {
-    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.modules.length);
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredModules.length);
     this.updatePaginatedItems();
   }
 
   updatePaginatedItems(): void {
-    this.paginatedModules = this.paginationService.getPaginatedItems(this.modules, this.paginationConfig);
+    this.paginatedModules = this.paginationService.getPaginatedItems(this.filteredModules, this.paginationConfig);
   }
 
   onPageChange(page: number): void {

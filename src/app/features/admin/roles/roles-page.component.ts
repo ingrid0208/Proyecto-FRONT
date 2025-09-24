@@ -6,13 +6,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { RolesService, Rol } from '../../../core/services/api/roles.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-roles-page',
   templateUrl: './roles-page.component.html',
   styleUrls: ['./roles-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent]
+  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent, SearchBarComponent]
 })
 export class RolesPageComponent implements OnInit {
   
@@ -40,6 +41,7 @@ export class RolesPageComponent implements OnInit {
   }
 
   roles: Rol[] = [];
+  filteredRoles: Rol[] = [];
   paginatedRoles: Rol[] = [];
 
   // Paginación
@@ -76,6 +78,7 @@ export class RolesPageComponent implements OnInit {
       next: (roles: Rol[]) => {
         console.log('Roles cargados:', roles); // Para depuración
         this.roles = roles || []; // Asegurar que roles sea un array
+        this.filteredRoles = [...this.roles]; // Inicializar roles filtrados
         this.updatePagination();
         // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
@@ -91,6 +94,7 @@ export class RolesPageComponent implements OnInit {
             { id: 1, name: 'Administrador', description: 'Rol con todos los permisos del sistema' },
             { id: 2, name: 'Usuario', description: 'Rol básico con permisos limitados' }
           ];
+          this.filteredRoles = [...this.roles];
         }
       }
     });
@@ -251,14 +255,22 @@ export class RolesPageComponent implements OnInit {
     this.rolAEliminar = null;
   }
 
+  onSearch(term: string) {
+    this.filteredRoles = this.roles.filter(rol =>
+      rol.name.toLowerCase().includes(term.toLowerCase()) ||
+      rol.description.toLowerCase().includes(term.toLowerCase())
+    );
+    this.updatePagination();
+  }
+
   // Métodos de paginación
   updatePagination(): void {
-    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.roles.length);
+    this.paginationConfig = this.paginationService.updatePagination(this.paginationConfig, this.filteredRoles.length);
     this.updatePaginatedItems();
   }
 
   updatePaginatedItems(): void {
-    this.paginatedRoles = this.paginationService.getPaginatedItems(this.roles, this.paginationConfig);
+    this.paginatedRoles = this.paginationService.getPaginatedItems(this.filteredRoles, this.paginationConfig);
   }
 
   onPageChange(page: number): void {

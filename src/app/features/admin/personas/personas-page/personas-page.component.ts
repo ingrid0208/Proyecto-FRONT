@@ -10,13 +10,14 @@ import { Municipio } from '../../../../shared/models/parameters/municipality.mod
 import { DocumentTypeDto as DocumentType } from '../../../../shared/Models/parameters/document-type.models';
 import { PaginationService, PaginationConfig } from '../../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+import { SearchBarComponent } from '../../../../shared/components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-personas-page',
   templateUrl: './personas-page.component.html',
   styleUrls: ['./personas-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, PaginationComponent]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, PaginationComponent, SearchBarComponent]
 })
 export class PersonasPageComponent implements OnInit {
   // El backend devuelve/consume un DTO con campos adicionales (phoneNumber, municipalityId, documentTypeId)

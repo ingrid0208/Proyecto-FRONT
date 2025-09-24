@@ -28,7 +28,7 @@
     </div>
   </div>
   <div class="search-bar">
-   <input (input)="onSearch($any($event.target).value)" placeholder="Buscar persona..." />
+    <app-search-bar (search)="onSearch($event)" placeholder="Buscar personas..."></app-search-bar>
   </div>
 
   <!-- Modal para agregar persona -->
