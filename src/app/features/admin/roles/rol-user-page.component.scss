@@ -3,12 +3,15 @@
 /* Normalizamos a las clases del admin común y aplicamos micro-overrides neutrales */
 
 .admin-header .header-icon {
-  /* mantener el acento azul para rol-user (si queremos diferenciar ligeramente) */
-  background: linear-gradient(135deg, #0b5ed7, darken(#0b5ed7, 10%));
+
+}
+
+.admin-header .header-text h1 {
+  color: $dark-color !important;
 }
 
 .admin-item-content .item-title {
-  color: #0b5ed7;
+  color: $dark-color !important;
 }
 
 /* Si el proyecto usaba selectores .success-message/.error-message locales, mapearlos
