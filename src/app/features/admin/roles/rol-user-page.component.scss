@@ -1,7 +1,5 @@
 @import '../../../shared/styles/admin-common.scss';
 
-/* Normalizamos a las clases del admin común y aplicamos micro-overrides neutrales */
-
 .admin-header .header-icon {
 
 }
@@ -14,8 +12,7 @@
   color: $dark-color !important;
 }
 
-/* Si el proyecto usaba selectores .success-message/.error-message locales, mapearlos
-   a las clases comunes para que sigan mostrando los estilos esperados. */
+
 .success-message {
   @extend .admin-alert;
   @extend .alert-success;
@@ -26,7 +23,7 @@
   @extend .alert-error;
 }
 
-/* Botón agregar: usar la clase común .btn-add si existe; añadir fallback por si acaso */
+
 .add-btn {
   @extend .btn-add;
 }

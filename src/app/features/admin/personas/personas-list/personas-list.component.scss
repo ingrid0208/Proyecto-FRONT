@@ -18,3 +18,19 @@
   display: flex;
   gap: 0.5rem;
 }
+
+@media (max-width: 768px) {
+  .admin-item-actions {
+    width: auto;
+    justify-content: flex-end;
+  }
+
+  .admin-item-card {
+    align-items: center;
+  }
+
+  .admin-item-actions .btn-action {
+    min-width: 64px;
+    padding: 0.4rem 0.6rem;
+  }
+}
