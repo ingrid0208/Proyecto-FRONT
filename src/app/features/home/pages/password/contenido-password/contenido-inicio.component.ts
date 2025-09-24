@@ -10,7 +10,6 @@ import { AppTopbar } from '../../../../../layout/header/topbar.component';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
 
-
 interface MultaTableRow {
   id: number;              // id de la multa (infractionId)
   userId: number;          // id del usuario
@@ -38,6 +37,9 @@ interface MultaTableRow {
 export class ContenidoInicioComponent implements OnInit {
   multas: MultaTableRow[] = [];
   ciudadano = '';
+  noResults = false;
+  searchWarning = '';
+
 
   columns: ColumnDef[] = [
     { key: 'tipo',        header: 'Tipo de multa',        type: 'text' },
@@ -52,6 +54,7 @@ export class ContenidoInicioComponent implements OnInit {
     private sessionPing: SessionPingService
   ) {}
 
+  // 📌 Carga inicial de multas (usando docTypeId + docNumber) 
   async ngOnInit() {
     const docTypeId = Number(sessionStorage.getItem('docTypeId'));
     const docNumber = sessionStorage.getItem('docNumber') || '';
@@ -63,46 +66,88 @@ export class ContenidoInicioComponent implements OnInit {
       const data = r?.data ?? [];
 
       this.multas = data.map((x: any) => ({
-        id: x.id,              
-        userId: x.userId,      
+        id: x.id,
+        userId: x.userId,
         tipo: x.typeInfractionName ?? '—',
         fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        // 👇 Usamos stateInfraction que viene del backend
         estado: mapEstadoFromEnum(x.stateInfraction)
       }));
 
       const first = data[0];
-      this.ciudadano = [first?.firstName, first?.lastName].filter(Boolean).join(' ');
+      if (first) {
+        // 👈 Guardamos userId en sesión para el buscador
+        sessionStorage.setItem('userId', String(first.userId));
+        this.ciudadano = [first.firstName, first.lastName].filter(Boolean).join(' ');
+      }
     } catch (error) {
       console.error('Error al cargar multas:', error);
     }
   }
 
- onMultaSelected(multa: MultaTableRow) {
-  console.log('Multa seleccionada:', multa);
-
-  if (multa.estado !== 'Pendiente') {
-    alert(`No se puede realizar un acuerdo de pago porque la multa está en estado "${multa.estado}".`);
-    return; // 🚫 detenemos la navegación
-  }
-
-  this.router.navigate(['/acuerdo-pago/formulario'], {
-    state: {
-      userId: multa.userId,
-      infractionId: multa.id,
-      ciudadano: this.ciudadano
+  // 📌 Filtro con buscador
+  async onSearch(term: string) {
+  try {
+    const userId = Number(sessionStorage.getItem('userId'));
+    if (!userId) {
+      console.warn('No hay userId en sesión');
+      return;
     }
-  });
+
+    // ⚠️ Validar el campo de búsqueda
+    if (term && !/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(term)) {
+      this.searchWarning = 'Solo puedes buscar por tipo de multa o descripción.';
+      this.noResults = false;
+      this.multas = [];
+      return;
+    } else {
+      this.searchWarning = '';
+    }
+
+    const r = await this.api.filterMultas({ userId, searchTerm: term }).toPromise();
+    const data = r?.data ?? [];
+
+    this.multas = data.map((x: any) => ({
+      id: x.id,
+      userId: x.userId,
+      tipo: x.typeInfractionName ?? '—',
+      fecha: x.dateInfraction ?? '',
+      descripcion: x.observations ?? '',
+      estado: mapEstadoFromEnum(x.stateInfraction)
+    }));
+
+    // 🚩 Activar bandera sin resultados
+    this.noResults = this.multas.length === 0;
+
+  } catch (error) {
+    console.error('Error al filtrar multas:', error);
+    this.noResults = true;
+  }
 }
 
+
+  onMultaSelected(multa: MultaTableRow) {
+    console.log('Multa seleccionada:', multa);
+
+    if (multa.estado !== 'Pendiente') {
+      alert(`No se puede realizar un acuerdo de pago porque la multa está en estado "${multa.estado}".`);
+      return;
+    }
+
+    this.router.navigate(['/acuerdo-pago/formulario'], {
+      state: {
+        userId: multa.userId,
+        infractionId: multa.id,
+        ciudadano: this.ciudadano
+      }
+    });
+  }
 }
 
-// 🔎 Función para mapear el enum del backend a texto legible
+// 🔎 Mapear enum del backend a texto legible
 function mapEstadoFromEnum(v: string | number | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' | 'Con acuerdo' {
   if (v === null || v === undefined) return 'Pendiente';
 
-  // si backend envía string (ej. "ConAcuerdoPago")
   if (typeof v === 'string') {
     switch (v) {
       case 'Pendiente': return 'Pendiente';
@@ -112,7 +157,6 @@ function mapEstadoFromEnum(v: string | number | null | undefined): 'Pendiente' |
     }
   }
 
-  // si backend envía número (ej. 0,1,2,3)
   if (typeof v === 'number') {
     switch (v) {
       case 0: return 'Pendiente';

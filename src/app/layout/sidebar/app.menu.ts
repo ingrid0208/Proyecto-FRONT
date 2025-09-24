@@ -91,7 +91,8 @@ export class AppMenu {
                 label: 'Contenido',
         items: [
           { label: 'Tipo De Multas', icon: 'pi pi-fw pi-id-card', routerLink: ['/uikit/TipoMultas'] },
-          { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/uikit/NotificacionMultas'] },
+          { label: 'Notificacion de acuerdos de pago', icon: 'pi pi-fw pi-check-square', routerLink: ['/notificaciones'] },
+           { label: 'Notificacion de Multas', icon: 'pi pi-fw pi-check-square', routerLink: ['/notificaciones/notificacion-multas'] },
           { label: 'Anexar multas', icon: 'pi pi-fw pi-image', routerLink: ['/anexar-multas/multas'] },
         ]
             },
@@ -125,16 +126,16 @@ export class AppMenu {
                                 icon: 'pi pi-fw pi-sign-in',
                                 routerLink: ['/auth/login']
                             },
-                            {
-                                label: 'Error',
-                                icon: 'pi pi-fw pi-times-circle',
-                                routerLink: ['/auth/error']
-                            },
-                            {
-                                label: 'Access Denied',
-                                icon: 'pi pi-fw pi-lock',
-                                routerLink: ['/auth/access']
-                            }
+                            // {
+                            //     label: 'Error',
+                            //     icon: 'pi pi-fw pi-times-circle',
+                            //     routerLink: ['/auth/error']
+                            // },
+                            // {
+                            //     label: 'Access Denied',
+                            //     icon: 'pi pi-fw pi-lock',
+                            //     routerLink: ['/auth/access']
+                            // }
                         ]
                     },
                 ]

@@ -1,42 +1,60 @@
-import { Component } from '@angular/core';
-import { Multas } from '../../../../../../../shared/models/multas.model';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultaCardComponent } from '../../contenido/multa-card/multa-card.component';
+import Swal from 'sweetalert2';
+import { PaymentAgreementSelectDto } from '../../../../../../../shared/Models/Entities/select/PaymentAgreementSelectDto';
+import { ServiceGenericService } from '../../../../../../../core/services/utils/generic/service-generic.service';
+
 @Component({
   selector: 'app-notificacion',
+  standalone: true,
   imports: [CommonModule, MultaCardComponent],
   templateUrl: './notificacion.component.html',
-  styleUrl: './notificacion.component.scss'
+  styleUrls: ['./notificacion.component.scss']
 })
-export class NotificacionComponent {
-   usuario = {
+export class NotificacionComponent implements OnInit {
+
+  usuario = {
     nombre: 'Camilo Andres Ramirez',
     cc: '12345678',
     acuerdosPago: 1,
     nuevasNotificaciones: 3
   };
 
-  multas: Multas[] = [
-    {
-      numero: 'N0124515',
-      descripcion: 'Consumir bebidas alcohólicas o sustancias psicoactivas en lugares públicos',
-      fecha: '19/6/2024',
-      estado: 'ABIERTO',
-      ubicacion: 'Carrera 8 #25-67'
-    },
-    {
-      numero: 'N1457814',
-      descripcion: 'Perturbar la tranquilidad con ruido excesivo',
-      fecha: '30/6/2024',
-      estado: 'PENDIENTE',
-      ubicacion: 'Plaza Central'
-    },
-    {
-      numero: 'N1245781',
-      descripcion: 'Ocupación indebida del espacio público - Venta ambulante sin permiso',
-      fecha: '30/6/2024',
-      estado: 'PENDIENTE',
-      ubicacion: 'Plaza Central'
-    }
-  ];
+  agreements: PaymentAgreementSelectDto[] = [];   // 👈 ahora es PaymentAgreementSelectDto[]
+
+  cargando: boolean = false;
+
+  constructor(
+    private serviceGeneric: ServiceGenericService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarAgreements();
+  }
+
+  cargarAgreements(): void {
+    this.cargando = true;
+
+    this.serviceGeneric.getAll<PaymentAgreementSelectDto>('PaymentAgreement')
+      .subscribe({
+        next: (data) => {
+          this.agreements = data;
+          this.cargando = false;
+          this.cdr.detectChanges();
+          console.log('✅ Acuerdos cargados:', this.agreements);
+        },
+        error: (err) => {
+          this.cargando = false;
+          console.error('❌ Error al cargar acuerdos:', err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudieron cargar las notificaciones de acuerdos de pago.',
+            confirmButtonColor: '#d33'
+          });
+        }
+      });
+  }
 }

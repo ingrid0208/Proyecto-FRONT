@@ -55,9 +55,8 @@
     [itemsPerPage]="paginationConfig.itemsPerPage"
     (pageChange)="onPageChange($event)">
   </app-pagination>
-</div>
 
-<!-- Modal para crear nuevo módulo -->
+  <!-- Modal para crear nuevo módulo -->
   <div *ngIf="showModal" class="modal-overlay">
     <div class="modal-content persona-form">
       <h2>Agregar Nuevo Módulo</h2>
@@ -140,3 +139,4 @@
       </div>
     </div>
   </div>
+</div> <!-- cierre del container -->

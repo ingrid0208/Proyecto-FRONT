@@ -107,7 +107,7 @@ export class Registrar {
             title: '¡Registro exitoso!',
             text: 'Te enviamos un código de verificación a tu correo.'
           }).then(() => this.router.navigate(['/auth/verify-code'], {
-            queryParams: { email: this.email }  // pasamos el correo
+            queryParams: { email: this.email } 
           }));
         });
       },

@@ -55,16 +55,15 @@
     [itemsPerPage]="paginationConfig.itemsPerPage"
     (pageChange)="onPageChange($event)">
   </app-pagination>
-</div>
 
-<!-- Modal para crear nuevo formulario -->
+  <!-- Modal para crear nuevo formulario -->
   <div *ngIf="showModal" class="modal-overlay">
     <div class="modal-content persona-form">
       <h2>Agregar Nuevo Formulario</h2>
       <form (ngSubmit)="crearForm()" autocomplete="off" #createForm="ngForm">
         <label>
           Nombre del Formulario:
-          <input type="text" [(ngModel)]="nuevoForm.name" name="name" required 
+          <input type="text" [(ngModel)]="nuevoForm.name" name="name" required
                  #nameInput="ngModel" maxlength="100" placeholder="Ej: Formulario de acuerdo de pago" />
           <div *ngIf="nameInput.invalid && nameInput.touched" class="error-msg">
             El nombre es requerido
@@ -72,8 +71,8 @@
         </label>
         <label>
           Descripción:
-          <textarea [(ngModel)]="nuevoForm.description" name="description" required 
-                   #descriptionInput="ngModel" maxlength="300" rows="4" 
+          <textarea [(ngModel)]="nuevoForm.description" name="description" required
+                   #descriptionInput="ngModel" maxlength="300" rows="4"
                    placeholder="Describe el propósito y uso del formulario..."></textarea>
           <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-msg">
             La descripción es requerida
@@ -94,7 +93,7 @@
       <form (ngSubmit)="actualizarForm()" autocomplete="off" #updateForm="ngForm">
         <label>
           Nombre del Formulario:
-          <input type="text" [(ngModel)]="formSeleccionado.name" name="name" required 
+          <input type="text" [(ngModel)]="formSeleccionado.name" name="name" required
                  #nameUpdateInput="ngModel" maxlength="100" />
           <div *ngIf="nameUpdateInput.invalid && nameUpdateInput.touched" class="error-msg">
             El nombre es requerido
@@ -102,7 +101,7 @@
         </label>
         <label>
           Descripción:
-          <textarea [(ngModel)]="formSeleccionado.description" name="description" required 
+          <textarea [(ngModel)]="formSeleccionado.description" name="description" required
                    #descriptionUpdateInput="ngModel" maxlength="300" rows="4"></textarea>
           <div *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched" class="error-msg">
             La descripción es requerida
@@ -140,3 +139,4 @@
       </div>
     </div>
   </div>
+</div> <!-- 👈 cierre del container -->

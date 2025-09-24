@@ -1,42 +1,38 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { LayoutService } from '../../core/services/layout.service';
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
   templateUrl: './topbar.component.html',
-  styleUrls: ['./topbar.component.scss'], 
-  imports: [CommonModule, FormsModule, OverlayPanelModule]
+  styleUrls: ['./topbar.component.scss'],
+  imports: [CommonModule, FormsModule]
 })
-
-export class AppTopbar {
+export class AppTopbar implements OnInit, OnDestroy {
   searchTerm = '';
+  private searchSubject = new Subject<string>();
+  private subscription!: Subscription;
 
-  constructor(
-    public layoutService: LayoutService,
-    private router: Router
-  ) {}
+  @Output() search = new EventEmitter<string>();
 
-  onSearch() {
-    if (this.searchTerm.trim()) {
-      console.log('Buscando:', this.searchTerm);
-    }
+  constructor(public layoutService: LayoutService) {}
+
+  ngOnInit() {
+    this.subscription = this.searchSubject.pipe(
+      debounceTime(200),      // ⏳ espera 400ms tras dejar de escribir
+      distinctUntilChanged()  
+    ).subscribe(term => this.search.emit(term));
   }
 
-  goToProfile() {
-    this.router.navigate(['/profile']);
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe();
   }
 
-  openSettings() {
-    this.router.navigate(['/settings']);
-  }
-
-  logout() {
-    localStorage.clear();
-    this.router.navigate(['/auth/login']);
+  onSearchChange() {
+    this.searchSubject.next(this.searchTerm.trim());
   }
 }

@@ -1,4 +1,4 @@
-// Variables de colores estandarizadas
+// 🎨 Variables de colores estandarizadas
 $primary-color: #43a047;
 $success-color: #43a047;
 $danger-color: #e53935;
@@ -8,6 +8,7 @@ $medium-gray: #757575;
 $dark-gray: #424242;
 $border-color: #e0e0e0;
 
+// 📌 Contenedor principal
 .personas-container {
   padding: 2rem;
   max-width: 1200px;
@@ -21,6 +22,7 @@ $border-color: #e0e0e0;
     text-align: center;
   }
 
+  // Botón agregar
   .btn-agregar {
     background: $primary-color;
     color: white;
@@ -47,6 +49,7 @@ $border-color: #e0e0e0;
     }
   }
 
+  // 📌 Tarjetas de formularios
   .persona-card {
     background: white;
     border: 1px solid $border-color;
@@ -132,6 +135,7 @@ $border-color: #e0e0e0;
     }
   }
 
+  // 📌 Mensaje sin datos
   .no-data {
     text-align: center;
     padding: 3rem;
@@ -158,6 +162,7 @@ $border-color: #e0e0e0;
     }
   }
 
+  // 📌 Alertas
   .alert {
     position: fixed;
     top: 20px;
@@ -192,6 +197,7 @@ $border-color: #e0e0e0;
     }
   }
 
+  // 📌 Overlay modal
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -216,6 +222,7 @@ $border-color: #e0e0e0;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       animation: modalSlideIn 0.3s ease-out;
 
+      // Formulario modal
       &.persona-form {
         h2 {
           color: $dark-gray;
@@ -269,6 +276,7 @@ $border-color: #e0e0e0;
         }
       }
 
+      // Modal de confirmación
       &.confirm-modal {
         text-align: center;
 
@@ -326,17 +334,6 @@ $border-color: #e0e0e0;
             }
           }
 
-          &[type="button"] {
-            background: $light-gray;
-            color: $medium-gray;
-            border: 2px solid $border-color;
-
-            &:hover {
-              background: darken($light-gray, 5%);
-              color: $dark-gray;
-            }
-          }
-
           &.btn-secundario {
             background: $light-gray;
             color: $medium-gray;
@@ -363,39 +360,23 @@ $border-color: #e0e0e0;
   }
 }
 
-// Animaciones
+// 📌 Animaciones
 @keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes modalSlideIn {
-  from {
-    transform: scale(0.9);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
-// Responsive
+// 📌 Responsive
 @media (max-width: 768px) {
   .personas-container {
     padding: 1rem;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -10,6 +10,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
   styleUrls: ['./form-page.component.scss'],
+  encapsulation: ViewEncapsulation.None, 
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent],
   providers: [FormService]

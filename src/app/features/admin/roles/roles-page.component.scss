@@ -377,3 +377,76 @@ textarea:focus {
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
 }
+
+/* Inputs y textareas en formularios de modales */
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1.5px solid #c8e6c9; /* verde claro */
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f9f9f9;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  color: #333;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #43a047; /* verde principal */
+  background: #fff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(67, 160, 71, 0.4);
+}
+
+/* Labels */
+.modal-content label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 0.4rem;
+}
+
+/* Botones dentro del modal */
+.modal-content .modal-actions button {
+  min-width: 100px;
+  border-radius: 6px;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.modal-content .modal-actions button[type="submit"] {
+  background: #43a047;
+  color: #fff;
+  border: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.modal-content .modal-actions button[type="submit"]:hover {
+  background: #388e3c;
+  transform: translateY(-1px);
+}
+
+.modal-content .modal-actions button[type="button"] {
+  background: #f0f0f0;
+  border: none;
+  color: #333;
+  transition: background 0.2s ease;
+}
+
+.modal-content .modal-actions button[type="button"]:hover {
+  background: #e0e0e0;
+}
+
+/* Mensajes de error */
+.modal-content .error-msg {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  background: #ffebee;
+  padding: 0.4rem 0.6rem;
+  border-radius: 4px;
+  border-left: 3px solid #d32f2f;
+}

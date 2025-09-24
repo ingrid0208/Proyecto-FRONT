@@ -217,5 +217,14 @@ sendMonthly(nombre: string, email: string) {
   );
 }
 
+//filtro multas
+
+filterMultas(body: { userId?: number; searchTerm?: string }) {
+  return this.http.post<{ count: number; data: any[] }>(
+    this.url('UserInfraction', 'filter'),
+    body,
+    this.optsJwt()
+  );
+}
 
 }

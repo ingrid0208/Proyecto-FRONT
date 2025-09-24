@@ -19,8 +19,16 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
           <img src="../../../assets/demo/login.png" alt="Imagen de fondo" />
         </div>
 
+        <!-- 🔹 Botón Salir -->
+
         <!-- Formulario -->
         <div class="login-form">
+                <button
+          pButton
+          label="Salir"
+          class="p-button-secondary w-full mt-2 login-btn"
+          (click)="exit()">
+        </button>
           <img src="../../../assets/demo/login_Arriba.png" class="corner corner-top-right" />
 
           <h2>Verificar correo</h2>
@@ -79,6 +87,22 @@ export class VerifyCodeComponent {
       },
       error: (err) => {
         Swal.fire('Error', err.error?.message || 'No se pudo verificar el código.', 'error');
+      }
+    });
+  }
+
+  // 🔹 Botón de salida con confirmación
+  exit() {
+    Swal.fire({
+      title: '¿Seguro que quieres salir?',
+      text: 'Perderás la información ingresada.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, salir',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/']); // Redirige al inicio
       }
     });
   }
