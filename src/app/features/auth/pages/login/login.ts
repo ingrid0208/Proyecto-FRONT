@@ -91,7 +91,7 @@ export class Login {
   navigatingHome = false;
 
   constructor(private router: Router, private api: ServiceGenericService) { }
-
+  
   onLogin(): void {
     const emailError = validateEmail(this.email);
     const passError = validatePassword(this.password);
@@ -101,11 +101,13 @@ export class Login {
       return;
     }
 
-    // ✅ Si todo bien, continúa login
     this.loading = true;
+
     this.api.loginEmail({ email: this.email.trim(), password: this.password })
       .subscribe({
         next: (res: LoginEmailResponse) => {
+          this.loading = false;
+
           if (res.isSuccess) {
             const today = new Date();
             const lastVerification = res.lastVerificationSentAt
@@ -124,38 +126,31 @@ export class Login {
                 title: 'Verificación mensual requerida',
                 text: 'Debes verificar tu correo electrónico para seguir usando tu cuenta.',
                 confirmButtonText: 'Verificar ahora'
-              }).then(() => {
-                this.router.navigate(['/auth/verify-email']);
-              });
+              }).then(() => this.router.navigate(['/auth/verify-email']));
             } else {
-              this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+              // ✅ Solo navega si login es exitoso
+              this.router.navigate(['/consultar-ingresar']);
             }
           } else {
+            // ❌ Usuario/contraseña incorrectos: solo muestra alerta, NO navegar
             Swal.fire({
               icon: 'error',
               title: 'Error',
-              text: res.message || 'No se pudo iniciar sesión.'
+              text: res.message || 'Usuario o contraseña incorrectos.'
             });
           }
         },
         error: (err) => {
-          // 👇 Aquí aprovechamos la respuesta limpia del middleware
-          const msg =
-            err?.error?.message ||
-            err?.message ||
-            'Error inesperado al iniciar sesión';
-
+          this.loading = false;
+          // ❌ Solo alerta, no navegar
           Swal.fire({
             icon: 'error',
             title: 'Error en inicio de sesión',
-            text: msg
+            text: err?.error?.message || 'Usuario o contraseña incorrectos'
           });
-        },
-        complete: () => (this.loading = false)
+        }
       });
   }
-
-
 
   goToRecovery(e?: Event) {
     e?.preventDefault();

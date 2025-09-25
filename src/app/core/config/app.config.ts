@@ -12,7 +12,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import Aura from '@primeng/themes/aura';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from '../../../app.routes';
-import { authExpiredInterceptor } from '../interceptors/auth-expired.interceptor';
+// import { authExpiredInterceptor } from '../interceptors/auth-expired.interceptor';
 
 // 👇 importa MessageService
 import { MessageService } from 'primeng/api';
@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authExpiredInterceptor]),
+      withInterceptors([]), //authExpiredInterceptor
     ),
     provideAnimationsAsync(),
     providePrimeNG({

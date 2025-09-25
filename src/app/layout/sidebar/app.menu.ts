@@ -85,7 +85,7 @@ export class AppMenu {
       },
             {
                 label: 'Inicio',
-                items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/consultar-ingresar/consultar-ingresar'] }]
+                items: [{ label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/consultar-ingresar'] }]
             },
             {
                 label: 'Contenido',

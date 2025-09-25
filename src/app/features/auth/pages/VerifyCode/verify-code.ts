@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RippleModule } from 'primeng/ripple';
 import Swal from 'sweetalert2';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-verify-code',
@@ -14,23 +15,18 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
   template: `
     <div class="login-wrapper animate-fade-in">
       <div class="login-card">
-        <!-- Imagen de fondo -->
         <div class="login-image">
           <img src="../../../assets/demo/login.png" alt="Imagen de fondo" />
         </div>
 
-        <!-- 🔹 Botón Salir -->
-
-        <!-- Formulario -->
         <div class="login-form">
-                <button
-          pButton
-          label="Salir"
-          class="p-button-secondary w-full mt-2 login-btn"
-          (click)="exit()">
-        </button>
+          <button
+            pButton
+            label="Salir"
+            class="p-button-secondary w-full mt-2 login-btn"
+            (click)="exit()">
+          </button>
           <img src="../../../assets/demo/login_Arriba.png" class="corner corner-top-right" />
-
           <h2>Verificar correo</h2>
           <p class="subtitle">Ingresa el código de verificación que enviamos a tu correo</p>
 
@@ -73,7 +69,7 @@ export class VerifyCodeComponent {
       return;
     }
 
-    this.http.post<any>('https://localhost:7286/api/verificacion/validate', {
+    this.http.post<any>(`${environment.apiURL}/verificacion/validate`, {
       email: this.email.trim(),
       code: this.code.trim()
     }).subscribe({
@@ -91,7 +87,6 @@ export class VerifyCodeComponent {
     });
   }
 
-  // 🔹 Botón de salida con confirmación
   exit() {
     Swal.fire({
       title: '¿Seguro que quieres salir?',
@@ -102,7 +97,7 @@ export class VerifyCodeComponent {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.router.navigate(['/']); // Redirige al inicio
+        this.router.navigate(['/']);
       }
     });
   }

@@ -1,31 +1,34 @@
-// src/app/Interceptor/AuthExpiredInterceptor.ts
-import { inject } from '@angular/core';
-import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+// // src/app/Interceptor/AuthExpiredInterceptor.ts
+// import { inject } from '@angular/core';
+// import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+// import { Router } from '@angular/router';
+// import { catchError, throwError } from 'rxjs';
 
-// 👇 importa MessageService
-import { MessageService } from 'primeng/api';
+// // 👇 importa MessageService
+// import { MessageService } from 'primeng/api';
 
-export const authExpiredInterceptor: HttpInterceptorFn = (req, next) => {
-  const router = inject(Router);
-  const messageService = inject(MessageService);
+// export const authExpiredInterceptor: HttpInterceptorFn = (req, next) => {
+//   const router = inject(Router);
+//   const messageService = inject(MessageService);
 
-  return next(req).pipe(
-    catchError((err: HttpErrorResponse) => {
-      if (err.status === 401 || err.status === 0) {
-        // 🔥 en lugar de alert()
-        messageService.add({
-          severity: 'warn', // success | info | warn | error
-          summary: 'Sesión expirada',
-          detail: 'Por favor inicia sesión nuevamente.',
-          life: 4000, // ms de duración
-        });
+//   // ⚡ Si viene este header, no hacemos nada
+//   if (req.headers.get('skipInterceptor')) {
+//     return next(req);
+//   }
 
-        localStorage.removeItem('currentUser'); // limpiar token
-        router.navigate(['/auth/inicio']);
-      }
-      return throwError(() => err);
-    })
-  );
-};
+//   return next(req).pipe(
+//     catchError((err: HttpErrorResponse) => {
+//       if (err.status === 401 || err.status === 0) {
+//         messageService.add({
+//           severity: 'warn',
+//           summary: 'Sesión expirada',
+//           detail: 'Por favor inicia sesión nuevamente.',
+//           life: 4000,
+//         });
+//         localStorage.removeItem('currentUser');
+//         router.navigate(['/auth/inicio']);
+//       }
+//       return throwError(() => err);
+//     })
+//   );
+// };
