@@ -6,7 +6,6 @@ import { GenericMultasTableComponent } from '../../../shared/components/generic-
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { PaymentFrequencyService } from '../../../core/services/api/payment-frequency.service';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../../layout/header/topbar.component';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { ColumnDef } from '../../../shared/Models/table.Generic';
@@ -15,7 +14,7 @@ import { PaymentFrequency } from '../../../shared/Models/parameters/payment-freq
 @Component({
   selector: 'app-payment-frequency',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
   templateUrl: './payment-frequency.component.html',
   styleUrls: ['./payment-frequency.component.scss']
 })
@@ -25,6 +24,9 @@ export class PaymentFrequencyComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   frecuencias: PaymentFrequency[] = [];
+  originalFrecuencias: PaymentFrequency[] = []; // Lista original sin filtros
+  filteredFrecuencias: PaymentFrequency[] = []; // Lista filtrada
+  searchTerm: string = ''; // Término de búsqueda
   loading = false;
   errorMsg = '';
   successMsg = '';
@@ -86,6 +88,8 @@ export class PaymentFrequencyComponent implements OnInit {
             };
             return normalized;
           });
+          this.originalFrecuencias = [...this.frecuencias]; // Guardar copia original
+          this.filteredFrecuencias = [...this.frecuencias]; // Inicializar filtrados
         },
         error: (e: any) => { this.errorMsg = 'No fue posible cargar las frecuencias de pago.'; }
       });
@@ -247,6 +251,30 @@ export class PaymentFrequencyComponent implements OnInit {
           }
         });
     }
+  }
+
+  // Métodos de búsqueda
+  onSearch(): void {
+    if (!this.searchTerm.trim()) {
+      // Si no hay término de búsqueda, mostrar todas las frecuencias
+      this.filteredFrecuencias = [...this.originalFrecuencias];
+    } else {
+      const searchTermLower = this.searchTerm.toLowerCase().trim();
+      // Filtrar frecuencias por nombre, código o intervalo de días
+      this.filteredFrecuencias = this.originalFrecuencias.filter(frecuencia =>
+        frecuencia.name.toLowerCase().includes(searchTermLower) ||
+        frecuencia.daysInterval.toString().toLowerCase().includes(searchTermLower) ||
+        (frecuencia.code && frecuencia.code.toLowerCase().includes(searchTermLower))
+      );
+    }
+
+    // Actualizar la lista mostrada
+    this.frecuencias = [...this.filteredFrecuencias];
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.onSearch();
   }
 
   // Métodos auxiliares para validaciones

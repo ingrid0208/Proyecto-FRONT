@@ -6,7 +6,6 @@ import { GenericMultasTableComponent } from '../../../shared/components/generic-
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { MunicipalityService } from '../../../core/services/api/municipality.service';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../../layout/header/topbar.component';
 import { Municipality } from '../../../shared/models/parameters/municipality.models';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
@@ -15,7 +14,7 @@ import { ColumnDef } from '../../../shared/Models/table.Generic';
 @Component({
   selector: 'app-municipality',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
   templateUrl: './municipality.component.html',
   styleUrls: ['./municipality.component.scss']
 })
@@ -25,6 +24,9 @@ export class MunicipalityComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   municipios: Municipality[] = [];
+  originalMunicipios: Municipality[] = []; // Lista original sin filtros
+  filteredMunicipios: Municipality[] = []; // Lista filtrada
+  searchTerm: string = ''; // Término de búsqueda
   loading = false;
   errorMsg = '';
   successMsg = '';
@@ -82,6 +84,8 @@ export class MunicipalityComponent implements OnInit {
         .subscribe({
           next: (r: Municipality[]) => {
             this.municipios = r;
+            this.originalMunicipios = [...r]; // Guardar copia original
+            this.filteredMunicipios = [...r]; // Inicializar filtrados
             this.updatePagination();
           },
           error: (e: any) => this.errorMsg = 'No fue posible cargar los municipios.'
@@ -204,6 +208,32 @@ export class MunicipalityComponent implements OnInit {
   cancelarEliminacion(): void {
     this.municipalityAEliminar = null;
     this.showConfirm = false;
+  }
+
+  // Métodos de búsqueda
+  onSearch(): void {
+    if (!this.searchTerm.trim()) {
+      // Si no hay término de búsqueda, mostrar todos los municipios
+      this.filteredMunicipios = [...this.originalMunicipios];
+    } else {
+      const searchTermLower = this.searchTerm.toLowerCase().trim();
+      // Filtrar municipios por nombre, código DANE o departamento
+      this.filteredMunicipios = this.originalMunicipios.filter(municipio =>
+        municipio.name.toLowerCase().includes(searchTermLower) ||
+        municipio.daneCode.toString().toLowerCase().includes(searchTermLower) ||
+        (municipio.departmentName && municipio.departmentName.toLowerCase().includes(searchTermLower))
+      );
+    }
+
+    // Actualizar la lista mostrada y resetear la paginación
+    this.municipios = [...this.filteredMunicipios];
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.onSearch();
   }
 
   // Métodos de paginación

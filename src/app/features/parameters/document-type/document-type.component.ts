@@ -6,7 +6,6 @@ import { GenericMultasTableComponent } from '../../../shared/components/generic-
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { DocumentTypeService } from '../../../core/services/api/document-type.service';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../../layout/header/topbar.component';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { DocumentTypeDto } from '../../../shared/Models/parameters/document-type.models';
@@ -16,7 +15,7 @@ import { ColumnDef } from '../../../shared/Models/table.Generic';
 @Component({
   selector: 'app-document-type',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
   templateUrl: './document-type.component.html',
   styleUrls: ['./document-type.component.scss']
 })
@@ -26,6 +25,9 @@ export class DocumentTypeComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   tipos: DocumentTypeDto[] = [];
+  originalTipos: DocumentTypeDto[] = []; // Lista original sin filtros
+  filteredTipos: DocumentTypeDto[] = []; // Lista filtrada
+  searchTerm: string = ''; // Término de búsqueda
   loading = false;
   errorMsg = '';
   successMsg = '';
@@ -81,6 +83,8 @@ export class DocumentTypeComponent implements OnInit {
       .subscribe({
         next: (rows) => {
           this.tipos = rows;
+          this.originalTipos = [...rows]; // Guardar copia original
+          this.filteredTipos = [...rows]; // Inicializar filtrados
           this.updatePagination();
         },
         error: (err) => {
@@ -229,6 +233,31 @@ export class DocumentTypeComponent implements OnInit {
           }
         });
     }
+  }
+
+  // Métodos de búsqueda
+  onSearch(): void {
+    if (!this.searchTerm.trim()) {
+      // Si no hay término de búsqueda, mostrar todos los tipos
+      this.filteredTipos = [...this.originalTipos];
+    } else {
+      const searchTermLower = this.searchTerm.toLowerCase().trim();
+      // Filtrar tipos por nombre o abreviatura
+      this.filteredTipos = this.originalTipos.filter(tipo =>
+        tipo.name.toLowerCase().includes(searchTermLower) ||
+        (tipo.abbreviation && tipo.abbreviation.toLowerCase().includes(searchTermLower))
+      );
+    }
+
+    // Actualizar la lista mostrada y resetear la paginación
+    this.tipos = [...this.filteredTipos];
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.onSearch();
   }
 
   // Métodos auxiliares para validaciones

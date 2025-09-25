@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
-import { AppTopbar } from '../../../layout/header/topbar.component';
 import { GenericMultasTableComponent } from '../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../shared/components/card-header/card-header.component';
 import { DepartmentService } from '../../../core/services/api/department.service';
@@ -25,7 +24,6 @@ import { ColumnDef } from '../../../shared/Models/table.Generic';
     MatCardModule,
     MatButtonModule,
     RouterModule,
-    AppTopbar,
     GenericMultasTableComponent,
     CardHeaderComponent,
     ButtonComponent
@@ -39,6 +37,9 @@ export class DepartmentComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   departamentos: Department[] = [];
+  originalDepartamentos: Department[] = []; // Lista original sin filtros
+  filteredDepartamentos: Department[] = []; // Lista filtrada
+  searchTerm: string = ''; // Término de búsqueda
   loading = false;
   errorMsg = '';
   successMsg = '';
@@ -97,6 +98,8 @@ export class DepartmentComponent implements OnInit {
       .subscribe({
         next: (rows: Department[]) => {
           this.departamentos = rows; // no hace falta mapear, ya coincide con la interfaz
+          this.originalDepartamentos = [...rows]; // Guardar copia original
+          this.filteredDepartamentos = [...rows]; // Inicializar filtrados
           this.updatePagination();
         },
         error: (err: any) => {
@@ -221,6 +224,31 @@ export class DepartmentComponent implements OnInit {
   cancelarEliminacion(): void {
     this.departmentAEliminar = null;
     this.showConfirm = false;
+  }
+
+  // Métodos de búsqueda
+  onSearch(): void {
+    if (!this.searchTerm.trim()) {
+      // Si no hay término de búsqueda, mostrar todos los departamentos
+      this.filteredDepartamentos = [...this.originalDepartamentos];
+    } else {
+      const searchTermLower = this.searchTerm.toLowerCase().trim();
+      // Filtrar departamentos por nombre o código DANE
+      this.filteredDepartamentos = this.originalDepartamentos.filter(dept =>
+        dept.name.toLowerCase().includes(searchTermLower) ||
+        dept.daneCode.toString().toLowerCase().includes(searchTermLower)
+      );
+    }
+
+    // Actualizar la lista mostrada y resetear la paginación
+    this.departamentos = [...this.filteredDepartamentos];
+    this.currentPage = 1;
+    this.updatePagination();
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.onSearch();
   }
 
   // Métodos de paginación
