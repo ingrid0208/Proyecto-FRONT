@@ -10,7 +10,7 @@ import { RippleModule } from 'primeng/ripple';
 import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
 import Swal from 'sweetalert2';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
-import { validateEmail, validatePassword } from '../../../../shared/utils/validators';
+import { validateEmail, validatePassword } from '../../../../shared/utils/validator/login-register';
 
 @Component({
   selector: 'app-login',

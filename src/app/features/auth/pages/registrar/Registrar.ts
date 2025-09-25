@@ -8,7 +8,7 @@ import { PasswordModule } from 'primeng/password';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
 import Swal from 'sweetalert2';
 import { HttpErrorResponse } from '@angular/common/http';
-import { validateRegisterEmail, validateRegisterFullName, validateRegisterPassword } from '../../../../shared/utils/validators';
+import { validateRegisterEmail, validateRegisterFullName, validateRegisterPassword } from '../../../../shared/utils/validator/login-register';
 
 @Component({
   selector: 'app-Registrar',
