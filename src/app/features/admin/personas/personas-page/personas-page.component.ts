@@ -64,19 +64,13 @@ export class PersonasPageComponent implements OnInit {
     this.personaForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
-      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       municipalityId: [null, [Validators.required, Validators.min(1)]],
-      documentTypeId: [null, [Validators.required, Validators.min(1)]]
     });
 
     this.updateForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
-      address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
       municipalityId: [null, [Validators.required, Validators.min(1)]],
-      documentTypeId: [null, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -127,20 +121,12 @@ export class PersonasPageComponent implements OnInit {
       const nuevaPersona: PersonaDto = {
         firstName: formValue.firstName,
         lastName: formValue.lastName,
-        phoneNumber: formValue.phoneNumber,
-        address: formValue.address,
         municipalityId: Number(formValue.municipalityId),
-        documentTypeId: Number(formValue.documentTypeId)
       };
       
       // Validación adicional
       if (!nuevaPersona.municipalityId || nuevaPersona.municipalityId <= 0) {
         this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
-        return;
-      }
-      
-      if (!nuevaPersona.documentTypeId || nuevaPersona.documentTypeId <= 0) {
-        this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
         return;
       }
       
@@ -151,6 +137,7 @@ export class PersonasPageComponent implements OnInit {
         next: (persona: any) => {
           this.mostrarAlerta('Persona creada exitosamente.', 'creado');
           this.cerrarFormulario();
+          this.personaService.refreshPersonas();
         },
         error: (error: any) => {
           console.error('Error al crear persona:', error);
@@ -252,70 +239,67 @@ export class PersonasPageComponent implements OnInit {
   }
 
   actualizarPersona() {
-    if (this.updateForm.valid && this.personaSeleccionada) {
-      const formValue = this.updateForm.value;
-      
-      // Asegurar que los IDs sean números válidos
-      const personaActualizada: PersonaDto = {
-        id: this.personaSeleccionada.id,
-        firstName: formValue.firstName,
-        lastName: formValue.lastName,
-        phoneNumber: formValue.phoneNumber,
-        address: formValue.address,
-        municipalityId: Number(formValue.municipalityId),
-        documentTypeId: Number(formValue.documentTypeId)
-      };
-      
-      // Validación adicional
-      if (!personaActualizada.municipalityId || personaActualizada.municipalityId <= 0) {
-        this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
-        return;
-      }
-      
-      if (!personaActualizada.documentTypeId || personaActualizada.documentTypeId <= 0) {
-        this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
-        return;
-      }
-      
-      // Log para debugging
-      console.log('Datos a actualizar:', personaActualizada);
-      
-      if (personaActualizada.id) {
-        this.personaService.genericService.update<any>(this.personaService.endpoint, personaActualizada.id, personaActualizada).subscribe({
-          next: (persona: any) => {
-            this.mostrarAlerta('Persona actualizada exitosamente.', 'creado');
-            this.cerrarModalActualizar();
-          },
-          error: (error: any) => {
-            console.error('Error al actualizar persona:', error);
-            
-            // Intentar extraer mensaje específico del error
-            let errorMessage = 'Error al actualizar la persona.';
-            if (error?.error) {
-              if (typeof error.error === 'string') {
-                errorMessage = error.error;
-              } else if (error.error.message) {
-                errorMessage = error.error.message;
-              } else if (error.error.errors) {
-                // Errores de validación del backend
-                const validationErrors = Object.keys(error.error.errors).map(key => 
-                  `${key}: ${error.error.errors[key].join(', ')}`
-                ).join('; ');
-                errorMessage = `Errores de validación: ${validationErrors}`;
-              }
-            }
-            
-            console.log('Mensaje de error procesado:', errorMessage);
-            this.mostrarAlerta(errorMessage, 'eliminado');
-          }
-        });
-      } else {
-        this.mostrarAlerta('ID de persona no encontrado.', 'eliminado');
-      }
-    } else {
-      this.mostrarAlerta('Por favor completa todos los campos requeridos.', 'eliminado');
+  if (this.updateForm.valid && this.personaSeleccionada) {
+    const formValue = this.updateForm.value;
+
+    // Normalizar valores (eliminar espacios antes/después)
+    const personaActualizada: PersonaDto = {
+      id: this.personaSeleccionada.id,
+      firstName: formValue.firstName.trim(),
+      lastName: formValue.lastName.trim(),
+      municipalityId: Number(formValue.municipalityId),
+    };
+
+    // 🔹 Verificar si hubo cambios reales
+    const cambios =
+      personaActualizada.firstName !== this.personaSeleccionada.firstName.trim() ||
+      personaActualizada.lastName !== this.personaSeleccionada.lastName.trim() ||
+      personaActualizada.municipalityId !== this.personaSeleccionada.municipalityId;
+
+    if (!cambios) {
+      this.mostrarAlerta('Debes realizar alguna modificación.', 'eliminado');
+      return;
     }
+
+    console.log('Datos a actualizar:', personaActualizada);
+
+    if (personaActualizada.id) {
+      this.personaService.genericService.update<any>(
+        this.personaService.endpoint,
+        personaActualizada.id,
+        personaActualizada
+      ).subscribe({
+        next: () => {
+          this.mostrarAlerta('Persona actualizada exitosamente.', 'creado');
+          this.cerrarModalActualizar();
+          this.personaService.refreshPersonas();
+        },
+        error: (error: any) => {
+          console.error('Error al actualizar persona:', error);
+          let errorMessage = 'Error al actualizar la persona.';
+          if (error?.error) {
+            if (typeof error.error === 'string') {
+              errorMessage = error.error;
+            } else if (error.error.message) {
+              errorMessage = error.error.message;
+            } else if (error.error.errors) {
+              const validationErrors = Object.keys(error.error.errors).map(
+                key => `${key}: ${error.error.errors[key].join(', ')}`
+              ).join('; ');
+              errorMessage = `Errores de validación: ${validationErrors}`;
+            }
+          }
+          this.mostrarAlerta(errorMessage, 'eliminado');
+        }
+      });
+    } else {
+      this.mostrarAlerta('ID de persona no encontrado.', 'eliminado');
+    }
+  } else {
+    this.mostrarAlerta('Por favor completa todos los campos requeridos.', 'eliminado');
   }
+}
+
 
   // Método helper para obtener el nombre del municipio por ID
   getMunicipioNombre(municipioId: number): string {
@@ -324,15 +308,6 @@ export class PersonasPageComponent implements OnInit {
     }
     const municipio = this.municipios.find(m => m.id === municipioId);
     return municipio ? municipio.name : `Municipio ID: ${municipioId}`;
-  }
-
-  // Método helper para obtener el nombre del tipo de documento por ID
-  getDocumentTypeNombre(documentTypeId: number): string {
-    if (this.documentTypes.length === 0) {
-      return 'No se encuentran tipos de documento';
-    }
-    const documentType = this.documentTypes.find(dt => dt.id === documentTypeId);
-    return documentType ? documentType.name : `Tipo de documento ID: ${documentTypeId}`;
   }
 
   // Métodos de paginación
@@ -356,10 +331,7 @@ interface PersonaDto {
   id?: number;
   firstName: string;
   lastName: string;
-  phoneNumber?: string;
-  address?: string;
   municipalityId?: number;
-  documentTypeId?: number;
   // campos opcionales/mapeos con la interfaz Persona existente
   email?: string;
   documentType?: string;

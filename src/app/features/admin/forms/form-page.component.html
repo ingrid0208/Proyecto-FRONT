@@ -1,3 +1,14 @@
+<!-- 🚨 Alerta GLOBAL - FUERA del contenedor principal -->
+<div *ngIf="showAlert" class="alert" [ngClass]="alertType">
+  <i class="pi" [ngClass]="{
+    'pi-check-circle': alertType === 'creado' || alertType === 'bienvenida',
+    'pi-exclamation-triangle': alertType === 'error',
+    'pi-trash': alertType === 'eliminado',
+    'pi-info-circle': alertType === 'info'  
+  }"></i>
+  <span>{{ alertMsg }}</span>
+</div>
+
 <div class="personas-container">
   <h1 class="page-title">Gestión de Formularios</h1>
 
@@ -37,16 +48,6 @@
     <small>Haga clic en "Agregar Formulario" para comenzar</small>
   </div>
 
-  <!-- Alerta -->
-  <div *ngIf="showAlert" class="alert" [ngClass]="alertType">
-    <i class="pi" [ngClass]="{
-      'pi-check-circle': alertType === 'creado' || alertType === 'bienvenida',
-      'pi-exclamation-triangle': alertType === 'error',
-      'pi-trash': alertType === 'eliminado'
-    }"></i>
-    <span>{{ alertMsg }}</span>
-  </div>
-
   <!-- Paginación -->
   <app-pagination
     [currentPage]="paginationConfig.currentPage"
@@ -55,88 +56,88 @@
     [itemsPerPage]="paginationConfig.itemsPerPage"
     (pageChange)="onPageChange($event)">
   </app-pagination>
-
-  <!-- Modal para crear nuevo formulario -->
-  <div *ngIf="showModal" class="modal-overlay">
-    <div class="modal-content persona-form">
-      <h2>Agregar Nuevo Formulario</h2>
-      <form (ngSubmit)="crearForm()" autocomplete="off" #createForm="ngForm">
-        <label>
-          Nombre del Formulario:
-          <input type="text" [(ngModel)]="nuevoForm.name" name="name" required
-                 #nameInput="ngModel" maxlength="100" placeholder="Ej: Formulario de acuerdo de pago" />
-          <div *ngIf="nameInput.invalid && nameInput.touched" class="error-msg">
-            El nombre es requerido
-          </div>
-        </label>
-        <label>
-          Descripción:
-          <textarea [(ngModel)]="nuevoForm.description" name="description" required
-                   #descriptionInput="ngModel" maxlength="300" rows="4"
-                   placeholder="Describe el propósito y uso del formulario..."></textarea>
-          <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-msg">
-            La descripción es requerida
-          </div>
-        </label>
-        <div class="modal-actions">
-          <button type="button" (click)="cerrarModal()">Cancelar</button>
-          <button type="submit" [disabled]="createForm.invalid || !nuevoForm.name.trim() || !nuevoForm.description.trim()">Crear</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal para actualizar formulario -->
-  <div *ngIf="showUpdateModal && formSeleccionado" class="modal-overlay">
-    <div class="modal-content persona-form">
-      <h2>Actualizar Formulario</h2>
-      <form (ngSubmit)="actualizarForm()" autocomplete="off" #updateForm="ngForm">
-        <label>
-          Nombre del Formulario:
-          <input type="text" [(ngModel)]="formSeleccionado.name" name="name" required
-                 #nameUpdateInput="ngModel" maxlength="100" />
-          <div *ngIf="nameUpdateInput.invalid && nameUpdateInput.touched" class="error-msg">
-            El nombre es requerido
-          </div>
-        </label>
-        <label>
-          Descripción:
-          <textarea [(ngModel)]="formSeleccionado.description" name="description" required
-                   #descriptionUpdateInput="ngModel" maxlength="300" rows="4"></textarea>
-          <div *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched" class="error-msg">
-            La descripción es requerida
-          </div>
-        </label>
-        <div class="modal-actions">
-          <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
-          <button type="submit" [disabled]="updateForm.invalid || !formSeleccionado.name.trim() || !formSeleccionado.description.trim()">Actualizar</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal de confirmación para eliminar -->
-  <div *ngIf="showConfirm && formAEliminar" class="modal-overlay">
-    <div class="modal-content confirm-modal">
-      <h2>Confirmar Eliminación</h2>
-      <p>¿Está seguro de que desea eliminar el formulario <strong>"{{ formAEliminar.name }}"</strong>?</p>
-      <p class="warning-text">Esta acción no se puede deshacer.</p>
-      <div class="modal-actions">
-        <button type="button" (click)="cancelarEliminar()" class="btn-secundario">Cancelar</button>
-        <button type="button" (click)="confirmarEliminar()" class="btn-peligro">Eliminar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de confirmación para actualizar -->
-  <div *ngIf="showUpdateConfirm && formAActualizar" class="modal-overlay">
-    <div class="modal-content confirm-modal">
-      <h2>Confirmar Actualización</h2>
-      <p>¿Está seguro de que desea actualizar el formulario <strong>"{{ formAActualizar.name }}"</strong>?</p>
-      <div class="modal-actions">
-        <button type="button" (click)="cancelarActualizacion()" class="btn-secundario">Cancelar</button>
-        <button type="button" (click)="abrirModalActualizar()" class="btn-primario">Sí, Editar</button>
-      </div>
-    </div>
-  </div>
 </div> <!-- 👈 cierre del container -->
+
+<!-- Modal para crear nuevo formulario -->
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-content persona-form">
+    <h2>Agregar Nuevo Formulario</h2>
+    <form (ngSubmit)="crearForm()" autocomplete="off" #createForm="ngForm">
+      <label>
+        Nombre del Formulario:
+        <input type="text" [(ngModel)]="nuevoForm.name" name="name" required
+               #nameInput="ngModel" maxlength="100" placeholder="Ej: Formulario de acuerdo de pago" />
+        <div *ngIf="nameInput.invalid && nameInput.touched" class="error-msg">
+          El nombre es requerido
+        </div>
+      </label>
+      <label>
+        Descripción:
+        <textarea [(ngModel)]="nuevoForm.description" name="description" required
+                 #descriptionInput="ngModel" maxlength="300" rows="4"
+                 placeholder="Describe el propósito y uso del formulario..."></textarea>
+        <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-msg">
+          La descripción es requerida
+        </div>
+      </label>
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" [disabled]="createForm.invalid || !nuevoForm.name.trim() || !nuevoForm.description.trim()">Crear</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para actualizar formulario -->
+<div *ngIf="showUpdateModal && formSeleccionado" class="modal-overlay">
+  <div class="modal-content persona-form">
+    <h2>Actualizar Formulario</h2>
+    <form (ngSubmit)="actualizarForm()" autocomplete="off" #updateForm="ngForm">
+      <label>
+        Nombre del Formulario:
+        <input type="text" [(ngModel)]="formSeleccionado.name" name="name" required
+               #nameUpdateInput="ngModel" maxlength="100" />
+        <div *ngIf="nameUpdateInput.invalid && nameUpdateInput.touched" class="error-msg">
+          El nombre es requerido
+        </div>
+      </label>
+      <label>
+        Descripción:
+        <textarea [(ngModel)]="formSeleccionado.description" name="description" required
+                 #descriptionUpdateInput="ngModel" maxlength="300" rows="4"></textarea>
+        <div *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched" class="error-msg">
+          La descripción es requerida
+        </div>
+      </label>
+      <div class="modal-actions">
+        <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
+        <button type="submit" [disabled]="updateForm.invalid || !formSeleccionado.name.trim() || !formSeleccionado.description.trim()">Actualizar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal de confirmación para eliminar -->
+<div *ngIf="showConfirm && formAEliminar" class="modal-overlay">
+  <div class="modal-content confirm-modal">
+    <h2>Confirmar Eliminación</h2>
+    <p>¿Está seguro de que desea eliminar el formulario <strong>"{{ formAEliminar.name }}"</strong>?</p>
+    <p class="warning-text">Esta acción no se puede deshacer.</p>
+    <div class="modal-actions">
+      <button type="button" (click)="cancelarEliminar()" class="btn-secundario">Cancelar</button>
+      <button type="button" (click)="confirmarEliminar()" class="btn-peligro">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm && formAActualizar" class="modal-overlay">
+  <div class="modal-content confirm-modal">
+    <h2>Confirmar Actualización</h2>
+    <p>¿Está seguro de que desea actualizar el formulario <strong>"{{ formAActualizar.name }}"</strong>?</p>
+    <div class="modal-actions">
+      <button type="button" (click)="cancelarActualizacion()" class="btn-secundario">Cancelar</button>
+      <button type="button" (click)="abrirModalActualizar()" class="btn-primario">Sí, Editar</button>
+    </div>
+  </div>
+</div>

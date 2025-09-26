@@ -24,6 +24,7 @@ export class UsuariosPageComponent implements OnInit {
 
   usuarios: Usuario[] = [];
   paginatedUsuarios: Usuario[] = [];
+  personas: { id: number; nombre: string }[] = []; 
 
   // Paginación
   paginationConfig: PaginationConfig = {
@@ -61,33 +62,33 @@ export class UsuariosPageComponent implements OnInit {
   ngOnInit() {
     this.mostrarAlerta('¡Bienvenido a la gestión de usuarios!', 'bienvenida');
     this.cargarUsuarios();
-    
-    // Datos de prueba (comentar cuando la API funcione)
-    setTimeout(() => {
-      if (this.usuarios.length === 0) {
-        console.log('No se cargaron usuarios de la API, agregando datos de prueba');
-        this.usuarios = [
-          {
-            id: 1,
-            name: 'Administrador Sistema',
-            email: 'admin@ejemplo.com',
-            password: '********',
-            personId: 1,
-            userInfractions: []
-          },
-          {
-            id: 2,
-            name: 'Usuario Normal',
-            email: 'usuario@ejemplo.com',
-            password: '********',
-            personId: 2,
-            userInfractions: []
-          }
-        ];
-        this.updatePagination();
-      }
-    }, 2000);
+    //this.cargarPersonasDisponibles(); 
   }
+    // Datos de prueba (comentar cuando la API funcione)
+    // setTimeout(() => {
+    //   if (this.usuarios.length === 0) {
+    //     console.log('No se cargaron usuarios de la API, agregando datos de prueba');
+    //     this.usuarios = [
+    //       {
+    //         id: 1,
+    //         name: 'Administrador Sistema',
+    //         email: 'admin@ejemplo.com',
+    //         password: '********',
+    //         personId: 1,
+    //         userInfractions: []
+    //       },
+    //       {
+    //         id: 2,
+    //         name: 'Usuario Normal',
+    //         email: 'usuario@ejemplo.com',
+    //         password: '********',
+    //         personId: 2,
+    //         userInfractions: []
+    //       }
+    //     ];
+    //     this.updatePagination();
+    //   }
+    // }, 2000);
 
   // Cargar usuarios desde la API
   cargarUsuarios(esDespuesDeOperacion: boolean = false): void {

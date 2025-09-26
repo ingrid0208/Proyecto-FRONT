@@ -82,51 +82,76 @@ export class PermisosPageComponent implements OnInit {
     this.showForm = false;
   }
 
-  crearPermiso() {
-    if (this.permisoForm.invalid) {
-      this.permisoForm.markAllAsTouched();
+ crearPermiso() {
+  if (this.permisoForm.invalid) {
+    this.permisoForm.markAllAsTouched();
+    return;
+  }
+
+  this.loading = true;
+  this.errorMsg = '';
+  this.successMsg = '';
+  const permisoData = {
+    name: this.permisoForm.value.name.trim(),
+    description: this.permisoForm.value.description.trim()
+  };
+
+  if (this.permisoEditando) {
+    // ✅ Validar si hay cambios reales (ignorando espacios)
+    const nameChanged = this.permisoEditando.name.trim() !== permisoData.name;
+    const descChanged = this.permisoEditando.description.trim() !== permisoData.description;
+
+    if (!nameChanged && !descChanged) {
+      this.errorMsg = 'Debes realizar alguna modificación antes de actualizar.';
+      this.loading = false;
+      setTimeout(() => this.errorMsg = '', 2500);
       return;
     }
-    this.loading = true;
-    this.errorMsg = '';
-    this.successMsg = '';
-    const permisoData = this.permisoForm.value;
-    if (this.permisoEditando) {
-      // Actualizar
-      const permisoActualizado = { ...this.permisoEditando, ...permisoData };
-      this.permissionService.genericService.update<Permission>(this.permissionService.endpoint, permisoActualizado.id, permisoActualizado).subscribe({
-        next: () => {
-          this.successMsg = 'Permiso actualizado correctamente';
-          this.obtenerPermisos();
-          this.permisoForm.reset();
-          this.cerrarFormulario();
-          this.permisoEditando = null;
-          this.loading = false;
-          setTimeout(() => this.successMsg = '', 2500);
-        },
-        error: () => {
-          this.errorMsg = 'Error al actualizar el permiso';
-          this.loading = false;
-        }
-      });
-    } else {
-      // Crear
-      this.permissionService.genericService.create<Permission>(this.permissionService.endpoint, permisoData).subscribe({
-        next: () => {
-          this.successMsg = 'Permiso creado correctamente';
-          this.obtenerPermisos();
-          this.permisoForm.reset();
-          this.cerrarFormulario();
-          this.loading = false;
-          setTimeout(() => this.successMsg = '', 2500);
-        },
-        error: () => {
-          this.errorMsg = 'Error al crear el permiso';
-          this.loading = false;
-        }
-      });
-    }
+
+    // ✅ Actualizar en el backend
+    const permisoActualizado = { ...this.permisoEditando, ...permisoData };
+    this.permissionService.genericService.update<Permission>(
+      this.permissionService.endpoint,
+      permisoActualizado.id,
+      permisoActualizado
+    ).subscribe({
+      next: () => {
+        this.successMsg = 'Permiso actualizado correctamente';
+        this.obtenerPermisos();
+        this.permisoForm.reset();
+        this.cerrarFormulario();
+        this.permisoEditando = null;
+        this.loading = false;
+        setTimeout(() => this.successMsg = '', 2500);
+      },
+      error: () => {
+        this.errorMsg = 'Error al actualizar el permiso';
+        this.loading = false;
+      }
+    });
+
+  } else {
+    // ✅ Crear nuevo permiso
+    this.permissionService.genericService.create<Permission>(
+      this.permissionService.endpoint,
+      permisoData
+    ).subscribe({
+      next: () => {
+        this.successMsg = 'Permiso creado correctamente';
+        this.obtenerPermisos();
+        this.permisoForm.reset();
+        this.cerrarFormulario();
+        this.loading = false;
+        setTimeout(() => this.successMsg = '', 2500);
+      },
+      error: () => {
+        this.errorMsg = 'Error al crear el permiso';
+        this.loading = false;
+      }
+    });
   }
+}
+
 
   confirmarActualizacion(permiso: Permission) {
     this.permisoAActualizar = permiso;

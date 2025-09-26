@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormService, Form } from '../../../core/services/form.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { validateFormDescription, validateFormName } from '../../../shared/utils/validator/form';
+import { validateFormDescription, validateFormName } from '../../../shared/utils/validator/validator-form/form';
 
 @Component({
   selector: 'app-form-page',
@@ -168,6 +168,7 @@ export class FormPageComponent implements OnInit {
     const nameError = validateFormName(this.nuevoForm.name);
     const descError = validateFormDescription(this.nuevoForm.description);
 
+
     if (nameError || descError) {
       this.mostrarAlerta(nameError || descError!, 'error');
       return;
@@ -191,60 +192,59 @@ export class FormPageComponent implements OnInit {
     });
   }
 
- actualizarForm() {
-  if (this.formSeleccionado && this.formSeleccionado.id) {
-    const nameError = validateFormName(this.formSeleccionado.name);
-    const descError = validateFormDescription(this.formSeleccionado.description);
+  actualizarForm() {
+    if (this.formSeleccionado && this.formSeleccionado.id) {
+      const nameError = validateFormName(this.formSeleccionado.name);
+      const descError = validateFormDescription(this.formSeleccionado.description);
 
-    if (nameError || descError) {
-      this.mostrarAlerta(nameError || descError!, 'error');
-      return;
-    }
-
-    // 👇 Detectar si el cambio fue solo espacios o ningún cambio real
-    const originalName = this.formAActualizar?.name?.trim() || '';
-    const originalDesc = this.formAActualizar?.description?.trim() || '';
-    const newName = this.formSeleccionado.name.trim();
-    const newDesc = this.formSeleccionado.description.trim();
-
-    if (originalName === newName && originalDesc === newDesc) {
-      // ⚡ Aquí ya no lanzamos "error", sino un aviso amigable
-      this.mostrarAlerta('No se detectaron cambios en el formulario.', 'info');
-      return;
-    }
-
-    console.log('Actualizando formulario:', this.formSeleccionado);
-
-    this.formService.genericService.update<Form>(
-      this.formService.endpoint,
-      this.formSeleccionado.id,
-      this.formSeleccionado
-    ).subscribe({
-      next: (formActualizado: Form) => {
-        console.log('Formulario actualizado exitosamente:', formActualizado);
-        this.cerrarModalActualizar();
-        this.mostrarAlerta('Formulario actualizado exitosamente.', 'creado');
-        this.cargarForms(true);
-      },
-      error: (error: any) => {
-        console.error('Error al actualizar formulario:', error);
-        this.mostrarAlerta(
-          'No se pudo actualizar el formulario. Intenta nuevamente.',
-          'error'
-        );
+      if (nameError || descError) {
+        this.mostrarAlerta(nameError || descError!, 'error');
+        return;
       }
-    });
+      const originalName = this.formAActualizar?.name?.trim() || '';
+      const originalDesc = this.formAActualizar?.description?.trim() || '';
+      const newName = this.formSeleccionado.name.trim();
+      const newDesc = this.formSeleccionado.description.trim();
+
+      if (originalName === newName && originalDesc === newDesc) {
+        // ⚡ Aquí ya no lanzamos "error", sino un aviso amigable
+        this.mostrarAlerta('No se detectaron cambios en el formulario.', 'info');
+        return;
+      }
+
+      console.log('Actualizando formulario:', this.formSeleccionado);
+
+      this.formService.genericService.update<Form>(
+        this.formService.endpoint,
+        this.formSeleccionado.id,
+        this.formSeleccionado
+      ).subscribe({
+        next: (formActualizado: Form) => {
+          
+          console.log('Formulario actualizado exitosamente:', formActualizado);
+          this.cerrarModalActualizar();
+          this.mostrarAlerta('Formulario actualizado exitosamente.', 'creado');
+          this.cargarForms(true);
+        },
+        error: (error: any) => {
+          console.error('Error al actualizar formulario:', error);
+          this.mostrarAlerta(
+            'No se pudo actualizar el formulario. Intenta nuevamente.',
+            'error'
+          );
+        }
+      });
+    }
   }
+
+
+  mostrarAlerta(msg: string, tipo: 'error' | 'creado' | 'eliminado' | 'bienvenida' | 'info') {
+  this.alertMsg = msg;
+  this.alertType = tipo;
+  this.showAlert = true;
+  setTimeout(() => this.showAlert = false, 2500);
 }
 
-  
-
-  mostrarAlerta(msg: string, tipo: string) {
-    this.alertMsg = msg;
-    this.alertType = tipo;
-    this.showAlert = true;
-    setTimeout(() => this.showAlert = false, 2500);
-  }
 
   pedirConfirmacionEliminar(form: Form) {
     this.formAEliminar = form;

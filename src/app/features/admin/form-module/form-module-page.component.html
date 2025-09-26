@@ -36,79 +36,83 @@
 
   <!-- Lista de Form-Modules -->
   <div class="form-modules-list" *ngIf="!isLoading">
-    <div class="form-module-card" *ngFor="let formModule of paginatedFormModules; let i = index">
-      <div class="card-header">
-        <h3>{{ formModule.formName }} - {{ formModule.moduleName }}</h3>
-        <div class="card-actions">
-          <button class="blue-btn" (click)="confirmarActualizacion(i)">Editar</button>
-          <button class="red-btn" (click)="pedirConfirmacionEliminar(i)">Eliminar</button>
-        </div>
+  <div class="form-module-card" *ngFor="let formModule of paginatedFormModules; let i = index">
+    <div class="card-header">
+      <h3>{{ formModule.formName }} - {{ formModule.moduleName }}</h3>
+      <div class="card-actions">
+        <button class="blue-btn" (click)="confirmarActualizacion(i)">Editar</button>
+        <button class="red-btn" (click)="pedirConfirmacionEliminar(i)">Eliminar</button>
       </div>
-      <div class="card-content">
-        <div class="info-row">
-          <span class="label">Form Name:</span>
-          <span class="value">{{ formModule.formName }}</span>
-        </div>
-        <div class="info-row">
-          <span class="label">Module Name:</span>
-          <span class="value">{{ formModule.moduleName }}</span>
-        </div>
+    </div>
+    <div class="card-content">
+      <div class="info-row">
+        <span class="label">Formulario:</span>
+        <span class="value">{{ formModule.formName }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Módulo:</span>
+        <span class="value">{{ formModule.moduleName }}</span>
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- Paginación -->
-  <app-pagination
-    *ngIf="!isLoading"
-    [currentPage]="paginationConfig.currentPage"
-    [totalPages]="paginationConfig.totalPages"
-    [totalItems]="paginationConfig.totalItems"
-    [itemsPerPage]="paginationConfig.itemsPerPage"
-    (pageChange)="onPageChange($event)">
+  <app-pagination *ngIf="!isLoading" [currentPage]="paginationConfig.currentPage"
+    [totalPages]="paginationConfig.totalPages" [totalItems]="paginationConfig.totalItems"
+    [itemsPerPage]="paginationConfig.itemsPerPage" (pageChange)="onPageChange($event)">
   </app-pagination>
 </div>
 
 <!-- Modal para crear/editar form-module -->
-  <div *ngIf="showModal" class="modal-overlay">
-    <div class="modal-content">
-      <button class="modal-close" (click)="cerrarModal()" title="Cerrar">&times;</button>
-      <h2>{{ isEditing ? 'Editar Form-Module' : 'Agregar Form-Module' }}</h2>
-      <form (ngSubmit)="guardarFormModule()" autocomplete="off">
-        <label>
-          Form Name:
-          <input type="text" [(ngModel)]="nuevoFormModule.formName" name="formName" required placeholder="Nombre del formulario" maxlength="100" />
-        </label>
-        <label>
-          Module Name:
-          <input type="text" [(ngModel)]="nuevoFormModule.moduleName" name="moduleName" required placeholder="Nombre del módulo" maxlength="80" />
-        </label>
-        <label>
-          Form ID:
-          <input type="number" [(ngModel)]="nuevoFormModule.formid" name="formid" required placeholder="ID del formulario" min="1" />
-        </label>
-        <label>
-          Module ID:
-          <input type="number" [(ngModel)]="nuevoFormModule.moduleid" name="moduleid" required placeholder="ID del módulo" min="1" />
-        </label>
-        <div class="modal-actions">
-          <button type="button" (click)="cerrarModal()">Cancelar</button>
-          <button type="submit" 
-                  [disabled]="!nuevoFormModule.formid || !nuevoFormModule.moduleid || !nuevoFormModule.formName || !nuevoFormModule.moduleName">
-            {{ isEditing ? 'Actualizar' : 'Crear' }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+<div *ngIf="showModal" class="modal-overlay">
+  <div class="modal-content">
+    <button class="modal-close" (click)="cerrarModal()" title="Cerrar">&times;</button>
+    <h2>{{ isEditing ? 'Editar Form-Module' : 'Agregar Form-Module' }}</h2>
 
-  <!-- Modal de confirmación para actualizar -->
-  <div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
-    <div class="alert-modal-content eliminado">
-      <span class="alert-icon">✏️</span>
-      <span class="alert-msg">¿Está seguro que desea actualizar este form-module?</span>
+    <form (ngSubmit)="guardarFormModule()" autocomplete="off">
+      <!-- Selector de formulario -->
+      <label>
+        Formulario:
+        <select [(ngModel)]="nuevoFormModule.formid" name="formid" required>
+          <option [ngValue]="0" disabled selected>Seleccione un formulario</option>
+          <option *ngFor="let f of forms" [ngValue]="f.id">
+            {{ f.name }}
+          </option>
+        </select>
+      </label>
+
+      <!-- Selector de módulo -->
+      <label>
+        Módulo:
+        <select [(ngModel)]="nuevoFormModule.moduleid" name="moduleid" required>
+          <option [ngValue]="0" disabled selected>Seleccione un módulo</option>
+          <option *ngFor="let m of modules" [ngValue]="m.id">
+            {{ m.name }}
+          </option>
+        </select>
+      </label>
+
       <div class="modal-actions">
-        <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
-        <button class="blue-btn" (click)="abrirModalEditar()">Sí, Editar</button>
+        <button type="button" (click)="cerrarModal()">Cancelar</button>
+        <button type="submit" [disabled]="!nuevoFormModule.formid || !nuevoFormModule.moduleid">
+          {{ isEditing ? 'Actualizar' : 'Crear' }}
+        </button>
       </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+  <div class="alert-modal-content eliminado">
+    <span class="alert-icon">✏️</span>
+    <span class="alert-msg">¿Está seguro que desea actualizar este form-module?</span>
+    <div class="modal-actions">
+      <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+      <button class="blue-btn" (click)="abrirModalEditar()">Sí, Editar</button>
     </div>
   </div>
+</div>
