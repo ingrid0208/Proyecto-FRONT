@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Persona } from '../../../shared/models/entities/persona.model';
+import { Persona } from '../../../shared/Models/Entities/persona.model';
 import { ServiceGenericService } from '../utils/generic/service-generic.service';
 
 @Injectable({ providedIn: 'root' })
@@ -25,7 +25,7 @@ export class PersonaService {
     });
   }
 
- 
+
 
   refreshPersonas(): void {
     this.loadPersonas();

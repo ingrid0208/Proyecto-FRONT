@@ -36,11 +36,20 @@
           <small *ngIf="phone.errors?.['pattern']">⚠️ El teléfono debe tener entre 7 y 10 dígitos.</small>
         </div>
 
-        <label>Dirección</label>
-        <input type="text" [(ngModel)]="form.address" name="address" required pattern=".*" #address="ngModel" />
-        <div class="error" *ngIf="address.invalid && address.touched">
-          <small *ngIf="address.errors?.['required']">⚠️ La dirección es obligatoria.</small>
-        </div>
+<label>Dirección</label>
+<input
+  type="text"
+  [(ngModel)]="form.address"
+  name="address"
+  required
+  pattern="^[a-zA-Z0-9\s#\-\.,]+$"
+  #address="ngModel"
+/>
+<div class="error" *ngIf="address.invalid && address.touched">
+  <small *ngIf="address.errors?.['required']">⚠️ La dirección es obligatoria.</small>
+  <small *ngIf="address.errors?.['pattern']">⚠️ Usa solo letras, números, espacios y # . , -</small>
+</div>
+
 
         <label>Barrio</label>
         <input type="text" [(ngModel)]="form.neighborhood" name="neighborhood" required pattern=".*" #neigh="ngModel" />

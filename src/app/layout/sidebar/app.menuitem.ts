@@ -113,6 +113,8 @@ export class AppMenuitem {
         });
     }
 
+    
+
     ngOnInit() {
         this.key = this.parentKey ? this.parentKey + '-' + this.index : String(this.index);
 
@@ -120,6 +122,7 @@ export class AppMenuitem {
             this.updateActiveStateFromRoute();
         }
     }
+
 
     updateActiveStateFromRoute() {
         let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' });

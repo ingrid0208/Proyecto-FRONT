@@ -1,238 +1,204 @@
 <div class="landing-container">
-  <!-- NAV -->
-  <nav class="navbar" role="navigation" aria-label="Principal">
-    <div class="nav-logo-section">
-      <img src="assets/demo/logo.png" alt="Escudo de Palermo" class="nav-logo" />
-      <div class="nav-text">
-        <h3 class="logo">Sistema de Multas</h3>
-        <p class="municipality">Municipio de Palermo</p>
-      </div>
-    </div>
-
-    <div class="nav-links">
-      <a
-        href="#"
-        class="login-btn"
-        (click)="onLogin($event)"
-        role="button"
-        aria-label="Iniciar sesión"
-      >
-        Acceso Funcionario
-      </a>
-    </div>
-  </nav>
-
-  <!-- NUEVA SECCIÓN: Split intro (mitad/mitad) -->
-  <section class="intro-split intro-contrast" aria-label="Accesos rápidos">
-  <div class="split-inner">
-
-    <!-- Columna 1: Carrusel de imágenes -->
-    <article class="split-card carousel-card">
-      <header class="split-head">
-        <h2 class="split-title">Tipos de Infracciones</h2>
-      </header>
-
-      <!-- Carrusel de imágenes -->
-      <div class="image-carousel-main">
-        <div class="carousel-container-main">
-          <img 
-            *ngFor="let image of carouselImages; let i = index" 
-            [src]="image.src" 
-            [alt]="image.alt"
-            [class.active]="i === currentImageIndex"
-            class="carousel-image-main"
-          />
-          
-          <!-- Navegación del carrusel -->
-          <button class="carousel-nav prev" (click)="previousImage()" aria-label="Imagen anterior">
-            &#8249;
-          </button>
-          <button class="carousel-nav next" (click)="nextImage()" aria-label="Siguiente imagen">
-            &#8250;
-          </button>
+    <!-- NAV -->
+    <nav class="navbar" role="navigation" aria-label="Principal">
+        <div class="nav-logo-section">
+            <img src="assets/demo/logo.png" alt="Escudo de Palermo" class="nav-logo" />
+            <div class="nav-text">
+                <h3 class="logo">Sistema de Multas</h3>
+                <p class="municipality">Municipio de Palermo</p>
+            </div>
         </div>
-        
-        <!-- Indicadores -->
-        <div class="carousel-indicators-main">
-          <span 
-            *ngFor="let image of carouselImages; let i = index"
-            [class.active]="i === currentImageIndex"
-            class="indicator-main"
-            (click)="setCurrentImage(i)"
-          ></span>
+
+        <div class="nav-links">
+            <a href="#" class="login-btn" (click)="onLogin($event)" role="button" aria-label="Iniciar sesión"> Acceso Funcionario </a>
         </div>
-        
-        <!-- Descripción de la imagen -->
-        <div class="carousel-description">
-          <p>{{ carouselImages[currentImageIndex]?.description }}</p>
+    </nav>
+
+    <!-- NUEVA SECCIÓN: Split intro (mitad/mitad) -->
+    <section class="intro-split intro-contrast" aria-label="Accesos rápidos">
+        <div class="split-inner">
+            <!-- Columna 1: Carrusel de imágenes -->
+            <article class="split-card carousel-card">
+                <header class="split-head">
+                    <h2 class="split-title">Tipos de Infracciones</h2>
+                </header>
+
+                <!-- Carrusel de imágenes -->
+                <div class="image-carousel-main">
+                    <div class="carousel-container-main">
+                        <img *ngFor="let image of carouselImages; let i = index" [src]="image.src" [alt]="image.alt" [class.active]="i === currentImageIndex" class="carousel-image-main" />
+
+                        <!-- Navegación del carrusel -->
+                        <button class="carousel-nav prev" (click)="previousImage()" aria-label="Imagen anterior">&#8249;</button>
+                        <button class="carousel-nav next" (click)="nextImage()" aria-label="Siguiente imagen">&#8250;</button>
+                    </div>
+
+                    <!-- Indicadores -->
+                    <div class="carousel-indicators-main">
+                        <span *ngFor="let image of carouselImages; let i = index" [class.active]="i === currentImageIndex" class="indicator-main" (click)="setCurrentImage(i)"></span>
+                    </div>
+
+                    <!-- Descripción de la imagen -->
+                    <div class="carousel-description">
+                        <p>{{ carouselImages[currentImageIndex]?.description }}</p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Columna 2: Funcionarios -->
+            <article class="split-card alt">
+                <header class="split-head">
+                    <h2 class="split-title">Acceso Funcionarios</h2>
+                </header>
+
+                <p class="split-text">
+                    Si eres <strong>Inspector de Policía</strong>, <strong>Agente de Tránsito</strong> o <strong>funcionario municipal</strong> de Palermo, accede al sistema para: <br />• Generar multas y comparendos <br />• Consultar infracciones
+                    registradas <br />• Gestionar pagos y estados de multas <br />• Administrar el sistema de convivencia ciudadana
+                </p>
+            </article>
         </div>
-      </div>
-    </article>
+    </section>
 
-    <!-- Columna 2: Funcionarios -->
-    <article class="split-card alt">
-      <header class="split-head">
-        <h2 class="split-title">Acceso Funcionarios</h2>
-      </header>
+    <!-- HERO -->
+    <main class="hero" id="inicio">
+        <div class="hero-inner">
+            <!-- Izquierda -->
+            <div class="hero-copy">
+                <h1 class="typing">
+                    <span class="line">Tus multas.</span><br />
+                    <span class="line">Organizadas. Sin</span><br />
+                    <span class="line">esfuerzo</span>
+                </h1>
 
-      <p class="split-text">
-        Si eres <strong>Inspector de Policía</strong>, <strong>Agente de Tránsito</strong> o 
-        <strong>funcionario municipal</strong> de Palermo, accede al sistema para:
-        <br>• Generar multas y comparendos
-        <br>• Consultar infracciones registradas  
-        <br>• Gestionar pagos y estados de multas
-        <br>• Administrar el sistema de convivencia ciudadana
-      </p>
-    </article>
+                <p>Consulta rápidamente tus infracciones. Encuentra información detallada. Gestiona pagos con quien quieras. Todo absolutamente bajo tu control.</p>
+            </div>
 
-  </div>
-</section>
+            <!-- Derecha: formulario real -->
+            <div class="hero-form">
+                <form class="card form-card" [formGroup]="idForm" (ngSubmit)="onSubmit()" aria-label="Formulario de identificación ciudadana">
+                    <h3 class="form-title">Identificación ciudadana</h3>
 
+                    <label class="form-label">Tipo de documento</label>
+                    <select formControlName="documentType" class="form-select" aria-label="Tipo de documento">
+                        <option value="">Selecciona</option>
+                        <option *ngFor="let t of documentTypes" [value]="t.value">{{ t.label }}</option>
+                    </select>
 
+                    <label class="form-label">Número de documento</label>
+                    <input formControlName="documentNumber" type="text" class="form-input" placeholder="Ingresa tu número" aria-label="Número de documento" />
 
-  <!-- HERO -->
-  <main class="hero" id="inicio">
-    <div class="hero-inner">
-      <!-- Izquierda -->
-      <div class="hero-copy">
-        <h1 class="typing">
-          <span class="line">Tus multas.</span><br />
-          <span class="line">Organizadas. Sin</span><br />
-          <span class="line">esfuerzo</span>
-        </h1>
+                    <button type="submit" class="btn primary" [disabled]="idForm.invalid">Consultar Multas</button>
 
-        <p>
-          Consulta rápidamente tus infracciones. Encuentra información detallada.
-          Gestiona pagos con quien quieras. Todo absolutamente bajo tu control.
-        </p>
-      </div>
+                    <p class="recaptcha-note">Este sitio está protegido por reCAPTCHA y aplican la Política de privacidad y los Términos de servicio de Google.</p>
 
-      <!-- Derecha: formulario real -->
-      <div class="hero-form">
-        <form class="card form-card" [formGroup]="idForm" (ngSubmit)="onSubmit()" aria-label="Formulario de identificación ciudadana">
-          <h3 class="form-title">Identificación ciudadana</h3>
+                    <!-- Resultados -->
+                    <div class="results-block" *ngIf="loadingInfractions">Cargando infracciones...</div>
+                    <div class="results-block error" *ngIf="infractionsError">{{ infractionsError }}</div>
 
-          <label class="form-label">Tipo de documento</label>
-          <select formControlName="documentType" class="form-select" aria-label="Tipo de documento">
-            <option value="">Selecciona</option>
-            <option *ngFor="let t of documentTypes" [value]="t.value">{{ t.label }}</option>
-          </select>
-
-          <label class="form-label">Número de documento</label>
-          <input formControlName="documentNumber" type="text" class="form-input" placeholder="Ingresa tu número" aria-label="Número de documento" />
-
-          <button type="submit" class="btn primary" [disabled]="idForm.invalid">Consultar Multas</button>
-
-          <p class="recaptcha-note">Este sitio está protegido por reCAPTCHA y aplican la Política de privacidad y los Términos de servicio de Google.</p>
-          
-          <!-- Resultados -->
-          <div class="results-block" *ngIf="loadingInfractions">Cargando infracciones...</div>
-          <div class="results-block error" *ngIf="infractionsError">{{ infractionsError }}</div>
-
-          <div class="results-list" *ngIf="!loadingInfractions && infractions?.length">
-            <h4 class="results-title">Infracciones encontradas ({{ infractions.length }})</h4>
-            <ul>
-              <li *ngFor="let inf of infractions" class="infraction-item">
-                <div class="inf-row">
-                  <strong>{{ inf.infractionType || '-' }}</strong>
-                  <span class="inf-value">{{ inf.value | currency:'COP' }}</span>
-                </div>
-                <div class="inf-row small">
-                  <span class="inf-date">{{ inf.infractionDate | date:'shortDate' }}</span>
-                  <span class="inf-state">{{ inf.state }}</span>
-                </div>
-                <p class="inf-desc">{{ inf.description }}</p>
-                <div class="inf-actions">
-                  <button class="btn" (click)="openInfractionModal(inf)">Ver detalle</button>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </form>
-      </div>
-    </div>
-  </main>
-</div> <!-- ⬅️ Cerramos el contenedor verde -->
+                    <div class="results-list" *ngIf="!loadingInfractions && infractions?.length">
+                        <h4 class="results-title">Infracciones encontradas ({{ infractions.length }})</h4>
+                        <ul>
+                            <li *ngFor="let inf of infractions" class="infraction-item">
+                                <div class="inf-row">
+                                    <strong>{{ inf.infractionType || '-' }}</strong>
+                                    <span class="inf-value">{{ inf.value | currency: 'COP' }}</span>
+                                </div>
+                                <div class="inf-row small">
+                                    <span class="inf-date">{{ inf.infractionDate | date: 'shortDate' }}</span>
+                                    <span class="inf-state">{{ inf.state }}</span>
+                                </div>
+                                <p class="inf-desc">{{ inf.description }}</p>
+                                <div class="inf-actions">
+                                    <button class="btn" (click)="openInfractionModal(inf)">Ver detalle</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+<!-- ⬅️ Cerramos el contenedor verde -->
 
 <!-- ESTADÍSTICAS ANIMADAS -->
 <section class="stats-section" aria-label="Estadísticas del sistema">
-  <div class="stats-container">
-    <div class="stat-item" *ngFor="let stat of stats; let i = index" [attr.data-index]="i">
-      <div class="stat-icon">
-        <span class="material-symbols-outlined">{{ stat.icon }}</span>
-      </div>
-      <div class="stat-content">
-        <span class="stat-number" [attr.data-target]="stat.value">0</span>
-        <span class="stat-suffix">{{ stat.suffix }}</span>
-        <p class="stat-label">{{ stat.label }}</p>
-      </div>
+    <div class="stats-container">
+        <div class="stat-item" *ngFor="let stat of stats; let i = index" [attr.data-index]="i">
+            <div class="stat-icon">
+                <span class="material-symbols-outlined">{{ stat.icon }}</span>
+            </div>
+            <div class="stat-content">
+                <span class="stat-number" [attr.data-target]="stat.value">0</span>
+                <span class="stat-suffix">{{ stat.suffix }}</span>
+                <p class="stat-label">{{ stat.label }}</p>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 <!-- BANDA FULL-WIDTH BLANCA: ¿Cómo funciona? -->
 <section class="howto-band" aria-label="Cómo funciona">
-  <div class="band-container">
-    <app-step-card [steps]="steps"></app-step-card>
-  </div>
+    <div class="band-container">
+        <app-step-card [steps]="steps"></app-step-card>
+    </div>
 </section>
 
 <!-- MULTAS (también fuera del contenedor verde) -->
 <section class="multas-section" id="consultas" aria-labelledby="titulo-multas">
-  <div class="container">
-    <h2 class="section-title" id="titulo-multas">Tipos de Multas</h2>
+    <div class="container">
+        <h2 class="section-title" id="titulo-multas">Tipos de Multas</h2>
 
-    <!-- Acordeón padre (solo uno abierto) -->
-    <mat-accordion [multi]="false" class="accordion-lg">
-      <ng-container *ngFor="let cat of categories; let i = index">
-        <mat-expansion-panel (opened)="onParentOpened(i)">
-          <mat-expansion-panel-header>
-            <mat-panel-title>{{ cat.title }}</mat-panel-title>
-          </mat-expansion-panel-header>
+        <!-- Acordeón padre (solo uno abierto) -->
+        <mat-accordion [multi]="false" class="accordion-lg">
+            <ng-container *ngFor="let cat of categories; let i = index">
+                <mat-expansion-panel (opened)="onParentOpened(i)">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>{{ cat.title }}</mat-panel-title>
+                    </mat-expansion-panel-header>
 
-          <!-- Acordeón hijo (permite varios abiertos) -->
-          <mat-accordion [multi]="true" class="sub-accordion-lg" #subAcc>
-            <ng-container *ngFor="let it of cat.items; let j = index">
-              <mat-expansion-panel>
-                <mat-expansion-panel-header>
-                  <mat-panel-title>{{ it.title }}</mat-panel-title>
-                </mat-expansion-panel-header>
+                    <!-- Acordeón hijo (permite varios abiertos) -->
+                    <mat-accordion [multi]="true" class="sub-accordion-lg" #subAcc>
+                        <ng-container *ngFor="let it of cat.items; let j = index">
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>{{ it.title }}</mat-panel-title>
+                                </mat-expansion-panel-header>
 
-                <p class="subtext">{{ it.text }}</p>
-              </mat-expansion-panel>
+                                <p class="subtext">{{ it.text }}</p>
+                            </mat-expansion-panel>
+                        </ng-container>
+                    </mat-accordion>
+                </mat-expansion-panel>
             </ng-container>
-          </mat-accordion>
-        </mat-expansion-panel>
-      </ng-container>
-    </mat-accordion>
-  </div>
+        </mat-accordion>
+    </div>
 </section>
 
 <!-- Modal para mostrar detalles de la infracción -->
 <div *ngIf="showInfractionModal" class="modal-overlay" (click)="closeInfractionModal()">
-  <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
-    <div class="modal-header">
-      <h3>Detalle de la Infracción</h3>
-      <button class="close-btn" (click)="closeInfractionModal()" aria-label="Cerrar">✕</button>
-    </div>
-    <div class="modal-body">
-      <ng-container *ngIf="selectedInfraction; else noData">
-        <div class="selected-simple">
-          <p><strong>Nombre:</strong> {{ getFullName() }}</p>
-          <p><strong>Tipo de Infracción:</strong> {{ getTypeInfractionName() }}</p>
-          <p><strong>Observaciones:</strong></p>
-          <p class="infraction-full-desc">{{ getObservations() }}</p>
+    <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3>Detalle de la Infracción</h3>
+            <button class="close-btn" (click)="closeInfractionModal()" aria-label="Cerrar">✕</button>
         </div>
-      </ng-container>
-      <ng-template #noData>
-        <p>No hay datos para mostrar.</p>
-      </ng-template>
+        <div class="modal-body">
+            <ng-container *ngIf="selectedInfraction; else noData">
+                <div class="selected-simple">
+                    <p><strong>Nombre:</strong> {{ getFullName() }}</p>
+                    <p><strong>Tipo de Infracción:</strong> {{ getTypeInfractionName() }}</p>
+                    <p><strong>Observaciones:</strong></p>
+                    <p class="infraction-full-desc">{{ getObservations() }}</p>
+                </div>
+            </ng-container>
+            <ng-template #noData>
+                <p>No hay datos para mostrar.</p>
+            </ng-template>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" (click)="closeInfractionModal()">Cerrar</button>
+        </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn" (click)="closeInfractionModal()">Cerrar</button>
-    </div>
-  </div>
 </div>
 <!-- DEBUG: mostrar JSON completo dentro del modal (solo en desarrollo) -->
-<pre *ngIf="showInfractionModal && selectedInfraction" style="max-width:680px;margin:8px auto;padding:12px;background:#f4f6f8;border-radius:8px;overflow:auto;">{{ selectedInfraction | json }}</pre>
-
+<pre *ngIf="showInfractionModal && selectedInfraction" style="max-width: 680px; margin: 8px auto; padding: 12px; background: #f4f6f8; border-radius: 8px; overflow: auto">{{ selectedInfraction | json }}</pre>

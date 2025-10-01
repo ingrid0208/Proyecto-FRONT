@@ -55,7 +55,7 @@ export class UsuariosService {
   // Obtener todos los usuarios
   getUsuarios(): Observable<Usuario[]> {
     return this.http.get<UsuarioAPI[]>(this.apiUrl).pipe(
-      map((usuariosAPI: UsuarioAPI[]) => 
+      map((usuariosAPI: UsuarioAPI[]) =>
         usuariosAPI.map(user => this.mapearUsuarioAPI(user))
       )
     );
@@ -76,7 +76,7 @@ export class UsuariosService {
       documentTypeId: usuario.personId, // Temporalmente mapear personId a documentTypeId
       documentNumber: '123456789' // Valor temporal hasta que se actualice la API
     };
-    
+
     return this.http.post<UsuarioAPI>(this.apiUrl, usuarioAPI).pipe(
       map(response => this.mapearUsuarioAPI(response))
     );
@@ -90,7 +90,7 @@ export class UsuariosService {
       documentTypeId: usuario.personId || 1,
       documentNumber: '123456789' // Valor temporal
     };
-    
+
     return this.http.put<UsuarioAPI>(`${this.apiUrl}/${id}`, usuarioAPI).pipe(
       map(response => this.mapearUsuarioAPI(response))
     );

@@ -8,8 +8,15 @@ import { GenericMultasTableComponent } from '../../../../../shared/components/ge
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
-import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/userInfractionSelectDto';
+import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/select/UserInfractionSelectDto';
 
+// 🔹 DTO reducido para mostrar en la tabla
+export interface InfractionView {
+  tipo: string;
+  fecha: string;
+  descripcion: string;
+  estado: 'Pendiente' | 'Pagada' | 'Vencida';
+}
 
 @Component({
   selector: 'app-contenido-documento',
@@ -23,7 +30,7 @@ import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/u
     CardHeaderComponent,
   ],
   templateUrl: './contenido-documento.component.html',
-  styleUrl: './contenido-documento.component.scss'
+  styleUrls: ['./contenido-documento.component.scss'] // 🔹 styleUrls (plural)
 })
 export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
 
@@ -33,7 +40,7 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
     private sessionPing: SessionPingService
   ) {}
 
-  multas: UserInfractionSelectDto[] = [];
+  multas: InfractionView[] = []; // 🔹 ahora usamos el DTO reducido
   ciudadano = '';
 
   columns: ColumnDef[] = [
@@ -44,9 +51,8 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
   ];
 
   async ngOnInit() {
-    this.sessionPing.start(); // ⬅️ arranca el monitor
+    this.sessionPing.start();
 
-    // ...tu lógica actual (leer navigation state, fallback a sessionStorage, etc.)
     const nav = this.router.getCurrentNavigation();
     const st: any = nav?.extras?.state ?? history.state;
 
@@ -66,19 +72,21 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
 
     try {
       const r = await this.auth.getMultasByDocument(docTypeId, docNumber).toPromise();
-      const data = r?.data ?? [];
+      const data: UserInfractionSelectDto[] = r?.data ?? [];
       if (!data.length) {
         alert('Este usuario no tiene multas registradas.');
         this.router.navigate(['/auth/inicio']);
         return;
       }
 
-      this.multas = data.map((x: any) => ({
+      // 🔹 Adaptamos UserInfractionSelectDto → InfractionView
+      this.multas = data.map((x: UserInfractionSelectDto) => ({
         tipo: x.typeInfractionName ?? '—',
         fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        estado: mapEstadoFromBool(x.stateInfraction)
+        estado: mapEstadoFromNumber(x.stateInfraction)
       }));
+
       const first = data[0];
       this.ciudadano = [first?.firstName, first?.lastName].filter(Boolean).join(' ');
     } catch (e: any) {
@@ -88,7 +96,6 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // ⬅️ ¡AHORA sí se detiene al salir de la ruta!
     this.sessionPing.stop();
   }
 
@@ -106,8 +113,9 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
   }
 }
 
-function mapEstadoFromBool(v: boolean | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' {
-  if (v === true) return 'Pagada';
-  if (v === false) return 'Pendiente';
+// 🔹 Cambié a number porque tu DTO define stateInfraction: number
+function mapEstadoFromNumber(v: number | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' {
+  if (v === 1) return 'Pagada';
+  if (v === 2) return 'Vencida';
   return 'Pendiente';
 }

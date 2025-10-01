@@ -1,10 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
 import { CardMultasComponent } from '../../contenido/card-multas/card-multas.component';
 import { ServiceGenericService } from '../../../../../../../../core/services/utils/generic/service-generic.service';
 import { UserInfractionSelectDto } from '../../../../../../../../shared/Models/Entities/select/UserInfractionSelectDto';
+import { SignalrService } from '../../../../../../../../core/services/signalr.service';
 
 @Component({
   selector: 'app-notification-multas',
@@ -13,18 +15,45 @@ import { UserInfractionSelectDto } from '../../../../../../../../shared/Models/E
   templateUrl: './notification-multas.component.html',
   styleUrls: ['./notification-multas.component.scss']
 })
-export class NotificationMultasComponent implements OnInit {
+export class NotificationMultasComponent implements OnInit, OnDestroy {
 
   multas: UserInfractionSelectDto[] = [];
   cargando = false;
 
+  private wsSub?: Subscription;
+
   constructor(
     private serviceGeneric: ServiceGenericService,
+    private signalrService: SignalrService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.cargarMultas();
+
+    // 👇 Suscribirse al evento que lanza el backend cuando aplica descuento
+    this.wsSub = this.signalrService.on<UserInfractionSelectDto>('ReceiveDiscount')
+      .subscribe((infractionActualizada) => {
+        console.log('📩 Multa actualizada con descuento:', infractionActualizada);
+
+        // Reemplazar en la lista la infracción actualizada
+        const index = this.multas.findIndex(m => m.id === infractionActualizada.id);
+        if (index !== -1) {
+          this.multas[index] = infractionActualizada;
+        } else {
+          this.multas.unshift(infractionActualizada); // si es nueva, agregar
+        }
+
+        this.cdr.detectChanges();
+
+        Swal.fire({
+          icon: 'info',
+          title: 'Descuento aplicado',
+          text: `Se actualizó el monto de la multa de ${infractionActualizada.firstName} ${infractionActualizada.lastName}`,
+          timer: 4000,
+          showConfirmButton: false
+        });
+      });
   }
 
   cargarMultas(): void {
@@ -49,5 +78,9 @@ export class NotificationMultasComponent implements OnInit {
           });
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.wsSub?.unsubscribe();
   }
 }

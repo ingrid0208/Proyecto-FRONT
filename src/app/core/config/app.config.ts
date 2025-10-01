@@ -16,6 +16,7 @@ import { authExpiredInterceptor } from '../interceptors/auth-expired.interceptor
 
 // 👇 importa MessageService
 import { MessageService } from 'primeng/api';
+import { authInterceptor } from '../interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authExpiredInterceptor]),
+      withInterceptors([authExpiredInterceptor, authInterceptor]),
     ),
     provideAnimationsAsync(),
     providePrimeNG({

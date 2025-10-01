@@ -7,10 +7,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { RippleModule } from 'primeng/ripple';
-import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
 import Swal from 'sweetalert2';
+
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
 import { validateEmail, validatePassword } from '../../../../shared/utils/validators';
+import { User } from '../../../../shared/Models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -90,8 +91,11 @@ export class Login {
   loading = false;
   navigatingHome = false;
 
-  constructor(private router: Router, private api: ServiceGenericService) { }
+  constructor(private router: Router, private api: ServiceGenericService) {}
 
+  // ===============================
+  // 🔑 Iniciar sesión
+  // ===============================
   onLogin(): void {
     const emailError = validateEmail(this.email);
     const passError = validatePassword(this.password);
@@ -101,62 +105,34 @@ export class Login {
       return;
     }
 
-    // ✅ Si todo bien, continúa login
     this.loading = true;
-    this.api.loginEmail({ email: this.email.trim(), password: this.password })
+
+    this.api.Login({ email: this.email.trim(), password: this.password })
       .subscribe({
-        next: (res: LoginEmailResponse) => {
-          if (res.isSuccess) {
-            const today = new Date();
-            const lastVerification = res.lastVerificationSentAt
-              ? new Date(res.lastVerificationSentAt)
-              : null;
+        next: (user: User) => {
+          console.log("✅ Usuario autenticado:", user);
 
-            const esDia4 = today.getDate() === 4;
-            const yaVerificadoEsteMes =
-              lastVerification &&
-              lastVerification.getMonth() === today.getMonth() &&
-              lastVerification.getFullYear() === today.getFullYear();
+          // 🔍 Aquí más adelante podrías reactivar lógica de verificación mensual
+          this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
 
-            if (esDia4 && !yaVerificadoEsteMes) {
-              Swal.fire({
-                icon: 'info',
-                title: 'Verificación mensual requerida',
-                text: 'Debes verificar tu correo electrónico para seguir usando tu cuenta.',
-                confirmButtonText: 'Verificar ahora'
-              }).then(() => {
-                this.router.navigate(['/auth/verify-email']);
-              });
-            } else {
-              this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
-            }
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: res.message || 'No se pudo iniciar sesión.'
-            });
-          }
+          this.loading = false;
         },
         error: (err) => {
-          // 👇 Aquí aprovechamos la respuesta limpia del middleware
-          const msg =
-            err?.error?.message ||
-            err?.message ||
-            'Error inesperado al iniciar sesión';
-
+          console.error("❌ Error en login:", err);
+          const msg = err?.error?.message || err?.message || 'Error inesperado al iniciar sesión';
           Swal.fire({
             icon: 'error',
             title: 'Error en inicio de sesión',
             text: msg
           });
-        },
-        complete: () => (this.loading = false)
+          this.loading = false;
+        }
       });
   }
 
-
-
+  // ===============================
+  // 🔗 Navegaciones auxiliares
+  // ===============================
   goToRecovery(e?: Event) {
     e?.preventDefault();
     this.router.navigate(['/auth/recovery-password']);
@@ -178,5 +154,4 @@ export class Login {
     }, 500);
   }
 }
-
 

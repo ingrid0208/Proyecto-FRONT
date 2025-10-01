@@ -1,8 +1,16 @@
-// core/services/servicesGeneric/service-generic.service.ts
+// ===============================
+// 📌 Imports
+// ===============================
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, switchMap, tap, throwError } from 'rxjs';
+import { Router } from '@angular/router';
+
+// Config & Store
 import { environment } from '../../../../../environments/environment.development';
+import { UserStore } from './../../User.Store';
+
+// Models
 import { LoginEmailRequest } from '../../../../shared/Models/auth/LoginEmailRequest';
 import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailResponse';
 import { RegisterRequestDto } from '../../../../shared/Models/auth/RegisterRequestDto';
@@ -10,38 +18,47 @@ import { LoginDocumentoRequest } from '../../../../shared/Models/LoginDocumentoR
 import { LoginDocumentoResponse } from '../../../../shared/Models/LoginDocumentoResponse';
 import { PaymentAgreementInitDto } from '../../../../shared/Models/PaymentAgreementInitDto';
 import { PaymentAgreementCreateResponse } from '../../../../shared/Models/Entities/PaymentAgreementCreateResponse';
-
+import { User } from '../../../../shared/Models/user.model';
 
 type getAllType = 'GetAll' | 'GetAllDeletes';
 type DeleteType = 'Persistent' | 'Logical';
 
-// core/services/servicesGeneric/service-generic.service.ts
+// ===============================
+// 📌 Servicio genérico
+// ===============================
 @Injectable({ providedIn: 'root' })
 export class ServiceGenericService {
   private readonly baseUrl = environment.apiURL;
-  constructor(private http: HttpClient) { }
+  private userStore = inject(UserStore);
+  private router = inject(Router);
 
-  // ===== Helpers =====
+  constructor(private http: HttpClient) {}
+
+  // ===============================
+  // 🛠️ Helpers
+  // ===============================
+
+  /** Construcción de headers con o sin Authorization */
   private getHeaders(skipAuth = false): HttpHeaders {
     const currentUser = localStorage.getItem('currentUser');
     const token = skipAuth ? undefined : (currentUser ? JSON.parse(currentUser)?.token : undefined);
 
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-    if (token) headers['Authorization'] = `Bearer ${token}`;
+    if (token) headers['Authorization'] = `Bearer ${token}`; // ✅ corregido template string
     return new HttpHeaders(headers);
   }
 
-
-  /** ✅ Opciones para llamadas con JWT (sin cookies) */
+  /** Opciones con JWT (Authorization Bearer) */
   private optsJwt() {
-    return { headers: this.getHeaders(false) }; // false => NO skipAuth => añade Bearer si existe
+    return { headers: this.getHeaders(false) };
   }
 
-  /** ✅ Opciones para llamadas con Cookie (con withCredentials y sin Bearer) */
+  /** Opciones con Cookie (withCredentials) */
   private optsCookie() {
-    return { headers: this.getHeaders(true), withCredentials: true }; // true => skipAuth => NO Bearer
+    return { headers: this.getHeaders(true), withCredentials: true };
   }
 
+  /** Construye URL final */
   private url(controller: string, ...segments: (string | number)[]) {
     const parts = [this.baseUrl, controller, ...segments].map(s =>
       String(s).replace(/^\/+|\/+$/g, '')
@@ -49,7 +66,7 @@ export class ServiceGenericService {
     return parts.filter(Boolean).join('/');
   }
 
-
+  /** Construye parámetros dinámicos */
   private buildParams(obj?: Record<string, any>): HttpParams {
     let params = new HttpParams();
     if (!obj) return params;
@@ -62,10 +79,10 @@ export class ServiceGenericService {
     return params;
   }
 
-  // ======================
-  // CRUD **JWT** (la mayoría de tu app normal)
-  // ======================
-  getAll<T>(controller: string, getAllType: 'GetAll' | 'GetAllDeletes' = 'GetAll') {
+  // ===============================
+  // 📌 CRUD genéricos (JWT)
+  // ===============================
+  getAll<T>(controller: string, getAllType: getAllType = 'GetAll') {
     const params = this.buildParams({ getAllType: 0 });
     return this.http.get<T[]>(this.url(controller), { ...this.optsJwt(), params });
   }
@@ -82,7 +99,7 @@ export class ServiceGenericService {
     return this.http.put<T>(this.url(controller, id), data, this.optsJwt());
   }
 
-  delete(controller: string, id: number | string, deleteType: 'Persistent' | 'Logical' = 'Persistent') {
+  delete(controller: string, id: number | string, deleteType: DeleteType = 'Persistent') {
     const params = this.buildParams({ deleteType });
     return this.http.delete(this.url(controller, id), { ...this.optsJwt(), params });
   }
@@ -91,8 +108,11 @@ export class ServiceGenericService {
     return this.http.patch<void>(this.url(controller, 'logical-restore', id), {}, this.optsJwt());
   }
 
+  // ===============================
+  // 🔐 Autenticación (Cookie)
+  // ===============================
 
-
+  /** Login con cookie */
   loginEmail(body: LoginEmailRequest) {
     return this.http.post<LoginEmailResponse>(
       this.url('Auth', 'login'),
@@ -101,20 +121,68 @@ export class ServiceGenericService {
     );
   }
 
-
-
+  /** Registrar usuario */
   registrar(body: RegisterRequestDto) {
-  return this.http.post<any>(
-    this.url('Auth', 'register'),       // ✅ apunta al endpoint real
-    body,
-    { headers: this.getHeaders(true) }  // se envía sin token
-  );
-}
+    return this.http.post<any>(
+      this.url('Auth', 'register'),
+      body,
+      { headers: this.getHeaders(true) }
+    );
+  }
 
+  /** Login + consulta de usuario en un solo flujo */
+  Login(obj: LoginEmailRequest): Observable<User> {
+    return this.http.post<any>(this.url('Auth', 'login'), obj, { withCredentials: true }).pipe(
+      switchMap(() => this.GetMe()),
+      catchError((error) => {
+        const detail = error?.error?.detail;
+        if (detail) {
+          error.error = { ...error.error, message: detail };
+        }
+        return throwError(() => error);
+      })
+    );
+  }
 
-  // ======================
-  // SESIÓN POR DOCUMENTO (Cookie) — con withCredentials
-  // ======================
+  /** Obtener datos del usuario autenticado */
+  GetMe(): Observable<User> {
+    return this.http.get<User>(this.url('Auth', 'me'), this.optsCookie()).pipe(
+      tap(user => {
+        console.log("✅ /me OK:", user);
+        this.userStore.set(user);
+      }),
+      catchError((error) => {
+        console.error("❌ Error en /me", error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /** Logout simple */
+  logout() {
+    return this.http.post(this.url('Login', 'logout'), {}, this.optsCookie());
+  }
+
+  /** Logout + limpiar store + redirección */
+  logouts(): Observable<any> {
+    return this.http.post(this.url('Auth', 'logout'), {}, { withCredentials: true }).pipe(
+      tap(() => {
+        this.userStore.clear();
+        this.router.navigate(['/']);
+      })
+    );
+  }
+
+  /** Refresh de sesión con cookie */
+  RefreshToken(): Observable<User> {
+    return this.http.post<any>(this.url('Auth','refresh'), {}, { withCredentials: true }).pipe(
+      switchMap(() => this.GetMe())
+    );
+  }
+
+  // ===============================
+  // 📌 Sesión por documento
+  // ===============================
   loginDocumento(body: LoginDocumentoRequest) {
     return this.http.post<LoginDocumentoResponse>(
       this.url('Login', 'documento'),
@@ -130,10 +198,6 @@ export class ServiceGenericService {
     );
   }
 
-  logout() {
-    return this.http.post(this.url('Login', 'logout'), {}, this.optsCookie());
-  }
-
   getMultasByDocument(documentTypeId: number, documentNumber: string) {
     return this.http.get<{ isSuccess: boolean; count: number; data: any[] }>(
       this.url('UserInfraction', 'by-document'),
@@ -144,11 +208,14 @@ export class ServiceGenericService {
     );
   }
 
-  /** 🔔 Ping a la sesión por documento (cookie) */
+  /** Verifica que la cookie de sesión aún es válida */
   pingDocSession() {
     return this.http.get<void>(this.url('Login', 'ping'), this.optsCookie());
   }
 
+  // ===============================
+  // 📌 Pagos
+  // ===============================
   getInitData(userId: number, infractionId?: number) {
     let url = this.url('PaymentAgreement', 'init', userId);
     if (infractionId) {
@@ -158,73 +225,73 @@ export class ServiceGenericService {
   }
 
   createInfraction(body: any) {
-  return this.http.post<any>(
-    this.url('UserInfraction', 'create-with-person'), 
-    body,
-    this.optsJwt()
-  );
+    return this.http.post<any>(
+      this.url('UserInfraction', 'create-with-person'),
+      body,
+      this.optsJwt()
+    );
+  }
+
+  createPaymentAgreement(body: any) {
+    return this.http.post<PaymentAgreementCreateResponse>(
+      this.url('PaymentAgreement'),
+      body,
+      this.optsJwt()
+    );
+  }
+
+  // ===============================
+  // 📌 Verificación de correo
+  // ===============================
+  sendVerification(nombre: string, email: string) {
+    return this.http.post<any>(
+      this.url('verificacion', 'send'),
+      { nombre, email },
+      { headers: this.getHeaders(true) }
+    );
+  }
+
+  validateCode(email: string, code: string) {
+    return this.http.post<any>(
+      this.url('verificacion', 'validate'),
+      { email, code },
+      { headers: this.getHeaders(true) }
+    );
+  }
+
+  sendReactivation(email: string) {
+    return this.http.post<any>(
+      this.url('verificacion', 'send-reactivation'),
+      { email },
+      { headers: this.getHeaders(true) }
+    );
+  }
+
+  reactivateAccount(email: string, code: string) {
+    return this.http.post<any>(
+      this.url('verificacion', 'reactivate'),
+      { email, code },
+      { headers: this.getHeaders(true) }
+    );
+  }
+
+  sendMonthly(nombre: string, email: string) {
+    return this.http.post<any>(
+      this.url('verificacion', 'send-monthly'),
+      { nombre, email },
+      { headers: this.getHeaders(true) }
+    );
+  }
+
+  // ===============================
+  // 📌 Filtros
+  // ===============================
+  filterMultas(body: { userId?: number; searchTerm?: string }) {
+    return this.http.post<{ count: number; data: any[] }>(
+      this.url('UserInfraction', 'filter'),
+      body,
+      this.optsJwt()
+    );
+  }
 }
 
-createPaymentAgreement(body: any) {
-  return this.http.post<PaymentAgreementCreateResponse>(
-    this.url('PaymentAgreement'),
-    body,
-    this.optsJwt()
-  );
-}
-
-
-// ======================
-// VERIFICACIÓN DE CORREO
-// ======================
-sendVerification(nombre: string, email: string) {
-  return this.http.post<any>(
-    this.url('verificacion', 'send'),
-    { nombre, email },
-    { headers: this.getHeaders(true) }
-  );
-}
-
-validateCode(email: string, code: string) {
-  return this.http.post<any>(
-    this.url('verificacion', 'validate'),
-    { email, code },
-    { headers: this.getHeaders(true) }
-  );
-}
-
-sendReactivation(email: string) {
-  return this.http.post<any>(
-    this.url('verificacion', 'send-reactivation'),
-    { email },
-    { headers: this.getHeaders(true) }
-  );
-}
-
-reactivateAccount(email: string, code: string) {
-  return this.http.post<any>(
-    this.url('verificacion', 'reactivate'),
-    { email, code },
-    { headers: this.getHeaders(true) }
-  );
-}
-
-sendMonthly(nombre: string, email: string) {
-  return this.http.post<any>(
-    this.url('verificacion', 'send-monthly'),
-    { nombre, email },
-    { headers: this.getHeaders(true) }
-  );
-}
-
-//filtro multas
-
-filterMultas(body: { userId?: number; searchTerm?: string }) {
-  return this.http.post<{ count: number; data: any[] }>(
-    this.url('UserInfraction', 'filter'),
-    body,
-    this.optsJwt()
-  );
-}
-
-}

@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
-import { Municipality } from '../../../shared/models/parameters/municipality.models';
+import { Municipality } from '../../../shared/Models/parameters/municipality.models';
 
 describe('MunicipalityComponent', () => {
   let fixture: ComponentFixture<MunicipalityComponent>;

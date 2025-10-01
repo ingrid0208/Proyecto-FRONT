@@ -52,7 +52,7 @@ export class UserInfractionService {
         if (trimmed.startsWith('<')) {
           console.warn('UserInfraction: la respuesta parece HTML. Reintentando con la URL absoluta del backend.');
           // Construir parámetros ya normalizados
-          const absoluteUrl = `https://localhost:7286/api/${this.endpoint}/by-document`;
+          const absoluteUrl = `https://localhost:7286//api/${this.endpoint}/by-document`;
           return this.retryWithAbsoluteUrl(absoluteUrl, httpParams as HttpParams);
         }
 

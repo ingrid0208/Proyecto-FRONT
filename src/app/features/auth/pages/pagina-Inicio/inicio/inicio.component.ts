@@ -7,12 +7,12 @@ import { MatExpansionModule, MatAccordion } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 
 import { StepCardComponent } from '../../../../../shared/components/step-card/step-card.component';
-import { StepCard } from '../../../../../shared/models/StepCard';
+import { StepCard } from '../../../../../shared/Models/StepCard';
 
 // ⬇️ usa tu servicio genérico
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 import { UserInfractionService, UserInfractionDto } from '../../../../../core/services/api/user-infraction.service';
-import { TypeInfractionSelectDto } from '../../../../../shared/models/entities/TypeInfractionSelectDto';
+import { TypeInfractionSelectDto } from '../../../../../shared/Models/Entities/TypeInfractionSelectDto'
 
 interface SubItem { title: string; text: string; }
 interface Category { title: string; items: SubItem[]; }
@@ -66,7 +66,7 @@ export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
   // Carrusel
   currentImageIndex: number = 0;
   private intervalId: any;
-  
+
   carouselImages: CarouselImage[] = [
     {
       src: 'https://www.segurilatam.com/wp-content/uploads/sites/5/2021/07/policia-nacional-colombia-uniforme-azul.jpg',
@@ -173,14 +173,14 @@ export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   previousImage(): void {
-    this.currentImageIndex = this.currentImageIndex === 0 
-      ? this.carouselImages.length - 1 
+    this.currentImageIndex = this.currentImageIndex === 0
+      ? this.carouselImages.length - 1
       : this.currentImageIndex - 1;
   }
 
   setCurrentImage(index: number): void {
     this.currentImageIndex = index;
-    
+
     // Reiniciar el interval cuando el usuario selecciona manualmente
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -221,7 +221,7 @@ export class InicioComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  
+
   onParentOpened(index: number): void {
     const arr = this.subAccordions?.toArray() ?? [];
     arr.forEach(acc => acc.closeAll());

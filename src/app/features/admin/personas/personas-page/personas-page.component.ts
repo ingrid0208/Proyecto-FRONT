@@ -6,7 +6,7 @@ import { MunicipalityService } from '../../../../core/services/api/municipality.
 import { DocumentTypeService } from '../../../../core/services/api/document-type.service';
 // Nota: no usamos la interfaz `Persona` original aquí porque el componente trabaja con un DTO
 // que incluye campos como phoneNumber, municipalityId y documentTypeId.
-import { Municipio } from '../../../../shared/models/parameters/municipality.models';
+import { Municipio } from '../../../../shared/Models/parameters/municipality.models';
 import { DocumentTypeDto as DocumentType } from '../../../../shared/Models/parameters/document-type.models';
 import { PaginationService, PaginationConfig } from '../../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
@@ -41,11 +41,11 @@ export class PersonasPageComponent implements OnInit {
   showUpdateConfirm: boolean = false;
   personaSeleccionada: PersonaDto | null = null;
   personaAActualizar: PersonaDto | null = null;
-  
+
   // Formularios reactivos
   personaForm: FormGroup;
   updateForm: FormGroup;
-  
+
 
   // Modales de alerta y confirmación
   showAlert = false;
@@ -99,7 +99,7 @@ export class PersonasPageComponent implements OnInit {
     this.documentTypeService.genericService.getAll<any>(this.documentTypeService.endpoint).subscribe((documentTypes: any) => {
       this.documentTypes = documentTypes;
     });
-    
+
     this.mostrarAlerta('¡Bienvenido a la gestión de personas!', 'bienvenida');
   }
 
@@ -122,7 +122,7 @@ export class PersonasPageComponent implements OnInit {
   crearPersona() {
     if (this.personaForm.valid) {
       const formValue = this.personaForm.value;
-      
+
       // Asegurar que los IDs sean números válidos
       const nuevaPersona: PersonaDto = {
         firstName: formValue.firstName,
@@ -132,21 +132,21 @@ export class PersonasPageComponent implements OnInit {
         municipalityId: Number(formValue.municipalityId),
         documentTypeId: Number(formValue.documentTypeId)
       };
-      
+
       // Validación adicional
       if (!nuevaPersona.municipalityId || nuevaPersona.municipalityId <= 0) {
         this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
         return;
       }
-      
+
       if (!nuevaPersona.documentTypeId || nuevaPersona.documentTypeId <= 0) {
         this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
         return;
       }
-      
+
       // Log para debugging
       console.log('Datos a enviar:', nuevaPersona);
-      
+
       this.personaService.genericService.create<any>(this.personaService.endpoint, nuevaPersona).subscribe({
         next: (persona: any) => {
           this.mostrarAlerta('Persona creada exitosamente.', 'creado');
@@ -154,7 +154,7 @@ export class PersonasPageComponent implements OnInit {
         },
         error: (error: any) => {
           console.error('Error al crear persona:', error);
-          
+
           // Intentar extraer mensaje específico del error
           let errorMessage = 'Error al crear la persona.';
           if (error?.error) {
@@ -164,13 +164,13 @@ export class PersonasPageComponent implements OnInit {
               errorMessage = error.error.message;
             } else if (error.error.errors) {
               // Errores de validación del backend
-              const validationErrors = Object.keys(error.error.errors).map(key => 
+              const validationErrors = Object.keys(error.error.errors).map(key =>
                 `${key}: ${error.error.errors[key].join(', ')}`
               ).join('; ');
               errorMessage = `Errores de validación: ${validationErrors}`;
             }
           }
-          
+
           console.log('Mensaje de error procesado:', errorMessage);
           this.mostrarAlerta(errorMessage, 'eliminado');
         }
@@ -254,7 +254,7 @@ export class PersonasPageComponent implements OnInit {
   actualizarPersona() {
     if (this.updateForm.valid && this.personaSeleccionada) {
       const formValue = this.updateForm.value;
-      
+
       // Asegurar que los IDs sean números válidos
       const personaActualizada: PersonaDto = {
         id: this.personaSeleccionada.id,
@@ -265,21 +265,21 @@ export class PersonasPageComponent implements OnInit {
         municipalityId: Number(formValue.municipalityId),
         documentTypeId: Number(formValue.documentTypeId)
       };
-      
+
       // Validación adicional
       if (!personaActualizada.municipalityId || personaActualizada.municipalityId <= 0) {
         this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
         return;
       }
-      
+
       if (!personaActualizada.documentTypeId || personaActualizada.documentTypeId <= 0) {
         this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
         return;
       }
-      
+
       // Log para debugging
       console.log('Datos a actualizar:', personaActualizada);
-      
+
       if (personaActualizada.id) {
         this.personaService.genericService.update<any>(this.personaService.endpoint, personaActualizada.id, personaActualizada).subscribe({
           next: (persona: any) => {
@@ -288,7 +288,7 @@ export class PersonasPageComponent implements OnInit {
           },
           error: (error: any) => {
             console.error('Error al actualizar persona:', error);
-            
+
             // Intentar extraer mensaje específico del error
             let errorMessage = 'Error al actualizar la persona.';
             if (error?.error) {
@@ -298,13 +298,13 @@ export class PersonasPageComponent implements OnInit {
                 errorMessage = error.error.message;
               } else if (error.error.errors) {
                 // Errores de validación del backend
-                const validationErrors = Object.keys(error.error.errors).map(key => 
+                const validationErrors = Object.keys(error.error.errors).map(key =>
                   `${key}: ${error.error.errors[key].join(', ')}`
                 ).join('; ');
                 errorMessage = `Errores de validación: ${validationErrors}`;
               }
             }
-            
+
             console.log('Mensaje de error procesado:', errorMessage);
             this.mostrarAlerta(errorMessage, 'eliminado');
           }

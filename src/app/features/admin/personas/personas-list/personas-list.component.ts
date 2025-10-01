@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Persona } from '../../../../shared/models/entities/persona.model';
+import { Persona } from '../../../../shared/Models/Entities/persona.model';
 
 @Component({
   selector: 'app-personas-list',

@@ -14,18 +14,20 @@ export const authExpiredInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
       if (err.status === 401 || err.status === 0) {
-        // 🔥 en lugar de alert()
+
         messageService.add({
-          severity: 'warn', // success | info | warn | error
+          severity: 'warn',
           summary: 'Sesión expirada',
           detail: 'Por favor inicia sesión nuevamente.',
-          life: 4000, // ms de duración
+          life: 4000,
         });
 
-        localStorage.removeItem('currentUser'); // limpiar token
+        localStorage.removeItem('currentUser');
         router.navigate(['/auth/inicio']);
       }
       return throwError(() => err);
     })
   );
 };
+
+

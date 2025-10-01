@@ -7,7 +7,7 @@ import { CardHeaderComponent } from '../../../shared/components/card-header/card
 import { MunicipalityService } from '../../../core/services/api/municipality.service';
 import { finalize } from 'rxjs/operators';
 import { AppTopbar } from '../../../layout/header/topbar.component';
-import { Municipality } from '../../../shared/models/parameters/municipality.models';
+import { Municipality } from '../../../shared/Models/parameters/municipality.models';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { ColumnDef } from '../../../shared/Models/table.Generic';
@@ -34,7 +34,7 @@ export class MunicipalityComponent implements OnInit {
   itemsPerPage: number = 5;
   totalPages: number = 0;
   paginatedMunicipios: Municipality[] = [];
-  
+
   // Variables para modales
   showForm = false;
   showUpdateForm = false;
@@ -43,7 +43,7 @@ export class MunicipalityComponent implements OnInit {
   municipalityAEliminar: Municipality | null = null;
   municipalitySeleccionado: Municipality | null = null;
   municipalityAActualizar: Municipality | null = null;
-  
+
   // Formularios reactivos
   municipalityForm: FormGroup;
   updateForm: FormGroup;
@@ -106,9 +106,9 @@ export class MunicipalityComponent implements OnInit {
       this.loading = true;
       this.errorMsg = '';
       this.successMsg = '';
-      
+
       const municipalityData = this.municipalityForm.value;
-      
+
       this.service.genericService.create<Municipality>(this.service.endpoint, municipalityData)
         .pipe(finalize(() => this.loading = false))
         .subscribe({
@@ -167,12 +167,12 @@ export class MunicipalityComponent implements OnInit {
       this.loading = true;
       this.errorMsg = '';
       this.successMsg = '';
-      
+
       const municipalityActualizado = {
         ...this.municipalitySeleccionado,
         ...this.updateForm.value
       };
-      
+
       this.service.genericService.update<Municipality>(this.service.endpoint, this.municipalitySeleccionado.id, municipalityActualizado)
         .pipe(finalize(() => this.loading = false))
         .subscribe({
@@ -253,7 +253,7 @@ export class MunicipalityComponent implements OnInit {
       this.loading = true;
       this.errorMsg = '';
       this.successMsg = '';
-      
+
       this.service.genericService.delete(this.service.endpoint, this.municipalityAEliminar.id)
         .pipe(finalize(() => this.loading = false))
         .subscribe({

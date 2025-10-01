@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
-import { PaymentFrequency } from '../../../shared/models/parameters/payment-frequency.models';
+import { PaymentFrequency } from '../../../shared/Models/parameters/payment-frequency.models';
 
 describe('PaymentFrequencyComponent', () => {
   let fixture: ComponentFixture<PaymentFrequencyComponent>;
