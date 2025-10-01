@@ -212,36 +212,64 @@ export class ModulePageComponent implements OnInit {
     });
   }
 
-  actualizarModule() {
-    if (this.moduleSeleccionado && this.moduleSeleccionado.id) {
-      // Validar límites para actualización
-      if (this.moduleSeleccionado.name.length < 3 || this.moduleSeleccionado.name.length > 80) {
-        this.mostrarAlerta('El nombre debe tener entre 3 y 80 caracteres', 'error');
-        return;
-      }
+ actualizarModule() {
+  if (this.moduleSeleccionado && this.moduleSeleccionado.id) {
+    const original = this.modules.find(m => m.id === this.moduleSeleccionado!.id);
 
-      if (this.moduleSeleccionado.description.length < 10 || this.moduleSeleccionado.description.length > 250) {
-        this.mostrarAlerta('La descripción debe tener entre 10 y 250 caracteres', 'error');
-        return;
-      }
-
-      console.log('Actualizando módulo:', this.moduleSeleccionado);
-      
-      this.moduleService.genericService.update<Module>(this.moduleService.endpoint, this.moduleSeleccionado.id, this.moduleSeleccionado).subscribe({
-        next: (moduleActualizado: Module) => {
-          console.log('Módulo actualizado exitosamente:', moduleActualizado);
-          this.cerrarModalActualizar();
-          this.mostrarAlerta('Módulo actualizado exitosamente.', 'creado');
-          // Recargar la lista completa desde la API para asegurar sincronización
-          this.cargarModules(true);
-        },
-        error: (error: any) => {
-          console.error('Error al actualizar módulo:', error);
-          this.mostrarAlerta('Error al actualizar el módulo: ' + (error.error?.message || error.message), 'error');
-        }
-      });
+    // Verificar si existe el módulo original
+    if (!original) {
+      this.mostrarAlerta('No se encontró el módulo original', 'error');
+      return;
     }
+
+    // Comparar valores ignorando espacios al inicio y fin
+    const nombreNuevo = this.moduleSeleccionado.name.trim();
+    const descripcionNueva = this.moduleSeleccionado.description.trim();
+
+    const nombreIgual = nombreNuevo === original.name.trim();
+    const descripcionIgual = descripcionNueva === original.description.trim();
+
+    if (nombreIgual && descripcionIgual) {
+      this.mostrarAlerta('Debe realizar al menos un cambio antes de actualizar.', 'error');
+      return;
+    }
+
+    // Validar límites
+    if (nombreNuevo.length < 3 || nombreNuevo.length > 80) {
+      this.mostrarAlerta('El nombre debe tener entre 3 y 80 caracteres', 'error');
+      return;
+    }
+
+    if (descripcionNueva.length < 10 || descripcionNueva.length > 250) {
+      this.mostrarAlerta('La descripción debe tener entre 10 y 250 caracteres', 'error');
+      return;
+    }
+
+    // Actualizar con los valores ya "limpios"
+    this.moduleSeleccionado.name = nombreNuevo;
+    this.moduleSeleccionado.description = descripcionNueva;
+
+    console.log('Actualizando módulo:', this.moduleSeleccionado);
+
+    this.moduleService.genericService.update<Module>(
+      this.moduleService.endpoint,
+      this.moduleSeleccionado.id,
+      this.moduleSeleccionado
+    ).subscribe({
+      next: (moduleActualizado: Module) => {
+        console.log('Módulo actualizado exitosamente:', moduleActualizado);
+        this.cerrarModalActualizar();
+        this.mostrarAlerta('Módulo actualizado exitosamente.', 'creado');
+        this.cargarModules(true);
+      },
+      error: (error: any) => {
+        console.error('Error al actualizar módulo:', error);
+        this.mostrarAlerta('Error al actualizar el módulo: ' + (error.error?.message || error.message), 'error');
+      }
+    });
   }
+}
+
 
   mostrarAlerta(msg: string, tipo: string) {
     this.alertMsg = msg;

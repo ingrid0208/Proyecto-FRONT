@@ -13,7 +13,7 @@ import { AppSidebar } from './sidebar/app.sidebar';
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, AppSidebar],               // ← se importa y se USA
+  imports: [CommonModule, RouterModule, AppSidebar],              
   template: `
   <div class="layout-wrapper" [ngClass]="containerClass">
     <app-sidebar></app-sidebar>

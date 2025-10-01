@@ -5,6 +5,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import Swal from 'sweetalert2';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-verify-email',
@@ -78,7 +79,7 @@ export class VerifyEmailComponent {
       return;
     }
 
-    this.http.post<any>('https://localhost:7286/api/Login/verify-email', {
+    this.http.post<any>(`${environment.apiURL}/Login/verify-email`, {
       email: this.email.trim()
     }).subscribe({
       next: (res) => {

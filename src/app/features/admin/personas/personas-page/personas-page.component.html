@@ -51,33 +51,6 @@
           </div>
         </label>
         <label>
-          Número de Teléfono:
-          <input type="text" formControlName="phoneNumber" required maxlength="15" />
-          <div *ngIf="personaForm.get('phoneNumber')?.invalid && personaForm.get('phoneNumber')?.touched" class="error-msg">
-            El teléfono es requerido
-          </div>
-        </label>
-        <label>
-          Dirección:
-          <input type="text" formControlName="address" required maxlength="100" />
-          <div *ngIf="personaForm.get('address')?.invalid && personaForm.get('address')?.touched" class="error-msg">
-            La dirección es requerida
-          </div>
-        </label>
-        <label>
-          Tipo de Documento:
-          <select formControlName="documentTypeId" required>
-            <option value="">Seleccionar tipo de documento</option>
-            <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
-              {{ documentType.name }} ({{ documentType.abbreviation }})
-            </option>
-            <option *ngIf="documentTypes.length === 0" value="" disabled>No se encuentran tipos de documento</option>
-          </select>
-          <div *ngIf="personaForm.get('documentTypeId')?.invalid && personaForm.get('documentTypeId')?.touched" class="error-msg">
-            Debe seleccionar un tipo de documento
-          </div>
-        </label>
-        <label>
           Municipio:
           <select formControlName="municipalityId" required>
             <option value="">Seleccionar municipio</option>
@@ -107,16 +80,6 @@
         <div class="persona-info">
           <div class="persona-nombre" style="font-weight: bold; margin-bottom: 8px;">
             {{ persona.firstName }} {{ persona.lastName }}
-          </div>
-          <div class="persona-detalles" style="margin-bottom: 5px;">
-            <div class="detalle-row" style="margin-bottom: 3px;">
-              <span class="detalle-label" style="font-weight: 500; margin-right: 5px;">Teléfono:</span>
-              <span class="detalle-value">{{ persona.phoneNumber }}</span>
-            </div>
-            <div class="detalle-row" style="margin-bottom: 3px;">
-              <span class="detalle-label" style="font-weight: 500; margin-right: 5px;">Dirección:</span>
-              <span class="detalle-value">{{ persona.address }}</span>
-            </div>
           </div>
           <div class="persona-ids" style="display: flex; gap: 15px;">
             <div class="id-item">
@@ -160,33 +123,6 @@
           <input type="text" formControlName="lastName" required maxlength="50" />
           <div *ngIf="updateForm.get('lastName')?.invalid && updateForm.get('lastName')?.touched" class="error-msg">
             El apellido es requerido
-          </div>
-        </label>
-        <label>
-          Número de Teléfono:
-          <input type="text" formControlName="phoneNumber" required maxlength="15" />
-          <div *ngIf="updateForm.get('phoneNumber')?.invalid && updateForm.get('phoneNumber')?.touched" class="error-msg">
-            El teléfono es requerido
-          </div>
-        </label>
-        <label>
-          Dirección:
-          <input type="text" formControlName="address" required maxlength="100" />
-          <div *ngIf="updateForm.get('address')?.invalid && updateForm.get('address')?.touched" class="error-msg">
-            La dirección es requerida
-          </div>
-        </label>
-        <label>
-          Tipo de Documento:
-          <select formControlName="documentTypeId" required>
-            <option value="">Seleccionar tipo de documento</option>
-            <option *ngFor="let documentType of documentTypes" [value]="documentType.id">
-              {{ documentType.name }} ({{ documentType.abbreviation }})
-            </option>
-            <option *ngIf="documentTypes.length === 0" value="" disabled>No se encuentran tipos de documento</option>
-          </select>
-          <div *ngIf="updateForm.get('documentTypeId')?.invalid && updateForm.get('documentTypeId')?.touched" class="error-msg">
-            Debe seleccionar un tipo de documento
           </div>
         </label>
         <label>

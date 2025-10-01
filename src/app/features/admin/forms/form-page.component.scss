@@ -8,6 +8,46 @@ $medium-gray: #757575;
 $dark-gray: #424242;
 $border-color: #e0e0e0;
 
+// 📌 Alertas GLOBALES - FUERA del contenedor principal
+.alert {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  z-index: 9999; // 🚨 MÁS ALTO que cualquier modal
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: slideIn 0.3s ease-out;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+
+  &.bienvenida, &.creado {
+    background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
+  }
+
+  &.error {
+    background: linear-gradient(135deg, $danger-color, darken($danger-color, 10%));
+  }
+
+  &.eliminado {
+    background: linear-gradient(135deg, $warning-color, darken($warning-color, 10%));
+    color: $dark-gray;
+  }
+
+  &.info {
+    background: linear-gradient(135deg, #2196f3, darken(#2196f3, 10%));
+    color: white;
+  }
+
+  i {
+    font-size: 1.2rem;
+  }
+}
+
 // 📌 Contenedor principal
 .personas-container {
   padding: 2rem;
@@ -162,40 +202,7 @@ $border-color: #e0e0e0;
     }
   }
 
-  // 📌 Alertas
-  .alert {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    color: white;
-    font-weight: 500;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    animation: slideIn 0.3s ease-out;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 
-    &.bienvenida, &.creado {
-      background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
-    }
-
-    &.error {
-      background: linear-gradient(135deg, $danger-color, darken($danger-color, 10%));
-    }
-
-    &.eliminado {
-      background: linear-gradient(135deg, $warning-color, darken($warning-color, 10%));
-      color: $dark-gray;
-    }
-
-    i {
-      font-size: 1.2rem;
-    }
-  }
 
   // 📌 Overlay modal
   .modal-overlay {
@@ -208,7 +215,7 @@ $border-color: #e0e0e0;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1000; // 🔹 Por debajo de las alertas (1000 < 9999)
     animation: fadeIn 0.3s ease-out;
 
     .modal-content {
@@ -354,6 +361,17 @@ $border-color: #e0e0e0;
               transform: translateY(-1px);
             }
           }
+
+          // 🔹 Nuevo estilo para botón primario
+          &.btn-primario {
+            background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+            color: white;
+
+            &:hover {
+              background: linear-gradient(135deg, darken($primary-color, 5%), darken($primary-color, 15%));
+              transform: translateY(-1px);
+            }
+          }
         }
       }
     }
@@ -405,6 +423,15 @@ $border-color: #e0e0e0;
           }
         }
       }
+    }
+
+    // 🔹 Ajuste de alertas en móvil
+    .alert {
+      top: 10px;
+      right: 10px;
+      left: 10px;
+      max-width: none;
+      width: calc(100% - 20px);
     }
   }
 }

@@ -5,23 +5,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormService, Form } from '../../../core/services/form.service';
 import { PaginationService, PaginationConfig } from '../../../shared/services/pagination.service';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { validateFormDescription, validateFormName } from '../../../shared/utils/validator/validator-form/form';
 
 @Component({
   selector: 'app-form-page',
   templateUrl: './form-page.component.html',
   styleUrls: ['./form-page.component.scss'],
-  encapsulation: ViewEncapsulation.None, 
+  encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent],
   providers: [FormService]
 })
 export class FormPageComponent implements OnInit {
-  
+
   constructor(
     private formService: FormService,
     private cdr: ChangeDetectorRef,
     private paginationService: PaginationService
-  ) {}
+  ) { }
 
   forms: Form[] = [];
   paginatedForms: Form[] = [];
@@ -33,21 +34,21 @@ export class FormPageComponent implements OnInit {
     totalItems: 0,
     totalPages: 0
   };
-  
+
   // Modal y formulario
   showModal: boolean = false;
   showUpdateModal: boolean = false;
   showUpdateConfirm: boolean = false;
   formSeleccionado: Form | null = null;
   formAActualizar: Form | null = null;
-  
+
   nuevoForm: {
     name: string;
     description: string;
   } = {
-    name: '',
-    description: ''
-  };
+      name: '',
+      description: ''
+    };
 
   showAlert = false;
   alertMsg = '';
@@ -58,7 +59,7 @@ export class FormPageComponent implements OnInit {
   ngOnInit() {
     this.mostrarAlerta('¡Bienvenido a la gestión de formularios!', 'bienvenida');
     this.cargarForms();
-    
+
     // Datos de prueba (comentar cuando la API funcione)
     setTimeout(() => {
       if (this.forms.length === 0) {
@@ -83,7 +84,7 @@ export class FormPageComponent implements OnInit {
   // Cargar formularios desde la API
   cargarForms(esDespuesDeOperacion: boolean = false): void {
     console.log('Cargando formularios desde la API...'); // Para depuración
-    
+
     this.formService.genericService.getAll<Form>(this.formService.endpoint).subscribe({
       next: (forms: Form[]) => {
         console.log('Formularios cargados:', forms); // Para depuración
@@ -95,18 +96,18 @@ export class FormPageComponent implements OnInit {
       error: (error: any) => {
         console.error('Error al cargar formularios:', error);
         this.mostrarAlerta('Error al cargar los formularios: ' + (error.error?.message || error.message), 'error');
-        
+
         // Solo agregar datos de prueba si no es después de una operación y no hay formularios
         if (!esDespuesDeOperacion && this.forms.length === 0) {
           console.log('Agregando datos de prueba debido a error de API');
           this.forms = [
-            { 
-              id: 1, 
+            {
+              id: 1,
               name: 'Formulario de acuerdo de pago',
               description: 'Formulario de creación de acuerdo de pago'
             },
-            { 
-              id: 2, 
+            {
+              id: 2,
               name: 'Formulario de registro de multas',
               description: 'Formulario para registrar nuevas multas'
             }
@@ -164,28 +165,15 @@ export class FormPageComponent implements OnInit {
   }
 
   crearForm() {
-    // Validar que los campos no estén vacíos
-    if (!this.nuevoForm.name || !this.nuevoForm.description) {
-      this.mostrarAlerta('Por favor, complete todos los campos', 'error');
+    const nameError = validateFormName(this.nuevoForm.name);
+    const descError = validateFormDescription(this.nuevoForm.description);
+
+
+    if (nameError || descError) {
+      this.mostrarAlerta(nameError || descError!, 'error');
       return;
     }
 
-    // Validar que no estén solo con espacios en blanco
-    if (this.nuevoForm.name.trim() === '' || this.nuevoForm.description.trim() === '') {
-      this.mostrarAlerta('Los campos no pueden estar vacíos', 'error');
-      return;
-    }
-
-    // Validar límites de longitud
-    if (this.nuevoForm.name.length < 3 || this.nuevoForm.name.length > 100) {
-      this.mostrarAlerta('El nombre debe tener entre 3 y 100 caracteres', 'error');
-      return;
-    }
-
-    if (this.nuevoForm.description.length < 10 || this.nuevoForm.description.length > 300) {
-      this.mostrarAlerta('La descripción debe tener entre 10 y 300 caracteres', 'error');
-      return;
-    }
 
     console.log('Creando formulario:', this.nuevoForm); // Para depuración
 
@@ -206,41 +194,57 @@ export class FormPageComponent implements OnInit {
 
   actualizarForm() {
     if (this.formSeleccionado && this.formSeleccionado.id) {
-      // Validar límites para actualización
-      if (this.formSeleccionado.name.length < 3 || this.formSeleccionado.name.length > 100) {
-        this.mostrarAlerta('El nombre debe tener entre 3 y 100 caracteres', 'error');
+      const nameError = validateFormName(this.formSeleccionado.name);
+      const descError = validateFormDescription(this.formSeleccionado.description);
+
+      if (nameError || descError) {
+        this.mostrarAlerta(nameError || descError!, 'error');
         return;
       }
+      const originalName = this.formAActualizar?.name?.trim() || '';
+      const originalDesc = this.formAActualizar?.description?.trim() || '';
+      const newName = this.formSeleccionado.name.trim();
+      const newDesc = this.formSeleccionado.description.trim();
 
-      if (this.formSeleccionado.description.length < 10 || this.formSeleccionado.description.length > 300) {
-        this.mostrarAlerta('La descripción debe tener entre 10 y 300 caracteres', 'error');
+      if (originalName === newName && originalDesc === newDesc) {
+        // ⚡ Aquí ya no lanzamos "error", sino un aviso amigable
+        this.mostrarAlerta('No se detectaron cambios en el formulario.', 'info');
         return;
       }
 
       console.log('Actualizando formulario:', this.formSeleccionado);
-      
-      this.formService.genericService.update<Form>(this.formService.endpoint, this.formSeleccionado.id, this.formSeleccionado).subscribe({
+
+      this.formService.genericService.update<Form>(
+        this.formService.endpoint,
+        this.formSeleccionado.id,
+        this.formSeleccionado
+      ).subscribe({
         next: (formActualizado: Form) => {
+          
           console.log('Formulario actualizado exitosamente:', formActualizado);
           this.cerrarModalActualizar();
           this.mostrarAlerta('Formulario actualizado exitosamente.', 'creado');
-          // Recargar la lista completa desde la API para asegurar sincronización
           this.cargarForms(true);
         },
         error: (error: any) => {
           console.error('Error al actualizar formulario:', error);
-          this.mostrarAlerta('Error al actualizar el formulario: ' + (error.error?.message || error.message), 'error');
+          this.mostrarAlerta(
+            'No se pudo actualizar el formulario. Intenta nuevamente.',
+            'error'
+          );
         }
       });
     }
   }
 
-  mostrarAlerta(msg: string, tipo: string) {
-    this.alertMsg = msg;
-    this.alertType = tipo;
-    this.showAlert = true;
-    setTimeout(() => this.showAlert = false, 2500);
-  }
+
+  mostrarAlerta(msg: string, tipo: 'error' | 'creado' | 'eliminado' | 'bienvenida' | 'info') {
+  this.alertMsg = msg;
+  this.alertType = tipo;
+  this.showAlert = true;
+  setTimeout(() => this.showAlert = false, 2500);
+}
+
 
   pedirConfirmacionEliminar(form: Form) {
     this.formAEliminar = form;
@@ -250,7 +254,7 @@ export class FormPageComponent implements OnInit {
   confirmarEliminar() {
     if (this.formAEliminar && this.formAEliminar.id) {
       console.log('Eliminando formulario:', this.formAEliminar); // Para depuración
-      
+
       this.formService.genericService.delete(this.formService.endpoint, this.formAEliminar.id).subscribe({
         next: () => {
           console.log('Formulario eliminado exitosamente'); // Para depuración

@@ -23,7 +23,8 @@ export class AnexarMultasComponent implements OnInit {
     documentTypeId: null as number | null,
     documentNumber: '',
     typeInfractionId: null as number | null,
-    smldvCount: null as number | null
+    smldvCount: null as number | null,
+    email : ''
   };
 
   documentTypes: { label: string; value: number }[] = [];
@@ -132,10 +133,12 @@ export class AnexarMultasComponent implements OnInit {
     this.form = {
       firstName: '',
       lastName: '',
-      documentTypeId: null,
+      email: '',
+      documentTypeId: null as number | null,
       documentNumber: '',
-      typeInfractionId: null,
-      smldvCount: null
+      typeInfractionId: null as number | null,
+      smldvCount: null as number | null
     };
+
   }
 }
