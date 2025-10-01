@@ -39,6 +39,7 @@ export const routes: Routes = [
       { path: 'home', loadChildren: () => import('./app/features/home/pages/password/home.routes').then(m => m.HOMEPASSWORD_ROUTES) },
     ]
   },
+  { path: 'contenido-documento', loadChildren: () => import('./app/features/home/pages/document/documento.routes').then(m => m.DOCUMENT_ROUTES) },
 
   { path: '**', redirectTo: '' } // Esto redirige a la ruta raíz, que luego redirige a 'auth/inicio'
 ];

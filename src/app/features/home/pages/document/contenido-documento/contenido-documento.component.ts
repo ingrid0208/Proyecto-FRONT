@@ -8,7 +8,7 @@ import { GenericMultasTableComponent } from '../../../../../shared/components/ge
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
-import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/userInfractionSelectDto';
+import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/select/UserInfractionSelectDto';
 
 
 @Component({

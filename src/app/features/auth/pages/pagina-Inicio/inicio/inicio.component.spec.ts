@@ -8,7 +8,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
-import { TypeInfractionSelectDto } from '../../../../../shared/models/entities/TypeInfractionSelectDto';
+import { TypeInfraction } from '../../../../../shared/Models/Entities/TypeInfractionDto';
+
 
 describe('InicioComponent', () => {
   let fixture: ComponentFixture<InicioComponent>;
@@ -20,7 +21,7 @@ describe('InicioComponent', () => {
 
     // 👇 InicioComponent hace this.api.getAll<TypeInfractionSelectDto>(...)
     // getAll<T> → Observable<T[]>  => ¡debe devolver un ARRAY!
-    const fakeData: TypeInfractionSelectDto[] = [
+    const fakeData: TypeInfraction[] = [
       {
         // pon solo los campos que tu template/ts usa
         type_Infraction: 'Velocidad',      // agrupa por este campo
