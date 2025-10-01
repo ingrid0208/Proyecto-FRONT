@@ -24,7 +24,7 @@ export const routes: Routes = [
       { path: 'acuerdo-pago', loadChildren: () => import('./app/features/multas/acuerdos-pago/acuerdo-pago.routes').then(m => m.ACUERDO_PAGO_ROUTES) },
       { path: 'tipos-multas', loadChildren: () => import('./app/features/multas/tipos/tipos-multas.routes').then(m => m.TIPOS_MULTAS_ROUTES) },
       { path: 'calendario', loadChildren: () => import('./app/features/calendar/calendario.routes').then(m => m.CALENDARIO_ROUTES) },
-      { path: 'anexar-multas', loadChildren: () => import('./app/feature/anexar-multas/anexar-multas.routes').then(m => m.ANEXAR_MULTAS_ROUTES) },
+      { path: 'anexar-multas', loadChildren: () => import('./app/features/anexar-multas/anexar-multas.routes').then(m => m.ANEXAR_MULTAS_ROUTES) },
       { path: 'roles', loadChildren: () => import('./app/features/admin/roles/roles-page.routes').then(m => m.ROLES_ROUTES) },
       { path: 'usuarios', loadChildren: () => import('./app/features/admin/users/usuarios-page.routes').then(m => m.USUARIOS_ROUTES) },
       { path: 'personas', loadChildren: () => import('./app/features/admin/personas/personas-page/personas-page.routes').then(m => m.PERSONAS_ROUTES) },

@@ -14,7 +14,6 @@ import { AppTopbar } from '../../../../../layout/header/topbar.component';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 import { PaymentAgreementInitDto } from '../../../../../shared/Models/init/PaymentAgreementInitDto';
 
-
 @Component({
   selector: 'app-formulario-acuerdo-pago',
   standalone: true,
@@ -35,12 +34,13 @@ import { PaymentAgreementInitDto } from '../../../../../shared/Models/init/Payme
 export class FormularioAcuerdoPagoComponent implements OnInit {
   step: number = 1;
   today: string = this.getToday();
+  selectedFrequency: any = null;
 
   form: any = {
     address: '',
     neighborhood: '',
     agreementDescription: '',
-    expeditionCedula: '',   // 👈 debe venir como fecha
+    expeditionCedula: '',   // fecha
     phoneNumber: '',
     email: '',
     agreementStart: '',
@@ -52,7 +52,6 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
     installments: 1,
     monthlyFee: 0,
     baseAmount: 0,
-    acceptTerms: false
   };
 
   initData: PaymentAgreementInitDto = {
@@ -97,12 +96,14 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
           }
 
           this.form.userInfractionId = this.initData.infractionId;
-
-          // ✅ ya no lo piso, me quedo con el calculado en InitData
           this.totalAmount = this.initData.baseAmount;
+          this.form.baseAmount = this.initData.baseAmount;
 
           this.form.agreementDescription = this.initData.infringement;
           this.form.isPaid = false;
+
+          // Inicializar monthlyFee automático
+          this.form.monthlyFee = this.form.baseAmount / this.form.installments;
 
           this.startDate = new Date().toISOString().split('T')[0];
           this.cdr.detectChanges();
@@ -118,6 +119,28 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
       .subscribe((data) => (this.typePayments = data));
   }
 
+  // Cambia la frecuencia de pago
+  onFrequencyChange(event: any) {
+    const id = Number(event.value);
+    this.selectedFrequency = this.paymentFrequencies.find(f => f.id === id);
+
+    if (this.selectedFrequency?.intervalPage === 'UNICA') {
+      this.form.installments = 1;
+      this.updateMonthlyFee();
+    }
+  }
+
+  // Actualiza monthlyFee cada vez que cambian las cuotas
+  onInstallmentsChange(value: number) {
+    this.form.installments = value > 0 ? value : 1;
+    this.updateMonthlyFee();
+  }
+
+  updateMonthlyFee() {
+    const baseAmount = this.initData.baseAmount || 0;
+    const installments = this.form.installments > 0 ? this.form.installments : 1;
+    this.form.monthlyFee = Math.round(baseAmount / installments);
+  }
 
   goToStep2(formRef: NgForm) {
     if (!formRef.valid) {
@@ -137,17 +160,6 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
   }
 
   onConfirm() {
-    if (!this.form.acceptTerms) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Términos y condiciones',
-        text: '⚠️ Debes aceptar los términos y condiciones',
-        confirmButtonColor: '#006400'
-      });
-      return;
-    }
-
-    // 🔹 Validar que installments * monthlyFee == baseAmount
     const montoBase = this.initData.baseAmount || this.form.baseAmount;
     const totalCuotas = this.form.installments * this.form.monthlyFee;
 
@@ -163,19 +175,18 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
     }
 
     const payload: any = {
-      ...this.form,
-      neighborhood: this.form.neighborhood?.trim() || 'No especificado',
-      paymentFrequencyId: Number(this.form.paymentFrequencyId),
-      typePaymentId: Number(this.form.typePaymentId),
+      address: this.form.address?.trim() || '',
+      neighborhood: this.form.neighborhood?.trim() || '',
+      agreementDescription: this.form.agreementDescription?.trim() || '',
       expeditionCedula: this.form.expeditionCedula
         ? new Date(this.form.expeditionCedula).toISOString()
         : null,
-      agreementStart: this.form.agreementStart
-        ? new Date(this.form.agreementStart).toISOString()
-        : null,
-      agreementEnd: this.form.agreementEnd
-        ? new Date(this.form.agreementEnd).toISOString()
-        : null
+      phoneNumber: this.form.phoneNumber,
+      email: this.form.email,
+      userInfractionId: this.form.userInfractionId,
+      paymentFrequencyId: Number(this.form.paymentFrequencyId),
+      typePaymentId: Number(this.form.typePaymentId),
+      installments: this.form.installments
     };
 
     delete payload.baseAmount;
@@ -185,11 +196,9 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
 
     this.serviceGeneric.createPaymentAgreement(payload).subscribe({
       next: (res) => {
-        console.log("✅ Respuesta backend:", res);
-
-        // Guardar datos del acuerdo
         this.form.baseAmount = res.agreement.baseAmount;
         this.form.monthlyFee = res.agreement.monthlyFee;
+        this.form.installments = res.agreement.installments;
         this.agreementStart = res.agreement.agreementStart;
         this.agreementEnd = res.agreement.agreementEnd;
 
@@ -200,22 +209,18 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
           confirmButtonColor: '#006400'
         });
 
-        // 🚀 Abrir el PDF en una nueva pestaña
         if (res.pdfUrl) {
           const link = document.createElement('a');
-          link.href = res.pdfUrl;  // 👈 ya viene completa desde el back
+          link.href = res.pdfUrl;
           link.download = `AcuerdoPago_${res.agreement.id}.pdf`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
         }
 
-
-
         this.step = 3;
       },
       error: (err) => {
-        console.error("❌ Error al crear acuerdo:", err);
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -224,7 +229,6 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
         });
       }
     });
-
   }
 
   goHome() {
@@ -234,18 +238,11 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
   onMonthlyFeeChange(value: any) {
     const rawValue = String(value).replace(/\D/g, '');
     this.form.monthlyFee = rawValue ? Number(rawValue) : 0;
-
-    setTimeout(() => {
-      const input = document.getElementById('monthlyFee') as HTMLInputElement;
-      if (input) {
-        input.value = this.form.monthlyFee.toLocaleString('es-CO');
-      }
-    });
   }
 
   getToday(): string {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // elimina la hora
+    today.setHours(0, 0, 0, 0);
     return today.toISOString().split('T')[0];
   }
 }

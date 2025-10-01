@@ -227,4 +227,15 @@ filterMultas(body: { userId?: number; searchTerm?: string }) {
   );
 }
 
+getInfractionsByType(typeInfractionId: number) {
+  return this.http.get<any>(
+    this.url('UserInfraction', 'by-type'),
+    {
+      ...this.optsJwt(),
+      params: this.buildParams({ typeInfractionId })
+    }
+  );
+}
+
+
 }

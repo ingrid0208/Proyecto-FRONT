@@ -1,5 +1,3 @@
-<app-topbar></app-topbar>
-
 <!-- Paso 1 - Formulario -->
 <div class="form-container" *ngIf="step === 1">
   <button type="button" class="back-button" (click)="goHome()">⬅ Volver</button>
@@ -22,11 +20,8 @@
         <input type="date" [(ngModel)]="form.expeditionCedula" name="expeditionCedula" required [max]="today"
           #expDate="ngModel" />
         <div class="error" *ngIf="expDate.invalid && expDate.touched">
-          <small *ngIf="expDate.errors?.['required']">
-            ⚠️ La fecha de expedición es obligatoria.
-          </small>
+          <small *ngIf="expDate.errors?.['required']">⚠️ La fecha de expedición es obligatoria.</small>
         </div>
-
 
         <label>Número de Teléfono</label>
         <input type="text" [(ngModel)]="form.phoneNumber" name="phoneNumber" required pattern="^[0-9]{7,10}$"
@@ -37,15 +32,15 @@
         </div>
 
         <label>Dirección</label>
-        <input type="text" [(ngModel)]="form.address" name="address" required pattern=".*" #address="ngModel" />
+        <input type="text" [(ngModel)]="form.address" name="address" required #address="ngModel" />
         <div class="error" *ngIf="address.invalid && address.touched">
-          <small *ngIf="address.errors?.['required']">⚠️ La dirección es obligatoria.</small>
+          <small>⚠️ La dirección es obligatoria.</small>
         </div>
 
         <label>Barrio</label>
-        <input type="text" [(ngModel)]="form.neighborhood" name="neighborhood" required pattern=".*" #neigh="ngModel" />
+        <input type="text" [(ngModel)]="form.neighborhood" name="neighborhood" required #neigh="ngModel" />
         <div class="error" *ngIf="neigh.invalid && neigh.touched">
-          <small *ngIf="neigh.errors?.['required']">⚠️ El barrio es obligatorio.</small>
+          <small>⚠️ El barrio es obligatorio.</small>
         </div>
 
         <label>Método de Pago</label>
@@ -57,7 +52,8 @@
         </div>
 
         <label>Frecuencia de Pago</label>
-        <select [(ngModel)]="form.paymentFrequencyId" name="paymentFrequencyId" required #freq="ngModel">
+        <select [(ngModel)]="form.paymentFrequencyId" name="paymentFrequencyId" required #freq="ngModel"
+          (change)="onFrequencyChange($event)">
           <option *ngFor="let f of paymentFrequencies" [ngValue]="f.id">{{f.intervalPage}}</option>
         </select>
         <div class="error" *ngIf="freq.invalid && freq.touched">
@@ -73,20 +69,6 @@
           <small *ngIf="email.errors?.['email']">⚠️ El formato del correo no es válido.</small>
         </div>
 
-        <label>Inicio del Acuerdo</label>
-        <input type="date" [(ngModel)]="form.agreementStart" name="agreementStart" required #start="ngModel" />
-
-        <div class="error" *ngIf="start.invalid && start.touched">
-          <small>⚠️ La fecha de inicio es obligatoria.</small>
-        </div>
-
-        <label>Fin del Acuerdo</label>
-        <input type="date" [(ngModel)]="form.agreementEnd" name="agreementEnd" required [min]="form.agreementStart"
-          #end="ngModel" />
-        <div class="error" *ngIf="end.invalid && end.touched">
-          <small>⚠️ La fecha de fin es obligatoria.</small>
-        </div>
-
         <label>Infracción</label>
         <input type="text" [(ngModel)]="initData.infringement" name="infringement" readonly />
 
@@ -98,7 +80,7 @@
 
         <label>Descripción</label>
         <textarea rows="4" [(ngModel)]="form.agreementDescription" name="agreementDescription" required maxlength="500"
-          pattern=".*" #desc="ngModel"></textarea>
+          #desc="ngModel"></textarea>
         <div class="error" *ngIf="desc.invalid && desc.touched">
           <small *ngIf="desc.errors?.['required']">⚠️ La descripción es obligatoria.</small>
           <small *ngIf="desc.errors?.['maxlength']">⚠️ No puede superar los 500 caracteres.</small>
@@ -117,89 +99,36 @@
   <h2>Acuerdo de Pago - Cuotas</h2>
 
   <form (ngSubmit)="onConfirm()">
-    <!-- Número de cuotas -->
-    <div class="form-group">
-      <label for="installments">Número de cuotas</label>
-      <input
-        id="installments"
-        type="number"
-        [(ngModel)]="form.installments"
-        name="installments"
-        required
-        min="1"
-        #inst="ngModel"
-      />
-      <div class="error" *ngIf="inst.invalid && inst.touched">
-        <small>⚠️ El número de cuotas debe ser al menos 1.</small>
+      <div class="form-group">
+        <label for="installments">Número de cuotas</label>
+        <input id="installments" type="number" [(ngModel)]="form.installments" name="installments" required min="1"
+          [readonly]="selectedFrequency?.intervalPage === 'UNICA'" (ngModelChange)="onInstallmentsChange($event)"
+          #inst="ngModel" />
+        <div class="error" *ngIf="inst.invalid && inst.touched">
+          <small>⚠️ El número de cuotas debe ser válido.</small>
+        </div>
       </div>
-    </div>
 
     <div class="form-row">
       <!-- Monto total -->
       <div class="form-group">
         <label>Monto total</label>
         <p class="amount">
-          {{ (form.baseAmount > 0 ? form.baseAmount : initData.baseAmount)
-            | currency:'COP':'symbol':'1.0-0' }}
+          {{ (form.baseAmount > 0 ? form.baseAmount : initData.baseAmount) | currency:'COP':'symbol':'1.0-0' }}
         </p>
       </div>
 
-      <!-- Cuota mensual -->
+
       <div class="form-group">
-        <label for="monthlyFee">Cuota mensual</label>
-        <input
-          id="monthlyFee"
-          type="text"
-          [(ngModel)]="form.monthlyFee"
-          name="monthlyFee"
-          required
-          #fee="ngModel"
-          (ngModelChange)="onMonthlyFeeChange($event)"
-        />
-        <div class="error" *ngIf="fee.invalid && fee.touched">
-          <small>⚠️ La cuota mensual debe ser al menos 1.</small>
-        </div>
-
-        <!-- 🔹 Validación en vivo de cuotas vs monto -->
-        <div class="error"
-          *ngIf="form.installments && form.monthlyFee &&
-                (form.installments * form.monthlyFee !== (initData.baseAmount || form.baseAmount))">
-          <small>
-            ❌ El total de cuotas ({{form.installments}} x {{form.monthlyFee}} =
-            {{form.installments * form.monthlyFee | currency:'COP':'symbol':'1.0-0'}})
-            no coincide con el monto base
-            {{(initData.baseAmount || form.baseAmount) | currency:'COP':'symbol':'1.0-0'}}.
-          </small>
-        </div>
+        <label for="monthlyFee">Valor de cada cuota</label>
+        <input id="monthlyFee" type="number" [value]="form.monthlyFee" name="monthlyFee" readonly />
       </div>
-
-      <!-- Fecha de inicio -->
-      <div class="form-group">
-        <label>Fecha de inicio</label>
-        <p class="date">{{ startDate }}</p>
-      </div>
-
-      <!-- Términos -->
-      <div class="form-group terms">
-        <input
-          type="checkbox"
-          id="terms"
-          [(ngModel)]="form.acceptTerms"
-          name="acceptTerms"
-          required
-          #terms="ngModel"
-        />
-        <label for="terms">Acepto los términos y condiciones</label>
-        <div class="error" *ngIf="terms.invalid && terms.touched">
-          <small>⚠️ Debes aceptar los términos para continuar.</small>
-        </div>
-      </div>
+      
     </div>
 
     <button type="submit" class="btn-confirm">Confirmar acuerdo</button>
   </form>
 </div>
-
 
 <!-- Paso 3 - Confirmación -->
 <div class="success-card" *ngIf="step === 3">
