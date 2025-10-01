@@ -16,9 +16,9 @@ import { LoginEmailResponse } from '../../../../shared/Models/auth/LoginEmailRes
 import { RegisterRequestDto } from '../../../../shared/Models/auth/RegisterRequestDto';
 import { LoginDocumentoRequest } from '../../../../shared/Models/LoginDocumentoRequest';
 import { LoginDocumentoResponse } from '../../../../shared/Models/LoginDocumentoResponse';
-import { PaymentAgreementInitDto } from '../../../../shared/Models/PaymentAgreementInitDto';
 import { PaymentAgreementCreateResponse } from '../../../../shared/Models/Entities/PaymentAgreementCreateResponse';
 import { User } from '../../../../shared/Models/user.model';
+import { PaymentAgreementInitDto } from '../../../../shared/Models/init/PaymentAgreementInitDto';
 
 type getAllType = 'GetAll' | 'GetAllDeletes';
 type DeleteType = 'Persistent' | 'Logical';
