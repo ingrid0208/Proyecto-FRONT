@@ -1,5 +1,4 @@
 export interface LoginDocumentoResponse {
-  success: boolean;
   message: string;
   token?: string;
   sessionId?: string;
@@ -8,4 +7,5 @@ export interface LoginDocumentoResponse {
     name: string;
     document: string;
   };
+   isSuccess: boolean;
 }

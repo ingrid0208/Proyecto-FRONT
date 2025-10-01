@@ -71,7 +71,6 @@ import { validateEmail, validatePassword } from '../../../../shared/utils/valida
       </button>
 
       <div class="login-links">
-        <a (click)="goToRecovery($event)">¿Olvidaste tu contraseña?</a>
         <a (click)="goToRegister($event)">¿Deseas Registrarte?</a>
         <a (click)="goToHome($event)" [class.loading]="navigatingHome">
           <span *ngIf="!navigatingHome">Volver al inicio</span>
@@ -85,6 +84,8 @@ import { validateEmail, validatePassword } from '../../../../shared/utils/valida
 </div>
   `
 })
+
+ //<a (click)="goToRecovery($event)">¿Olvidaste tu contraseña?</a>
 export class Login {
   email = '';
   password = '';
