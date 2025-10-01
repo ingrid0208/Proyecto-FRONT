@@ -286,24 +286,22 @@ export class ServiceGenericService {
   // ===============================
   // 📌 Filtros
   // ===============================
-  filterMultas(body: { userId?: number; searchTerm?: string }) {
-    return this.http.post<{ count: number; data: any[] }>(
-      this.url('UserInfraction', 'filter'),
-      body,
-      this.optsJwt()
-    );
-  }
-
-
-
-getInfractionsByType(typeInfractionId: number) {
-  return this.http.get<any>(
-    this.url('UserInfraction', 'by-type'),
-    {
-      ...this.optsJwt(),
-      params: this.buildParams({ typeInfractionId })
+    filterMultas(body: { userId?: number; searchTerm?: string }) {
+        return this.http.post<{ count: number; data: any[] }>(
+        this.url('UserInfraction', 'filter'),
+        body,
+        this.optsJwt()
+        );
     }
-  );
-}
+
+    getInfractionsByType(typeInfractionId: number) {
+    return this.http.get<any>(
+        this.url('UserInfraction', 'by-type'),
+        {
+        ...this.optsJwt(),
+        params: this.buildParams({ typeInfractionId })
+        }
+    );
+    }
 }
 
