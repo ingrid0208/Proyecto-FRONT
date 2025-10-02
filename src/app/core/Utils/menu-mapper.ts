@@ -1,16 +1,18 @@
-import { MenuItem } from 'primeng/api';
-import { BackendMenuItem, BackendSubMenuItem } from '../../shared/components/sidebar.config';
+import { MenuItem } from "primeng/api";
+import { BackendMenuItem, BackendSubMenuItem } from "../../shared/components/sidebar.config";
 
 export function mapBackendMenuToPrimeNG(menu: BackendMenuItem[]): MenuItem[] {
-  return menu.map((section: BackendMenuItem) => ({
-    label: section.name,
-    icon: section.icon || 'pi pi-fw pi-folder',
-    items: section.forms.map((form: BackendSubMenuItem) => ({
-      label: form.name,
-      icon: 'pi pi-fw pi-file',
-      routerLink: ['/' + form.route],
-      disabled: !form.state
-    }))
-  }));
+  return menu.map((item: BackendMenuItem) => {
+    const mapped: MenuItem = {
+      label: item.name,
+      icon: item.icon || 'pi pi-circle', // usa el icono que viene del backend, si no trae pon uno default
+      items: item.forms?.map((sub: BackendSubMenuItem) => ({
+        label: sub.name,
+        routerLink: sub.route,
+        visible: sub.state,
+        icon: sub?.['icon'] ?? undefined // si algún subitem tiene icono
+      })) ?? []
+    };
+    return mapped;
+  });
 }
-

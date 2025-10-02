@@ -24,5 +24,6 @@ export interface BackendSubMenuItem {
   route: string;
   state: boolean;
   permissions: string[];
+  icon?: string | null;
 }
 
