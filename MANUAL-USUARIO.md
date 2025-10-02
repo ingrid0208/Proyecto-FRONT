@@ -1252,16 +1252,16 @@ R:
 - Cierre pestañas innecesarias
 - Intente en un horario diferente
 
-**P: No puedo subir archivos**
+**P: No puedo ingresar**
 
 R:
-- Verifique que el archivo cumpla con el tamaño máximo (2-5 MB según el tipo)
-- Use formatos permitidos (PDF, JPG, PNG)
+- Verifique que el archivo cumpla con el tamaño máximo (*-* MB según el tipo)
+- Use formatos permitidos (PDF)
 - Intente con un archivo más pequeño
 
 **P: Se cerró mi sesión automáticamente**
 
-R: Por seguridad, el sistema cierra la sesión después de 30 minutos de inactividad. Simplemente vuelva a iniciar sesión.
+R: Por seguridad, el sistema cierra la sesión después de * minutos de inactividad. Simplemente vuelva a iniciar sesión.
 
 ---
 
