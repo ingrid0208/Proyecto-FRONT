@@ -17,16 +17,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
-import { RolFormPermissionService } from './rol-form-permission.service';
-import { 
-  RolFormPermission, 
-  RolFormPermissionDisplay, 
-  CreateRolFormPermission, 
-  UpdateRolFormPermission,
-  RoleOption,
-  FormOption,
-  PermissionOption
-} from './rol-form-permission.model';
+import { RolFormPermission, RolFormPermissionDisplay } from './rol-form-permission.model';
+import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
 
 @Component({
   selector: 'app-rol-form-permission',
@@ -53,12 +45,12 @@ import {
 export class RolFormPermissionComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  // Data properties
+  // Data
   rolFormPermissions: RolFormPermission[] = [];
   displayData: RolFormPermissionDisplay[] = [];
   filteredData: RolFormPermissionDisplay[] = [];
   
-  // Dialog properties
+  // Dialog
   displayDialog = false;
   dialogTitle = '';
   isEditMode = false;
@@ -67,7 +59,7 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   // Form
   rolFormPermissionForm!: FormGroup;
   
-  // Loading state
+  // Loading
   loading = false;
   
   // Dropdown options
@@ -79,7 +71,7 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   globalFilter = '';
 
   constructor(
-    private rolFormPermissionService: RolFormPermissionService,
+    private serviceGeneric: ServiceGenericService,
     private fb: FormBuilder,
     private messageService: MessageService,
     private confirmationService: ConfirmationService
@@ -107,7 +99,7 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
 
   private loadData(): void {
     this.loading = true;
-    this.rolFormPermissionService.getAll()
+    this.serviceGeneric.getAll<RolFormPermission>('RolFormPermission')
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
@@ -133,25 +125,25 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   }
 
   private loadDropdownOptions(): void {
-    // Load roles
-    this.rolFormPermissionService.getAvailableRoles()
+    // Roles
+    this.serviceGeneric.getAll<any>('Role')
       .pipe(takeUntil(this.destroy$))
-      .subscribe((roles: RoleOption[]) => {
-        this.roleOptions = roles.map(role => ({ label: role.name, value: role.id }));
+      .subscribe(roles => {
+        this.roleOptions = roles.map((role: any) => ({ label: role.name, value: role.id }));
       });
 
-    // Load forms
-    this.rolFormPermissionService.getAvailableForms()
+    // Forms
+    this.serviceGeneric.getAll<any>('Form')
       .pipe(takeUntil(this.destroy$))
-      .subscribe((forms: FormOption[]) => {
-        this.formOptions = forms.map(form => ({ label: form.name, value: form.id }));
+      .subscribe(forms => {
+        this.formOptions = forms.map((form: any) => ({ label: form.name, value: form.id }));
       });
 
-    // Load permissions
-    this.rolFormPermissionService.getAvailablePermissions()
+    // Permissions
+    this.serviceGeneric.getAll<any>('Permission')
       .pipe(takeUntil(this.destroy$))
-      .subscribe((permissions: PermissionOption[]) => {
-        this.permissionOptions = permissions.map(permission => ({ label: permission.name, value: permission.id }));
+      .subscribe(perms => {
+        this.permissionOptions = perms.map((perm: any) => ({ label: perm.name, value: perm.id }));
       });
   }
 
@@ -184,7 +176,6 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   }
 
   editItem(rowData: RolFormPermissionDisplay): void {
-    // Find the original item with ID
     const originalItem = this.rolFormPermissions.find(item =>
       item.rolName === rowData.rolName &&
       item.formName === rowData.formName &&
@@ -207,7 +198,6 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   }
 
   deleteItem(rowData: RolFormPermissionDisplay): void {
-    // Find the original item with ID
     const originalItem = this.rolFormPermissions.find(item =>
       item.rolName === rowData.rolName &&
       item.formName === rowData.formName &&
@@ -227,7 +217,7 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   }
 
   private performDelete(id: number): void {
-    this.rolFormPermissionService.delete(id)
+    this.serviceGeneric.delete('RolFormPermission', id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -254,14 +244,14 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
       const formValue = this.rolFormPermissionForm.value;
       
       if (this.isEditMode && this.selectedItemId) {
-        const updateData: UpdateRolFormPermission = {
+        const updateData = {
           id: this.selectedItemId,
           rolid: formValue.rolid,
           formid: formValue.formid,
           permissionid: formValue.permissionid
         };
         
-        this.rolFormPermissionService.update(updateData)
+        this.serviceGeneric.update('RolFormPermission', this.selectedItemId, updateData)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
@@ -283,13 +273,13 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
             }
           });
       } else {
-        const createData: CreateRolFormPermission = {
+        const createData = {
           rolid: formValue.rolid,
           formid: formValue.formid,
           permissionid: formValue.permissionid
         };
         
-        this.rolFormPermissionService.create(createData)
+        this.serviceGeneric.create('RolFormPermission', createData)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
