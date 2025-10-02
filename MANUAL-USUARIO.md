@@ -1,11 +1,11 @@
-# Manual de Usuario - Sistema de Gestión de Multas
+# Manual de Usuario - Sistema de Gestión de Multas Ciudadanas
 ## Versión 1.0
 
 ---
 
 ## Información del Documento
 
-**Sistema:** Sistema de Gestión de Multas y Acuerdos de Pago
+**Sistema:** Sistema de Gestión de Multas Ciudadanas y Acuerdos de Pago
 **Versión:** 1.0.0
 **Tecnología:** Angular 19
 **Fecha de actualización:** Octubre 2025
@@ -19,7 +19,7 @@
 3. [Acceso al Sistema](#3-acceso-al-sistema)
 4. [Roles y Permisos](#4-roles-y-permisos)
 5. [Funcionalidades del Sistema](#5-funcionalidades-del-sistema)
-6. [Gestión de Multas](#6-gestión-de-multas)
+6. [Gestión de Multas Ciudadanas](#6-gestión-de-multas-ciudadanas)
 7. [Acuerdos de Pago](#7-acuerdos-de-pago)
 8. [Administración](#8-administración)
 9. [Perfil de Usuario](#9-perfil-de-usuario)
@@ -30,9 +30,9 @@
 
 ## 1. Introducción
 
-### 1.1 ¿Qué es el Sistema de Gestión de Multas?
+### 1.1 ¿Qué es el Sistema de Gestión de Multas Ciudadanas?
 
-El Sistema de Gestión de Multas es una aplicación web diseñada para facilitar la administración, consulta y pago de multas de tránsito. Permite a los usuarios consultar sus multas, generar acuerdos de pago, recibir notificaciones y realizar seguimiento de su estado.
+El Sistema de Gestión de Multas Ciudadanas es una aplicación web diseñada para facilitar la administración de sanciones por convivencia, comercio, espacio público y otras infracciones ciudadanas. Permite a los usuarios consultar sus multas, generar acuerdos de pago, recibir notificaciones y realizar seguimiento de su estado.
 
 ### 1.2 Propósito de este Manual
 
@@ -40,7 +40,7 @@ Este manual proporciona una guía completa para utilizar todas las funcionalidad
 
 ### 1.3 Características Principales
 
-- **Consulta de multas** por documento de identificación
+- **Consulta de multas ciudadanas** por documento de identificación
 - **Notificaciones** de multas pendientes
 - **Acuerdos de pago** personalizados
 - **Gestión de usuarios** y roles
@@ -58,7 +58,7 @@ El sistema funciona óptimamente en:
 - **Google Chrome** (versión 90 o superior) - Recomendado
 - **Mozilla Firefox** (versión 88 o superior)
 - **Microsoft Edge** (versión 90 o superior)
-- **Safari** (versión 14 o superior)
+
 
 ### 2.2 Requisitos de Hardware
 
@@ -270,7 +270,7 @@ El dashboard muestra:
 
 ---
 
-## 6. Gestión de Multas
+## 6. Gestión de Multas Ciudadanas
 
 ### 6.1 Consultar Multas
 
@@ -283,9 +283,9 @@ El dashboard muestra:
 **Paso 2: Visualizar Información**
 
 Cada multa muestra:
-- **Número de comparendo**
+- **Número de acto administrativo**
 - **Fecha de la infracción**
-- **Tipo de infracción**
+- **Tipo de infracción ciudadana**
 - **Valor de la multa**
 - **Estado:** Pendiente, Pagada, En Acuerdo, Vencida
 - **Acciones disponibles**
@@ -308,25 +308,24 @@ Puede filtrar por:
 3. Haga clic en **"Buscar"**
 
 **Paso 2: Ver Resultados**
-- Se mostrarán todas las multas asociadas al documento
+- Se mostrarán todas las multas ciudadanas asociadas al documento
 - Puede realizar las mismas acciones que en su consulta personal
 
 ---
 
-### 6.2 Detalle de Multa
+### 6.2 Detalle de Multa Ciudadana
 
-Al hacer clic en una multa específica, verá:
+Al hacer clic en una multa ciudadana específica, verá:
 
 **Información General:**
-- Número de comparendo
+- Número de acto administrativo
 - Fecha y hora de la infracción
 - Lugar de la infracción (dirección)
 - Autoridad que impuso la multa
-- Placa del vehículo (si aplica)
 
 **Detalles Legales:**
-- Artículo infringido
-- Descripción de la infracción
+- Artículo o norma infringida
+- Descripción de la infracción ciudadana
 - Valor original
 - Intereses acumulados (si aplica)
 - Descuentos disponibles
@@ -335,7 +334,7 @@ Al hacer clic en una multa específica, verá:
 - Estado actual
 - Fecha de vencimiento
 - Opciones de pago
-- Descargar comparendo (PDF)
+- Descargar resolución (PDF)
 - Generar acuerdo de pago
 
 ---
@@ -374,7 +373,7 @@ En su perfil puede configurar:
 
 ---
 
-### 6.4 Tipos de Multas (Catálogo)
+### 6.4 Tipos de Multas Ciudadanas (Catálogo)
 
 #### Consultar Catálogo
 
@@ -384,12 +383,11 @@ En su perfil puede configurar:
 **Paso 2: Explorar Catálogo**
 
 El catálogo muestra:
-- **Código de la infracción**
+- **Código de la infracción ciudadana**
 - **Descripción detallada**
 - **Categoría:** Leve, Grave, Muy Grave
 - **Valor en SMMLV** (Salarios Mínimos)
-- **Artículo de ley**
-- **Puntos en licencia** (si aplica)
+- **Artículo o norma**
 
 **Paso 3: Búsqueda**
 
@@ -409,7 +407,7 @@ Cada tipo de multa incluye:
 
 ---
 
-### 6.5 Anexar Multas (Solo Operadores/Admin)
+### 6.5 Anexar Multas Ciudadanas (Solo Operadores/Admin)
 
 #### Proceso de Carga
 
@@ -420,17 +418,16 @@ Cada tipo de multa incluye:
 
 **Opción A: Ingreso Individual**
 1. Complete el formulario:
-   - Número de comparendo
-   - Tipo de infracción
+   - Número de acto administrativo
+   - Tipo de infracción ciudadana
    - Fecha y hora
    - Lugar de la infracción
    - Documento del infractor
-   - Placa del vehículo
    - Valor de la multa
    - Observaciones
 
 2. Adjunte documentos:
-   - Foto del comparendo
+   - Resolución o acto administrativo
    - Evidencias fotográficas
    - Documentos adicionales
 
@@ -448,13 +445,13 @@ Cada tipo de multa incluye:
 - El sistema verificará:
   - Formato de datos
   - Duplicados
-  - Existencia de tipos de infracción
+   - Existencia de tipos de infracción ciudadana
   - Validez de documentos
 
 **Paso 4: Confirmación**
 - Las multas quedarán registradas
 - Se enviarán notificaciones automáticas
-- Se generarán los comparendos
+   - Se generarán los actos administrativos
 
 ---
 
@@ -1474,13 +1471,13 @@ Acceda a nuestra videoteca con:
 
 **Acuerdo de Pago:** Convenio para pagar multas en cuotas.
 
-**Comparendo:** Documento que certifica la imposición de una multa de tránsito.
+**Acto administrativo:** Documento que certifica la imposición de una multa ciudadana.
 
 **Cuota:** Pago parcial dentro de un acuerdo de pago.
 
 **Incumplimiento:** Falta de pago de una cuota en la fecha establecida.
 
-**Infracción:** Violación de normas de tránsito.
+**Infracción:** Violación de normas de convivencia, comercio, espacio público u otras disposiciones ciudadanas.
 
 **SMMLV:** Salario Mínimo Mensual Legal Vigente.
 
@@ -1488,7 +1485,7 @@ Acceda a nuestra videoteca con:
 
 **Pronto Pago:** Descuento aplicado por pagar antes del vencimiento.
 
-**Comparendo Electrónico:** Comparendo generado y notificado digitalmente.
+**Acto administrativo electrónico:** Acto administrativo generado y notificado digitalmente.
 
 ---
 
