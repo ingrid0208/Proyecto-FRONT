@@ -424,15 +424,7 @@ Cada tipo de multa incluye:
    - Evidencias fotográficas
    - Documentos adicionales
 
-3. Haga clic en **"Guardar"**
 
-**Opción B: Carga Masiva (Excel/CSV)**
-1. Descargue la plantilla Excel
-2. Complete la información según el formato
-3. Cargue el archivo
-4. El sistema validará los datos
-5. Revise el resumen de importación
-6. Confirme la carga
 
 **Paso 3: Validación**
 - El sistema verificará:
