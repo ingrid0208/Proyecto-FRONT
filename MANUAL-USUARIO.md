@@ -187,11 +187,6 @@ El sistema cuenta con diferentes niveles de acceso:
 #### B. Usuario Infractor 
 **permisos:**
 - Puede consultar sus infraciones y la de terceros si cuenta con el numero de documento 
-**Permisos adicionales:**
-- Anexar nuevas multas
-- Consultar multas de otros usuarios
-- Generar reportes básicos
-- Gestionar notificaciones
 
 #### C. Usuario Administrador
 **Permisos heredados:** Todos los anteriores
