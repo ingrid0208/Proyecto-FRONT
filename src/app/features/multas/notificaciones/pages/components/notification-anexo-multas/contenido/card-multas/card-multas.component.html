@@ -14,9 +14,45 @@
       </span>
     </div>
 
-    <div class="multa-location">
-      💰 {{ multa.amountToPay | currency:'COP':'symbol-narrow' }}
+<div class="multa-location">
+  <!-- Caso: con descuento aplicado -->
+  <ng-container *ngIf="multa.amountToPay < multa.originalAmount; else sinDescuento">
+    <div class="precio-container">
+      <!-- Precio con descuento -->
+      <span class="precio-descuento">
+        {{ multa.amountToPay | currency:'COP':'symbol-narrow' }}
+      </span>
+
+      <!-- Precio original tachado -->
+      <span class="precio-normal">
+        {{ multa.originalAmount | currency:'COP':'symbol-narrow' }}
+      </span>
     </div>
+    <div class="badge-descuento">
+      🎉 50% de descuento aplicado
+    </div>
+  </ng-container>
+
+  <!-- Caso: sin descuento (beneficio perdido) -->
+  <ng-template #sinDescuento>
+    <div class="precio-container">
+      <!-- Valor con descuento tachado en verde -->
+      <span class="precio-perdido">
+        {{ (multa.originalAmount / 2) | currency:'COP':'symbol-narrow' }}
+      </span>
+
+      <!-- Valor actual -->
+      <span class="precio-sin-descuento">
+        {{ multa.originalAmount | currency:'COP':'symbol-narrow' }}
+      </span>
+    </div>
+    <div class="badge-perdido">
+      ❌ Perdiste el 50% de descuento
+    </div>
+  </ng-template>
+</div>
+
+
 
     <p><strong>Observaciones:</strong> {{ multa.observations }}</p>
   </div>

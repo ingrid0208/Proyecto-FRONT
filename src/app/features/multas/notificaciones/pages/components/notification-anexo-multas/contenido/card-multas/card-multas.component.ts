@@ -15,6 +15,14 @@ export class CardMultasComponent {
     return this.multa.stateInfraction === 3 ? 'estado-abierto' : 'estado-pendiente';
   }
 
+  mapInfractions(apiData: any[]): UserInfractionSelectDto[] {
+  return apiData.map(item => ({
+    ...item,
+    originalAmount: item.OriginalAmount, // 👈 mapeo explícito
+  }));
+}
+
+
   get estadoTexto(): string {
     switch (this.multa.stateInfraction) {
       case 0: return 'PENDIENTE';

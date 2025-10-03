@@ -1,4 +1,5 @@
 export interface Persona {
+phoneNumber: any;
   id?: number;
   firstName: string;
   lastName: string;

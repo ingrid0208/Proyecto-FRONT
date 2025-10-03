@@ -1,43 +1,141 @@
 .multa-card {
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
 
-  .multa-header {
-    font-weight: bold;
-    color: #d32f2f;
-    margin-bottom: 0.5rem;
-  }
+.multa-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
 
-  .multa-body {
-    font-size: 0.95rem;
+/* Header */
+.multa-header {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #d32f2f;
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-    .multa-info {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.5rem;
-    }
+.multa-header::before {
+  content: "⚠️";
+  font-size: 1.1rem;
+}
 
-    .estado {
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      color: white;
-      font-weight: bold;
+/* Texto general */
+.multa-body {
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.5;
+}
 
-      &.estado-abierto {
-        background-color: #4caf50;
-      }
-      &.estado-pendiente {
-        background-color: #ff9800;
-      }
-    }
+/* Info superior */
+.multa-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.6rem 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
 
-    .multa-location {
-      margin-top: 0.5rem;
-      color: #616161;
-      font-size: 0.85rem;
-    }
-  }
+/* Estado con pill */
+.estado {
+  padding: 0.25rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0.5px;
+  transition: background 0.3s ease;
+}
+
+.estado-abierto {
+  background-color: #22c55e;
+}
+
+.estado-pendiente {
+  background-color: #f59e0b;
+}
+
+/* Bloque de precios */
+.precio-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 1rem 0 0.4rem;
+}
+
+.precio-descuento {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #16a34a;
+  animation: pop 0.3s ease;
+}
+
+.precio-normal {
+  font-size: 1rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.precio-perdido {
+  font-size: 1.1rem;
+  color: #16a34a;
+  text-decoration: line-through;
+}
+
+.precio-sin-descuento {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Badges */
+.badge-descuento,
+.badge-perdido {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.badge-descuento {
+  color: #16a34a;
+  background: #dcfce7;
+}
+
+.badge-perdido {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.badge-descuento:hover,
+.badge-perdido:hover {
+  transform: scale(1.05);
+}
+
+/* Observaciones */
+.multa-location {
+  margin-top: 0.6rem;
+  color: #4b5563;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* Animación de entrada de precio */
+@keyframes pop {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
 }

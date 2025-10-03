@@ -10,7 +10,8 @@ export interface UserInfractionSelectDto {
   typeInfractionName?: string;
   documentNumber?: string;
   observations?: string;
-  amountToPay?: number;
+  amountToPay: number;
+  originalAmount: number;
   tipo: string;                  // <- typeInfractionName
   fecha: Date | string;          // <- dateInfraction
   descripcion: string;           // <- observations

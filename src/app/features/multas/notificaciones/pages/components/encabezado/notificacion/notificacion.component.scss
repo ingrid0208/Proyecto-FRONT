@@ -1,54 +1,105 @@
 .notificaciones-container {
+  padding: 2rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Banner */
+.banner {
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  color: white;
+  padding: 1.2rem;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  letter-spacing: 0.5px;
+}
+
+/* Card de usuario */
+.usuario-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.8rem;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+.usuario-card:hover {
+  transform: translateY(-3px);
+}
+
+.usuario-nombre {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.usuario-cc {
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.usuario-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+.stat {
+  font-size: 1.1rem;
+}
+.stat span {
+  font-weight: bold;
+  color: #1976d2;
+  display: block;
+  font-size: 1.4rem;
+}
+.stat small {
+  display: block;
+  color: #6b7280;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
+}
+
+/* Loader */
+.loader {
+  text-align: center;
+  color: #2e7d32;
+  font-weight: 500;
   padding: 1rem;
-  background-color: #f5f5f5;
+  font-size: 1rem;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
 
-  .banner {
-    background-color: #2e7d32;
-    color: white;
-    padding: 1rem;
-    text-align: center;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-  }
+/* Lista de multas/acuerdos */
+.multas-section {
+  margin-top: 1.5rem;
+}
+.multas-section h3 {
+  margin-bottom: 1rem;
+  color: #2e7d32;
+  font-size: 1.2rem;
+  border-left: 4px solid #2e7d32;
+  padding-left: 0.5rem;
+}
 
-  .usuario-card {
-    background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-    margin-bottom: 1.5rem;
-
-    .usuario-nombre {
-      font-weight: bold;
-    }
-    .usuario-cc {
-      color: gray;
-      margin-bottom: 1rem;
-    }
-
-    .usuario-stats {
-      display: flex;
-      justify-content: space-around;
-
-      .stat {
-        font-size: 1.2rem;
-        span {
-          font-weight: bold;
-          color: #1976d2;
-        }
-        small {
-          display: block;
-          color: gray;
-        }
-      }
-    }
-  }
-
-  .multas-section {
-    h3 {
-      margin-bottom: 1rem;
-    }
-  }
+.no-multas {
+  text-align: center;
+  background: #e8f5e9;
+  color: #2e7d32;
+  font-weight: 500;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
 }
