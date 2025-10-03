@@ -181,7 +181,7 @@ El sistema cuenta con diferentes niveles de acceso:
 - Consultar sus propias multas
 - Generar acuerdos de pago
 - Ver notificaciones personales
-- Actualizar su perfil
+
 
 
 #### B. Usuario Infractor 
