@@ -2959,6 +2959,1277 @@ ng g directive shared/directives/dir      # Directiva
 
 ---
 
+# PARTE II: BACKEND - SISTEMA DE CONTROL DE MULTAS CIUDADANAS
+
+---
+
+## 18. Información General del Backend
+
+### 18.1 Descripción
+Sistema backend para la gestión y control de multas ciudadanas, desarrollado con arquitectura multicapa en .NET 8. El sistema permite administrar infracciones ciudadanas, usuarios, pagos, acuerdos de pago, y genera reportes de inspectoría.
+
+### 18.2 Tecnologías Principales del Backend
+- **Framework**: .NET 8.0
+- **Lenguaje**: C#
+- **Arquitectura**: Clean Architecture / N-Capas
+- **Bases de Datos**: SQL Server, PostgreSQL, MySQL (soporte multi-base de datos)
+- **ORM**: Entity Framework Core 9.0.4
+- **Autenticación**: JWT (JSON Web Tokens)
+- **Validación**: FluentValidation 12.0.0
+- **Mapeo de Objetos**: AutoMapper 14.0.0
+- **Documentación API**: Swagger/OpenAPI
+- **Contenedores**: Docker
+
+---
+
+## 19. Arquitectura del Backend
+
+### 19.1 Estructura de Capas
+
+El proyecto backend sigue una arquitectura en capas claramente definida:
+
+```
+taller/
+├── Web/                    # Capa de Presentación (API REST)
+├── Business/              # Capa de Lógica de Negocio
+├── Data/                  # Capa de Acceso a Datos
+├── Entity/                # Capa de Entidades y DTOs
+├── Utilities/             # Utilidades y Helpers
+├── Helpers/               # Funciones auxiliares
+├── Template/              # Plantillas (emails, PDFs)
+├── Templates/             # Plantillas adicionales
+├── Stategy/              # Patrones de estrategia
+└── ControlDeComparendo.Tests/  # Pruebas unitarias
+```
+
+### 19.2 Proyectos Adicionales
+
+```
+Merge_Back/
+├── taller/               # Sistema principal
+├── Gateway/              # API Gateway
+└── PublicAPI/            # API pública
+```
+
+---
+
+## 20. Capa Web Backend (Presentación)
+
+### 20.1 Configuración del Proyecto Backend
+
+**Archivo**: Web.csproj
+
+**Paquetes NuGet principales**:
+- `Microsoft.AspNetCore.Authentication.JwtBearer` 8.0.15
+- `Microsoft.AspNetCore.Authentication.Google` 8.0.15
+- `FluentValidation.AspNetCore` 11.3.1
+- `Swashbuckle.AspNetCore` 6.6.2
+- `Microsoft.EntityFrameworkCore.SqlServer` 9.0.4
+- `Npgsql.EntityFrameworkCore.PostgreSQL` 9.0.4
+- `Pomelo.EntityFrameworkCore.MySql` 9.0.0
+
+### 20.2 Configuración de la Aplicación Backend
+
+**Archivo**: Program.cs
+
+**Servicios configurados**:
+1. Controllers y Swagger
+2. FluentValidation
+3. Servicios de aplicación personalizados
+4. Configuración JWT
+5. Base de datos dinámica (multi-provider)
+6. Autenticación y autorización
+7. CORS
+8. Caché en memoria
+
+**Middleware Pipeline**:
+1. Archivos estáticos
+2. Swagger (Dev/Prod)
+3. CORS
+4. Autenticación
+5. Autorización
+6. Controladores
+7. Migraciones automáticas
+
+### 20.3 Configuración Backend (appsettings.json)
+
+**Configuraciones clave**:
+
+#### Bases de Datos
+```json
+"MigrationProvider": "SqlServer",
+"ConnectionStrings": {
+  "SqlServer": "Server=localhost,1433;Database=controlComparendo;...",
+  "Postgres": "Host=localhost;Port=5433;Database=controlComparendo;...",
+  "MySql": "Server=127.0.0.1;Port=3307;Database=controlComparendo;..."
+}
+```
+
+#### JWT
+```json
+"Jwt": {
+  "Issuer": "WebCDCP",
+  "Audience": "WebCDCP",
+  "AccessTokenExpirationMinutes": 15,
+  "RefreshTokenExpirationDays": 7
+}
+```
+
+#### Sesiones de Usuario
+```json
+"Auth": {
+  "IdleMinutes": 1,
+  "AbsoluteMinutes": 120
+}
+```
+
+#### reCAPTCHA
+```json
+"Recaptcha": {
+  "SecretKey": "6LcEs7grAAAAAPaoAy-k5kxlpNhWfsEihOph6bJ_",
+  "MinScore": 0.5
+}
+```
+
+#### SMTP (Correo electrónico)
+```json
+"SmtpSettings": {
+  "Host": "smtp.gmail.com",
+  "Port": 587,
+  "EnableSsl": true,
+  "Email": "camiloandreslosada901@gmail.com"
+}
+```
+
+#### Scheduler (Tareas programadas)
+```json
+"Scheduler": {
+  "TzId": "America/Bogota",
+  "Hour": 16,
+  "Minute": 21
+}
+```
+
+#### Acuerdos de Pago
+```json
+"PaymentAgreementInterestOptions": {
+  "MonthlyRate": 0.02,
+  "GracePeriodDays": 30,
+  "DailyDivisor": 30
+}
+```
+
+### 20.4 Controladores Backend
+
+**Ubicación**: Web/Controllers/
+
+#### Controladores Principales
+
+1. **AuthController.cs** - Autenticación
+2. **LoginController.cs** - Login y gestión de sesiones
+3. **TouristicAttractionsController.cs** - Atracciones turísticas
+4. **VerificationController.cs** - Verificaciones
+
+#### Controladores de Entidades
+**Ubicación**: Web/Controllers/Implements/Entities/
+
+- Gestión de documentos de infracción
+- Gestión de tipos de infracción
+- Gestión de pagos
+- Gestión de acuerdos de pago
+- Gestión de usuarios
+- Gestión de notificaciones
+
+#### Controladores de Seguridad
+**Ubicación**: Web/Controllers/Implements/Security/
+
+- Gestión de usuarios
+- Gestión de roles
+- Gestión de permisos
+- Gestión de módulos y formularios
+
+---
+
+## 21. Capa Business (Lógica de Negocio)
+
+### 21.1 Configuración del Proyecto Business
+
+**Archivo**: Business.csproj
+
+**Paquetes principales**:
+- `AutoMapper` 14.0.0
+- `FluentValidation` 12.0.0
+- `Google.Apis.Auth` 1.69.0
+- `Microsoft.Playwright` 1.54.0 (automatización web)
+
+**Referencias de proyecto**:
+- Data
+- Entity
+- Helpers
+- Template
+- Utilities
+
+### 21.2 Servicios de Negocio
+
+#### Servicios de Entidades
+**Ubicación**: Business/Services/Entities/
+
+1. **DocumentInfractionServices.cs** - Gestión de documentos de infracciones
+2. **FineCalculationDetailService.cs** - Cálculo de detalles de multas
+3. **InspectoraReportService.cs** - Reportes de inspectoría
+4. **PaymentAgreementServices.cs** - Acuerdos de pago e intereses
+5. **TypeInfractionService.cs** - Tipos de infracciones
+6. **TypePaymentServices.cs** - Tipos de pago
+7. **UserInfractionServices.cs** - Infracciones de usuarios
+8. **UserNotificationService.cs** - Notificaciones a usuarios
+9. **ValueSmldvService.cs** - Valores de SMLDV
+
+#### Servicios de Seguridad
+**Ubicación**: Business/Services/Security/
+
+1. **AuthService.cs** - Autenticación (login, registro, Google Auth)
+2. **AuthSessionService.cs** - Gestión de sesiones de usuario
+3. **UserService.cs** - CRUD de usuarios
+4. **PersonService.cs** - Gestión de personas
+5. **RolService.cs** - Gestión de roles
+6. **RolUserService.cs** - Asignación de roles a usuarios
+7. **RolFormPermissionService.cs** - Permisos de formularios por rol
+8. **FormService.cs** - Gestión de formularios
+9. **ModuleService.cs** - Gestión de módulos
+10. **FormModuleService.cs** - Relación formularios-módulos
+11. **PermissionService.cs** - Gestión de permisos
+
+#### Otros Servicios
+
+1. **ApiColombiaGatewayService.cs** - Integración con API de Colombia
+2. **DiscountService.cs** - Cálculo de descuentos en multas
+3. **TouristicAttractionService.cs** - Atracciones turísticas
+
+#### Servicios PDF
+**Ubicación**: Business/Services/PDF/
+
+Generación de documentos PDF para el sistema.
+
+---
+
+## 22. Capa Data (Acceso a Datos)
+
+### 22.1 Configuración del Proyecto Data
+
+**Archivo**: Data.csproj
+
+**Paquetes principales**:
+- `AutoMapper` 14.0.0
+- `Microsoft.EntityFrameworkCore` 9.0.4
+- `Microsoft.EntityFrameworkCore.SqlServer` 9.0.4
+- `Npgsql.EntityFrameworkCore.PostgreSQL` 9.0.4
+
+**Referencia de proyecto**:
+- Entity
+- Utilities
+
+### 22.2 Estructura Data
+
+```
+Data/
+├── Interfaces/         # Interfaces de repositorios
+├── Repository/        # Implementación de repositorios
+└── Services/          # Servicios de datos
+```
+
+### 22.3 Patrón Repository
+
+El proyecto utiliza el patrón Repository para abstraer el acceso a datos, permitiendo:
+- Desacoplamiento de la lógica de negocio
+- Facilidad para cambiar el proveedor de base de datos
+- Mejor testabilidad
+
+---
+
+## 23. Capa Entity (Entidades y DTOs)
+
+### 23.1 Configuración del Proyecto Entity
+
+**Archivo**: Entity.csproj
+
+**Paquetes principales**:
+- `Microsoft.EntityFrameworkCore` 9.0.4
+- `Microsoft.AspNetCore.Authentication` 2.3.0
+- `Microsoft.AspNetCore.Http.Abstractions` 2.3.0
+- `Newtonsoft.Json` 13.0.3
+- `Pomelo.EntityFrameworkCore.MySql` 9.0.0
+
+### 23.2 Estructura Entity
+
+```
+Entity/
+├── Domain/
+│   ├── Enums/          # Enumeraciones
+│   ├── Interfaces/     # Interfaces de dominio
+│   └── Models/         # Modelos de dominio
+│       ├── Base/       # Modelos base
+│       └── Implements/ # Implementaciones
+│           ├── Entities/        # Entidades de negocio
+│           └── ModelSecurity/   # Entidades de seguridad
+├── DTOs/               # Data Transfer Objects
+├── ConfigurationsBase/ # Configuraciones de EF Core
+├── Migrations/         # Migraciones de base de datos
+├── Init/              # Datos iniciales
+└── Infrastructure/     # Infraestructura de datos
+```
+
+### 23.3 Enumeraciones Backend
+
+**Ubicación**: Entity/Domain/Enums/
+
+1. **DatabaseType.cs** - Tipos de base de datos (SqlServer, PostgreSQL, MySql)
+2. **DeleteType.cs** - Tipos de eliminación (lógica/física)
+3. **EstadoMulta.cs** - Estados de multa
+4. **GetAllType.cs** - Tipos de consulta
+5. **TipoUsuario.cs** - Tipos de usuario
+
+### 23.4 Entidades Principales Backend
+
+#### Entidades de Negocio
+**Ubicación**: Entity/Domain/Models/Implements/Entities/
+
+1. **DocumentInfraction** - Documentos de infracciones
+2. **TypeInfraction** - Tipos de infracciones
+3. **UserInfraction** - Infracciones de usuarios
+4. **TypePayment** - Tipos de pago
+5. **PaymentAgreement** - Acuerdos de pago
+6. **FineCalculationDetail** - Detalles de cálculo de multas
+7. **InspectoraReport** - Reportes de inspectoría
+8. **AddFines** - Adición de multas
+
+#### Entidades de Seguridad Backend
+**Ubicación**: Entity/Domain/Models/Implements/ModelSecurity/
+
+1. **User** - Usuarios del sistema
+2. **Person** - Personas
+3. **Rol** - Roles
+4. **RolUser** - Relación Usuario-Rol
+5. **Module** - Módulos del sistema
+6. **Form** - Formularios
+7. **FormModule** - Relación Formulario-Módulo
+8. **Permission** - Permisos
+9. **RolFormPermission** - Permisos por rol y formulario
+
+### 23.5 Modelos Base Backend
+
+**BaseModel** y **BaseModelGeneric**: Proporcionan propiedades comunes como:
+- Id
+- CreatedAt
+- UpdatedAt
+- DeletedAt (para borrado lógico)
+- State
+
+### 23.6 Interfaces de Dominio Backend
+
+1. **IApplicationDbContext** - Interfaz del contexto de base de datos
+2. **IAuditService** - Servicio de auditoría
+3. **IDbContextFactory** - Fábrica de contextos de base de datos
+4. **IHasId** - Interface para entidades con Id
+5. **ISupportLogicalDelete** - Soporte para borrado lógico
+
+---
+
+## 24. Capa Utilities Backend
+
+### 24.1 Estructura Utilities
+
+```
+Utilities/
+├── Custom/           # Utilidades personalizadas
+└── Exceptions/       # Excepciones personalizadas
+```
+
+### 24.2 Funcionalidades Utilities
+
+- Manejo de excepciones personalizadas
+- Utilidades de validación
+- Helpers de formato y conversión
+- Constantes del sistema
+
+---
+
+## 25. Capa Helpers Backend
+
+Funciones auxiliares para:
+- Operaciones comunes
+- Formateo de datos
+- Conversiones
+- Validaciones adicionales
+
+---
+
+## 26. Capa Template Backend
+
+Gestión de plantillas para:
+- Emails (notificaciones, verificación, recuperación de contraseña)
+- PDFs (comparendos, reportes, acuerdos de pago)
+- Reportes del sistema
+
+---
+
+## 27. Seguridad Backend
+
+### 27.1 Autenticación JWT
+
+**Configuración**:
+- Issuer: WebCDCP
+- Audience: WebCDCP
+- Access Token: 15 minutos
+- Refresh Token: 7 días
+
+### 27.2 Gestión de Sesiones Backend
+
+**Archivo**: AuthSessionService.cs
+
+**Características**:
+- Control de sesiones activas por usuario
+- Timeout de inactividad: 1 minuto (configurable)
+- Timeout absoluto: 120 minutos
+- Validación de tokens
+
+### 27.3 OAuth 2.0 - Google
+
+Integración con Google Authentication mediante:
+- `Microsoft.AspNetCore.Authentication.Google`
+- `Google.Apis.Auth`
+
+### 27.4 reCAPTCHA Backend
+
+Protección contra bots con Google reCAPTCHA v3:
+- Score mínimo: 0.5
+- Validación en endpoints críticos
+
+### 27.5 CORS Backend
+
+Configuración de orígenes permitidos:
+- Frontend: http://localhost:4200
+
+---
+
+## 28. Base de Datos Backend
+
+### 28.1 Soporte Multi-Base de Datos
+
+El sistema soporta 3 proveedores de bases de datos:
+
+1. **SQL Server** (puerto 1433)
+2. **PostgreSQL** (puerto 5433)
+3. **MySQL** (puerto 3307)
+
+### 28.2 Migraciones Backend
+
+**Estrategia**: Migraciones automáticas al iniciar la aplicación
+
+**Configuración**:
+```json
+"MigrateOnStartupTargets": ["SqlServer", "Postgres", "MySql"]
+```
+
+**Proveedor por defecto**: SqlServer
+
+### 28.3 Entity Framework Core
+
+**Versión**: 9.0.4
+
+**Características utilizadas**:
+- Code First
+- Migrations
+- Fluent API
+- Data Annotations
+- Change Tracking
+- Lazy/Eager Loading
+
+---
+
+## 29. Patrones de Diseño Utilizados en Backend
+
+### 29.1 Repository Pattern
+Abstracción del acceso a datos en la capa Data.
+
+### 29.2 Strategy Pattern
+**Carpeta**: Stategy/
+
+Implementación de diferentes estrategias de negocio.
+
+### 29.3 Dependency Injection
+Inyección de dependencias nativa de .NET Core en todos los servicios.
+
+### 29.4 Unit of Work
+Gestión transaccional en las operaciones de base de datos.
+
+### 29.5 DTO Pattern
+Separación entre modelos de dominio y objetos de transferencia de datos.
+
+### 29.6 Factory Pattern
+Creación dinámica de contextos de base de datos según el proveedor.
+
+---
+
+## 30. Integración de Servicios Externos Backend
+
+### 30.1 API Colombia Gateway
+
+**Servicio**: ApiColombiaGatewayService
+
+Integración con servicios de datos de Colombia (municipios, departamentos, etc.).
+
+### 30.2 SMTP - Gmail
+
+Envío de correos electrónicos:
+- Notificaciones
+- Recuperación de contraseña
+- Confirmación de registro
+- Alertas de pagos
+
+### 30.3 Google Authentication Backend
+
+Autenticación mediante cuentas de Google.
+
+### 30.4 Microsoft Playwright
+
+**Paquete**: Microsoft.Playwright 1.54.0
+
+**Uso**: Automatización de navegadores para scraping o generación de capturas.
+
+---
+
+## 31. Validaciones Backend
+
+### 31.1 FluentValidation
+
+**Versión**: 12.0.0
+
+**Validadores implementados**:
+
+1. **DocumentInfraction Validator**
+   - Validación de documentos de infracciones
+
+2. **InspectoraReport Validator**
+   - Validación de reportes de inspectoría
+
+**Ubicación**: Business/validaciones/
+
+**Características**:
+- Validaciones fluidas y legibles
+- Mensajes personalizados
+- Validaciones asíncronas
+- Validaciones condicionales
+
+---
+
+## 32. Mapeo de Objetos Backend
+
+### 32.1 AutoMapper
+
+**Versión**: 14.0.0
+
+**Ubicación**: Web/AutoMapper/
+
+**Perfiles de mapeo**:
+- Entity → DTO
+- DTO → Entity
+- Entity → ViewModel
+- Relaciones complejas
+
+---
+
+## 33. Funcionalidades del Sistema Backend
+
+### 33.1 Gestión de Infracciones
+
+1. Registro de comparendos
+2. Tipos de infracciones
+3. Documentos adjuntos
+4. Estados de multas
+5. Cálculo de valores (SMLDV)
+
+### 33.2 Gestión de Pagos Backend
+
+1. Tipos de pago
+2. Acuerdos de pago
+3. Cálculo de intereses (2% mensual)
+4. Descuentos por pronto pago
+5. Período de gracia (30 días)
+
+### 33.3 Gestión de Usuarios Backend
+
+1. Registro y autenticación
+2. Roles y permisos
+3. Sesiones activas
+4. Perfil de usuario
+5. Notificaciones
+
+### 33.4 Reportes Backend
+
+1. Reportes de inspectoría
+2. Reportes de multas
+3. Reportes de pagos
+4. Estadísticas del sistema
+
+### 33.5 Sistema de Permisos Backend
+
+**Modelo**: RBAC (Role-Based Access Control)
+
+**Niveles**:
+- Usuario → Rol(es)
+- Rol → Permisos sobre Formularios
+- Formularios → Módulos
+
+---
+
+## 34. Middleware Backend
+
+### 34.1 Middleware Implementados
+
+**Ubicación**: Web/Middleware/
+
+Posibles middlewares personalizados:
+- Validación de sesiones
+- Logging
+- Manejo de excepciones
+- Rate limiting
+
+---
+
+## 35. Workers y Background Services
+
+### 35.1 WebBackgroundService
+
+**Ubicación**: Web/WebBackgroundService/
+
+**Tareas programadas**:
+- Verificación de acuerdos de pago vencidos
+- Cálculo automático de intereses
+- Envío de notificaciones programadas
+- Horario configurado: 16:21 (America/Bogota)
+
+---
+
+## 36. Pruebas Backend
+
+### 36.1 Proyecto de Pruebas
+
+**Nombre**: ControlDeComparendo.Tests
+
+**Ubicación**: ControlDeComparendo.Tests/
+
+**Framework de pruebas**: xUnit / NUnit / MSTest
+
+**Alcance**:
+- Pruebas unitarias de servicios
+- Pruebas de validadores
+- Pruebas de lógica de negocio
+- Mocks de repositorios
+
+---
+
+## 37. Docker Backend
+
+### 37.1 Dockerfile
+
+**Ubicación**: Web/Dockerfile
+
+**Características**:
+- Target OS: Linux
+- Multi-stage build
+- Optimización de capas
+
+### 37.2 Docker Ignore
+
+**Archivo**: .dockerignore
+
+Exclusión de archivos innecesarios en la imagen Docker.
+
+---
+
+## 38. Swagger / OpenAPI
+
+### 38.1 Configuración Swagger
+
+**Disponible en**: `/swagger`
+
+**Versión de API**: v1
+
+**Entornos activos**: Development y Production
+
+**Características**:
+- Documentación automática de endpoints
+- Pruebas interactivas
+- Esquemas de modelos
+- Autenticación JWT integrada
+
+---
+
+## 39. Infraestructura Backend
+
+### 39.1 Servicios de Infraestructura
+
+**Ubicación**: Web/Infrastructure/
+
+Configuración de:
+- DbContext Factory
+- Migraciones automáticas
+- Conexión a múltiples bases de datos
+- Caché
+
+---
+
+## 40. Configuraciones Personalizadas Backend
+
+### 40.1 Web Configurations
+
+**Ubicación**: Web/Configurations/
+
+Extensiones de configuración para:
+- Servicios de aplicación
+- CORS
+- Autenticación JWT
+- Base de datos
+- Validadores
+
+---
+
+## 41. Flujo de Datos Backend
+
+### 41.1 Request Pipeline
+
+```
+HTTP Request
+    ↓
+Controller (Web)
+    ↓
+Validator (FluentValidation)
+    ↓
+Service (Business)
+    ↓
+Repository (Data)
+    ↓
+DbContext (Entity)
+    ↓
+Database
+    ↓
+Entity
+    ↓
+AutoMapper (DTO)
+    ↓
+HTTP Response
+```
+
+---
+
+## 42. Modelos de Datos Principales Backend
+
+### 42.1 Sistema de Infracciones Backend
+
+**UserInfraction** (Infracción de Usuario)
+- Id del usuario
+- Tipo de infracción
+- Fecha
+- Estado
+- Valor SMLDV
+- Documentos asociados
+
+**DocumentInfraction** (Documento de Infracción)
+- Referencia a UserInfraction
+- Tipo de documento
+- Ruta del archivo
+- Fecha de carga
+
+**TypeInfraction** (Tipo de Infracción)
+- Código
+- Descripción
+- Valor base en SMLDV
+
+**FineCalculationDetail** (Detalle de Cálculo de Multa)
+- Valor base
+- Descuentos aplicados
+- Intereses calculados
+- Total a pagar
+
+### 42.2 Sistema de Pagos Backend
+
+**PaymentAgreement** (Acuerdo de Pago)
+- Usuario
+- Infracción
+- Número de cuotas
+- Tasa de interés (2% mensual)
+- Fecha de inicio
+- Estado
+
+**TypePayment** (Tipo de Pago)
+- Efectivo
+- Transferencia
+- Tarjeta
+- Acuerdo de pago
+
+### 42.3 Sistema de Seguridad Backend
+
+**User** (Usuario)
+- Username
+- Email
+- Password (hasheado)
+- Estado
+- Roles asociados
+
+**Person** (Persona)
+- Datos personales
+- Relación con User
+
+**Rol** (Rol)
+- Nombre
+- Descripción
+- Permisos
+
+**RolFormPermission** (Permiso)
+- Rol
+- Formulario
+- Permisos (CRUD)
+
+---
+
+## 43. Estados del Sistema Backend
+
+### 43.1 Estados de Multa (EstadoMulta)
+
+1. **Pendiente**: Multa registrada, pendiente de pago
+2. **Pagada**: Multa completamente pagada
+3. **En Acuerdo**: Con acuerdo de pago activo
+4. **Vencida**: Pasó el período de gracia sin pago
+5. **Coactivo**: En proceso coactivo
+
+---
+
+## 44. Lógica de Negocio Crítica Backend
+
+### 44.1 Cálculo de Intereses
+
+**Servicio**: PaymentAgreementServices
+
+**Fórmula**:
+- Tasa mensual: 2%
+- Días de gracia: 30
+- Divisor diario: 30
+- Interés = Valor * (0.02 / 30) * días_mora
+
+### 44.2 Descuentos Backend
+
+**Servicio**: DiscountService
+
+**Reglas**:
+- Pronto pago: Descuento según días desde infracción
+- Pago total: Mayor descuento
+- Acuerdos de pago: Sin descuento de pronto pago
+
+### 44.3 Generación de Reportes Backend
+
+**Servicio**: InspectoraReportService
+
+**Tipos**:
+- Reportes diarios
+- Reportes mensuales
+- Reportes por usuario
+- Reportes por tipo de infracción
+
+---
+
+## 45. Notificaciones Backend
+
+### 45.1 Canales de Notificación
+
+1. **Email** (SMTP)
+   - Confirmación de registro
+   - Recuperación de contraseña
+   - Notificaciones de pagos
+   - Recordatorios de vencimiento
+   - Alertas administrativas
+
+### 45.2 UserNotificationService
+
+Gestión de notificaciones a usuarios dentro del sistema.
+
+---
+
+## 46. Consideraciones de Seguridad Backend
+
+### 46.1 Buenas Prácticas Implementadas en Backend
+
+1. Contraseñas hasheadas
+2. JWT con expiración
+3. Refresh tokens
+4. HTTPS redirection
+5. CORS configurado
+6. reCAPTCHA en formularios
+7. Validación de entrada (FluentValidation)
+8. SQL Injection protection (EF Core)
+9. Control de sesiones
+10. Borrado lógico de datos
+
+---
+
+## 47. Despliegue Backend
+
+### 47.1 Prerrequisitos Backend
+
+1. .NET 8.0 SDK
+2. Una de las siguientes bases de datos:
+   - SQL Server 2019+
+   - PostgreSQL 13+
+   - MySQL 8+
+3. Docker (opcional)
+
+### 47.2 Configuración Inicial Backend
+
+1. Clonar repositorio
+2. Configurar connection strings en appsettings.json
+3. Configurar secretos SMTP, JWT, reCAPTCHA
+4. Ejecutar migraciones: `dotnet ef database update`
+5. Ejecutar aplicación: `dotnet run --project Web`
+
+### 47.3 Variables de Entorno Backend
+
+Configurar en el servidor:
+- `ASPNETCORE_ENVIRONMENT`
+- Connection strings
+- Claves de API
+- Configuración SMTP
+
+### 47.4 Docker Compose Backend
+
+Posible configuración de servicios:
+- API (.NET)
+- SQL Server
+- PostgreSQL
+- MySQL
+- Redis (caché)
+- Nginx (reverse proxy)
+
+---
+
+## 48. Mantenimiento Backend
+
+### 48.1 Logs Backend
+
+Implementar logging con:
+- Consola (Development)
+- Archivos (Production)
+- Application Insights / Seq (Monitoreo)
+
+### 48.2 Backups Backend
+
+**Base de datos**:
+- Backups diarios automatizados
+- Retención de 30 días
+- Pruebas de restauración mensuales
+
+**Archivos**:
+- Documentos de infracciones
+- Reportes generados
+- Logs del sistema
+
+### 48.3 Monitoreo Backend
+
+**Métricas clave**:
+- Tiempo de respuesta de API
+- Tasa de errores
+- Uso de CPU/Memoria
+- Conexiones a BD
+- Tamaño de cola de trabajos
+
+---
+
+## 49. Diagrama de Arquitectura Completa
+
+```
+┌─────────────────────────────────────────────────────┐
+│         Cliente (Angular Frontend)                   │
+│              http://localhost:4200                   │
+└──────────────────────┬──────────────────────────────┘
+                       │ HTTP/HTTPS
+                       │ JWT Token
+                       ↓
+┌─────────────────────────────────────────────────────┐
+│                   API Gateway                        │
+│           (Opcional - API/API.csproj)                │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ↓
+┌─────────────────────────────────────────────────────┐
+│          Web Layer (.NET Controllers)                │
+│  - AuthController                                    │
+│  - LoginController                                   │
+│  - Entities Controllers                              │
+│  - Security Controllers                              │
+│                                                       │
+│  Middleware: Auth, CORS, Validation                  │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ↓
+┌─────────────────────────────────────────────────────┐
+│           Business Layer (Services)                  │
+│  - AuthService                                       │
+│  - PaymentAgreementServices                          │
+│  - UserInfractionServices                            │
+│  - DiscountService                                   │
+│  - PDF Generation                                    │
+│  - Email Service                                     │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ↓
+┌─────────────────────────────────────────────────────┐
+│           Data Layer (Repositories)                  │
+│  - Repository Pattern                                │
+│  - Unit of Work                                      │
+└──────────────────────┬──────────────────────────────┘
+                       │
+                       ↓
+┌─────────────────────────────────────────────────────┐
+│           Entity Layer (EF Core)                     │
+│  - DbContext Factory                                 │
+│  - Entities                                          │
+│  - Configurations                                    │
+└──────────────────────┬──────────────────────────────┘
+                       │
+         ┌─────────────┼─────────────┐
+         │             │             │
+         ↓             ↓             ↓
+   ┌──────────┐  ┌──────────┐  ┌──────────┐
+   │SQL Server│  │PostgreSQL│  │  MySQL   │
+   │ :1433    │  │  :5433   │  │  :3307   │
+   └──────────┘  └──────────┘  └──────────┘
+
+Servicios Externos:
+┌──────────────┐  ┌──────────────┐
+│ Google Auth  │  │ Gmail SMTP   │
+└──────────────┘  └──────────────┘
+```
+
+---
+
+## 50. Endpoints Principales Backend
+
+### 50.1 Autenticación Endpoints
+
+```
+POST   /api/auth/login
+POST   /api/auth/register
+POST   /api/auth/refresh-token
+POST   /api/auth/logout
+POST   /api/auth/forgot-password
+POST   /api/auth/reset-password
+POST   /api/auth/google-login
+```
+
+### 50.2 Usuarios Endpoints
+
+```
+GET    /api/users
+GET    /api/users/{id}
+POST   /api/users
+PUT    /api/users/{id}
+DELETE /api/users/{id}
+```
+
+### 50.3 Infracciones Endpoints
+
+```
+GET    /api/infractions
+GET    /api/infractions/{id}
+POST   /api/infractions
+PUT    /api/infractions/{id}
+DELETE /api/infractions/{id}
+GET    /api/infractions/types
+GET    /api/infractions/user/{userId}
+```
+
+### 50.4 Pagos Endpoints
+
+```
+GET    /api/payments
+POST   /api/payments
+GET    /api/payment-agreements
+POST   /api/payment-agreements
+GET    /api/payment-agreements/{id}/calculate
+```
+
+### 50.5 Reportes Endpoints
+
+```
+GET    /api/reports/inspector
+GET    /api/reports/fines
+GET    /api/reports/payments
+POST   /api/reports/generate
+```
+
+---
+
+## 51. Integración Frontend-Backend
+
+### 51.1 Comunicación
+
+**Frontend (Angular)** ↔ **Backend (.NET)**
+
+- **Protocolo**: HTTP/HTTPS
+- **Formato de datos**: JSON
+- **Autenticación**: JWT Bearer Token
+- **Puerto Frontend**: 4200
+- **Puerto Backend**: 5000/5001 (HTTP/HTTPS)
+
+### 51.2 Flujo de Autenticación Completo
+
+1. Usuario ingresa credenciales en Angular
+2. Angular envía POST a `/api/auth/login`
+3. Backend valida credenciales
+4. Backend genera JWT token
+5. Backend retorna token al frontend
+6. Angular guarda token en localStorage
+7. Angular incluye token en todas las peticiones subsiguientes
+8. Backend valida token en cada petición
+
+### 51.3 Manejo de Errores
+
+**Backend → Frontend**:
+- Códigos HTTP estándar
+- Mensajes de error estructurados
+- Validaciones de FluentValidation
+- Excepciones personalizadas
+
+---
+
+## 52. Comandos Útiles Backend
+
+### 52.1 Comandos .NET
+
+#### Ejecutar aplicación
+```bash
+dotnet run --project Proyecto-BACK/Merge_Back/taller/Web
+```
+
+#### Crear migración
+```bash
+dotnet ef migrations add NombreMigracion --project Entity --startup-project Web
+```
+
+#### Aplicar migración
+```bash
+dotnet ef database update --project Entity --startup-project Web
+```
+
+#### Ejecutar pruebas
+```bash
+dotnet test
+```
+
+#### Build del proyecto
+```bash
+dotnet build
+```
+
+#### Publicar
+```bash
+dotnet publish -c Release -o ./publish
+```
+
+#### Docker build
+```bash
+docker build -t control-multas-ciudadanas-api .
+```
+
+#### Docker run
+```bash
+docker run -p 8080:80 control-multas-ciudadanas-api
+```
+
+### 52.2 Puertos por Defecto
+
+- **Frontend Angular**: http://localhost:4200
+- **Backend API**: https://localhost:5001 o http://localhost:5000
+- **SQL Server**: 1433
+- **PostgreSQL**: 5433
+- **MySQL**: 3307
+- **Swagger**: http://localhost:5000/swagger
+
+### 52.3 Credenciales por Defecto Backend
+
+**Base de datos**:
+- Usuario: sa (SQL Server) / postgres (PostgreSQL) / root (MySQL)
+- Password: Admin123.
+
+⚠️ **IMPORTANTE**: Cambiar en producción
+
+---
+
+## 53. Conclusiones del Sistema Completo
+
+### 53.1 Fortalezas del Sistema Integrado
+
+**Frontend (Angular 19)**:
+1. Framework moderno y reactivo
+2. Componentes reutilizables
+3. Interfaz responsive con PrimeNG
+4. Guards de seguridad
+5. Lazy loading de módulos
+6. Interceptores HTTP
+
+**Backend (.NET 8)**:
+1. Arquitectura limpia y bien estructurada
+2. Soporte multi-base de datos
+3. Seguridad robusta (JWT, reCAPTCHA, sesiones)
+4. Validaciones con FluentValidation
+5. Documentación con Swagger
+6. Patrones de diseño apropiados
+7. Escalabilidad horizontal
+8. Preparado para Docker
+
+**Integración**:
+1. Comunicación REST API
+2. Autenticación JWT unificada
+3. Manejo de errores consistente
+4. Documentación completa (Frontend + Backend)
+
+### 53.2 Stack Tecnológico Completo
+
+**Frontend**:
+- Angular 19
+- TypeScript 5.6
+- RxJS 7.8
+- PrimeNG 17
+- Chart.js
+
+**Backend**:
+- .NET 8
+- C#
+- Entity Framework Core 9
+- AutoMapper
+- FluentValidation
+
+**Bases de Datos**:
+- SQL Server
+- PostgreSQL
+- MySQL
+
+**Infraestructura**:
+- Docker
+- Nginx (opcional)
+- Redis (opcional)
+
+### 53.3 Casos de Uso del Sistema
+
+Este sistema completo es ideal para:
+- Gestión municipal de multas ciudadanas
+- Control de infracciones de convivencia
+- Gestión de acuerdos de pago
+- Reportes de inspectoría
+- Notificaciones automatizadas
+- Sanciones administrativas
+- Portal ciudadano web
+
+---
+
 ## Glosario Técnico
 
 - **AOT**: Ahead-of-Time Compilation
