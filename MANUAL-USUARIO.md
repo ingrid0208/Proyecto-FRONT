@@ -22,9 +22,8 @@
 6. [Gestión de Multas Ciudadanas](#6-gestión-de-multas-ciudadanas)
 7. [Acuerdos de Pago](#7-acuerdos-de-pago)
 8. [Administración](#8-administración)
-9. [Perfil de Usuario](#9-perfil-de-usuario)
+9. [Aplicación Móvil](#9-aplicación-móvil)
 10. [Preguntas Frecuentes](#10-preguntas-frecuentes)
-11. [Soporte Técnico](#11-soporte-técnico)
 
 ---
 
@@ -266,7 +265,7 @@ El dashboard muestra:
 **Acciones Rápidas:**
 - Consultar multas
 - Generar acuerdo de pago
-- Actualizar perfil
+- Ver notificaciones
 
 ---
 
@@ -333,7 +332,6 @@ Al hacer clic en una multa ciudadana específica, verá:
 **Estado y Acciones:**
 - Estado actual
 - Fecha de vencimiento
-- Opciones de pago
 - Descargar resolución (PDF)
 - Generar acuerdo de pago
 
@@ -560,45 +558,14 @@ Al hacer clic en un acuerdo verá:
 - Saldo pendiente
 
 **Acciones Disponibles:**
-- Ver detalles de pago
+- Ver detalles del acuerdo
 - Descargar acuerdo (PDF)
-- Imprimir recibos
+- Imprimir documento
 - Solicitar modificación (si aplica)
 
 ---
 
-### 7.3 Pago de Cuotas
-
-#### Registrar Pago
-
-**Paso 1: Seleccionar Cuota**
-1. En el detalle del acuerdo
-2. Identifique la cuota a pagar
-3. Haga clic en **"Pagar"**
-
-**Paso 2: Método de Pago**
-
-Seleccione el método:
-- **Pago en línea:**
-  - PSE (Débito bancario)
-  - Tarjeta de crédito
-  - Tarjeta débito
-  - Corresponsales bancarios
-
-- **Pago presencial:**
-  - Genere referencia de pago
-  - Pague en bancos autorizados
-  - Registre el comprobante
-
-**Paso 3: Confirmación**
-1. Complete el proceso de pago
-2. Guarde el comprobante
-3. El sistema actualizará automáticamente
-4. Recibirá confirmación por correo
-
----
-
-### 7.4 Gestión de Acuerdo Exitoso
+### 7.3 Gestión de Acuerdo Exitoso
 
 #### Pantalla de Confirmación
 
@@ -620,11 +587,10 @@ Después de generar un acuerdo verá:
 - **Ver Detalle:** Acceder a la información completa
 - **Volver al Inicio:** Regresar al dashboard
 
-**Instrucciones de Pago:**
-- Información sobre cómo pagar
-- Canales de pago disponibles
+**Información Importante:**
 - Plazo para el primer pago
 - Consecuencias del incumplimiento
+- Entidades autorizadas para realizar pagos
 
 ---
 
@@ -757,25 +723,25 @@ Verá todos los roles del sistema con:
 Configure permisos por módulo:
 
 **Multas:**
-- ☐ Ver multas propias
-- ☐ Ver multas de otros
-- ☐ Crear multas
-- ☐ Editar multas
-- ☐ Eliminar multas
+-  Ver multas propias
+-  Ver multas de otros
+-  Crear multas
+-  Editar multas
+-  Eliminar multas
 
 **Acuerdos de Pago:**
-- ☐ Ver acuerdos propios
-- ☐ Ver acuerdos de otros
-- ☐ Crear acuerdos
-- ☐ Aprobar acuerdos
-- ☐ Cancelar acuerdos
+-  Ver acuerdos propios
+-  Ver acuerdos de otros
+-  Crear acuerdos
+-  Aprobar acuerdos
+-  Cancelar acuerdos
 
 **Usuarios:**
-- ☐ Ver usuarios
-- ☐ Crear usuarios
-- ☐ Editar usuarios
-- ☐ Eliminar usuarios
-- ☐ Asignar roles
+-  Ver usuarios
+-  Crear usuarios
+-  Editar usuarios
+-  Eliminar usuarios
+-  Asignar roles
 
 **Y así sucesivamente para cada módulo...**
 
@@ -928,12 +894,12 @@ Muestra todas las personas registradas:
 2. Seleccione el rol
 3. Seleccione el formulario
 4. Configure permisos:
-   - ☐ Ver
-   - ☐ Crear
-   - ☐ Editar
-   - ☐ Eliminar
-   - ☐ Aprobar
-   - ☐ Exportar
+   -  Ver
+   -  Crear
+   -  Editar
+   -  Eliminar
+   -  Aprobar
+   -  Exportar
 
 **Aplicar Permisos:**
 1. Marque los permisos deseados
@@ -942,128 +908,638 @@ Muestra todas las personas registradas:
 
 ---
 
-## 9. Perfil de Usuario
+## 9. Aplicación Móvil
 
-### 9.1 Ver Mi Perfil
+### 9.1 Introducción a la Aplicación Móvil
 
-**Paso 1: Acceder al Perfil**
-1. Haga clic en su nombre o foto en la barra superior
-2. Seleccione **"Mi Perfil"**
+Además del sistema web, el Sistema de Gestión de Multas Ciudadanas cuenta con una **aplicación móvil** que permite a los ciudadanos consultar sus infracciones al Código Nacional de Policía y Convivencia desde dispositivos Android.
 
-**Paso 2: Información Visible**
+**⚠️ Importante:** Esta aplicación está diseñada para consultar **infracciones al Código Nacional de Policía y Convivencia** (multas ciudadanas por comportamientos que afectan la convivencia), **NO para multas de tránsito**.
 
-Su perfil muestra:
+**Tipos de infracciones que puedes consultar:**
+- Amenazas a personas
+- Agresiones físicas
+- Discriminación
+- Uso indebido de pólvora
+- Comportamientos que afectan la tranquilidad pública
+- Violaciones a derechos de menores
+- Violencia contra la mujer
+- Otros comportamientos contrarios a la convivencia
 
-**Datos Personales:**
-- Foto de perfil
+**Funcionalidades principales:**
+- Consulta de infracciones y multas ciudadanas por documento de identidad
+- Revisión del Código Nacional de Policía y Convivencia colombiano
+- Consulta de acuerdos de pago activos
+- Cálculo de valores de multas según SMDLV (Salario Mínimo Legal Diario Vigente)
+
+---
+
+### 9.2 Requisitos para la Aplicación Móvil
+
+#### Dispositivos Compatibles
+- **Android**: Versión 8.0 (Oreo) o superior
+
+**⚠️ Nota Importante:** Esta aplicación está disponible **únicamente para dispositivos Android**. No hay versión para iOS (iPhone/iPad).
+
+#### Requisitos Adicionales
+- Conexión a Internet (WiFi o datos móviles)
+- Espacio de almacenamiento: Por determinar
+- Permisos de instalación desde fuentes desconocidas (si se instala vía APK)
+
+---
+
+### 9.3 Instalación de la Aplicación Móvil
+
+#### Método 1: Instalación con Expo Go (Recomendado)
+
+**Paso 1: Instalar Expo Go**
+1. Abra la **Google Play Store** en su dispositivo Android
+2. Busque **"Expo Go"**
+3. Instale la aplicación
+
+**Paso 2: Obtener el enlace del proyecto**
+1. Solicite el enlace QR o el link del proyecto a su institución o administrador
+
+**Paso 3: Abrir la aplicación en Expo Go**
+1. Abra la app **Expo Go** en su dispositivo
+2. Escanee el código QR proporcionado o ingrese el enlace del proyecto
+3. Espere a que cargue la aplicación
+
+**Ventajas de este método:**
+- No requiere instalar APK
+- No necesita habilitar fuentes desconocidas
+- Solo requiere Expo Go y conexión a Internet
+- Actualizaciones automáticas
+
+---
+
+### 9.4 Inicio de la Aplicación Móvil
+
+#### Pantalla de Bienvenida
+
+Al abrir la aplicación por primera vez, verá:
+- Logo del sistema
+- Botón **"Iniciar"** para comenzar
+
+**Funcionalidad de Seguridad:**
+- La aplicación tiene un **temporizador de inactividad de 5 minutos**
+- Si no interactúa durante este tiempo, automáticamente volverá a la pantalla de bienvenida
+- Este mecanismo protege su privacidad en caso de que deje la aplicación abierta
+
+---
+
+### 9.5 Consulta de Infracciones en la Aplicación Móvil
+
+#### Proceso de Consulta
+
+**Paso 1: Completar Formulario de Consulta**
+
+En la pantalla principal, complete los siguientes campos:
+
+1. **Tipo de Documento:** Seleccione entre:
+   - Cédula de Ciudadanía (CC)
+   - Tarjeta de Identidad (TI)
+   - Cédula de Extranjería (CE)
+
+2. **Número de Documento:** Ingrese su número de identificación
+
+3. **Términos y Condiciones:**
+   - Marque la casilla de verificación
+   - Puede leer los términos completos tocando el enlace
+
+**Paso 2: Consultar Multas**
+
+1. Presione el botón **"Consultar Multas"**
+2. Espere mientras el sistema busca su información
+3. Será redirigido a la pantalla de resultados
+
+**Paso 3: Visualizar Resultados**
+
+La pantalla de resultados muestra:
+- **Resumen:** Número total de infracciones ciudadanas
+- **Lista de infracciones:** Cada una con:
+  - Tipo de infracción (ej: amenazas, agresión física, discriminación)
+  - Descripción breve del comportamiento contrario a la convivencia
+  - Nombre asociado
+  - Checkbox para selección
+
+**Funcionalidades Adicionales en Resultados:**
+- **Barra de búsqueda:** Filtre infracciones por nombre, tipo o descripción
+- **Selección múltiple:** Toque el checkbox para seleccionar/deseleccionar infracciones
+- **Expandir detalles:** Toque una infracción para ver más información
+- **Ver más:** Presione "Ver más" para acceder al detalle completo
+
+---
+
+### 9.6 Detalle de Infracción en Móvil
+
+Al seleccionar una infracción y presionar **"Ver más"**, accederá a:
+
+**Información de la Infracción:**
+- Tipo de infracción
+- Descripción completa del comportamiento contrario a la convivencia
+- Fecha y hora
+
+**Información de la Multa:**
+- Datos adicionales según el tipo de infracción
+- Estado del proceso
+
+**Monto y Fechas:**
+- Monto a pagar (si aplica)
+- Fecha máxima de pago
+
+**Consulta SMDLV:**
+- Enlace **"Consulta SMDLV"** para calcular el valor de la multa
+
+---
+
+### 9.7 Calculadora SMDLV
+
+#### ¿Qué es SMDLV?
+
+El **SMDLV (Salario Mínimo Legal Diario Vigente)** es la unidad de medida para calcular las multas en Colombia. Se calcula dividiendo el salario mínimo mensual entre 30 días.
+
+#### Cómo usar la Calculadora
+
+**Paso 1: Acceder**
+1. Desde el detalle de una infracción, toque **"Consulta SMDLV"**
+
+**Paso 2: Seleccionar Tipo de Multa**
+1. Verá las opciones de multas disponibles
+2. Toque el tipo de multa correspondiente a su infracción
+
+**Paso 3: Ver Cálculo Detallado**
+
+El sistema mostrará:
+- **Número de SMDLV** aplicables
+- **Salario mínimo vigente** actual
+- **Cálculo del SMDLV** (Salario mínimo ÷ 30)
+- **Valor de un SMDLV**
+- **Cálculo del valor total** (SMDLV × Número de SMDLV)
+- **Valor Total a Pagar**
+
+---
+
+### 9.8 Código Nacional de Policía y Convivencia
+
+#### Acceder al Código
+
+**Paso 1: Navegación**
+1. Desde la pantalla de resultados de multas
+2. Toque el ícono de **"Código de Convivencia"** en la barra inferior
+
+**Paso 2: Explorar el Catálogo**
+
+Podrá consultar las siguientes leyes:
+
+- **LEY 1801 DE 2016:** Código Nacional de Policía y Convivencia
+  - Amenazas a personas
+  - Agresiones físicas
+  - Discriminación
+  - Comportamientos que afectan la tranquilidad
+
+- **LEY 2318 DE 2023:** Diversidad sexual y de género
+
+- **LEY 2197 DE 2022:** Violencia contra servidores públicos
+
+- **LEY 2054 DE 2022:** Control de artículos pirotécnicos
+
+- **LEY 1804 DE 2016:** Protección integral a la primera infancia
+
+- **LEY 1257 DE 2008:** Protección contra violencia hacia la mujer
+
+- **LEY 1098 DE 2006:** Código de Infancia y Adolescencia
+
+- **LEY 599 DE 2000:** Código Penal Colombiano
+
+**Paso 3: Buscar Ley Específica**
+
+1. Use la **barra de búsqueda** superior
+2. Ingrese palabras clave (ej: "amenazar", "pólvora", "violencia")
+3. Verá lista de leyes con:
+   - Título de la ley
+   - Descripción breve del comportamiento regulado
+
+**Paso 4: Ver Detalle de Ley**
+
+Toque cualquier ley para ver:
+- **Descripción detallada** del comportamiento contrario a la convivencia
+- **Texto completo** de la ley
+- **Multas asociadas** en SMDLV
+- **Artículos relacionados** del código
+
+---
+
+### 9.9 Acuerdos de Pago en Móvil
+
+#### Consultar Acuerdos de Pago
+
+**Paso 1: Acceder al Módulo**
+1. Desde la pantalla de resultados de multas
+2. Toque el ícono de **"Acuerdo de Pago"** en la barra inferior
+
+**Paso 2: Visualizar Lista de Acuerdos**
+
+Verá todos los acuerdos con indicadores visuales:
+- **Verde:** Acuerdo pagado
+- **Azul/Gris:** Acuerdo pendiente
+
+**Paso 3: Buscar Acuerdo Específico**
+
+Use la **barra de búsqueda** para filtrar por:
+- Nombre
+- Número de documento
+- Tipo de infracción
+- Descripción
+
+**Paso 4: Ver Detalle del Acuerdo**
+
+Toque cualquier acuerdo para expandir y ver:
+
+**Información Personal:**
 - Nombre completo
-- Documento de identificación
-- Correo electrónico
+- Número de documento
 - Teléfono
-- Género
-- Ciudad y dirección
+- Dirección
 
-**Información de Cuenta:**
-- Rol(es) asignado(s)
-- Estado de cuenta
-- Fecha de registro
-- Último acceso
+**Detalles de la Infracción:**
+- Tipo de infracción al Código de Convivencia
+- Descripción del comportamiento contrario a la convivencia
 
-**Estadísticas Personales:**
-- Multas totales
-- Multas pendientes
-- Acuerdos activos
-- Total pagado
+**Detalles del Acuerdo:**
+- Vigencia del acuerdo
+- Método de pago
+- Número de cuotas
 
----
+**Información Financiera:**
+- Monto base
+- Cuota mensual
+- Saldo pendiente
+- Estado del proceso coactivo
 
-### 9.2 Editar Perfil
-
-**Paso 1: Modo Edición**
-1. En su perfil, haga clic en **"Editar Perfil"**
-
-**Paso 2: Datos Modificables**
-
-Puede cambiar:
-- **Foto de perfil:** Cargar nueva imagen
-- **Correo electrónico:** Si no está en uso
-- **Teléfono**
-- **Dirección**
-
-**No puede modificar:**
-- Nombre completo
-- Documento de identificación
-- Género
-- Roles asignados
-
-**Paso 3: Cambiar Foto de Perfil**
-
-1. Haga clic en la foto actual
-2. Seleccione **"Subir nueva imagen"**
-3. Elija archivo de su dispositivo
-4. Ajuste el recorte si es necesario
-5. Haga clic en **"Guardar"**
-
-**Requisitos de la imagen:**
-- Formato: JPG, PNG
-- Tamaño máximo: 2 MB
-- Dimensiones recomendadas: 400x400 px
-
-**Paso 4: Guardar Cambios**
-1. Revise la información modificada
-2. Haga clic en **"Actualizar Perfil"**
-3. Recibirá confirmación de actualización
+**Paso 5: Limpiar Búsqueda**
+- Presione el botón **"Limpiar"** para reiniciar la búsqueda
 
 ---
 
-### 9.3 Cambiar Contraseña
+### 9.10 Navegación en la Aplicación Móvil
 
-**Desde el Perfil:**
+#### Barra de Navegación Inferior
 
-**Paso 1: Acceder a Cambio de Contraseña**
-1. En su perfil, haga clic en **"Cambiar Contraseña"**
+La aplicación cuenta con una barra de navegación en la parte inferior con tres opciones:
 
-**Paso 2: Formulario de Cambio**
-1. Ingrese su **contraseña actual**
-2. Ingrese la **nueva contraseña** (mínimo 6 caracteres)
-3. **Confirme la nueva contraseña**
+1. **Infracción** (ícono de lista)
+   - Vuelve a la pantalla de resultados de multas
+   - Muestra todas las infracciones consultadas
 
-**Paso 3: Validación**
+2. **Código de Convivencia** (ícono de libro)
+   - Accede al catálogo completo de leyes
+   - Consulta normativa vigente
 
-La nueva contraseña debe:
-- Tener al menos 6 caracteres
-- Contener letras y números (recomendado)
-- No ser igual a la anterior
-- Coincidir en ambos campos
+3. **Acuerdo de Pago** (ícono de tarjeta)
+   - Consulta acuerdos de pago activos
+   - Revisa estado financiero
 
-**Paso 4: Guardar Nueva Contraseña**
-1. Haga clic en **"Cambiar Contraseña"**
-2. Recibirá confirmación
-3. Use la nueva contraseña en su próximo inicio de sesión
+#### Botón de Retroceso
 
-**Recomendaciones de seguridad:**
-- Use contraseñas únicas
-- Combine mayúsculas, minúsculas, números y símbolos
-- No comparta su contraseña
-- Cámbiela periódicamente (cada 3-6 meses)
+- Todas las pantallas internas tienen un botón de **retroceso (←)** en la esquina superior izquierda
+- Tóquelo para volver a la pantalla anterior
+- Mantiene el flujo de navegación intuitivo
 
 ---
 
-### 9.4 Cerrar Sesión
+### 9.11 Guía de Uso Paso a Paso - Aplicación Móvil
 
-**Para salir del sistema:**
+#### Caso de Uso 1: Consultar mis Multas Ciudadanas
 
-**Opción 1: Desde el Menú de Usuario**
-1. Haga clic en su nombre (esquina superior derecha)
-2. Seleccione **"Cerrar Sesión"**
+1. Abra la aplicación y presione **"Iniciar"**
+2. Seleccione su **tipo de documento** (CC, TI, CE)
+3. Ingrese su **número de documento**
+4. Marque **"Acepto los términos y condiciones"**
+5. Presione **"Consultar Multas"**
+6. Espere a que cargue la información
+7. Revise la lista de infracciones al Código de Convivencia
+8. Toque cualquier infracción para expandir detalles
+9. Presione **"Ver más"** para información completa
 
-**Opción 2: Desde el Menú Lateral**
-1. En el menú lateral inferior
-2. Haga clic en **"Cerrar Sesión"**
+#### Caso de Uso 2: Calcular el Valor de una Multa
 
-**Nota importante:**
-- Cierre sesión al terminar, especialmente en computadoras compartidas
-- Por seguridad, el sistema cerrará automáticamente después de 30 minutos de inactividad
+1. Desde el detalle de una infracción
+2. Toque **"Consulta SMDLV"**
+3. Seleccione el tipo de multa correspondiente
+4. Revise el cálculo detallado:
+   - Número de SMDLV
+   - Salario mínimo vigente
+   - Cálculo automático
+5. Verá el **valor total a pagar**
+
+#### Caso de Uso 3: Consultar una Ley del Código de Convivencia
+
+1. Vaya a la pantalla de resultados de multas
+2. Toque **"Código de Convivencia"** en la barra inferior
+3. Use la barra de búsqueda
+4. Escriba palabras clave (ej: "amenazar", "pólvora", "violencia")
+5. Toque la ley que desee consultar
+6. Lea el contenido completo con:
+   - Descripción detallada
+   - Texto de la ley
+   - Multas asociadas
+
+#### Caso de Uso 4: Revisar un Acuerdo de Pago
+
+1. Vaya a la pantalla de resultados de multas
+2. Toque **"Acuerdo de Pago"** en la barra inferior
+3. Espere a que carguen los acuerdos
+4. Identifique el acuerdo por el color:
+   - Verde = Pagado
+   - Azul/Gris = Pendiente
+5. Toque el acuerdo que desea revisar
+6. Revise toda la información:
+   - Datos personales
+   - Detalles de infracción
+   - Información financiera
+7. Anote la cuota mensual y saldo pendiente
+
+---
+
+### 9.12 Preguntas Frecuentes - Aplicación Móvil
+
+**P: ¿Por qué la aplicación vuelve al inicio?**
+
+R: La aplicación tiene un temporizador de inactividad de 5 minutos. Si no interactúa durante este tiempo, automáticamente regresa a la pantalla de bienvenida por seguridad.
+
+**P: ¿La aplicación guarda mi información?**
+
+R: No, la aplicación **no almacena ninguna información personal** en el dispositivo. Todas las consultas se realizan en tiempo real al servidor.
+
+**P: ¿Qué hago si no aparecen mis multas?**
+
+R:
+- Verifique que su número de documento esté correcto
+- Asegúrese de tener conexión a Internet activa
+- Intente nuevamente en unos minutos
+- Si el problema persiste, contacte con soporte
+
+**P: ¿Puedo pagar las multas desde la aplicación móvil?**
+
+R: No, actualmente la aplicación solo permite **consultar información**. Para realizar pagos, debe dirigirse a:
+- El sistema web
+- Las entidades financieras autorizadas
+- Canales de pago oficiales
+
+**P: ¿Qué significa SMDLV?**
+
+R: **SMDLV** significa **Salario Mínimo Legal Diario Vigente**. Es la unidad de medida usada en Colombia para calcular el valor de las multas. Se calcula dividiendo el salario mínimo mensual entre 30.
+
+**P: ¿Los términos y condiciones son obligatorios?**
+
+R: Sí, debe aceptar los términos y condiciones antes de consultar multas. Esto es necesario para el uso de la aplicación y el tratamiento de datos personales.
+
+**P: ¿La aplicación está disponible para iPhone?**
+
+R: No, actualmente la aplicación está disponible **únicamente para dispositivos Android** (versión 8.0 o superior). No hay versión para iOS.
+
+**P: ¿Necesito crear una cuenta para usar la aplicación?**
+
+R: No, la aplicación móvil permite consultas directas con solo ingresar su tipo y número de documento. No requiere registro ni creación de cuenta.
+
+---
+
+### 9.13 Solución de Problemas - Aplicación Móvil
+
+#### La aplicación no carga
+
+**Solución:**
+1. Verifique su conexión a Internet (WiFi o datos móviles)
+2. Cierre completamente la aplicación
+3. Vuelva a abrirla
+4. Si usa Expo Go, verifique que esté actualizado
+5. Si persiste, reinicie su dispositivo
+
+#### No puedo ver el detalle de una infracción
+
+**Solución:**
+1. Asegúrese de haber tocado la infracción para expandirla
+2. Presione el botón **"Ver más"**
+3. Verifique su conexión a Internet
+4. Si no carga, intente con otra infracción
+5. Vuelva atrás y reintente
+
+#### El botón "Consultar Multas" está deshabilitado
+
+**Causas:**
+- No ha seleccionado el tipo de documento
+- No ha ingresado el número de documento
+- No ha aceptado los términos y condiciones
+
+**Solución:**
+1. Complete todos los campos requeridos
+2. Marque la casilla de términos y condiciones
+3. El botón se habilitará automáticamente
+
+#### La búsqueda no funciona
+
+**Solución:**
+1. Verifique que haya escrito correctamente
+2. Presione el botón **"Limpiar"** para reiniciar
+3. Intente con diferentes palabras clave
+4. Asegúrese de estar en la sección correcta
+
+#### Errores Comunes
+
+**Error: "No se encontraron multas"**
+
+Posibles causas:
+- No tiene multas registradas en el sistema
+- El documento ingresado es incorrecto
+- Error temporal de conexión
+
+**Solución:**
+- Verifique el número de documento
+- Presione **"Reintentar"**
+- Intente más tarde
+
+**Error de conexión**
+
+**Solución:**
+1. Verifique su conexión WiFi o datos móviles
+2. Intente cambiar de red
+3. Si usa datos móviles, verifique que tenga saldo
+4. Reinicie su conexión a Internet
+
+**La aplicación se cierra inesperadamente**
+
+**Solución:**
+1. Asegúrese de tener la versión más reciente de Expo Go
+2. Libere espacio en su dispositivo
+3. Cierre otras aplicaciones en segundo plano
+4. Reinstale Expo Go si persiste
+5. Contacte a soporte técnico
+
+**Pantalla en blanco o no responde**
+
+**Solución:**
+1. Espere unos segundos (puede estar cargando)
+2. Toque la pantalla para verificar respuesta
+3. Use el botón de retroceso de Android
+4. Cierre y vuelva a abrir la aplicación
+5. Verifique la conexión a Internet
+
+---
+
+### 9.14 Diferencias entre Sistema Web y Aplicación Móvil
+
+| Característica | Sistema Web | Aplicación Móvil |
+|----------------|-------------|------------------|
+| **Plataforma** | Navegador (PC, tablet, móvil) | Android únicamente |
+| **Registro de usuario** | Requerido para funcionalidad completa | No requerido |
+| **Consulta de multas** | ✅ Sí | ✅ Sí |
+| **Generación de acuerdos** | ✅ Sí | ❌ Solo consulta |
+| **Pago de multas** | ✅ Sí | ❌ No |
+| **Notificaciones** | ✅ Sí | ❌ No |
+| **Código de Convivencia** | ✅ Sí | ✅ Sí |
+| **Cálculo SMDLV** | ✅ Sí | ✅ Sí |
+| **Administración** | ✅ Sí (según rol) | ❌ No |
+| **Gestión de usuarios** | ✅ Sí (admin) | ❌ No |
+| **Anexar multas** | ✅ Sí (operadores/admin) | ❌ No |
+| **Almacenamiento local** | Cookies/sesión | ❌ No almacena datos |
+| **Seguridad de sesión** | 30 minutos | 5 minutos |
+
+**Recomendaciones de uso:**
+
+- **Use el sistema web para:**
+  - Gestión completa de multas y pagos
+  - Generación de acuerdos de pago
+  - Administración del sistema
+  - Tareas que requieren registro
+
+- **Use la aplicación móvil para:**
+  - Consultas rápidas desde cualquier lugar
+  - Verificar infracciones sin registro
+  - Consultar el Código de Convivencia
+  - Calcular valores de multas (SMDLV)
+
+---
+
+### 9.15 Glosario de Términos - Aplicación Móvil
+
+**SMDLV:** Salario Mínimo Legal Diario Vigente - Unidad de medida para calcular multas
+
+**Expo Go:** Aplicación que permite ejecutar proyectos Expo sin necesidad de compilar
+
+**CC:** Cédula de Ciudadanía
+
+**TI:** Tarjeta de Identidad
+
+**CE:** Cédula de Extranjería
+
+**Infracción:** Violación a las normas del Código Nacional de Policía y Convivencia
+
+**Código de Convivencia:** Conjunto de normas que regulan el comportamiento ciudadano
+
+**Proceso Coactivo:** Proceso administrativo para cobrar deudas
+
+**Acuerdo de Pago:** Convenio para pagar una multa en cuotas
+
+**APK:** Formato de archivo de instalación para Android
+
+**Temporizador de inactividad:** Mecanismo de seguridad que cierra la sesión tras período sin uso
+
+---
+
+### 9.16 Seguridad y Privacidad - Aplicación Móvil
+
+#### Protección de Datos
+
+- **No almacena información personal** en el dispositivo
+- Todas las consultas se realizan en **tiempo real** al servidor
+- **Conexión segura** mediante HTTPS
+- **Cumplimiento** de Ley de Protección de Datos Personales
+- **Temporizador de seguridad** de 5 minutos de inactividad
+
+#### Buenas Prácticas de Seguridad
+
+✓ No comparta su dispositivo desbloqueado con terceros
+✓ Use redes WiFi seguras para consultas
+✓ Cierre la aplicación después de usarla
+✓ No tome capturas de información sensible
+✓ Verifique que esté usando la aplicación oficial
+
+#### Privacidad
+
+- Sus consultas no quedan registradas en el dispositivo
+- La información solo es visible durante la sesión activa
+- El sistema cierra automáticamente por inactividad
+- No se comparte información con aplicaciones de terceros
+- Solo se accede a datos del servidor oficial
+
+---
+
+### 9.17 Actualizaciones de la Aplicación Móvil
+
+#### Versión Actual
+
+- **Versión:** 1.0.0
+- **Fecha de lanzamiento:** Octubre 2025
+- **Plataforma:** Android (Expo)
+
+#### Cómo Verificar Actualizaciones
+
+**Si usa Expo Go:**
+1. Las actualizaciones se aplican **automáticamente**
+2. Solo necesita abrir la aplicación con el enlace actualizado
+3. No requiere desinstalar ni reinstalar
+
+**Si usa APK:**
+1. Deberá descargar la nueva versión del APK
+2. Desinstalar la versión anterior
+3. Instalar la nueva versión
+4. Contacte a su administrador para obtener el nuevo APK
+
+#### Registro de Cambios
+
+**Versión 1.0.0 (Actual)**
+- Lanzamiento inicial de la aplicación móvil
+- Consulta de infracciones ciudadanas
+- Código Nacional de Policía y Convivencia
+- Consulta de acuerdos de pago
+- Calculadora SMDLV
+
+---
+
+### 9.18 Recursos y Soporte - Aplicación Móvil
+
+#### Canales de Soporte
+
+**Correo Electrónico:**
+Toca que implemetarlos 
+
+**Teléfono:**
+toca que implementarlos 
+
+#### Información para Reportar Problemas
+
+Al reportar un problema con la aplicación móvil, proporcione:
+
+**Información del Dispositivo:**
+- Marca y modelo del dispositivo
+- Versión de Android
+- Memoria RAM disponible
+
+**Información de la App:**
+- ¿Usa Expo Go o APK?
+- Versión de Expo Go (si aplica)
+- Pasos para reproducir el problema
+
+**Descripción del Problema:**
+- ¿Qué intentaba hacer?
+- ¿Qué sucedió exactamente?
+- ¿Aparece algún mensaje de error?
+- Capturas de pantalla (si es posible)
+
+**Conectividad:**
+- ¿Usa WiFi o datos móviles?
+- ¿Tiene conexión estable a Internet?
 
 ---
 
@@ -1153,27 +1629,20 @@ R:
 
 R: Depende del estado del acuerdo. Si no ha incurrido en mora y tiene cuotas pendientes, puede solicitar una modificación contactando a un administrador.
 
-**P: ¿Dónde puedo pagar las cuotas?**
-
-R:
-- En línea: PSE, tarjetas de crédito/débito
-- Presencial: Bancos autorizados con referencia de pago
-- Corresponsales bancarios
-
 ---
 
 ### 10.4 Notificaciones
 
 **P: ¿Por qué recibo tantas notificaciones?**
 
-R: Las notificaciones le ayudan a estar al día. Puede configurar la frecuencia en su perfil, en la sección de preferencias de notificaciones.
+R: Las notificaciones le ayudan a estar al día. Puede configurar la frecuencia contactando al administrador del sistema.
 
 **P: No recibo notificaciones por correo**
 
 R:
-1. Verifique que su correo esté actualizado en su perfil
+1. Verifique que su correo esté actualizado
 2. Revise la carpeta de spam
-3. Verifique que las notificaciones por correo estén activadas en su perfil
+3. Contacte al administrador para verificar la configuración de notificaciones
 
 **P: ¿Puedo desactivar las notificaciones?**
 
@@ -1181,36 +1650,7 @@ R: Puede configurar qué tipos de notificaciones desea recibir, pero las notific
 
 ---
 
-### 10.5 Pagos
-
-**P: ¿Qué métodos de pago aceptan?**
-
-R:
-- **En línea:** PSE, tarjetas de crédito/débito
-- **Presencial:** Bancos autorizados, corresponsales bancarios
-
-**P: ¿Cuánto tarda en reflejarse mi pago?**
-
-R:
-- Pagos en línea: Inmediato (máximo 10 minutos)
-- Pagos presenciales: 24-48 horas hábiles
-
-**P: No se reflejó mi pago, ¿qué hago?**
-
-R:
-1. Verifique que hayan pasado las horas correspondientes al método
-2. Tenga a mano su comprobante de pago
-3. Vaya a su perfil → "Reportar pago"
-4. Adjunte el comprobante
-5. O contacte a soporte técnico
-
-**P: ¿Puedo pagar varias multas a la vez?**
-
-R: Sí, en "Consultar Multas", marque las que desea pagar y seleccione "Pagar seleccionadas".
-
----
-
-### 10.6 Administración (Para Administradores)
+### 10.5 Administración (Para Administradores)
 
 **P: ¿Cómo asigno roles a un usuario?**
 
@@ -1234,7 +1674,7 @@ R:
 
 ---
 
-### 10.7 Problemas Técnicos
+### 10.6 Problemas Técnicos
 
 **P: La página no carga correctamente**
 
@@ -1264,8 +1704,6 @@ R:
 R: Por seguridad, el sistema cierra la sesión después de * minutos de inactividad. Simplemente vuelva a iniciar sesión.
 
 ---
-
-
 
 ## Consejos de Uso
 
@@ -1332,7 +1770,7 @@ R: Por seguridad, el sistema cierra la sesión después de * minutos de inactivi
 **Página Web:** Toca implementar
 **Correo Soporte:** Toca implementar
 **Teléfono:** Toca implementar
-**Dirección:** [Toca implementar
+**Dirección:** Toca implementar
 
 **Horario de Atención:**
  -Toca implementar
