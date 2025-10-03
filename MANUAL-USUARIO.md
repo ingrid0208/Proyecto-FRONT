@@ -68,7 +68,7 @@ El sistema funciona óptimamente en:
 
 ### 2.3 Requisitos de Software
 
-- Sistema operativo actualizado (Windows 10+, macOS 10.15+, Linux)
+- Sistema operativo actualizado (Windows 10+)
 - JavaScript habilitado en el navegador
 - Cookies habilitadas
 
