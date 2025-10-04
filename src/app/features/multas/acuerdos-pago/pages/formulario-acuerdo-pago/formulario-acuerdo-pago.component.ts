@@ -194,41 +194,46 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
 
     console.log("📤 Payload FINAL al backend:", payload);
 
-    this.serviceGeneric.createPaymentAgreement(payload).subscribe({
-      next: (res) => {
-        this.form.baseAmount = res.agreement.baseAmount;
-        this.form.monthlyFee = res.agreement.monthlyFee;
-        this.form.installments = res.agreement.installments;
-        this.agreementStart = res.agreement.agreementStart;
-        this.agreementEnd = res.agreement.agreementEnd;
+   this.serviceGeneric.createPaymentAgreement(payload).subscribe({
+  next: (res) => {
+    this.form.baseAmount = res.agreement.baseAmount;
+    this.form.monthlyFee = res.agreement.monthlyFee;
+    this.form.installments = res.agreement.installments;
+    this.agreementStart = res.agreement.agreementStart;
+    this.agreementEnd = res.agreement.agreementEnd;
 
-        Swal.fire({
-          icon: 'success',
-          title: '¡Éxito!',
-          text: '✅ Acuerdo creado con éxito. Se abrirá el comprobante en PDF.',
-          confirmButtonColor: '#006400'
-        });
+    // 👇 Aquí ya tienes tu cronograma
+    const schedule = res.agreement.installmentSchedule;
+    console.log("📅 Cronograma de pagos:", schedule);
 
-        if (res.pdfUrl) {
-          const link = document.createElement('a');
-          link.href = res.pdfUrl;
-          link.download = `AcuerdoPago_${res.agreement.id}.pdf`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
-
-        this.step = 3;
-      },
-      error: (err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: err.error?.message || '❌ Error inesperado al crear el acuerdo',
-          confirmButtonColor: '#d33'
-        });
-      }
+    Swal.fire({
+      icon: 'success',
+      title: '¡Éxito!',
+      text: '✅ Acuerdo creado con éxito. Se abrirá el comprobante en PDF.',
+      confirmButtonColor: '#006400'
     });
+
+    if (res.pdfUrl) {
+      const link = document.createElement('a');
+      link.href = res.pdfUrl;
+      link.download = `AcuerdoPago_${res.agreement.id}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    this.step = 3;
+  },
+  error: (err) => {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: err.error?.message || '❌ Error inesperado al crear el acuerdo',
+      confirmButtonColor: '#d33'
+    });
+  }
+});
+
   }
 
   goHome() {

@@ -1,3 +1,5 @@
+import { InstallmentScheduleDto } from "../InstallmentScheduleDto";
+
 export interface PaymentAgreementSelectDto {
   id: number;
   personName: string;
@@ -23,4 +25,7 @@ export interface PaymentAgreementSelectDto {
   isCoactive: boolean;
   coactiveActivatedOn?: string;
   lastInterestAppliedOn?: string;
+
+  // 👇 Aquí agregas la lista de cuotas
+  installmentSchedule?: InstallmentScheduleDto[];
 }
