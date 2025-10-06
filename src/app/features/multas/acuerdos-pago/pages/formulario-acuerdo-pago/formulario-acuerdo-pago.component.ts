@@ -163,7 +163,7 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
     const montoBase = this.initData.baseAmount || this.form.baseAmount;
     const totalCuotas = this.form.installments * this.form.monthlyFee;
 
-    if (totalCuotas !== montoBase) {
+    if (Math.abs(totalCuotas - montoBase) > 0.01) {
       Swal.fire({
         icon: 'error',
         title: 'Monto incorrecto',
@@ -189,52 +189,63 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
       installments: this.form.installments
     };
 
-    delete payload.baseAmount;
-    delete payload.monthlyFee;
-
     console.log("📤 Payload FINAL al backend:", payload);
 
-   this.serviceGeneric.createPaymentAgreement(payload).subscribe({
-  next: (res) => {
-    this.form.baseAmount = res.agreement.baseAmount;
-    this.form.monthlyFee = res.agreement.monthlyFee;
-    this.form.installments = res.agreement.installments;
-    this.agreementStart = res.agreement.agreementStart;
-    this.agreementEnd = res.agreement.agreementEnd;
+    this.serviceGeneric.createPaymentAgreement(payload).subscribe({
+      next: (res) => {
+        this.form.baseAmount = res.agreement.baseAmount;
+        this.form.monthlyFee = res.agreement.monthlyFee;
+        this.form.installments = res.agreement.installments;
+        this.agreementStart = res.agreement.agreementStart;
+        this.agreementEnd = res.agreement.agreementEnd;
 
-    // 👇 Aquí ya tienes tu cronograma
-    const schedule = res.agreement.installmentSchedule;
-    console.log("📅 Cronograma de pagos:", schedule);
+        // ✅ Detectar ambas formas (mayúscula o minúscula)
+        const schedule = res.agreement.installmentSchedule || [];
+        console.log("📅 Cronograma de pagos:", schedule);
 
-    Swal.fire({
-      icon: 'success',
-      title: '¡Éxito!',
-      text: '✅ Acuerdo creado con éxito. Se abrirá el comprobante en PDF.',
-      confirmButtonColor: '#006400'
-    });
+        if (schedule && schedule.length > 0) {
+          Swal.fire({
+            icon: 'info',
+            title: 'Cronograma generado',
+            html: schedule.map((s: any) =>
+              `Cuota ${s.number}: ${new Date(s.paymentDate).toLocaleDateString()} - $${s.amount.toLocaleString('es-CO')}`
+            ).join('<br>'),
+            confirmButtonColor: '#006400'
+          });
+        } else {
+          console.warn("⚠️ No se generó cronograma de cuotas.");
+        }
 
-    if (res.pdfUrl) {
-      const link = document.createElement('a');
-      link.href = res.pdfUrl;
-      link.download = `AcuerdoPago_${res.agreement.id}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+        Swal.fire({
+          icon: 'success',
+          title: '¡Éxito!',
+          text: '✅ Acuerdo creado con éxito. Se abrirá el comprobante en PDF.',
+          confirmButtonColor: '#006400'
+        });
 
-    this.step = 3;
-  },
-  error: (err) => {
-    Swal.fire({
-      icon: 'error',
-      title: 'Error',
-      text: err.error?.message || '❌ Error inesperado al crear el acuerdo',
-      confirmButtonColor: '#d33'
+        if (res.pdfUrl) {
+          const link = document.createElement('a');
+          link.href = res.pdfUrl;
+          link.download = `AcuerdoPago_${res.agreement.id}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+
+        this.step = 3;
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: err.error?.message || '❌ Error inesperado al crear el acuerdo',
+          confirmButtonColor: '#d33'
+        });
+      }
     });
   }
-});
 
-  }
+
 
   goHome() {
     this.router.navigate(['/home/contenido']);

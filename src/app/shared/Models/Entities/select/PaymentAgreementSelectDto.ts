@@ -8,6 +8,7 @@ export interface PaymentAgreementSelectDto {
   phoneNumber: string;
   email: string;
   address: string;
+  neighborhood: string;
   infringement: string;
   typeFine: string;
   valorSMDLV: number;
@@ -19,13 +20,11 @@ export interface PaymentAgreementSelectDto {
   baseAmount: number;
   accruedInterest: number;
   outstandingAmount: number;
-  installments?: number;
-  monthlyFee?: number;
+  installments: number;
+  monthlyFee: number;
   isPaid: boolean;
   isCoactive: boolean;
   coactiveActivatedOn?: string;
   lastInterestAppliedOn?: string;
-
-  // 👇 Aquí agregas la lista de cuotas
-  installmentSchedule?: InstallmentScheduleDto[];
+  installmentSchedule: InstallmentScheduleDto[];
 }
