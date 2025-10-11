@@ -4,6 +4,6 @@ export const FORM_MODULE_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./form-module-page.component').then(c => c.FormModulePageComponent),
+      import('./pages/form-module-page/form-module-page.component').then(c => c.FormModulePageComponent),
   }
 ];

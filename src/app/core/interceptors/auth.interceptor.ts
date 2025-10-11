@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 import { catchError, EMPTY, switchMap, throwError } from "rxjs";
 import { environment } from "../../../environments/environment.development";
 import { UserStore } from "../services/User.Store";
-import { ServiceGenericService } from "../services/utils/generic/service-generic.service";
+import { AuthService } from "../services/auth/auth.service";
 
 
 function getCookie(name: string): string | null {
@@ -13,7 +13,7 @@ function getCookie(name: string): string | null {
 }
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(ServiceGenericService);
+  const authService = inject(AuthService);
   const userStore = inject(UserStore);
   const router = inject(Router);
 

@@ -8,7 +8,7 @@ import Lara from '@primeng/themes/lara';
 import Nora from '@primeng/themes/nora';
 import { PrimeNG } from 'primeng/config';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { LayoutService } from '../../core/services/layout.service';
+import { LayoutService } from '../services/layout.service';
 
 const presets = {
     Aura,
@@ -436,6 +436,6 @@ export class AppConfigurator {
     }
 
     onMenuModeChange(event: string) {
-        this.layoutService.layoutConfig.update((prev) => ({ ...prev, menuMode: event }));
+        this.layoutService.layoutConfig.update((prev) => ({ ...prev, menuMode: event as 'static' | 'overlay' }));
     }
 }

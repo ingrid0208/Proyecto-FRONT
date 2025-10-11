@@ -7,6 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import Swal from 'sweetalert2';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
+import { DocumentSessionService } from '../../../../core/services/documents/document-session.service';
+import { PaymentService } from '../../../../core/services/payments/payment.service';
 
 
 
@@ -36,7 +38,12 @@ export class AnexarMultasComponent implements OnInit {
   infractionTypes: { label: string; value: number; smldv: number }[] = [];
   infractions: { label: string; value: number; smldv: number }[] = [];
 
-  constructor(private router: Router, private api: ServiceGenericService) { }
+  constructor(
+    private router: Router,
+    private api: ServiceGenericService,
+    private documentSessionService: DocumentSessionService,
+    private paymentService: PaymentService
+  ) { }
 
   ngOnInit() {
     this.loadDocumentTypes();
@@ -106,8 +113,8 @@ export class AnexarMultasComponent implements OnInit {
   }
 
   // Aquí no tocamos isLoading para el botón
-  this.api.getMultasByDocument(documentTypeId, documentNumber).subscribe({
-    next: (resp) => {
+  this.documentSessionService.getMultasByDocument(documentTypeId, documentNumber).subscribe({
+    next: (resp: any) => {
       if (resp.isSuccess && resp.count > 0) {
         const multa = resp.data[0];
         this.form.firstName = multa.firstName;
@@ -118,7 +125,7 @@ export class AnexarMultasComponent implements OnInit {
         this.resetFieldsForNewUser();
       }
     },
-    error: (err) => {
+    error: (err: any) => {
       console.error('❌ Error verificando multas existentes:', err);
       Swal.fire('Error', 'No se pudo verificar si la persona tiene multas', 'error');
     }
@@ -154,7 +161,7 @@ export class AnexarMultasComponent implements OnInit {
     smldvCount: Number(this.form.smldvCount)
   };
 
-  this.api.createInfraction(payload).subscribe({
+  this.paymentService.createInfraction(payload).subscribe({
     next: (resp: any) => {
       this.isLoading = false;
 
@@ -175,7 +182,7 @@ export class AnexarMultasComponent implements OnInit {
         Swal.fire('⚠️', resp?.message || 'No se pudo registrar la multa', 'warning');
       }
     },
-    error: async (err) => {
+    error: async (err: any) => {
       this.isLoading = false;
 
       console.error('❌ Error al crear multa:', err);

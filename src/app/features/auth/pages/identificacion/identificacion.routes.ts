@@ -4,6 +4,6 @@ export const IDENTIFICACION_ROUTES: Routes = [
   {
     path: 'identificacion',
     loadComponent: () =>
-      import('./Identificacion').then(m => m.Identificacion)
+      import('./identificacion.component').then(m => m.Identificacion)
   }
 ];

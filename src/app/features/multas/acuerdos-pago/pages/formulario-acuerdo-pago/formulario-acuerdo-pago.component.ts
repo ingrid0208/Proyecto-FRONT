@@ -11,8 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 
 import Swal from 'sweetalert2';
 import { AppTopbar } from '../../../../../layout/header/topbar.component';
-import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 import { PaymentAgreementInitDto } from '../../../../../shared/Models/init/PaymentAgreementInitDto';
+import { PaymentService } from '../../../../../core/services/payments/payment.service';
+import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 
 @Component({
   selector: 'app-formulario-acuerdo-pago',
@@ -75,6 +76,7 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
   agreementEnd: string = '';
 
   constructor(
+    private paymentService: PaymentService,
     private serviceGeneric: ServiceGenericService,
     private router: Router,
     private cdr: ChangeDetectorRef
@@ -87,7 +89,7 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
     if (st?.userId && st?.infractionId) {
       this.form.userInfractionId = st.infractionId;
 
-      this.serviceGeneric.getInitData(st.userId, st.infractionId).subscribe({
+      this.paymentService.getInitData(st.userId, st.infractionId).subscribe({
         next: (data: PaymentAgreementInitDto | PaymentAgreementInitDto[]) => {
           if (Array.isArray(data)) {
             this.initData = data.find(x => x.infractionId === st.infractionId) ?? data[0];
@@ -108,7 +110,7 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
           this.startDate = new Date().toISOString().split('T')[0];
           this.cdr.detectChanges();
         },
-        error: (err) => console.error('Error al cargar datos iniciales:', err),
+        error: (err: any) => console.error('Error al cargar datos iniciales:', err),
       });
     }
 
@@ -191,8 +193,8 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
 
     console.log("📤 Payload FINAL al backend:", payload);
 
-    this.serviceGeneric.createPaymentAgreement(payload).subscribe({
-      next: (res) => {
+    this.paymentService.createPaymentAgreement(payload).subscribe({
+      next: (res: any) => {
         this.form.baseAmount = res.agreement.baseAmount;
         this.form.monthlyFee = res.agreement.monthlyFee;
         this.form.installments = res.agreement.installments;

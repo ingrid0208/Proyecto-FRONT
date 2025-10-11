@@ -4,6 +4,6 @@ export const MODULE_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./module-page.component').then(c => c.ModulePageComponent),
+      import('./pages/module-page/module-page.component').then(c => c.ModulePageComponent),
   }
 ];

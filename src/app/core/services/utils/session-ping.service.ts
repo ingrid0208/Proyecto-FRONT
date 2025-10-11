@@ -1,14 +1,14 @@
 // core/services/servicesGeneric/session-ping.service.ts
 import { Injectable, OnDestroy } from '@angular/core';
 import { interval as rxInterval, Subscription, of, switchMap, catchError, interval } from 'rxjs';
-import { ServiceGenericService } from './generic/service-generic.service';
+import { DocumentSessionService } from '../documents/document-session.service';
 
 @Injectable({ providedIn: 'root' })
 export class SessionPingService implements OnDestroy {
   private sub?: Subscription;
   private defaultMs = 70_000;
 
-  constructor(private api: ServiceGenericService) {}
+  constructor(private api: DocumentSessionService) {}
 
   start(ms: number = this.defaultMs) {
     this.stop();

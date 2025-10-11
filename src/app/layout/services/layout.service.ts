@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface LayoutState {
@@ -10,6 +10,10 @@ export interface LayoutState {
 
 export interface LayoutConfig {
   menuMode: 'static' | 'overlay';
+  darkTheme: boolean;
+  primary: string;
+  surface: string;
+  preset: string;
 }
 
 @Injectable({
@@ -17,8 +21,12 @@ export interface LayoutConfig {
 })
 export class LayoutService {
 
-  private configSubject = new BehaviorSubject<LayoutConfig>({
-    menuMode: 'static'
+  private configSignal = signal<LayoutConfig>({
+    menuMode: 'static',
+    darkTheme: false,
+    primary: 'emerald',
+    surface: 'slate',
+    preset: 'Aura'
   });
 
   private stateSubject = new BehaviorSubject<LayoutState>({
@@ -30,9 +38,7 @@ export class LayoutService {
 
   private overlayOpenSubject = new BehaviorSubject<any>(null);
 
-  layoutConfig() {
-    return this.configSubject.value;
-  }
+  layoutConfig = this.configSignal;
 
   layoutState() {
     return this.stateSubject.value;
@@ -45,5 +51,9 @@ export class LayoutService {
   updateState(updates: Partial<LayoutState>) {
     const currentState = this.stateSubject.value;
     this.stateSubject.next({ ...currentState, ...updates });
+  }
+
+  onMenuToggle() {
+    this.updateState({ overlayMenuActive: !this.stateSubject.value.overlayMenuActive });
   }
 }

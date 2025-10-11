@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ColumnDef } from '../../../../../shared/Models/table.Generic';
+import { ColumnDef } from '../../../../../shared/Models/util/table.Generic';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
-import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
+import { AuthService } from '../../../../../core/services/auth/auth.service';
+import { DocumentSessionService } from '../../../../../core/services/documents/document-session.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
 import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/select/UserInfractionSelectDto';
 
@@ -35,7 +36,8 @@ export interface InfractionView {
 export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
 
   constructor(
-    private auth: ServiceGenericService,
+    private authService: AuthService,
+    private documentSessionService: DocumentSessionService,
     private router: Router,
     private sessionPing: SessionPingService
   ) {}
@@ -71,7 +73,7 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
     }
 
     try {
-      const r = await this.auth.getMultasByDocument(docTypeId, docNumber).toPromise();
+      const r = await this.documentSessionService.getMultasByDocument(docTypeId, docNumber).toPromise();
       const data: UserInfractionSelectDto[] = r?.data ?? [];
       if (!data.length) {
         alert('Este usuario no tiene multas registradas.');
@@ -100,7 +102,7 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
   }
 
   onBack() {
-    this.auth.logout().subscribe({
+    this.authService.logout().subscribe({
       next: () => {
         this.sessionPing.stop();
         this.router.navigate(['/auth/inicio']);

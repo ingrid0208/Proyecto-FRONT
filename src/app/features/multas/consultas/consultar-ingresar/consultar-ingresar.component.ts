@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Identificacion } from '../../../auth/pages/identificacion/Identificacion';
+import { Identificacion } from '../../../auth/pages/identificacion/identificacion.component';
 
 @Component({
   selector: 'app-consultar-ingresar',

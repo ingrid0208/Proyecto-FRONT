@@ -4,7 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
-import { ColumnDef } from '../../Models/table.Generic';
+import { ColumnDef } from '../../Models/util/table.Generic';
 
 import Swal from 'sweetalert2';
 import { SessionPingService } from '../../../core/services/utils/session-ping.service';

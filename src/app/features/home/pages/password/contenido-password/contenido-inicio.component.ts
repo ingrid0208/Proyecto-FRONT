@@ -4,10 +4,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../../../../shared/Models/table.Generic';
+import { ColumnDef } from '../../../../../shared/Models/util/table.Generic';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { AppTopbar } from '../../../../../layout/header/topbar.component';
-import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
+import { DocumentSessionService } from '../../../../../core/services/documents/document-session.service';
+import { FilterService } from '../../../../../core/services/filters/filter.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
 
 interface MultaTableRow {
@@ -50,7 +51,8 @@ export class ContenidoInicioComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private api: ServiceGenericService,
+    private documentSessionService: DocumentSessionService,
+    private filterService: FilterService,
     private sessionPing: SessionPingService
   ) {}
 
@@ -61,7 +63,7 @@ export class ContenidoInicioComponent implements OnInit {
     if (!docTypeId || !docNumber) return;
 
     try {
-      const r = await this.api.getMultasByDocument(docTypeId, docNumber).toPromise();
+      const r = await this.documentSessionService.getMultasByDocument(docTypeId, docNumber).toPromise();
       this.sessionPing.start();
       const data = r?.data ?? [];
 
@@ -104,7 +106,7 @@ export class ContenidoInicioComponent implements OnInit {
       this.searchWarning = '';
     }
 
-    const r = await this.api.filterMultas({ userId, searchTerm: term }).toPromise();
+    const r = await this.filterService.filterMultas({ userId, searchTerm: term }).toPromise();
     const data = r?.data ?? [];
 
     this.multas = data.map((x: any) => ({
