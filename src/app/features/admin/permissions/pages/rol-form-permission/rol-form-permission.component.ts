@@ -46,6 +46,9 @@ import { ServiceGenericService } from '../../../../../core/services/utils/generi
 export class RolFormPermissionComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
+  // Modal de bienvenida
+  showWelcomeModal = false;
+
   // Data
   rolFormPermissions: RolFormPermission[] = [];
   displayData: RolFormPermissionDisplay[] = [];
@@ -81,16 +84,22 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Mostrar mensaje de bienvenida
+    // Cargar datos primero
+    this.loadData();
+    this.loadDropdownOptions();
+
+    // Mostrar modal de bienvenida personalizado después de un pequeño delay
+    setTimeout(() => {
+      this.showWelcomeModal = true;
+    }, 100);
+
+    // También mantener el toast como respaldo
     this.messageService.add({
       severity: 'info',
       summary: '¡Bienvenido!',
       detail: '¡Bienvenido a la gestión de Roles-Formularios-Permisos!',
       life: 3000
     });
-
-    this.loadData();
-    this.loadDropdownOptions();
   }
 
   ngOnDestroy(): void {
@@ -395,5 +404,10 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
       return 'Este campo es requerido';
     }
     return '';
+  }
+
+  // Método para cerrar el modal de bienvenida
+  closeWelcomeModal(): void {
+    this.showWelcomeModal = false;
   }
 }

@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
 import { PermissionService } from '../../../../../core/services/ModelSecurity/permission.service';
-import { Permission } from '../../../../../shared/Models/modelSecurity/permission';
+import { Permission } from '../../../../../shared/models/modelSecurity/permission';
 
 @Component({
   selector: 'app-permisos-page',
@@ -57,9 +57,13 @@ export class PermisosPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Mostrar mensaje de bienvenida
-    this.mostrarAlerta('bienvenida', '¡Bienvenido a la gestión de Permisos!');
+    // Obtener permisos primero
     this.obtenerPermisos();
+    
+    // Mostrar mensaje de bienvenida después de un pequeño delay para asegurar que se renderice
+    setTimeout(() => {
+      this.mostrarAlerta('bienvenida', '¡Bienvenido a la gestión de Permisos!');
+    }, 100);
   }
 
   obtenerPermisos() {
@@ -208,11 +212,14 @@ export class PermisosPageComponent implements OnInit {
   }
 
   mostrarAlerta(tipo: 'bienvenida' | 'creado' | 'eliminado' | 'error', mensaje: string) {
+    console.log('Mostrando alerta:', tipo, mensaje); // Debug log
     this.alertType = tipo;
     this.alertMsg = mensaje;
     this.showAlert = true;
+    console.log('showAlert:', this.showAlert); // Debug log
     setTimeout(() => {
       this.showAlert = false;
-    }, 3000);
+      console.log('Ocultando alerta'); // Debug log
+    }, 5000); // Aumenté el tiempo para que puedas verlo mejor
   }
 }
