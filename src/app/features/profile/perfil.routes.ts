@@ -4,6 +4,6 @@ export const PERFIL_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./pages/profile/profile.component').then(m => m.ProfileComponent)
+      import('./pages/profile.component').then(m => m.ProfileComponent)
   }
 ];

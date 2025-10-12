@@ -11,17 +11,25 @@
 
   <!-- Notificaciones y Perfil -->
   <div class="right-section">
+    <button class="profile-btn" (click)="op.toggle($event)">
+      <i class="pi pi-user"></i>
+    </button>
 
-    <!-- <p-overlayPanel #op [showCloseIcon]="true">
+    <p-overlayPanel #op [showCloseIcon]="true" [style]="{'width': '200px'}">
+      <div class="profile-menu">
         <div class="menu-item" (click)="goToProfile()">
-          <i class="pi pi-user"></i> Ver Perfil
+          <i class="pi pi-user"></i>
+          <span>Ver Perfil</span>
         </div>
         <div class="menu-item" (click)="openSettings()">
-          <i class="pi pi-cog"></i> Configuración
+          <i class="pi pi-cog"></i>
+          <span>Configuración</span>
         </div>
         <div class="menu-item logout" (click)="logout()">
-          <i class="pi pi-sign-out"></i> Cerrar Sesión
+          <i class="pi pi-sign-out"></i>
+          <span>Cerrar Sesión</span>
         </div>
-      </p-overlayPanel> -->
+      </div>
+    </p-overlayPanel>
   </div>
 </div>

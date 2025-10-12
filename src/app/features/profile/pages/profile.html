@@ -1,0 +1,198 @@
+<!-- Toast para mensajes -->
+<p-toast></p-toast>
+
+<!-- Loading overlay -->
+<div *ngIf="isLoading" class="loading-overlay">
+  <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+</div>
+
+<div class="profile-container">
+  <!-- Sidebar -->
+  <aside class="profile-sidebar card">
+    <div class="avatar-container">
+      <img [src]="getProfileImage()" alt="Profile" class="profile-avatar" />
+      <label for="image-upload" class="edit-icon">
+        <i class="pi pi-camera"></i>
+      </label>
+      <input
+        type="file"
+        id="image-upload"
+        hidden
+        accept="image/jpeg,image/png,image/jpg,image/webp"
+        (change)="onImageSelect($event)"
+      />
+    </div>
+    <h3 class="profile-name">{{ getFullName() }}</h3>
+    <p class="profile-role">{{ profile?.email || 'Cargando...' }}</p>
+
+    <nav class="profile-menu">
+      <button class="active">
+        <i class="pi pi-user"></i>
+        Información Personal
+      </button>
+      <button disabled>
+        <i class="pi pi-lock"></i>
+        Contraseña
+      </button>
+      <button disabled>
+        <i class="pi pi-cog"></i>
+        Configuración
+      </button>
+    </nav>
+  </aside>
+
+  <!-- Main Form -->
+  <main class="profile-form card">
+    <div class="form-header">
+      <h2>
+        <i class="pi pi-user-edit"></i>
+        Información Personal
+      </h2>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+      <!-- Género -->
+      <div class="gender-selection">
+        <label class="section-label">Género</label>
+        <div class="gender-options">
+          <label *ngFor="let g of genders" class="gender-label">
+            <input
+              type="radio"
+              formControlName="gender"
+              [value]="g.value"
+            />
+            <span>{{ g.label }}</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Grid de campos -->
+      <div class="form-grid">
+        <!-- Nombre -->
+        <div class="form-field">
+          <label for="firstName">
+            Nombre <span class="required">*</span>
+          </label>
+          <input
+            id="firstName"
+            type="text"
+            pInputText
+            formControlName="firstName"
+            placeholder="Ingrese su nombre"
+            [class.invalid]="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched"
+          />
+          <small
+            class="error-message"
+            *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched"
+          >
+            El nombre es requerido (mín. 2 caracteres)
+          </small>
+        </div>
+
+        <!-- Apellido -->
+        <div class="form-field">
+          <label for="lastName">
+            Apellido <span class="required">*</span>
+          </label>
+          <input
+            id="lastName"
+            type="text"
+            pInputText
+            formControlName="lastName"
+            placeholder="Ingrese su apellido"
+            [class.invalid]="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched"
+          />
+          <small
+            class="error-message"
+            *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched"
+          >
+            El apellido es requerido (mín. 2 caracteres)
+          </small>
+        </div>
+
+        <!-- Email (disabled) -->
+        <div class="form-field full-width">
+          <label for="email">Email</label>
+          <div class="email-wrapper">
+            <input
+              id="email"
+              type="email"
+              pInputText
+              formControlName="email"
+            />
+            <span class="verified">
+              <i class="pi pi-check-circle"></i>
+              Verificado
+            </span>
+          </div>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="form-field">
+          <label for="phoneNumber">Teléfono</label>
+          <input
+            id="phoneNumber"
+            type="tel"
+            pInputText
+            formControlName="phoneNumber"
+            placeholder="Ej: 3001234567"
+            [class.invalid]="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched"
+          />
+          <small
+            class="error-message"
+            *ngIf="profileForm.get('phoneNumber')?.invalid && profileForm.get('phoneNumber')?.touched"
+          >
+            Formato inválido (7-15 dígitos)
+          </small>
+        </div>
+
+        <!-- Fecha de Nacimiento -->
+        <div class="form-field">
+          <label for="dateOfBirth">Fecha de Nacimiento</label>
+          <p-calendar
+            id="dateOfBirth"
+            formControlName="dateOfBirth"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            placeholder="Seleccione una fecha"
+            [maxDate]="maxDate"
+          ></p-calendar>
+        </div>
+
+        <!-- Dirección -->
+        <div class="form-field full-width">
+          <label for="address">Dirección</label>
+          <input
+            id="address"
+            type="text"
+            pInputText
+            formControlName="address"
+            placeholder="Ingrese su dirección completa"
+          />
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="form-actions">
+        <button
+          type="button"
+          pButton
+          label="Descartar Cambios"
+          icon="pi pi-times"
+          class="p-button-outlined p-button-secondary"
+          (click)="onDiscard()"
+          [disabled]="isSaving || isLoading"
+        ></button>
+        <button
+          type="submit"
+          pButton
+          label="Guardar Cambios"
+          icon="pi pi-check"
+          class="p-button-success"
+          [disabled]="!profileForm.valid || isSaving || isLoading"
+          [loading]="isSaving"
+        ></button>
+      </div>
+    </form>
+  </main>
+</div>
