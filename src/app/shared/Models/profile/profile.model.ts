@@ -18,6 +18,7 @@ export interface ProfileDto {
   documentTypeId?: number;
   documentNumber?: string;
   municipalityId?: number;
+  municipalityName?: string; // Nombre del municipio desde el backend
 }
 
 export interface ProfileUpdateDto {

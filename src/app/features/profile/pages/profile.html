@@ -51,21 +51,6 @@
     </div>
 
     <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-      <!-- Género -->
-      <div class="gender-selection">
-        <label class="section-label">Género</label>
-        <div class="gender-options">
-          <label *ngFor="let g of genders" class="gender-label">
-            <input
-              type="radio"
-              formControlName="gender"
-              [value]="g.value"
-            />
-            <span>{{ g.label }}</span>
-          </label>
-        </div>
-      </div>
-
       <!-- Grid de campos -->
       <div class="form-grid">
         <!-- Nombre -->
@@ -146,17 +131,19 @@
           </small>
         </div>
 
-        <!-- Fecha de Nacimiento -->
+        <!-- Municipio (solo lectura) -->
         <div class="form-field">
-          <label for="dateOfBirth">Fecha de Nacimiento</label>
-          <p-calendar
-            id="dateOfBirth"
-            formControlName="dateOfBirth"
-            dateFormat="dd/mm/yy"
-            [showIcon]="true"
-            placeholder="Seleccione una fecha"
-            [maxDate]="maxDate"
-          ></p-calendar>
+          <label for="municipality">
+            <i class="pi pi-map-marker"></i>
+            Municipio
+          </label>
+          <input
+            id="municipality"
+            type="text"
+            pInputText
+            [value]="profile?.municipalityName || 'No especificado'"
+            disabled
+          />
         </div>
 
         <!-- Dirección -->

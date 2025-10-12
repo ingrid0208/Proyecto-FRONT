@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, BehaviorSubject, tap, catchError, throwError, map, switchMap } from 'rxjs';
 import { ApiService } from '../base/api.service';
-import { ProfileDto, ProfileUpdateDto } from '../../../shared/Models/profile/profile.model';
+import { ProfileDto, ProfileUpdateDto } from '../../../shared/models/profile/profile.model';
 
 // ===============================
 // 👤 Servicio de Perfil
@@ -48,10 +48,12 @@ export class ProfileService extends ApiService {
                 phoneNumber: person.phoneNumber || '',
                 address: person.address || '',
                 municipalityId: person.municipalityId,
+                municipalityName: person.municipalityName,
                 documentTypeId: person.documentTypeId,
                 documentNumber: person.documentNumber || '',
               };
 
+              console.log('📋 Perfil mapeado:', profile);
               this.profileSubject.next(profile);
               return profile;
             })

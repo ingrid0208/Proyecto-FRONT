@@ -6,15 +6,8 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // PrimeNG
-import { CardModule } from 'primeng/card';
-import { AvatarModule } from 'primeng/avatar';
 import { InputTextModule } from 'primeng/inputtext';
-import { FileUploadModule } from 'primeng/fileupload';
 import { ButtonModule } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { CalendarModule } from 'primeng/calendar';
-import { InputMaskModule } from 'primeng/inputmask';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
@@ -24,7 +17,7 @@ import { LayoutService } from '../../../layout/services/layout.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 // Models
-import { ProfileDto, ProfileUpdateDto } from '../../../shared/Models/profile/profile.model';
+import { ProfileDto, ProfileUpdateDto } from '../../../shared/models/profile/profile.model';
 
 // ===============================
 // 👤 Componente de Perfil
@@ -35,15 +28,8 @@ import { ProfileDto, ProfileUpdateDto } from '../../../shared/Models/profile/pro
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
-    AvatarModule,
     InputTextModule,
-    FileUploadModule,
     ButtonModule,
-    DropdownModule,
-    OverlayPanelModule,
-    CalendarModule,
-    InputMaskModule,
     ToastModule
   ],
   providers: [MessageService],
@@ -70,20 +56,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isLoading = false;
   isSaving = false;
 
-  // Dropdowns
-  genders = [
-    { label: 'Masculino', value: 'male' },
-    { label: 'Femenino', value: 'female' },
-    { label: 'Otro', value: 'other' }
-  ];
-
   // Imagen
   selectedImageFile: File | null = null;
   previewImageUrl: string | null = null;
   defaultImage = 'https://cdn-icons-png.flaticon.com/512/219/219983.png';
-
-  // Fecha máxima para date picker (hoy)
-  maxDate = new Date();
 
   // ===============================
   // 📌 Ciclo de vida
@@ -110,9 +86,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       email: [{ value: '', disabled: true }],
       phoneNumber: ['', [Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
-      address: ['', [Validators.maxLength(200)]],
-      dateOfBirth: [''],
-      gender: ['']
+      address: ['', [Validators.maxLength(200)]]
     });
   }
 
@@ -158,9 +132,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       lastName: profile.lastName,
       email: profile.email,
       phoneNumber: profile.phoneNumber,
-      address: profile.address,
-      dateOfBirth: profile.dateOfBirth ? new Date(profile.dateOfBirth) : null,
-      gender: profile.gender
+      address: profile.address
     });
 
     if (profile.profileImage) {
@@ -180,9 +152,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         firstName: this.profileForm.get('firstName')?.value,
         lastName: this.profileForm.get('lastName')?.value,
         phoneNumber: this.profileForm.get('phoneNumber')?.value,
-        address: this.profileForm.get('address')?.value,
-        dateOfBirth: this.profileForm.get('dateOfBirth')?.value?.toISOString(),
-        gender: this.profileForm.get('gender')?.value
+        address: this.profileForm.get('address')?.value
       };
 
       this.profileService.updateMyProfile(updateData)
