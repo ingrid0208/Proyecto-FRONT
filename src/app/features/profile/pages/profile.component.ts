@@ -82,11 +82,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.profileForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      email: [{ value: '', disabled: true }],
-      phoneNumber: ['', [Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
-      address: ['', [Validators.maxLength(200)]]
+      firstName: ['mobina', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      lastName: ['Mir', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['912000000', [Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
+      city: ['software']
     });
   }
 
@@ -128,11 +128,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private populateForm(profile: ProfileDto): void {
     this.profileForm.patchValue({
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      email: profile.email,
-      phoneNumber: profile.phoneNumber,
-      address: profile.address
+      firstName: profile.firstName || 'mobina',
+      lastName: profile.lastName || 'Mir',
+      email: profile.email || '',
+      phoneNumber: profile.phoneNumber || '912000000',
+      city: 'software'
     });
 
     if (profile.profileImage) {
@@ -151,8 +151,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       const updateData: ProfileUpdateDto = {
         firstName: this.profileForm.get('firstName')?.value,
         lastName: this.profileForm.get('lastName')?.value,
-        phoneNumber: this.profileForm.get('phoneNumber')?.value,
-        address: this.profileForm.get('address')?.value
+        phoneNumber: this.profileForm.get('phoneNumber')?.value
       };
 
       this.profileService.updateMyProfile(updateData)
