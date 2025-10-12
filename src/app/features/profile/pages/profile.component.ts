@@ -14,7 +14,7 @@ import { LayoutService } from '../../../layout/services/layout.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 // Models
-import { ProfileDto, ProfileUpdateDto } from '../../../shared/models/profile/profile.model';
+import { ProfileDto } from '../../../shared/models/profile/profile.model';
 
 // ===============================
 // 👤 Componente de Perfil
@@ -89,10 +89,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
             lastName: 'Demo',
             email: 'usuario@demo.com',
             phoneNumber: '3001234567',
-            address: 'Dirección de prueba',
-            dateOfBirth: '1990-01-01',
-            gender: 'male',
-            profileImage: 'https://cdn-icons-png.flaticon.com/512/219/219983.png',
+            address: 'Bogotá, Colombia',
             documentTypeId: 1,
             documentNumber: '1234567890'
           };

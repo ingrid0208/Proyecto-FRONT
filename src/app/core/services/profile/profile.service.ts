@@ -1,8 +1,8 @@
 // ===============================
 import { Injectable, inject } from '@angular/core';
-import { Observable, BehaviorSubject, tap, catchError, throwError, map, switchMap } from 'rxjs';
+import { Observable, BehaviorSubject, catchError, throwError, map, switchMap } from 'rxjs';
 import { ApiService } from '../base/api.service';
-import { ProfileDto, ProfileUpdateDto } from '../../../shared/models/profile/profile.model';
+import { ProfileDto } from '../../../shared/models/profile/profile.model';
 
 // ===============================
 // 👤 Servicio de Perfil
@@ -47,8 +47,6 @@ export class ProfileService extends ApiService {
                 email: user.email,
                 phoneNumber: person.phoneNumber || '',
                 address: person.address || '',
-                municipalityId: person.municipalityId,
-                municipalityName: person.municipalityName,
                 documentTypeId: person.documentTypeId,
                 documentNumber: person.documentNumber || '',
               };
@@ -90,127 +88,7 @@ export class ProfileService extends ApiService {
     );
   }
 
-  // ===============================
-  // 📌 Métodos de actualización
-  // ===============================
-
-  /**
-   * Actualiza el perfil del usuario autenticado
-   */
-  updateMyProfile(data: ProfileUpdateDto): Observable<ProfileDto> {
-    // Primero obtener el personId del usuario actual
-    return this.http.get<any>(
-      this.url('Auth', 'me'),
-      this.optsCookie()
-    ).pipe(
-      switchMap(user => {
-        if (!user.personId) {
-          return throwError(() => new Error('Usuario no tiene una persona asociada'));
-        }
-
-        // Actualizar la persona
-        return this.http.put<any>(
-          this.url(this.personEndpoint, user.personId),
-          data,
-          this.optsCookie()
-        ).pipe(
-          map(person => {
-            console.log('✅ Perfil actualizado:', person);
-
-            const profile: ProfileDto = {
-              id: person.id,
-              firstName: person.firstName || '',
-              lastName: person.lastName || '',
-              email: user.email,
-              phoneNumber: person.phoneNumber || '',
-              address: person.address || '',
-              municipalityId: person.municipalityId,
-              documentTypeId: person.documentTypeId,
-              documentNumber: person.documentNumber || '',
-            };
-
-            this.profileSubject.next(profile);
-            return profile;
-          })
-        );
-      }),
-      catchError(error => {
-        console.error('❌ Error al actualizar perfil:', error);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Actualiza un perfil específico por ID (requiere permisos)
-   */
-  updateProfileById(id: number, data: ProfileUpdateDto): Observable<ProfileDto> {
-    return this.http.put<ProfileDto>(
-      this.url(this.personEndpoint, id),
-      data,
-      this.optsCookie()
-    );
-  }
-
-  // ===============================
-  // 📌 Métodos de imagen
-  // ===============================
-
-  /**
-   * Sube una imagen de perfil
-   */
-  uploadProfileImage(file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('imageFile', file);
-
-    return this.http.post<any>(
-      this.url(this.personEndpoint, 'upload-image'),
-      formData,
-      { withCredentials: true }
-    ).pipe(
-      tap(response => {
-        console.log('✅ Imagen de perfil actualizada:', response);
-        // Actualizar el perfil con la nueva imagen
-        const currentProfile = this.profileSubject.value;
-        if (currentProfile && response.imageUrl) {
-          this.profileSubject.next({
-            ...currentProfile,
-            profileImage: response.imageUrl
-          });
-        }
-      }),
-      catchError(error => {
-        console.error('❌ Error al subir imagen:', error);
-        return throwError(() => error);
-      })
-    );
-  }
-
-  /**
-   * Elimina la imagen de perfil del usuario
-   */
-  deleteProfileImage(): Observable<any> {
-    return this.http.delete(
-      this.url(this.personEndpoint, 'delete-image'),
-      this.optsCookie()
-    ).pipe(
-      tap(() => {
-        console.log('✅ Imagen de perfil eliminada');
-        const currentProfile = this.profileSubject.value;
-        if (currentProfile) {
-          this.profileSubject.next({
-            ...currentProfile,
-            profileImage: undefined
-          });
-        }
-      })
-    );
-  }
-
-  // ===============================
-  // 📌 Métodos auxiliares
-  // ===============================
-
+  
   /**
    * Limpia el perfil del store
    */
