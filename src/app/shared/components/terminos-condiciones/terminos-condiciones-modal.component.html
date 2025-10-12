@@ -8,7 +8,7 @@
   [contentStyle]="{'max-height': '60vh', 'overflow': 'auto'}"
   header="Términos y Condiciones">
 
-  <div class="terminos-content">
+  <div class="terminos-content" #terminosContent (scroll)="onScroll($event)">
     <h3>1. Aceptación de los Términos</h3>
     <p>
       Al acceder y utilizar este sistema de gestión de multas, usted acepta cumplir con estos términos y condiciones.
@@ -60,12 +60,12 @@
     </p>
 
     <div class="acceptance-section">
-      <p-checkbox
-        [(ngModel)]="accepted"
-        [binary]="true"
-        inputId="accept-terms"
-        label="He leído y acepto los términos y condiciones">
-      </p-checkbox>
+      <small *ngIf="!hasScrolledToBottom" class="scroll-hint">
+        <i class="pi pi-arrow-down"></i> Desplázate hasta el final para aceptar los términos
+      </small>
+      <p *ngIf="hasScrolledToBottom" class="scroll-completed">
+        <i class="pi pi-check-circle"></i> Has leído todos los términos y condiciones
+      </p>
     </div>
   </div>
 
@@ -75,7 +75,7 @@
       label="Aceptar y Continuar"
       icon="pi pi-check"
       class="p-button-success"
-      [disabled]="!accepted"
+      [disabled]="!hasScrolledToBottom"
       (click)="onAccept()">
     </button>
     <button

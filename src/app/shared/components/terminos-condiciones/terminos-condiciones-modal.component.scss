@@ -1,6 +1,8 @@
 .terminos-content {
   padding: 1rem;
   line-height: 1.6;
+  max-height: 60vh;
+  overflow-y: auto;
 
   h3 {
     color: #2c3e50;
@@ -23,6 +25,40 @@
   background-color: #f8f9fa;
   border-radius: 8px;
   border-left: 4px solid #28a745;
+  text-align: center;
+
+  .scroll-hint {
+    display: block;
+    color: #dc3545;
+    font-weight: 500;
+    font-size: 0.95rem;
+    animation: pulse 2s infinite;
+
+    i {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .scroll-completed {
+    color: #28a745;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0;
+
+    i {
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
 }
 
 ::ng-deep {
