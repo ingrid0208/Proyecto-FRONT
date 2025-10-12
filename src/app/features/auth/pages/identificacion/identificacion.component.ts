@@ -14,11 +14,12 @@ import { DocumentSessionService } from '../../../../core/services/documents/docu
 import { SessionPingService } from '../../../../core/services/utils/session-ping.service';
 import { DocumentTypeDto } from '../../../../shared/Models/parameters/document-type.models';
 import { LoginDocumentoRequest } from '../../../../shared/Models/auth/request/LoginDocumentoRequest';
+import { TerminosCondicionesModalComponent } from '../../../../shared/components/terminos-condiciones/terminos-condiciones-modal.component';
 
 @Component({
   selector: 'app-identification',
   standalone: true,
-  imports: [CommonModule, FormsModule, DropdownModule, InputTextModule, ButtonModule],
+  imports: [CommonModule, FormsModule, DropdownModule, InputTextModule, ButtonModule, TerminosCondicionesModalComponent],
   template: `
   <div [ngClass]="layout === 'embedded' ? 'block pt-0' : 'flex justify-center items-center pt-40'">
     <div [ngClass]="layout === 'embedded' ? 'bg-white p-8 md:p-10 rounded-xl shadow-lg w-full max-w-md md:max-w-lg' : 'bg-white p-12 rounded-xl shadow-lg w-full max-w-2xl'">
@@ -61,6 +62,12 @@ import { LoginDocumentoRequest } from '../../../../shared/Models/auth/request/Lo
       </small>
     </div>
   </div>
+
+  <app-terminos-condiciones-modal
+    [(visible)]="showTermsModal"
+    (onAcceptTerms)="onTermsAccepted()"
+    (onRejectTerms)="onTermsRejected()">
+  </app-terminos-condiciones-modal>
   `
 })
 export class Identificacion implements OnInit {
@@ -84,6 +91,9 @@ export class Identificacion implements OnInit {
 
   docTypesLoading = false;
   docTypesError = '';
+
+  showTermsModal = false;
+  pendingData: { multas: any[], ciudadano: string } | null = null;
 
   ngOnInit(): void {
     this.loadDocumentTypes();
@@ -154,11 +164,9 @@ export class Identificacion implements OnInit {
       // 5) Iniciar ping de sesión (idle)
       this.sessionPing.start(60000);
 
-      // 6) Navegar con state
-      if (this.redirectTo) {
-        this.router.navigate([this.redirectTo], { state: { multas, ciudadano } });
-      }
-      this.loginSuccess.emit();
+      // 6) Guardar datos pendientes y mostrar términos y condiciones
+      this.pendingData = { multas, ciudadano };
+      this.showTermsModal = true;
 
     } catch (err: any) {
       // === Aquí mostramos SOLO el primer error de las validaciones del back ===
@@ -214,6 +222,33 @@ export class Identificacion implements OnInit {
       try { return JSON.parse(err.error); } catch { return {}; }
     }
     return err?.error ?? {};
+  }
+
+  // =========================
+  // Términos y condiciones
+  // =========================
+  onTermsAccepted() {
+    if (this.pendingData) {
+      const { multas, ciudadano } = this.pendingData;
+
+      // Navegar con state
+      if (this.redirectTo) {
+        this.router.navigate([this.redirectTo], { state: { multas, ciudadano } });
+      }
+      this.loginSuccess.emit();
+
+      this.pendingData = null;
+    }
+  }
+
+  onTermsRejected() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Términos no aceptados',
+      text: 'Debe aceptar los términos y condiciones para consultar sus multas.',
+      confirmButtonText: 'Entendido'
+    });
+    this.pendingData = null;
   }
 }
 

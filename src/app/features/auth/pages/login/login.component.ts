@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { User } from '../../../../shared/Models/modelSecurity/user.model';
 import { validateEmail, validatePassword } from '../../../../shared/utils/validator/login-register';
+import { TerminosCondicionesModalComponent } from '../../../../shared/components/terminos-condiciones/terminos-condiciones-modal.component';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,8 @@ import { validateEmail, validatePassword } from '../../../../shared/utils/valida
     PasswordModule,
     FormsModule,
     RouterModule,
-    RippleModule
+    RippleModule,
+    TerminosCondicionesModalComponent
   ],
   template: `
 <div class="login-wrapper animate-fade-in">
@@ -82,6 +84,12 @@ import { validateEmail, validatePassword } from '../../../../shared/utils/valida
     </div>
   </div>
 </div>
+
+<app-terminos-condiciones-modal
+  [(visible)]="showTermsModal"
+  (onAcceptTerms)="onTermsAccepted()"
+  (onRejectTerms)="onTermsRejected()">
+</app-terminos-condiciones-modal>
   `
 })
 
@@ -91,6 +99,8 @@ export class Login {
   password = '';
   loading = false;
   navigatingHome = false;
+  showTermsModal = false;
+  pendingUser: User | null = null;
 
   constructor(private router: Router, private authService: AuthService) {}
 
@@ -112,11 +122,11 @@ export class Login {
       .subscribe({
         next: (user: User) => {
           console.log("✅ Usuario autenticado:", user);
-
-          // 🔍 Aquí más adelante podrías reactivar lógica de verificación mensual
-          this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
-
           this.loading = false;
+
+          // Mostrar términos y condiciones antes de navegar
+          this.pendingUser = user;
+          this.showTermsModal = true;
         },
         error: (err) => {
           console.error("❌ Error en login:", err);
@@ -129,6 +139,26 @@ export class Login {
           this.loading = false;
         }
       });
+  }
+
+  // ===============================
+  // 📝 Términos y condiciones
+  // ===============================
+  onTermsAccepted() {
+    if (this.pendingUser) {
+      this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+      this.pendingUser = null;
+    }
+  }
+
+  onTermsRejected() {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Términos no aceptados',
+      text: 'Debe aceptar los términos y condiciones para continuar.',
+      confirmButtonText: 'Entendido'
+    });
+    this.pendingUser = null;
   }
 
   // ===============================
