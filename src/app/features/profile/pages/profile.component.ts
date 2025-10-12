@@ -56,10 +56,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   isLoading = false;
   isSaving = false;
 
-  // Imagen
-  selectedImageFile: File | null = null;
-  previewImageUrl: string | null = null;
-  defaultImage = 'https://cdn-icons-png.flaticon.com/512/219/219983.png';
+
 
   // ===============================
   // 📌 Ciclo de vida
@@ -135,9 +132,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       city: 'software'
     });
 
-    if (profile.profileImage) {
-      this.previewImageUrl = profile.profileImage;
-    }
+    // Ya no necesitamos manejar la imagen de perfil
+    // if (profile.profileImage) {
+    //   this.previewImageUrl = profile.profileImage;
+    // }
   }
 
   // ===============================
@@ -176,68 +174,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
   onDiscard(): void {
     if (this.profile) {
       this.populateForm(this.profile);
-      this.selectedImageFile = null;
+      // this.selectedImageFile = null; // Ya no necesario
       this.showInfo('Cambios descartados');
     }
   }
 
   // ===============================
-  // 📌 Manejo de imagen
+  // 📌 Manejo de imagen - YA NO NECESARIO
   // ===============================
 
-  onImageSelect(event: any): void {
-    const file = event.files?.[0] || event.target?.files?.[0];
+  // onImageSelect(event: any): void {
+  //   // Método comentado - ya no necesitamos manejar imágenes
+  // }
 
-    if (file) {
-      // Validar tipo de archivo
-      const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-      if (!validTypes.includes(file.type)) {
-        this.showError('Solo se permiten imágenes (JPG, PNG, WEBP)');
-        return;
-      }
-
-      // Validar tamaño (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        this.showError('La imagen no debe superar los 5MB');
-        return;
-      }
-
-      this.selectedImageFile = file;
-
-      // Preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewImageUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-
-      // Subir automáticamente
-      this.uploadImage();
-    }
-  }
-
-  private uploadImage(): void {
-    if (!this.selectedImageFile) return;
-
-    this.isLoading = true;
-    this.profileService.uploadProfileImage(this.selectedImageFile)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (response) => {
-          this.showSuccess('Imagen de perfil actualizada');
-          if (response.imageUrl) {
-            this.previewImageUrl = response.imageUrl;
-          }
-          this.selectedImageFile = null;
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Error al subir imagen:', error);
-          this.showError('Error al subir la imagen');
-          this.isLoading = false;
-        }
-      });
-  }
+  // private uploadImage(): void {
+  //   // Método comentado - ya no necesitamos subir imágenes
+  // }
 
   // ===============================
   // 📌 Navegación y acciones
@@ -282,15 +234,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   // 📌 Utilidades
   // ===============================
 
-  getProfileImage(): string {
-    return this.previewImageUrl || this.profile?.profileImage || this.defaultImage;
-  }
+  // getProfileImage(): string {
+  //   // Ya no necesitamos este método - ahora usamos iniciales
+  //   return this.previewImageUrl || this.profile?.profileImage || this.defaultImage;
+  // }
 
   getFullName(): string {
     if (this.profile) {
       return `${this.profile.firstName} ${this.profile.lastName}`;
     }
     return 'Usuario';
+  }
+
+  getInitials(): string {
+    if (this.profile && this.profile.firstName && this.profile.lastName) {
+      return `${this.profile.firstName.charAt(0).toUpperCase()}${this.profile.lastName.charAt(0).toUpperCase()}`;
+    }
+    return 'U';
   }
 
   // ===============================
