@@ -71,14 +71,14 @@
 }
 
 .form-modules-header .icon {
-  color: #1976d2;
+  color: #43a047;
   margin-right: 0.8rem;
 }
 
 .form-modules-header .title {
   font-size: 1.8rem;
   font-weight: 600;
-  color: #333;
+  color: #000;
   flex-grow: 1;
 }
 
@@ -140,7 +140,7 @@
 
 .card-header h3 {
   margin: 0;
-  color: #1976d2;
+  color: #000;
   font-size: 1.2rem;
   font-weight: 600;
 }
@@ -263,7 +263,7 @@
 .modal-content h2 {
   margin-top: 0;
   margin-bottom: 1.5rem;
-  color: #1976d2;
+  color: #000;
   font-size: 1.4rem;
   font-weight: 600;
   text-align: center;
@@ -294,7 +294,7 @@
 
 .modal-content input:focus {
   outline: none;
-  border-color: #1976d2;
+  border-color: #43a047;
 }
 
 .modal-actions {
@@ -410,8 +410,8 @@
 
 .custom-select:focus {
   outline: none;
-  border-color: #1976d2;
-  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+  border-color: #43a047;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.15);
 }
 
 .custom-select:disabled {

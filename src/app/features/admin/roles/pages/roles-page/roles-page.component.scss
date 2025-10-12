@@ -168,9 +168,9 @@ textarea:focus {
   border: 1px solid #a5d6a7;
 }
 .blue-tag {
-  background: #e3f2fd;
-  color: #1565c0;
-  border: 1px solid #90caf9;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
 }
 .red-tag {
   background: #ffebee;
@@ -345,7 +345,7 @@ textarea:focus {
   background: #388e3c;
 }
 .blue-btn {
-  background: #1e88e5;
+  background: #4caf50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -353,7 +353,8 @@ textarea:focus {
   font-size: 0.98rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
 }
 .blue-btn:hover {
   background: #45a049;

@@ -245,7 +245,7 @@ $border-color: #e0e0e0;
               &:focus {
                 outline: none;
                 border-color: $primary-color;
-                box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+                box-shadow: 0 0 0 3px rgba(67,160,71,0.1);
               }
 
               &.ng-invalid.ng-touched {
