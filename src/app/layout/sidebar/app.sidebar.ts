@@ -21,6 +21,13 @@ import { AppMenu } from './app.menu';
   transition: transform 0.3s ease;
   overflow-y: auto;
   overflow-x: hidden;
+  /* Ocultar scrollbar pero mantener funcionalidad */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.layout-sidebar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
 .layout-sidebar * {
