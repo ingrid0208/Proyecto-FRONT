@@ -38,6 +38,13 @@ export class PermisosPageComponent implements OnInit {
   permisoAActualizar: Permission | null = null;
   permisoAEliminar: Permission | null = null;
 
+  // Propiedades para alertas estandarizadas
+  showAlert = false;
+  alertType: 'bienvenida' | 'creado' | 'eliminado' | 'error' = 'creado';
+  alertMsg = '';
+  showConfirm = false;
+  permisoAEliminarConfirm: Permission | null = null;
+
   constructor(
     private permissionService: PermissionService,
     private fb: FormBuilder,
@@ -50,6 +57,8 @@ export class PermisosPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Mostrar mensaje de bienvenida
+    this.mostrarAlerta('bienvenida', '¡Bienvenido a la gestión de Permisos!');
     this.obtenerPermisos();
   }
 
@@ -90,8 +99,6 @@ export class PermisosPageComponent implements OnInit {
   }
 
   this.loading = true;
-  this.errorMsg = '';
-  this.successMsg = '';
   const permisoData = {
     name: this.permisoForm.value.name.trim(),
     description: this.permisoForm.value.description.trim()
@@ -103,9 +110,8 @@ export class PermisosPageComponent implements OnInit {
     const descChanged = this.permisoEditando.description.trim() !== permisoData.description;
 
     if (!nameChanged && !descChanged) {
-      this.errorMsg = 'Debes realizar alguna modificación antes de actualizar.';
+      this.mostrarAlerta('error', 'Debes realizar alguna modificación antes de actualizar.');
       this.loading = false;
-      setTimeout(() => this.errorMsg = '', 2500);
       return;
     }
 
@@ -117,16 +123,15 @@ export class PermisosPageComponent implements OnInit {
       permisoActualizado
     ).subscribe({
       next: () => {
-        this.successMsg = 'Permiso actualizado correctamente';
+        this.mostrarAlerta('creado', 'Permiso actualizado correctamente');
         this.obtenerPermisos();
         this.permisoForm.reset();
         this.cerrarFormulario();
         this.permisoEditando = null;
         this.loading = false;
-        setTimeout(() => this.successMsg = '', 2500);
       },
       error: () => {
-        this.errorMsg = 'Error al actualizar el permiso';
+        this.mostrarAlerta('error', 'Error al actualizar el permiso');
         this.loading = false;
       }
     });
@@ -138,15 +143,14 @@ export class PermisosPageComponent implements OnInit {
       permisoData
     ).subscribe({
       next: () => {
-        this.successMsg = 'Permiso creado correctamente';
+        this.mostrarAlerta('creado', 'Permiso creado correctamente');
         this.obtenerPermisos();
         this.permisoForm.reset();
         this.cerrarFormulario();
         this.loading = false;
-        setTimeout(() => this.successMsg = '', 2500);
       },
       error: () => {
-        this.errorMsg = 'Error al crear el permiso';
+        this.mostrarAlerta('error', 'Error al crear el permiso');
         this.loading = false;
       }
     });
@@ -179,28 +183,36 @@ export class PermisosPageComponent implements OnInit {
 
   confirmarEliminacion(permiso: Permission) {
     this.permisoAEliminar = permiso;
-    this.showDeleteConfirm = true;
+    this.showConfirm = true;
   }
 
   cancelarEliminacion() {
     this.permisoAEliminar = null;
-    this.showDeleteConfirm = false;
+    this.showConfirm = false;
   }
 
   eliminarPermiso() {
     if (this.permisoAEliminar) {
       this.permissionService.genericService.delete(this.permissionService.endpoint, this.permisoAEliminar.id).subscribe({
         next: () => {
-          this.successMsg = 'Permiso eliminado correctamente';
+          this.mostrarAlerta('eliminado', 'Permiso eliminado correctamente');
           this.obtenerPermisos();
           this.cancelarEliminacion();
-          setTimeout(() => this.successMsg = '', 2500);
         },
         error: () => {
-          this.errorMsg = 'Error al eliminar el permiso';
+          this.mostrarAlerta('error', 'Error al eliminar el permiso');
           this.cancelarEliminacion();
         }
       });
     }
+  }
+
+  mostrarAlerta(tipo: 'bienvenida' | 'creado' | 'eliminado' | 'error', mensaje: string) {
+    this.alertType = tipo;
+    this.alertMsg = mensaje;
+    this.showAlert = true;
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3000);
   }
 }

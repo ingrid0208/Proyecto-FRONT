@@ -43,6 +43,9 @@ export class RolUserPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Mostrar mensaje de bienvenida
+    this.mostrarAlerta('bienvenida', '¡Bienvenido a la gestión de Rol-Usuario!');
+
     // Cargar usuarios
     this.serviceGeneric.getAll<any>('Users').subscribe((usuarios: any[]) => {
       this.usuarios = usuarios;

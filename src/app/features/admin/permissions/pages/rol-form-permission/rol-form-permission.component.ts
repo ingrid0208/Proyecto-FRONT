@@ -81,6 +81,14 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // Mostrar mensaje de bienvenida
+    this.messageService.add({
+      severity: 'info',
+      summary: '¡Bienvenido!',
+      detail: '¡Bienvenido a la gestión de Roles-Formularios-Permisos!',
+      life: 3000
+    });
+
     this.loadData();
     this.loadDropdownOptions();
   }

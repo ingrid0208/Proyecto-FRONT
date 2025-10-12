@@ -59,6 +59,8 @@ export class FormModulePageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Mostrar mensaje de bienvenida
+    this.mostrarAlerta('¡Bienvenido a la gestión de Form-Modules!', 'bienvenida');
     this.loadFormModules();
     this.loadForms();
     this.loadModules();

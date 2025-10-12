@@ -1,4 +1,27 @@
 <div class="permisos-container bg-gray-50 min-h-screen py-10 px-4 md:px-16">
+  <!-- Modal de alerta -->
+  <div *ngIf="showAlert" class="alert-modal-overlay">
+    <div class="alert-modal-content" [ngClass]="alertType">
+      <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
+      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
+      <span class="alert-msg">{{ alertMsg }}</span>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">🗑️</span>
+      <span class="alert-msg">¿Estás seguro de que deseas eliminar este permiso?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarEliminacion()">Cancelar</button>
+        <button class="red-btn" (click)="eliminarPermiso()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="permisos-header flex items-center justify-between mb-8">
     <div class="header-title flex items-center gap-2">
       <span class="icon text-3xl text-emerald-500"><i class="material-icons">lock_open</i></span>
@@ -8,9 +31,7 @@
       <i class="material-icons text-lg">add</i>
       <span>Agregar Permiso</span>
     </button>
-
   </div>
-  <div *ngIf="successMsg" class="success-message"></div>
   <!-- Modal para agregar permiso -->
   <div *ngIf="showForm"
     class="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -72,32 +93,13 @@
   </div>
 
   <!-- Modal de confirmación para actualizar -->
-  <div *ngIf="showUpdateConfirm"
-    class="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-    <div class="modal-content bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
-      <h3 class="text-lg font-semibold mb-4 text-blue-600">Confirmar Actualización</h3>
-      <p class="text-gray-600 mb-4">¿Desea actualizar el permiso "{{ permisoAActualizar?.name }}"?</p>
-      <div class="flex gap-3">
-        <button (click)="cancelarActualizacion()"
-          class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded font-semibold">Cancelar</button>
-        <button (click)="editarPermiso()"
-          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-semibold">Sí, Editar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de confirmación para eliminar -->
-  <div *ngIf="showDeleteConfirm"
-    class="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-    <div class="modal-content bg-white rounded-lg shadow-xl p-6 w-full max-w-sm">
-      <h3 class="text-lg font-semibold mb-4 text-red-600">Confirmar Eliminación</h3>
-      <p class="text-gray-600 mb-4">¿Está seguro que desea eliminar el permiso "{{ permisoAEliminar?.name }}"?</p>
-      <p class="text-red-500 text-sm mb-4"><strong>⚠️ Esta acción no se puede deshacer.</strong></p>
-      <div class="flex gap-3">
-        <button (click)="cancelarEliminacion()"
-          class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded font-semibold">Cancelar</button>
-        <button (click)="eliminarPermiso()"
-          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-semibold">Eliminar</button>
+  <div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">✏️</span>
+      <span class="alert-msg">¿Está seguro que desea actualizar el permiso "{{ permisoAActualizar?.name }}"?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+        <button class="blue-btn" (click)="editarPermiso()">Sí, Editar</button>
       </div>
     </div>
   </div>
