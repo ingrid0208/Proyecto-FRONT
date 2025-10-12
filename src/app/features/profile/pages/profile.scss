@@ -153,8 +153,8 @@
 
 .form-sections {
   padding: 0;
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
 }
 
@@ -185,13 +185,20 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 1rem;
+  align-items: stretch;
   
   &:last-child {
     margin-bottom: 0;
   }
+  
+  .form-field {
+    min-width: 0; // Permite que flex funcione correctamente
+    flex: 1;
+  }
 }
 
-.form-group {
+.form-group,
+.form-field {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -308,13 +315,14 @@
   color: #1e293b;
   font-size: 0.875rem;
   font-weight: 500;
-  min-height: 1.25rem;
+  min-height: 2.5rem;
   display: flex;
   align-items: center;
   box-shadow: none;
   transition: all 0.3s ease;
   position: relative;
   cursor: pointer;
+  word-wrap: break-word;
   
   &:hover {
     background: rgba(255, 255, 255, 0.95);
@@ -351,7 +359,6 @@
   }
   
   .form-sections {
-    grid-template-columns: 1fr;
     gap: 1rem;
     padding: 0;
   }
