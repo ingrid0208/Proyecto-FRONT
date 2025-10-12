@@ -41,7 +41,11 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
               *ngIf="section.items && expandedSections[i]"
               [@slideDown]>
             <li *ngFor="let item of section.items" class="menu-item">
-              <a [routerLink]="item.routerLink" class="menu-link" [class.disabled]="item.disabled">
+              <a [routerLink]="item.routerLink" 
+                 class="menu-link" 
+                 [class.disabled]="item.disabled"
+                 routerLinkActive="active-route"
+                 [routerLinkActiveOptions]="{exact: false}">
                 <i *ngIf="item.icon" [class]="item.icon" class="menu-icon"></i>
                 <span class="menu-label">{{ item.label }}</span>
               </a>
@@ -119,12 +123,39 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       transition: all 0.3s ease;
       font-size: 0.9rem;
       border-left: 3px solid transparent;
+      position: relative;
     }
 
     .menu-link:hover:not(.disabled) {
       color: #fff;
       border-left: 3px solid rgba(255, 255, 255, 0.5);
       padding-left: 1.4rem;
+    }
+
+    /* Indicador de página activa */
+    .menu-link.active-route {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+      color: #fff !important;
+      border-left: 4px solid #fff;
+      padding-left: 1.3rem;
+      font-weight: 600;
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-link.active-route::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 100%);
+      border-radius: 2px 0 0 2px;
+    }
+
+    .menu-link.active-route .menu-icon {
+      opacity: 1;
+      color: #fff;
     }
 
     .menu-link.disabled {

@@ -23,7 +23,7 @@ function createOrganizedSections(allForms: BackendSubMenuItem[]): MenuItem[] {
   const sections: MenuItem[] = [];
   const usedFormIds: number[] = []; // Para evitar duplicados
   
-  // 1. GESTIÓN DE CONTENIDO - Solo creación y tipos específicos de multas (sin notificaciones)
+  // 1. GESTIÓN DE CONTENIDO - Creación de multas, tipos e identificación ciudadana
   const contentForms = allForms.filter(form => {
     if (usedFormIds.includes(form.id)) return false;
     
@@ -31,7 +31,10 @@ function createOrganizedSections(allForms: BackendSubMenuItem[]): MenuItem[] {
     const isContentForm = (name.includes('formulario') && 
                           (name.includes('creacion') || name.includes('tipo')) &&
                           name.includes('multa') && !name.includes('notificacion')) ||
-                         (name.includes('multa') && !name.includes('municipio') && !name.includes('formulario') && !name.includes('notificacion'));
+                         (name.includes('multa') && !name.includes('municipio') && !name.includes('formulario') && !name.includes('notificacion')) ||
+                         name.includes('inicio') ||
+                         name.includes('identificacion') ||
+                         name.includes('identificación');
     
     if (isContentForm) {
       usedFormIds.push(form.id);
@@ -156,16 +159,11 @@ function createOrganizedSections(allForms: BackendSubMenuItem[]): MenuItem[] {
     });
   }
   
-  // 6. OTROS - Para elementos que no encajen en las categorías anteriores
+  // Verificar elementos no categorizados (solo para debug, no se agregan al menú)
   const uncategorizedForms = allForms.filter(form => !usedFormIds.includes(form.id));
   
   if (uncategorizedForms.length > 0) {
-    console.log('⚠️ Elementos no categorizados:', uncategorizedForms);
-    sections.push({
-      label: 'Otros',
-      icon: 'pi pi-fw pi-ellipsis-h',
-      items: uncategorizedForms.map(form => mapFormToMenuItem(form))
-    });
+    console.log('⚠️ Elementos no categorizados (no se mostrarán):', uncategorizedForms);
   }
   
   console.log('✅ Secciones organizadas:', sections);
@@ -176,17 +174,22 @@ function createOrganizedSections(allForms: BackendSubMenuItem[]): MenuItem[] {
 // Función auxiliar para mapear formulario a elemento de menú
 function mapFormToMenuItem(form: BackendSubMenuItem): any {
   let route = form.route;
+  let label = form.name;
   
   // Si el nombre contiene "perfil", forzar la ruta a /perfil
   if (form.name.toLowerCase().includes('perfil')) {
     route = 'perfil';
     console.log(`👤 Ruta de perfil detectada: ${form.name} -> /perfil`);
+  } else if (form.name.toLowerCase().includes('inicio')) {
+    // Cambiar el nombre de "inicio" a "Identificación ciudadana"
+    label = 'Identificación ciudadana';
+    console.log(`🏠 Ruta de inicio detectada: ${form.name} -> /${route} (renombrado a: ${label})`);
   } else {
     console.log(`📝 Mapeando: ${form.name} -> /${route}`);
   }
   
   return {
-    label: form.name,
+    label: label,
     icon: getIconForMenuItem(form.name),
     routerLink: ['/' + route],
     disabled: !form.state,
@@ -241,6 +244,9 @@ function getIconForMenuItem(itemName: string): string {
   // Multas y notificaciones
   if (name.includes('multa')) return 'pi pi-fw pi-exclamation-triangle';
   if (name.includes('notificacion')) return 'pi pi-fw pi-bell';
+  
+  // Identificación e inicio
+  if (name.includes('inicio') || name.includes('identificacion') || name.includes('identificación')) return 'pi pi-fw pi-id-card';
   
   return 'pi pi-fw pi-circle'; // Icono por defecto
 }
