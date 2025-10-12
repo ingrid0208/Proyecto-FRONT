@@ -8,7 +8,8 @@
       "Bash(npm run lint)",
       "Bash(npx ng build:*)",
       "Bash(npx tsc:*)",
-      "Bash(timeout 10 bash -c 'while true; do curl -s http://localhost:4200 > /dev/null && echo \"\"Servidor listo\"\" && break; sleep 1; done')"
+      "Bash(timeout 10 bash -c 'while true; do curl -s http://localhost:4200 > /dev/null && echo \"\"Servidor listo\"\" && break; sleep 1; done')",
+      "Bash(find:*)"
     ],
     "deny": []
   }

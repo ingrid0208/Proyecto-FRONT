@@ -247,23 +247,25 @@
   }
 
   // Toast messages customization
-  .p-toast {
+  ::ng-deep .p-toast {
+    z-index: 10000 !important;
+
     .p-toast-message {
       border-radius: 8px;
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-      
+
       &.p-toast-message-success {
         background: linear-gradient(45deg, var(--green-500), var(--green-400));
       }
-      
+
       &.p-toast-message-error {
         background: linear-gradient(45deg, var(--red-500), var(--red-400));
       }
-      
+
       &.p-toast-message-warn {
         background: linear-gradient(45deg, var(--orange-500), var(--orange-400));
       }
-      
+
       &.p-toast-message-info {
         background: linear-gradient(45deg, var(--green-500), var(--green-400));
       }
