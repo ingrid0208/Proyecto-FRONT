@@ -1,31 +1,33 @@
 <div class="personas-container">
+  <!-- Modal de alerta -->
+  <div *ngIf="showAlert" class="alert-modal-overlay">
+    <div class="alert-modal-content" [ngClass]="alertType">
+      <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
+      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
+      <span class="alert-msg">{{ alertMsg }}</span>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">🗑️</span>
+      <span class="alert-msg">¿Estás seguro de que deseas eliminar esta persona?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
+        <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
   <div class="personas-header">
     <div class="header-title">
       <span class="icon"><i class="material-icons">groups</i></span>
       <span class="title">Personas del Sistema</span>
     </div>
-      <button class="add-btn" (click)="abrirFormulario()">+ Agregar Persona</button>
-    <!-- Modal de alerta -->
-    <div *ngIf="showAlert" class="alert-modal-overlay">
-      <div class="alert-modal-content" [ngClass]="alertType">
-        <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
-        <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
-        <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
-        <span class="alert-msg">{{ alertMsg }}</span>
-      </div>
-    </div>
-
-    <!-- Modal de confirmación de eliminación -->
-    <div *ngIf="showConfirm" class="alert-modal-overlay">
-      <div class="alert-modal-content eliminado">
-        <span class="alert-icon">🗑️</span>
-        <span class="alert-msg">¿Estás seguro de que deseas eliminar esta persona?</span>
-        <div class="modal-actions">
-          <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
-          <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
-        </div>
-      </div>
-    </div>
+    <button class="add-btn" (click)="abrirFormulario()">+ Agregar Persona</button>
   </div>
   <div class="search-bar">
    <input (input)="onSearch($any($event.target).value)" placeholder="Buscar persona..." />

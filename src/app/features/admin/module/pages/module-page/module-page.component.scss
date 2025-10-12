@@ -8,6 +8,114 @@ $medium-gray: #757575;
 $dark-gray: #424242;
 $border-color: #e0e0e0;
 
+// 📌 Alertas modales estandarizadas
+.alert-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.alert-modal-content {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 2rem;
+  min-width: 320px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  animation: modalFadeIn 0.3s ease-out;
+
+  &.bienvenida {
+    border-left: 4px solid #43a047;
+  }
+  &.creado {
+    border-left: 4px solid #43a047;
+  }
+  &.eliminado {
+    border-left: 4px solid #e53935;
+  }
+  &.error {
+    border-left: 4px solid #e53935;
+  }
+}
+
+.alert-icon {
+  font-size: 2rem;
+}
+
+.alert-msg {
+  font-size: 1rem;
+  color: #333;
+  text-align: center;
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.blue-btn {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.2);
+
+  &:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+  }
+}
+
+.red-btn {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
+
+  &:hover {
+    background: #1b5e20;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    transform: translateY(-20px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
 .personas-container {
   padding: 2rem;
   max-width: 1200px;
@@ -158,39 +266,6 @@ $border-color: #e0e0e0;
     }
   }
 
-  .alert {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    color: white;
-    font-weight: 500;
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    animation: slideIn 0.3s ease-out;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-
-    &.bienvenida, &.creado {
-      background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
-    }
-
-    &.error {
-      background: linear-gradient(135deg, $danger-color, darken($danger-color, 10%));
-    }
-
-    &.eliminado {
-      background: linear-gradient(135deg, $warning-color, darken($warning-color, 10%));
-      color: $dark-gray;
-    }
-
-    i {
-      font-size: 1.2rem;
-    }
-  }
 
   .modal-overlay {
     position: fixed;

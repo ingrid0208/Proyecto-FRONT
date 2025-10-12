@@ -24,6 +24,13 @@ export class RolUserPageComponent implements OnInit {
   rolUserEditando: RolUser | null = null;
   rolUserOriginal: RolUser | null = null;
 
+  // Propiedades para alertas estandarizadas
+  showAlert = false;
+  alertType: 'bienvenida' | 'creado' | 'eliminado' | 'error' = 'creado';
+  alertMsg = '';
+  showConfirm = false;
+  rolUserAEliminar: RolUser | null = null;
+
   constructor(
     private rolUserService: RolUserService,
     private serviceGeneric: ServiceGenericService,
@@ -84,29 +91,21 @@ export class RolUserPageComponent implements OnInit {
   const { userId, rolId } = this.rolUserForm.value;
 
   if (userId <= 0 || rolId <= 0) {
-    this.errorMsg = 'Debes seleccionar un usuario y un rol válidos.';
+    this.mostrarAlerta('error', 'Debes seleccionar un usuario y un rol válidos.');
     return;
   }
 
   this.loading = true;
-  this.errorMsg = '';
-  this.successMsg = '';
 
   this.rolUserService.genericService.create<RolUser>(this.rolUserService.endpoint, this.rolUserForm.value).subscribe({
     next: (nuevoRolUser: RolUser) => {
-      this.successMsg = 'Rol-Usuario creado correctamente';
-
-      // Actualizamos la lista de roles-usuarios
+      this.mostrarAlerta('creado', 'Rol-Usuario creado correctamente');
       this.obtenerRolUsers();
-
-      // Cerramos el formulario
       this.cerrarFormulario();
-
-      // Limpiamos el loading
       this.loading = false;
     },
     error: (error: any) => {
-      this.errorMsg = error.error?.message || 'Error al crear Rol-Usuario';
+      this.mostrarAlerta('error', error.error?.message || 'Error al crear Rol-Usuario');
       this.loading = false;
     }
   });
@@ -142,18 +141,16 @@ obtenerRolUsers() {
     const rolIdNuevo = this.rolUserForm.value.rolId;
 
     if (userIdNuevo === this.rolUserOriginal.userId && rolIdNuevo === this.rolUserOriginal.rolId) {
-      this.errorMsg = 'Debe realizar al menos un cambio antes de actualizar.';
+      this.mostrarAlerta('error', 'Debe realizar al menos un cambio antes de actualizar.');
       return;
     }
 
     if (userIdNuevo <= 0 || rolIdNuevo <= 0) {
-      this.errorMsg = 'Debes seleccionar un usuario y un rol válidos.';
+      this.mostrarAlerta('error', 'Debes seleccionar un usuario y un rol válidos.');
       return;
     }
 
     this.loading = true;
-    this.errorMsg = '';
-    this.successMsg = '';
 
     const rolUserData = { ...this.rolUserEditando, userId: userIdNuevo, rolId: rolIdNuevo };
 
@@ -163,28 +160,52 @@ obtenerRolUsers() {
       rolUserData
     ).subscribe({
       next: (rolUserActualizado: RolUser) => {
-        this.successMsg = 'Rol-Usuario actualizado correctamente';
+        this.mostrarAlerta('creado', 'Rol-Usuario actualizado correctamente');
         this.obtenerRolUsers();
         this.cerrarFormulario();
         this.loading = false;
       },
       error: (error: any) => {
-        this.errorMsg = error.error?.message || 'Error al actualizar Rol-Usuario';
+        this.mostrarAlerta('error', error.error?.message || 'Error al actualizar Rol-Usuario');
         this.loading = false;
       }
     });
   }
 
-  eliminarRolUser(rolUser: RolUser) {
-    if (!rolUser.id) return;
-    this.rolUserService.genericService.delete(this.rolUserService.endpoint, rolUser.id).subscribe({
+  pedirConfirmacionEliminar(rolUser: RolUser) {
+    this.rolUserAEliminar = rolUser;
+    this.showConfirm = true;
+  }
+
+  cancelarEliminar() {
+    this.showConfirm = false;
+    this.rolUserAEliminar = null;
+  }
+
+  confirmarEliminar() {
+    if (!this.rolUserAEliminar?.id) return;
+
+    this.rolUserService.genericService.delete(this.rolUserService.endpoint, this.rolUserAEliminar.id).subscribe({
       next: () => {
-        this.successMsg = 'Rol-Usuario eliminado correctamente';
+        this.mostrarAlerta('eliminado', 'Rol-Usuario eliminado correctamente');
         this.obtenerRolUsers();
+        this.showConfirm = false;
+        this.rolUserAEliminar = null;
       },
       error: (error: any) => {
-        this.errorMsg = error.error?.message || 'Error al eliminar Rol-Usuario';
+        this.mostrarAlerta('error', error.error?.message || 'Error al eliminar Rol-Usuario');
+        this.showConfirm = false;
+        this.rolUserAEliminar = null;
       }
     });
+  }
+
+  mostrarAlerta(tipo: 'bienvenida' | 'creado' | 'eliminado' | 'error', mensaje: string) {
+    this.alertType = tipo;
+    this.alertMsg = mensaje;
+    this.showAlert = true;
+    setTimeout(() => {
+      this.showAlert = false;
+    }, 3000);
   }
 }

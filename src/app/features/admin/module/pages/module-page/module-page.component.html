@@ -1,4 +1,27 @@
 <div class="personas-container">
+  <!-- Modal de alerta -->
+  <div *ngIf="showAlert" class="alert-modal-overlay">
+    <div class="alert-modal-content" [ngClass]="alertType">
+      <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
+      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
+      <span class="alert-msg">{{ alertMsg }}</span>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">🗑️</span>
+      <span class="alert-msg">¿Estás seguro de que deseas eliminar este módulo?</span>
+      <div class="modal-actions">
+        <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
+        <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
   <h1 class="page-title">Gestión de Módulos</h1>
 
   <!-- Botón para agregar nuevo módulo -->
@@ -35,16 +58,6 @@
     <i class="pi pi-info-circle"></i>
     <p>No hay módulos registrados</p>
     <small>Haga clic en "Agregar Módulo" para comenzar</small>
-  </div>
-
-  <!-- Alerta -->
-  <div *ngIf="showAlert" class="alert" [ngClass]="alertType">
-    <i class="pi" [ngClass]="{
-      'pi-check-circle': alertType === 'creado' || alertType === 'bienvenida',
-      'pi-exclamation-triangle': alertType === 'error',
-      'pi-trash': alertType === 'eliminado'
-    }"></i>
-    <span>{{ alertMsg }}</span>
   </div>
 
   <!-- Paginación -->
@@ -116,27 +129,15 @@
   </div>
 
   <!-- Modal de confirmación para actualizar -->
-  <div *ngIf="showUpdateConfirm && moduleAActualizar" class="modal-overlay">
-    <div class="modal-content confirm-modal">
-      <h2>Confirmar Actualización</h2>
-      <p>¿Está seguro de que desea actualizar el módulo <strong>"{{ moduleAActualizar.name }}"</strong>?</p>
+  <div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+    <div class="alert-modal-content eliminado">
+      <span class="alert-icon">✏️</span>
+      <span class="alert-msg">¿Está seguro que desea actualizar el módulo "{{ moduleAActualizar?.name }}"?</span>
       <div class="modal-actions">
-        <button type="button" (click)="cancelarActualizacion()" class="btn-secundario">Cancelar</button>
-        <button type="button" (click)="abrirModalActualizar()" class="btn-primario">Sí, Editar</button>
+        <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+        <button class="blue-btn" (click)="abrirModalActualizar()">Sí, Editar</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal de confirmación para eliminar -->
-  <div *ngIf="showConfirm && moduleAEliminar" class="modal-overlay">
-    <div class="modal-content confirm-modal">
-      <h2>Confirmar Eliminación</h2>
-      <p>¿Está seguro de que desea eliminar el módulo <strong>"{{ moduleAEliminar.name }}"</strong>?</p>
-      <p class="warning-text">Esta acción no se puede deshacer.</p>
-      <div class="modal-actions">
-        <button type="button" (click)="cancelarEliminar()" class="btn-secundario">Cancelar</button>
-        <button type="button" (click)="confirmarEliminar()" class="btn-peligro">Eliminar</button>
-      </div>
-    </div>
-  </div>
 </div> <!-- cierre del container -->
