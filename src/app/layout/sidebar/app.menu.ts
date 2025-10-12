@@ -60,13 +60,6 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 
     .menu-section {
       margin-bottom: 0.5rem;
-      border-radius: 8px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .menu-section.expanded {
-      background: rgba(255, 255, 255, 0.08);
     }
 
     .section-header {
@@ -81,11 +74,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       letter-spacing: 0.5px;
       cursor: pointer;
       transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.1);
     }
 
     .section-header:hover {
-      background: rgba(255, 255, 255, 0.15);
       color: #fff;
     }
 
@@ -112,7 +103,6 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
       list-style: none;
       padding: 0.5rem 0;
       margin: 0;
-      background: rgba(0, 0, 0, 0.1);
     }
 
     .menu-item {
@@ -132,7 +122,6 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     }
 
     .menu-link:hover:not(.disabled) {
-      background-color: rgba(255, 255, 255, 0.1);
       color: #fff;
       border-left: 3px solid rgba(255, 255, 255, 0.5);
       padding-left: 1.4rem;
@@ -155,16 +144,18 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 
     /* Estilos para el logo */
     .menu-logo {
-      text-align: center;
-      padding: 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .menu-logo img {
-      max-width: 120px;
+      max-width: 180px;
+      width: 100%;
       height: auto;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
     }
 
     .menu-logo img:hover {

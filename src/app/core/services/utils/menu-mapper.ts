@@ -4,29 +4,194 @@ import { BackendMenuItem, BackendSubMenuItem } from '../../../shared/components/
 export function mapBackendMenuToPrimeNG(menu: BackendMenuItem[]): MenuItem[] {
   console.log('🔍 Menu del backend:', menu);
   
-  return menu.map((section: BackendMenuItem) => ({
-    label: section.name,
-    icon: section.icon || getIconForSection(section.name),
-    items: section.forms.map((form: BackendSubMenuItem) => {
-      // Manejo especial para el perfil
-      let route = form.route;
+  // Recopilar todos los formularios de todas las secciones
+  const allForms: BackendSubMenuItem[] = [];
+  menu.forEach(section => {
+    allForms.push(...section.forms);
+  });
+  
+  console.log('📋 Todos los formularios:', allForms);
+  
+  // Crear secciones organizadas lógicamente
+  const organizedSections = createOrganizedSections(allForms);
+  
+  return organizedSections;
+}
 
-      // Si el nombre contiene "perfil", forzar la ruta a /perfil
-      if (form.name.toLowerCase().includes('perfil')) {
-        route = 'perfil';
-        console.log(`👤 Ruta de perfil detectada: ${form.name} -> /perfil`);
-      } else {
-        console.log(`📝 Mapeando: ${form.name} -> /${route}`);
-      }
+// Función para crear secciones organizadas
+function createOrganizedSections(allForms: BackendSubMenuItem[]): MenuItem[] {
+  const sections: MenuItem[] = [];
+  const usedFormIds: number[] = []; // Para evitar duplicados
+  
+  // 1. GESTIÓN DE CONTENIDO - Solo creación y tipos específicos de multas (sin notificaciones)
+  const contentForms = allForms.filter(form => {
+    if (usedFormIds.includes(form.id)) return false;
+    
+    const name = form.name.toLowerCase();
+    const isContentForm = (name.includes('formulario') && 
+                          (name.includes('creacion') || name.includes('tipo')) &&
+                          name.includes('multa') && !name.includes('notificacion')) ||
+                         (name.includes('multa') && !name.includes('municipio') && !name.includes('formulario') && !name.includes('notificacion'));
+    
+    if (isContentForm) {
+      usedFormIds.push(form.id);
+      return true;
+    }
+    return false;
+  });
+  
+  if (contentForms.length > 0) {
+    sections.push({
+      label: 'Gestión de Contenido',
+      icon: 'pi pi-fw pi-folder-open',
+      items: contentForms.map(form => mapFormToMenuItem(form))
+    });
+  }
+  
+  // 2. NOTIFICACIONES - Gestión de notificaciones y comunicaciones
+  const notificationForms = allForms.filter(form => {
+    if (usedFormIds.includes(form.id)) return false;
+    
+    const name = form.name.toLowerCase();
+    const isNotificationForm = name.includes('notificacion') || 
+                              name.includes('notification') ||
+                              (name.includes('formulario') && name.includes('notificacion'));
+    
+    if (isNotificationForm) {
+      usedFormIds.push(form.id);
+      return true;
+    }
+    return false;
+  });
+  
+  if (notificationForms.length > 0) {
+    sections.push({
+      label: 'Notificaciones',
+      icon: 'pi pi-fw pi-bell',
+      items: notificationForms.map(form => mapFormToMenuItem(form))
+    });
+  }
+  
+  // 3. ADMINISTRACIÓN AVANZADA - Formularios, módulos, usuarios, roles, permisos
+  const adminForms = allForms.filter(form => {
+    if (usedFormIds.includes(form.id)) return false;
+    
+    const name = form.name.toLowerCase();
+    const isAdminForm = name.includes('form modules') ||
+                       name.includes('formularios') ||
+                       (name.includes('formulario') && !name.includes('multa')) ||
+                       name.includes('módulo') ||
+                       name.includes('modulo') ||
+                       name.includes('persona') ||
+                       name.includes('permiso') ||
+                       name.includes('rol') ||
+                       (name.includes('usuario') && !name.includes('tipo'));
+    
+    if (isAdminForm) {
+      usedFormIds.push(form.id);
+      return true;
+    }
+    return false;
+  });
+  
+  if (adminForms.length > 0) {
+    sections.push({
+      label: 'Administración Avanzada',
+      icon: 'pi pi-fw pi-cog',
+      items: adminForms.map(form => mapFormToMenuItem(form))
+    });
+  }
+  
+  // 4. PARÁMETROS DEL SISTEMA - Configuraciones, municipios y parámetros
+  const parameterForms = allForms.filter(form => {
+    if (usedFormIds.includes(form.id)) return false;
+    
+    const name = form.name.toLowerCase();
+    const isParameterForm = name.includes('departamento') ||
+                           name.includes('department') ||
+                           name.includes('municipio') ||
+                           name.includes('municipality') ||
+                           name.includes('documento') ||
+                           name.includes('document') ||
+                           name.includes('tipo de documento') ||
+                           name.includes('frecuencia') ||
+                           name.includes('frequency') ||
+                           name.includes('parametro') ||
+                           name.includes('parameter');
+    
+    if (isParameterForm) {
+      usedFormIds.push(form.id);
+      return true;
+    }
+    return false;
+  });
+  
+  if (parameterForms.length > 0) {
+    sections.push({
+      label: 'Parámetros del Sistema',
+      icon: 'pi pi-fw pi-wrench',
+      items: parameterForms.map(form => mapFormToMenuItem(form))
+    });
+  }
+  
+  // 5. MI PERFIL - Configuraciones personales
+  const profileForms = allForms.filter(form => {
+    if (usedFormIds.includes(form.id)) return false;
+    
+    const name = form.name.toLowerCase();
+    const isProfileForm = name.includes('perfil') || name.includes('profile');
+    
+    if (isProfileForm) {
+      usedFormIds.push(form.id);
+      return true;
+    }
+    return false;
+  });
+  
+  if (profileForms.length > 0) {
+    sections.push({
+      label: 'Mi Perfil',
+      icon: 'pi pi-fw pi-user',
+      items: profileForms.map(form => mapFormToMenuItem(form))
+    });
+  }
+  
+  // 6. OTROS - Para elementos que no encajen en las categorías anteriores
+  const uncategorizedForms = allForms.filter(form => !usedFormIds.includes(form.id));
+  
+  if (uncategorizedForms.length > 0) {
+    console.log('⚠️ Elementos no categorizados:', uncategorizedForms);
+    sections.push({
+      label: 'Otros',
+      icon: 'pi pi-fw pi-ellipsis-h',
+      items: uncategorizedForms.map(form => mapFormToMenuItem(form))
+    });
+  }
+  
+  console.log('✅ Secciones organizadas:', sections);
+  console.log('🔢 Total de formularios procesados:', usedFormIds.length, 'de', allForms.length);
+  return sections;
+}
 
-      return {
-        label: form.name,
-        icon: getIconForMenuItem(form.name),
-        routerLink: ['/' + route],
-        disabled: !form.state
-      };
-    })
-  }));
+// Función auxiliar para mapear formulario a elemento de menú
+function mapFormToMenuItem(form: BackendSubMenuItem): any {
+  let route = form.route;
+  
+  // Si el nombre contiene "perfil", forzar la ruta a /perfil
+  if (form.name.toLowerCase().includes('perfil')) {
+    route = 'perfil';
+    console.log(`👤 Ruta de perfil detectada: ${form.name} -> /perfil`);
+  } else {
+    console.log(`📝 Mapeando: ${form.name} -> /${route}`);
+  }
+  
+  return {
+    label: form.name,
+    icon: getIconForMenuItem(form.name),
+    routerLink: ['/' + route],
+    disabled: !form.state,
+    originalForm: form // Guardamos referencia para evitar duplicados
+  };
 }
 
 // Función para determinar el icono de la sección basado en el nombre
@@ -46,26 +211,36 @@ function getIconForSection(sectionName: string): string {
 function getIconForMenuItem(itemName: string): string {
   const name = itemName.toLowerCase();
   
-  // Perfil
+  // Perfil y usuario
   if (name.includes('perfil')) return 'pi pi-fw pi-user';
+  if (name.includes('usuario') && name.includes('rol')) return 'pi pi-fw pi-users';
+  if (name.includes('usuario')) return 'pi pi-fw pi-user-plus';
   
-  // Formularios y tipos
-  if (name.includes('formulario') && name.includes('creacion')) return 'pi pi-fw pi-plus-circle';
-  if (name.includes('formulario') && name.includes('tipo')) return 'pi pi-fw pi-tags';
-  if (name.includes('formulario') && name.includes('notificacion')) return 'pi pi-fw pi-bell';
+  // Formularios específicos
+  if (name.includes('formulario')) {
+    if (name.includes('creacion')) return 'pi pi-fw pi-plus-circle';
+    if (name.includes('tipo')) return 'pi pi-fw pi-tags';
+    if (name.includes('notificacion')) return 'pi pi-fw pi-bell';
+    return 'pi pi-fw pi-file-edit';
+  }
   
   // Módulos y administración
-  if (name.includes('formulario') && !name.includes('tipo')) return 'pi pi-fw pi-file-edit';
-  if (name.includes('form modules')) return 'pi pi-fw pi-clone';
-  if (name.includes('módulo') || name.includes('modulos')) return 'pi pi-fw pi-box';
+  if (name.includes('form modules') || name.includes('formularios')) return 'pi pi-fw pi-clone';
+  if (name.includes('módulo') || name.includes('modulo')) return 'pi pi-fw pi-box';
   if (name.includes('persona')) return 'pi pi-fw pi-users';
   if (name.includes('permiso')) return 'pi pi-fw pi-key';
   if (name.includes('rol')) return 'pi pi-fw pi-id-card';
-  if (name.includes('usuario')) return 'pi pi-fw pi-user-plus';
   
-  // Parámetros
+  // Parámetros y configuración
   if (name.includes('departamento')) return 'pi pi-fw pi-map';
+  if (name.includes('municipio')) return 'pi pi-fw pi-building';
   if (name.includes('documento')) return 'pi pi-fw pi-file-o';
+  if (name.includes('tipo de documento')) return 'pi pi-fw pi-file';
+  if (name.includes('frecuencia')) return 'pi pi-fw pi-clock';
+  
+  // Multas y notificaciones
+  if (name.includes('multa')) return 'pi pi-fw pi-exclamation-triangle';
+  if (name.includes('notificacion')) return 'pi pi-fw pi-bell';
   
   return 'pi pi-fw pi-circle'; // Icono por defecto
 }
