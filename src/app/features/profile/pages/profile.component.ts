@@ -1,14 +1,11 @@
 // ===============================
 import { Component, OnInit, OnDestroy, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+// import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms'; // Ya no necesario
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // PrimeNG
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 
 // Services
@@ -27,12 +24,8 @@ import { ProfileDto, ProfileUpdateDto } from '../../../shared/models/profile/pro
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    InputTextModule,
-    ButtonModule,
     ToastModule
   ],
-  providers: [MessageService],
   templateUrl: './profile.html',
   styleUrls: ['./profile.scss']
 })
@@ -44,17 +37,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   public layoutService = inject(LayoutService);
   private router = inject(Router);
-  private fb = inject(FormBuilder);
-  private messageService = inject(MessageService);
 
   // Observables
   private destroy$ = new Subject<void>();
 
   // Datos
   profile: ProfileDto | null = null;
-  profileForm!: FormGroup;
   isLoading = false;
-  isSaving = false;
 
 
 
@@ -64,7 +53,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     console.log('🎯 ProfileComponent cargado exitosamente!');
-    this.initForm();
     this.loadProfile();
   }
 
@@ -77,15 +65,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
   // 📌 Inicialización
   // ===============================
 
-  private initForm(): void {
-    this.profileForm = this.fb.group({
-      firstName: ['mobina', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      lastName: ['Mir', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['912000000', [Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
-      city: ['software']
-    });
-  }
+  // Método eliminado - ya no necesitamos formulario
+  // private initForm(): void { ... }
 
   private loadProfile(): void {
     this.isLoading = true;
@@ -95,7 +76,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         next: (profile) => {
           console.log('✅ Perfil cargado exitosamente:', profile);
           this.profile = profile;
-          this.populateForm(profile);
           this.isLoading = false;
         },
         error: (error) => {
@@ -112,72 +92,27 @@ export class ProfileComponent implements OnInit, OnDestroy {
             address: 'Dirección de prueba',
             dateOfBirth: '1990-01-01',
             gender: 'male',
-            profileImage: 'https://cdn-icons-png.flaticon.com/512/219/219983.png'
+            profileImage: 'https://cdn-icons-png.flaticon.com/512/219/219983.png',
+            documentTypeId: 1,
+            documentNumber: '1234567890'
           };
 
           this.profile = mockProfile;
-          this.populateForm(mockProfile);
-          this.showError('No se pudo cargar el perfil del servidor. Mostrando datos de ejemplo.');
+          console.warn('No se pudo cargar el perfil del servidor. Mostrando datos de ejemplo.');
           this.isLoading = false;
         }
       });
   }
 
-  private populateForm(profile: ProfileDto): void {
-    this.profileForm.patchValue({
-      firstName: profile.firstName || 'mobina',
-      lastName: profile.lastName || 'Mir',
-      email: profile.email || '',
-      phoneNumber: profile.phoneNumber || '912000000',
-      city: 'software'
-    });
-
-    // Ya no necesitamos manejar la imagen de perfil
-    // if (profile.profileImage) {
-    //   this.previewImageUrl = profile.profileImage;
-    // }
-  }
+  // Método eliminado - ya no necesitamos llenar formulario
+  // private populateForm(profile: ProfileDto): void { ... }
 
   // ===============================
-  // 📌 Manejo de formulario
+  // 📌 Métodos de formulario eliminados - Solo lectura
   // ===============================
 
-  onSubmit(): void {
-    if (this.profileForm.valid && !this.isSaving) {
-      this.isSaving = true;
-
-      const updateData: ProfileUpdateDto = {
-        firstName: this.profileForm.get('firstName')?.value,
-        lastName: this.profileForm.get('lastName')?.value,
-        phoneNumber: this.profileForm.get('phoneNumber')?.value
-      };
-
-      this.profileService.updateMyProfile(updateData)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (updatedProfile) => {
-            this.profile = updatedProfile;
-            this.showSuccess('Perfil actualizado correctamente');
-            this.isSaving = false;
-          },
-          error: (error) => {
-            console.error('Error al actualizar perfil:', error);
-            this.showError('Error al actualizar el perfil');
-            this.isSaving = false;
-          }
-        });
-    } else {
-      this.showError('Por favor completa correctamente todos los campos requeridos');
-    }
-  }
-
-  onDiscard(): void {
-    if (this.profile) {
-      this.populateForm(this.profile);
-      // this.selectedImageFile = null; // Ya no necesario
-      this.showInfo('Cambios descartados');
-    }
-  }
+  // onSubmit(): void { ... } - Eliminado
+  // onDiscard(): void { ... } - Eliminado
 
   // ===============================
   // 📌 Manejo de imagen - YA NO NECESARIO
@@ -208,7 +143,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   openSettings(): void {
-    this.showInfo('Funcionalidad de configuración próximamente');
+    console.log('Funcionalidad de configuración próximamente');
     this.overlayPanel?.hide();
   }
 
@@ -253,34 +188,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return 'U';
   }
 
+  getDocumentType(): string {
+    if (this.profile?.documentTypeId) {
+      // Mapeo de tipos de documento comunes
+      const documentTypes: { [key: number]: string } = {
+        1: 'Cédula de Ciudadanía',
+        2: 'Cédula de Extranjería', 
+        3: 'Pasaporte',
+        4: 'Tarjeta de Identidad',
+        5: 'NIT',
+        6: 'RUT'
+      };
+      return documentTypes[this.profile.documentTypeId] || `Tipo ${this.profile.documentTypeId}`;
+    }
+    return 'No disponible';
+  }
+
   // ===============================
-  // 📌 Mensajes
+  // 📌 Métodos de mensajes eliminados
   // ===============================
 
-  private showSuccess(message: string): void {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: message,
-      life: 3000
-    });
-  }
-
-  private showError(message: string): void {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: message,
-      life: 3000
-    });
-  }
-
-  private showInfo(message: string): void {
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Información',
-      detail: message,
-      life: 3000
-    });
-  }
+  // showSuccess, showError, showInfo eliminados - ya no necesarios
 }
