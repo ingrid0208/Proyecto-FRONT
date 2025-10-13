@@ -1,28 +1,4 @@
 <div class="personas-container">
-  <!-- Modal de alerta -->
-  <!-- Modal de alerta -->
-  <div *ngIf="showAlert" class="alert-modal-overlay">
-    <div class="alert-modal-content" [ngClass]="alertType">
-      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
-      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
-      <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
-      <span class="alert-icon" *ngIf="alertType === 'info'">ℹ️</span>
-      <span class="alert-msg">{{ alertMsg }}</span>
-    </div>
-  </div>
-
-  <!-- Modal de confirmación de eliminación -->
-  <div *ngIf="showConfirm" class="alert-modal-overlay">
-    <div class="alert-modal-content eliminado">
-      <span class="alert-icon">🗑️</span>
-      <span class="alert-msg">¿Estás seguro de que deseas eliminar este formulario?</span>
-      <div class="modal-actions">
-        <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
-        <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
-      </div>
-    </div>
-  </div>
-
   <h1 class="page-title">Gestión de Formularios</h1>
 
   <!-- Botón para agregar nuevo formulario -->
@@ -87,7 +63,30 @@
     [itemsPerPage]="paginationConfig.itemsPerPage"
     (pageChange)="onPageChange($event)">
   </app-pagination>
+</div>
 
+<!-- Modal de alerta -->
+<div *ngIf="showAlert" class="alert-modal-overlay">
+  <div class="alert-modal-content" [ngClass]="alertType">
+    <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+    <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+    <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
+    <span class="alert-icon" *ngIf="alertType === 'info'">ℹ️</span>
+    <span class="alert-msg">{{ alertMsg }}</span>
+  </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div *ngIf="showConfirm" class="alert-modal-overlay">
+  <div class="alert-modal-content eliminado">
+    <span class="alert-icon">🗑️</span>
+    <span class="alert-msg">¿Estás seguro de que deseas eliminar este formulario?</span>
+    <div class="modal-actions">
+      <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
+      <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+  </div>
+</div>
 
 <!-- Modal para crear nuevo formulario -->
 <div *ngIf="showModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
