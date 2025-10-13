@@ -64,7 +64,7 @@ export class RolesPageComponent implements OnInit {
 
   showAlert = false;
   alertMsg = '';
-  alertType: string = 'bienvenida';
+  alertType: string = 'creado';
   showConfirm = false;
   rolAEliminar: Rol | null = null;
   

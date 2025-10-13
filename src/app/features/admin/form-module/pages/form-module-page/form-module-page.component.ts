@@ -47,7 +47,7 @@ export class FormModulePageComponent implements OnInit {
   // Modales de alerta y confirmación
   showAlert: boolean = false;
   alertMsg: string = '';
-  alertType: string = 'bienvenida';
+  alertType: string = 'creado';
   showConfirm: boolean = false;
   formModuleAEliminar: number | null = null;
 

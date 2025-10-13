@@ -49,7 +49,7 @@ export class PersonasPageComponent implements OnInit {
   // Modales de alerta y confirmación
   showAlert = false;
   alertMsg = '';
-  alertType: string = 'bienvenida';
+  alertType: string = 'creado';
   showConfirm = false;
   personaAEliminar: PersonaDto | null = null;
 

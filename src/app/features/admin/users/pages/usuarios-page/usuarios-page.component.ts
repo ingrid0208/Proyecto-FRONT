@@ -86,7 +86,7 @@ export class UsuariosPageComponent implements OnInit {
 
   showAlert = false;
   alertMsg = '';
-  alertType: string = 'bienvenida';
+  alertType: string = 'creado';
   showConfirm = false;
   usuarioAEliminar: Usuario | null = null;
 

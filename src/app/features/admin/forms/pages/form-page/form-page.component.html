@@ -1,13 +1,6 @@
 <div class="personas-container">
   <!-- Modal de alerta -->
-  <div *ngIf="showAlert" class="alert-modal-overlay">
-    <div class="alert-modal-content" [ngClass]="alertType">
-      <span class="alert-icon" *ngIf="alertType === 'bienvenida'">👋</span>
-      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
-      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
-      <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
-      <span class="alert-msg">{{ alertMsg }}</span>
-    </div>
+  
   </div>
 
   <!-- Modal de confirmación de eliminación -->
@@ -68,7 +61,7 @@
     [itemsPerPage]="paginationConfig.itemsPerPage"
     (pageChange)="onPageChange($event)">
   </app-pagination>
-</div> <!-- 👈 cierre del container -->
+
 
 <!-- Modal para crear nuevo formulario -->
 <div *ngIf="showModal" class="modal-overlay">

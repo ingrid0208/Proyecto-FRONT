@@ -54,7 +54,7 @@ export class FormPageComponent implements OnInit {
 
   showAlert = false;
   alertMsg = '';
-  alertType: string = 'bienvenida';
+  alertType: string = 'creado';
   showConfirm = false;
   formAEliminar: Form | null = null;
 

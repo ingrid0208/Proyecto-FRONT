@@ -46,9 +46,6 @@ import { ServiceGenericService } from '../../../../../core/services/utils/generi
 export class RolFormPermissionComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
-  // Modal de bienvenida
-  showWelcomeModal = false;
-
   // Data
   rolFormPermissions: RolFormPermission[] = [];
   displayData: RolFormPermissionDisplay[] = [];
@@ -391,10 +388,5 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
       return 'Este campo es requerido';
     }
     return '';
-  }
-
-  // Método para cerrar el modal de bienvenida
-  closeWelcomeModal(): void {
-    this.showWelcomeModal = false;
   }
 }

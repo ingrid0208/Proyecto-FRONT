@@ -51,7 +51,7 @@ export class ModulePageComponent implements OnInit {
 
   showAlert = false;
   alertMsg = '';
-  alertType: string = 'bienvenida';
+  alertType: string = 'creado';
   showConfirm = false;
   moduleAEliminar: Module | null = null;
 
