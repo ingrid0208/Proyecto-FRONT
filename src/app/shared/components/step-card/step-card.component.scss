@@ -20,14 +20,13 @@
   font-weight: 800;
 }
 
-.howto__header h2,
-.howto__header .howto__subtitle {
-  color: white; /* solo título y subtítulo en blanco */
+.howto__header h2 {
+  color: #2c3e50;
 }
 .howto__subtitle {
   margin: 0;
   font-size: clamp(14px, 2vw, 18px);
-  color: #415a4e;
+  color: #495057;
 }
 
 /* grilla */
@@ -41,7 +40,7 @@
 
 /* ======= TARJETA ======= */
 .card {
-  --card-h: 300px;        
+  --card-h: 300px;
   height: var(--card-h);
   padding: 40px 32px;
 
@@ -50,12 +49,17 @@
   align-items: center;
   justify-content: center;  /* contenido centrado verticalmente */
 
-  /* NO tocamos background/border/shadow para respetar tu look actual */
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .1);
+  border: 1px solid rgba(0, 0, 0, .05);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 32px rgba(0, 0, 0, .10);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, .15);
 }
 
 /* número gigante de fondo, arriba a la derecha */
@@ -66,11 +70,12 @@
   right: 24px;
   font-weight: 800;
   font-size: clamp(56px, 8vw, 92px);
+  color: rgba(76, 175, 80, 0.08);
   pointer-events: none;
 }
 
 
-/* icono dentro de una “pastilla” */
+/* icono dentro de una "pastilla" */
 .card__icon {
   width: 56px;
   height: 56px;
@@ -78,24 +83,25 @@
   display: grid;
   place-items: center;
   border-radius: 12px;
-
+  background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%);
 }
-.material-symbols-outlined { font-size: 30px; color: #0f6d4e; }
+.material-symbols-outlined { font-size: 30px; color: #ffffff; }
 
 /* título */
 .card__title {
   font-size: clamp(18px, 2.2vw, 22px);
   font-weight: 800;
   margin: 8px 0 12px;
-  color: #0f6d4e;
+  color: #2c3e50;
 }
 
 /* descripción – clamp de líneas para que no rompa el alto */
 .card__desc {
   margin: 0;
-  color: #52635c;
+  color: #495057;
   line-height: 1.6;
   max-width: 36ch;
+  font-size: clamp(14px, 1.8vw, 16px);
 
   display: -webkit-box;
   -webkit-line-clamp: 3;       /* máximo 3 líneas */

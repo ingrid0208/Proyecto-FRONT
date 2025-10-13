@@ -7,8 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { Identificacion } from '../identificacion/identificacion.component';
 import { StepCardComponent } from '../../../../shared/components/step-card/step-card.component';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
-import { StepCard } from '../../../../shared/Models/util/StepCard';
-import { TypeInfraction } from '../../../../shared/Models/Entities/TypeInfractionDto';
+import { StepCard } from '../../../../shared/models/util/StepCard';
+import { TypeInfraction } from '../../../../shared/models/entities/TypeInfractionDto';
 
 
 // ⬇️ usa tu servicio genérico
