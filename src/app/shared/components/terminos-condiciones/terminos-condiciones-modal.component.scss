@@ -1,8 +1,28 @@
 .terminos-content {
   padding: 1rem;
   line-height: 1.6;
-  max-height: 60vh;
+  max-height: 65vh;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #28a745 #f1f1f1;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #28a745;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #218838;
+  }
 
   h3 {
     color: #2c3e50;
@@ -62,14 +82,57 @@
 }
 
 ::ng-deep {
+  .p-dialog {
+    max-width: 800px;
+    width: 90%;
+    max-height: 95vh;
+    overflow: hidden; /* Ocultar cualquier scroll del modal */
+    
+    /* Ocultar scrollbars del modal si aparecen */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .p-dialog-content {
+    padding: 0 !important;
+    overflow: hidden; /* Ocultar scroll del contenido del modal */
+    
+    /* Ocultar scrollbars del contenido del modal si aparecen */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
   .p-dialog-header {
     background-color: #28a745;
     color: white;
+    flex-shrink: 0;
   }
 
   .p-dialog-footer {
     display: flex;
     justify-content: flex-end;
     gap: 0.5rem;
+    padding: 1rem !important;
+    border-top: 1px solid #e9ecef;
+    
+    .p-button {
+      &.p-button-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        
+        &:hover {
+          background-color: #218838;
+          border-color: #1e7e34;
+        }
+      }
+    }
   }
 }
