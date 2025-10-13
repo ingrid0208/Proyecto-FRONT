@@ -11,6 +11,7 @@ import { Permission } from '../../../../../shared/models/modelSecurity/permissio
 @Component({
   selector: 'app-permisos-page',
   templateUrl: './permisos-page.component.html',
+  styleUrls: ['./permisos-page.component.scss'],
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, PaginationComponent],
 })
