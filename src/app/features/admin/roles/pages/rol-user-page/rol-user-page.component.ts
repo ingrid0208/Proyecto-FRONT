@@ -26,10 +26,12 @@ export class RolUserPageComponent implements OnInit {
 
   // Propiedades para alertas estandarizadas
   showAlert = false;
-  alertType: 'bienvenida' | 'creado' | 'eliminado' | 'error' = 'creado';
+  alertType: 'bienvenida' | 'creado' | 'eliminado' | 'error' | 'info' = 'creado';
   alertMsg = '';
   showConfirm = false;
   rolUserAEliminar: RolUser | null = null;
+  showUpdateConfirm = false;
+  rolUserAActualizar: RolUser | null = null;
 
   constructor(
     private rolUserService: RolUserService,
@@ -127,6 +129,24 @@ obtenerRolUsers() {
 }
 
 
+  confirmarActualizacion(rolUser: RolUser) {
+    this.rolUserAActualizar = rolUser;
+    this.showUpdateConfirm = true;
+  }
+
+  cancelarActualizacion() {
+    this.rolUserAActualizar = null;
+    this.showUpdateConfirm = false;
+  }
+
+  abrirModalEditar() {
+    if (this.rolUserAActualizar) {
+      this.editarRolUser(this.rolUserAActualizar);
+      this.showUpdateConfirm = false;
+      this.rolUserAActualizar = null;
+    }
+  }
+
   editarRolUser(rolUser: RolUser) {
     this.rolUserEditando = { ...rolUser };
     this.rolUserOriginal = { ...rolUser };
@@ -200,7 +220,7 @@ obtenerRolUsers() {
     });
   }
 
-  mostrarAlerta(tipo: 'bienvenida' | 'creado' | 'eliminado' | 'error', mensaje: string) {
+  mostrarAlerta(tipo: 'bienvenida' | 'creado' | 'eliminado' | 'error' | 'info', mensaje: string) {
     this.alertType = tipo;
     this.alertMsg = mensaje;
     this.showAlert = true;

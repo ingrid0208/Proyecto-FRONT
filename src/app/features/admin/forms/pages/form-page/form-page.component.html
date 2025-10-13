@@ -26,34 +26,52 @@
   <h1 class="page-title">Gestión de Formularios</h1>
 
   <!-- Botón para agregar nuevo formulario -->
-  <button (click)="abrirModal()" class="btn-agregar">
-    <i class="pi pi-plus" style="margin-right: 0.5rem;"></i>
+  <button 
+    (click)="abrirModal()" 
+    class="btn-agregar"
+    aria-label="Abrir modal para agregar nuevo formulario"
+    title="Agregar nuevo formulario">
+    <i class="pi pi-plus" aria-hidden="true"></i>
     Agregar Formulario
   </button>
 
-  <!-- Tabla de formularios -->
-  <div *ngFor="let form of paginatedForms" class="persona-card">
-    <div class="persona-info">
-      <div class="info-row">
-        <span class="label">Nombre:</span>
-        <span class="value">{{ form.name }}</span>
+  <!-- Lista de formularios -->
+  <section aria-label="Lista de formularios">
+    <div 
+      *ngFor="let form of paginatedForms; trackBy: trackByFormId" 
+      class="persona-card"
+      role="article"
+      [attr.aria-label]="'Formulario: ' + form.name">
+      <div class="persona-info">
+        <div class="info-row">
+          <span class="label" id="name-label-{{form.id}}">Nombre:</span>
+          <span class="value" [attr.aria-labelledby]="'name-label-' + form.id">{{ form.name }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label" id="desc-label-{{form.id}}">Descripción:</span>
+          <span class="value" [attr.aria-labelledby]="'desc-label-' + form.id">{{ form.description }}</span>
+        </div>
       </div>
-      <div class="info-row">
-        <span class="label">Descripción:</span>
-        <span class="value">{{ form.description }}</span>
+      <div class="persona-actions" role="group" [attr.aria-label]="'Acciones para ' + form.name">
+        <button 
+          (click)="confirmarActualizacion(form)" 
+          class="btn-editar"
+          [attr.aria-label]="'Editar formulario ' + form.name"
+          [title]="'Editar ' + form.name">
+          <i class="pi pi-pencil" aria-hidden="true"></i>
+          Editar
+        </button>
+        <button 
+          (click)="pedirConfirmacionEliminar(form)" 
+          class="btn-eliminar"
+          [attr.aria-label]="'Eliminar formulario ' + form.name"
+          [title]="'Eliminar ' + form.name">
+          <i class="pi pi-trash" aria-hidden="true"></i>
+          Eliminar
+        </button>
       </div>
     </div>
-    <div class="persona-actions">
-      <button (click)="confirmarActualizacion(form)" class="btn-editar">
-        <i class="pi pi-pencil"></i>
-        Editar
-      </button>
-      <button (click)="pedirConfirmacionEliminar(form)" class="btn-eliminar">
-        <i class="pi pi-trash"></i>
-        Eliminar
-      </button>
-    </div>
-  </div>
+  </section>
 
   <div *ngIf="forms.length === 0" class="no-data">
     <i class="pi pi-info-circle"></i>
@@ -72,30 +90,67 @@
 
 
 <!-- Modal para crear nuevo formulario -->
-<div *ngIf="showModal" class="modal-overlay">
+<div *ngIf="showModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="create-modal-title">
   <div class="modal-content persona-form">
-    <h2>Agregar Nuevo Formulario</h2>
-    <form (ngSubmit)="crearForm()" autocomplete="off" #createForm="ngForm">
-      <label>
+    <h2 id="create-modal-title">Agregar Nuevo Formulario</h2>
+    <form (ngSubmit)="crearForm()" autocomplete="off" #createForm="ngForm" novalidate>
+      <label for="create-name-input">
         Nombre del Formulario:
-        <input type="text" [(ngModel)]="nuevoForm.name" name="name" required
-               #nameInput="ngModel" maxlength="100" placeholder="Ej: Formulario de acuerdo de pago" />
-        <div *ngIf="nameInput.invalid && nameInput.touched" class="error-msg">
+        <input 
+          id="create-name-input"
+          type="text" 
+          [(ngModel)]="nuevoForm.name" 
+          name="name" 
+          required
+          #nameInput="ngModel" 
+          maxlength="100" 
+          placeholder="Ej: Formulario de acuerdo de pago"
+          aria-describedby="create-name-error"
+          [attr.aria-invalid]="nameInput.invalid && nameInput.touched" />
+        <div 
+          id="create-name-error"
+          *ngIf="nameInput.invalid && nameInput.touched" 
+          class="error-msg"
+          role="alert"
+          aria-live="polite">
           El nombre es requerido
         </div>
       </label>
-      <label>
+      <label for="create-desc-input">
         Descripción:
-        <textarea [(ngModel)]="nuevoForm.description" name="description" required
-                 #descriptionInput="ngModel" maxlength="300" rows="4"
-                 placeholder="Describe el propósito y uso del formulario..."></textarea>
-        <div *ngIf="descriptionInput.invalid && descriptionInput.touched" class="error-msg">
+        <textarea 
+          id="create-desc-input"
+          [(ngModel)]="nuevoForm.description" 
+          name="description" 
+          required
+          #descriptionInput="ngModel" 
+          maxlength="300" 
+          rows="4"
+          placeholder="Describe el propósito y uso del formulario..."
+          aria-describedby="create-desc-error"
+          [attr.aria-invalid]="descriptionInput.invalid && descriptionInput.touched"></textarea>
+        <div 
+          id="create-desc-error"
+          *ngIf="descriptionInput.invalid && descriptionInput.touched" 
+          class="error-msg"
+          role="alert"
+          aria-live="polite">
           La descripción es requerida
         </div>
       </label>
       <div class="modal-actions">
-        <button type="button" (click)="cerrarModal()">Cancelar</button>
-        <button type="submit" [disabled]="createForm.invalid || !nuevoForm.name.trim() || !nuevoForm.description.trim()">Crear</button>
+        <button 
+          type="button" 
+          (click)="cerrarModal()"
+          aria-label="Cancelar creación del formulario">
+          Cancelar
+        </button>
+        <button 
+          type="submit" 
+          [disabled]="createForm.invalid || !nuevoForm.name.trim() || !nuevoForm.description.trim()"
+          aria-label="Crear nuevo formulario">
+          Crear
+        </button>
       </div>
     </form>
   </div>

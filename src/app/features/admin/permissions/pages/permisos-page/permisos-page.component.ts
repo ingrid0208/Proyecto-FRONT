@@ -40,7 +40,7 @@ export class PermisosPageComponent implements OnInit {
 
   // Propiedades para alertas estandarizadas
   showAlert = false;
-  alertType: 'bienvenida' | 'creado' | 'eliminado' | 'error' = 'creado';
+  alertType: 'bienvenida' | 'creado' | 'eliminado' | 'error' | 'info' = 'creado';
   alertMsg = '';
   showConfirm = false;
   permisoAEliminarConfirm: Permission | null = null;
@@ -206,7 +206,7 @@ export class PermisosPageComponent implements OnInit {
     }
   }
 
-  mostrarAlerta(tipo: 'bienvenida' | 'creado' | 'eliminado' | 'error', mensaje: string) {
+  mostrarAlerta(tipo: 'bienvenida' | 'creado' | 'eliminado' | 'error' | 'info', mensaje: string) {
     console.log('Mostrando alerta:', tipo, mensaje); // Debug log
     this.alertType = tipo;
     this.alertMsg = mensaje;

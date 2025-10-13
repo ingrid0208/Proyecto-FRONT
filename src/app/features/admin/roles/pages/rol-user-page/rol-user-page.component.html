@@ -1,6 +1,14 @@
 <div class="rol-user-container bg-gray-50 min-h-screen py-10 px-4 md:px-16">
   <!-- Modal de alerta -->
-  
+  <div *ngIf="showAlert" class="alert-modal-overlay">
+    <div class="alert-modal-content" [ngClass]="alertType">
+      <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
+      <span class="alert-icon" *ngIf="alertType === 'eliminado'">🗑️</span>
+      <span class="alert-icon" *ngIf="alertType === 'error'">❌</span>
+      <span class="alert-icon" *ngIf="alertType === 'info'">ℹ️</span>
+      <span class="alert-msg">{{ alertMsg }}</span>
+    </div>
+  </div>
 
   <!-- Modal de confirmación de eliminación -->
   <div *ngIf="showConfirm" class="alert-modal-overlay">
@@ -22,45 +30,37 @@
     <button class="add-btn shadow-lg" (click)="abrirFormulario()">+ Agregar Relación</button>
   </div>
   <!-- Modal para agregar/editar -->
-  <div *ngIf="showForm"
-    class="modal-overlay fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-    <div class="modal-content bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
-      <h2 class="text-xl font-semibold mb-4 text-blue-600">{{ rolUserEditando ? 'Editar' : 'Crear' }} Relación</h2>
-      <form [formGroup]="rolUserForm" (ngSubmit)="rolUserEditando ? actualizarRolUser() : crearRolUser()">
-        <div class="form-group mb-4">
-          <label for="userId" class="block font-medium mb-1">Usuario</label>
-          <select id="userId" formControlName="userId"
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+  <div *ngIf="showForm" class="modal-overlay">
+    <div class="modal-content persona-form">
+      <h2>{{ rolUserEditando ? 'Actualizar' : 'Crear' }} Relación Rol-Usuario</h2>
+      <form [formGroup]="rolUserForm" (ngSubmit)="rolUserEditando ? actualizarRolUser() : crearRolUser()" autocomplete="off">
+        <label>
+          Usuario:
+          <select formControlName="userId" required>
             <option value="0">-- Selecciona un usuario --</option>
             <option *ngFor="let u of usuariosDisponibles" [value]="u.id">{{ u.email }}</option>
           </select>
-          <div class="error text-red-500 text-xs mt-1"
-            *ngIf="rolUserForm.get('userId')?.touched && rolUserForm.get('userId')?.invalid">
-            <span *ngIf="rolUserForm.get('userId')?.errors?.['required']">El usuario es requerido.</span>
-            <span *ngIf="rolUserForm.get('userId')?.errors?.['min']">Debe seleccionar un usuario válido.</span>
+          <div *ngIf="rolUserForm.get('userId')?.invalid && rolUserForm.get('userId')?.touched" class="error-msg">
+            Debe seleccionar un usuario válido
           </div>
-        </div>
+        </label>
 
-        <div class="form-group mb-4">
-          <label for="rolId" class="block font-medium mb-1">Rol</label>
-          <select id="rolId" formControlName="rolId"
-            class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <label>
+          Rol:
+          <select formControlName="rolId" required>
             <option value="0">-- Selecciona un rol --</option>
             <option *ngFor="let r of roles" [value]="r.id">{{ r.name }}</option>
           </select>
-          <div class="error text-red-500 text-xs mt-1"
-            *ngIf="rolUserForm.get('rolId')?.touched && rolUserForm.get('rolId')?.invalid">
-            <span *ngIf="rolUserForm.get('rolId')?.errors?.['required']">El rol es requerido.</span>
-            <span *ngIf="rolUserForm.get('rolId')?.errors?.['min']">Debe seleccionar un rol válido.</span>
+          <div *ngIf="rolUserForm.get('rolId')?.invalid && rolUserForm.get('rolId')?.touched" class="error-msg">
+            Debe seleccionar un rol válido
           </div>
-        </div>
+        </label>
 
-        <div class="modal-actions flex gap-3 mt-6">
-          <button type="submit" [disabled]="loading"
-            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded font-semibold shadow">{{ rolUserEditando ?
-            'Actualizar' : 'Crear' }}</button>
-          <button type="button" (click)="cerrarFormulario()"
-            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded font-semibold">Cancelar</button>
+        <div class="modal-actions">
+          <button type="button" (click)="cerrarFormulario()">Cancelar</button>
+          <button type="submit" [disabled]="rolUserForm.invalid || loading">
+            {{ rolUserEditando ? 'Actualizar' : 'Crear' }}
+          </button>
         </div>
       </form>
     </div>
@@ -74,9 +74,21 @@
           || ru.rolId }}</div>
       </div>
       <div class="rol-user-actions flex gap-2">
-        <button class="edit-btn" (click)="editarRolUser(ru)"><i class="material-icons">edit</i></button>
+        <button class="edit-btn" (click)="confirmarActualizacion(ru)"><i class="material-icons">edit</i></button>
         <button class="delete-btn" (click)="pedirConfirmacionEliminar(ru)"><i class="material-icons">delete</i></button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+  <div class="alert-modal-content eliminado">
+    <span class="alert-icon">✏️</span>
+    <span class="alert-msg">¿Está seguro que desea actualizar esta relación rol-usuario?</span>
+    <div class="modal-actions">
+      <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+      <button class="blue-btn" (click)="abrirModalEditar()">Sí, Editar</button>
     </div>
   </div>
 </div>
