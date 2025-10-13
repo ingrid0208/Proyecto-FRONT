@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
 import { Municipio } from '../../../../../shared/models/parameters/municipality.models';
-import { DocumentTypeDto } from '../../../../../shared/Models/parameters/document-type.models';
+import { DocumentTypeDto } from '../../../../../shared/models/parameters/document-type.models';
 import { MunicipalityService } from '../../../../../core/services/parameters/municipality.service';
 import { DocumentTypeService } from '../../../../../core/services/parameters/document-type.service';
 import { PersonaService } from '../../../../../core/services/ModelSecurity/persona.service';

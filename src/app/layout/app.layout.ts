@@ -4,9 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 
-                // ← ojo al nombre del archivo
 import { LayoutService } from './services/layout.service';
-import { AppTopbar } from './header/topbar.component';
 import { AppSidebar } from './sidebar/app.sidebar';
                      // ← topbar dentro de layout/nav
 
@@ -54,7 +52,6 @@ export class AppLayout {
   menuOutsideClickListener: any;
 
   @ViewChild(AppSidebar) appSidebar!: AppSidebar;
-  @ViewChild(AppTopbar)  appTopBar!: AppTopbar;
 
   constructor(
     public layoutService: LayoutService,

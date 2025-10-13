@@ -12,8 +12,8 @@ import { ServiceGenericService } from '../../../../core/services/utils/generic/s
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { DocumentSessionService } from '../../../../core/services/documents/document-session.service';
 import { SessionPingService } from '../../../../core/services/utils/session-ping.service';
-import { DocumentTypeDto } from '../../../../shared/Models/parameters/document-type.models';
-import { LoginDocumentoRequest } from '../../../../shared/Models/auth/request/LoginDocumentoRequest';
+import { DocumentTypeDto } from '../../../../shared/models/parameters/document-type.models';
+import { LoginDocumentoRequest } from '../../../../shared/models/auth/request/LoginDocumentoRequest';
 import { TerminosCondicionesModalComponent } from '../../../../shared/components/terminos-condiciones/terminos-condiciones-modal.component';
 
 @Component({

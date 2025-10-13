@@ -5,17 +5,16 @@ import { MatCardModule } from '@angular/material/card';
 import { DocumentTypeService } from '../../../../core/services/parameters/document-type.service';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AppTopbar } from '../../../../layout/header/topbar.component';
 import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { DocumentTypeDto } from '../../../../shared/Models/parameters/document-type.models';
-import { ColumnDef } from '../../../../shared/Models/util/table.Generic';
+import { DocumentTypeDto } from '../../../../shared/models/parameters/document-type.models';
+import { ColumnDef } from '../../../../shared/models/util/table.Generic';
 
 
 @Component({
   selector: 'app-document-type',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, CardHeaderComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, CardHeaderComponent, ButtonComponent],
   templateUrl: './document-type.component.html',
   styleUrls: ['./document-type.component.scss']
 })

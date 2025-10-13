@@ -5,17 +5,17 @@ import { MatCardModule } from '@angular/material/card';
 import { MunicipalityService } from '../../../../core/services/parameters/municipality.service';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AppTopbar } from '../../../../layout/header/topbar.component';
+// import { AppTopbar } from '../../../../layout/header/topbar.component'; // Comentado temporalmente
 import { GenericMultasTableComponent } from '../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { Municipality } from '../../../../shared/Models/parameters/municipality.models';
-import { ColumnDef } from '../../../../shared/Models/util/table.Generic';
+import { Municipality } from '../../../../shared/models/parameters/municipality.models';
+import { ColumnDef } from '../../../../shared/models/util/table.Generic';
 
 @Component({
   selector: 'app-municipality',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
   templateUrl: './municipality.component.html',
   styleUrls: ['./municipality.component.scss']
 })

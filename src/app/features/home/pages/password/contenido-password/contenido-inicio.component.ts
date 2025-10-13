@@ -4,9 +4,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../../../../shared/Models/util/table.Generic';
+import { ColumnDef } from '../../../../../shared/models/util/table.Generic';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
-import { AppTopbar } from '../../../../../layout/header/topbar.component';
 import { DocumentSessionService } from '../../../../../core/services/documents/document-session.service';
 import { FilterService } from '../../../../../core/services/filters/filter.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
@@ -31,8 +30,7 @@ interface MultaTableRow {
     MatButtonModule,
     RouterModule,
     GenericMultasTableComponent,
-    CardHeaderComponent,
-    AppTopbar
+    CardHeaderComponent
   ]
 })
 export class ContenidoInicioComponent implements OnInit {

@@ -10,8 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 
 import Swal from 'sweetalert2';
-import { AppTopbar } from '../../../../../layout/header/topbar.component';
-import { PaymentAgreementInitDto } from '../../../../../shared/Models/init/PaymentAgreementInitDto';
+import { PaymentAgreementInitDto } from '../../../../../shared/models/Init/PaymentAgreementInitDto';
 import { PaymentService } from '../../../../../core/services/payments/payment.service';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
 
@@ -27,7 +26,6 @@ import { ServiceGenericService } from '../../../../../core/services/utils/generi
     MatButtonModule,
     CommonModule,
     FormsModule,
-    AppTopbar,
   ],
   templateUrl: './formulario-acuerdo-pago.component.html',
   styleUrls: ['./formulario-acuerdo-pago.component.scss'],

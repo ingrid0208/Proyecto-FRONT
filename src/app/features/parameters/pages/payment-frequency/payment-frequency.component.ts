@@ -5,18 +5,17 @@ import { MatCardModule } from '@angular/material/card';
 import { PaymentFrequencyService } from '../../../../core/services/parameters/payment-frequency.service';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AppTopbar } from '../../../../layout/header/topbar.component';
 import { GenericMultasTableComponent } from '../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { PaymentFrequency } from '../../../../shared/Models/parameters/payment-frequency.models';
-import { ColumnDef } from '../../../../shared/Models/util/table.Generic';
+import { PaymentFrequency } from '../../../../shared/models/parameters/payment-frequency.models';
+import { ColumnDef } from '../../../../shared/models/util/table.Generic';
 
 
 @Component({
   selector: 'app-payment-frequency',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, AppTopbar, GenericMultasTableComponent, CardHeaderComponent, ButtonComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, MatCardModule, CardHeaderComponent, ButtonComponent],
   templateUrl: './payment-frequency.component.html',
   styleUrls: ['./payment-frequency.component.scss']
 })

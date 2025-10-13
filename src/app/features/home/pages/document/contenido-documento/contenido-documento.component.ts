@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ColumnDef } from '../../../../../shared/Models/util/table.Generic';
+import { ColumnDef } from '../../../../../shared/models/util/table.Generic';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
