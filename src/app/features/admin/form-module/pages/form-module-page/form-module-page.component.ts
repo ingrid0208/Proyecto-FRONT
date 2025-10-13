@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { FormModuleService } from '../../../../../core/services/ModelSecurity/formmodule.service';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
-import { FormModule } from '../../../../../shared/Models/modelSecurity/form-module';
+import { FormModule } from '../../../../../shared/models/modelSecurity/form-module';
 
 
 @Component({
@@ -59,8 +59,6 @@ export class FormModulePageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Mostrar mensaje de bienvenida
-    this.mostrarAlerta('¡Bienvenido a la gestión de Form-Modules!', 'bienvenida');
     this.loadFormModules();
     this.loadForms();
     this.loadModules();

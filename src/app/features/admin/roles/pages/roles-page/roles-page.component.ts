@@ -24,7 +24,6 @@ export class RolesPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.mostrarAlerta('¡Bienvenido a la gestión de roles!', 'bienvenida');
     // Agregar algunos datos de prueba si la API no está disponible
     this.cargarRoles();
     

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RolUserService } from '../../../../../core/services/ModelSecurity/rol-user.service';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
-import { RolUser } from '../../../../../shared/Models/modelSecurity/rol-user';
+import { RolUser } from '../../../../../shared/models/modelSecurity/rol-user';
 
 @Component({
   selector: 'app-rol-user-page',
@@ -43,9 +43,6 @@ export class RolUserPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Mostrar mensaje de bienvenida
-    this.mostrarAlerta('bienvenida', '¡Bienvenido a la gestión de Rol-Usuario!');
-
     // Cargar usuarios
     this.serviceGeneric.getAll<any>('Users').subscribe((usuarios: any[]) => {
       this.usuarios = usuarios;

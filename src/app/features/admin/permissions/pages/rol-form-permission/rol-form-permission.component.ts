@@ -87,19 +87,6 @@ export class RolFormPermissionComponent implements OnInit, OnDestroy {
     // Cargar datos primero
     this.loadData();
     this.loadDropdownOptions();
-
-    // Mostrar modal de bienvenida personalizado después de un pequeño delay
-    setTimeout(() => {
-      this.showWelcomeModal = true;
-    }, 100);
-
-    // También mantener el toast como respaldo
-    this.messageService.add({
-      severity: 'info',
-      summary: '¡Bienvenido!',
-      detail: '¡Bienvenido a la gestión de Roles-Formularios-Permisos!',
-      life: 3000
-    });
   }
 
   ngOnDestroy(): void {

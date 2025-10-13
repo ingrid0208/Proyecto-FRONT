@@ -8,9 +8,9 @@ import { ApiService } from '../base/api.service';
 import { UserStore } from '../User.Store';
 
 // Models
-import { LoginEmailRequest } from '../../../shared/Models/auth/request/LoginEmailRequest';
-import { LoginEmailResponse } from '../../../shared/Models/auth/response/LoginEmailResponse';
-import { RegisterRequestDto } from '../../../shared/Models/auth/request/RegisterRequestDto';
+import { LoginEmailRequest } from '../../../shared/models/auth/request/LoginEmailRequest';
+import { LoginEmailResponse } from '../../../shared/models/auth/response/LoginEmailResponse';
+import { RegisterRequestDto } from '../../../shared/models/auth/request/RegisterRequestDto';
 import { User } from '../../../shared/Models/modelSecurity/user.model';
 
 @Injectable({ providedIn: 'root' })

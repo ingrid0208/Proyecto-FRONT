@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
-import { Municipio } from '../../../../../shared/Models/parameters/municipality.models';
+import { Municipio } from '../../../../../shared/models/parameters/municipality.models';
 import { DocumentTypeDto } from '../../../../../shared/Models/parameters/document-type.models';
 import { MunicipalityService } from '../../../../../core/services/parameters/municipality.service';
 import { DocumentTypeService } from '../../../../../core/services/parameters/document-type.service';
@@ -98,8 +98,6 @@ export class PersonasPageComponent implements OnInit {
     this.documentTypeService.genericService.getAll<any>(this.documentTypeService.endpoint).subscribe((documentTypes: any) => {
       this.documentTypes = documentTypes;
     });
-
-    this.mostrarAlerta('¡Bienvenido a la gestión de personas!', 'bienvenida');
   }
 
   onSearch(term: string) {

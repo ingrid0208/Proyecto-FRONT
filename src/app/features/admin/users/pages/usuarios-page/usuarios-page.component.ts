@@ -91,7 +91,6 @@ export class UsuariosPageComponent implements OnInit {
   usuarioAEliminar: Usuario | null = null;
 
   ngOnInit() {
-    this.mostrarAlerta('¡Bienvenido a la gestión de usuarios!', 'bienvenida');
     this.cargarUsuarios();
     this.cargarPersonasDisponibles();
   }

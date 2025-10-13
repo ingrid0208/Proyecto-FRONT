@@ -59,11 +59,6 @@ export class PermisosPageComponent implements OnInit {
   ngOnInit(): void {
     // Obtener permisos primero
     this.obtenerPermisos();
-    
-    // Mostrar mensaje de bienvenida después de un pequeño delay para asegurar que se renderice
-    setTimeout(() => {
-      this.mostrarAlerta('bienvenida', '¡Bienvenido a la gestión de Permisos!');
-    }, 100);
   }
 
   obtenerPermisos() {

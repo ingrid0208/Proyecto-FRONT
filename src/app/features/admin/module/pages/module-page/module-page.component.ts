@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { ModuleService } from '../../../../../core/services/ModelSecurity/module.service';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
-import { Module } from '../../../../../shared/Models/modelSecurity/module';
+import { Module } from '../../../../../shared/models/modelSecurity/module';
 
 
 @Component({
@@ -56,7 +56,6 @@ export class ModulePageComponent implements OnInit {
   moduleAEliminar: Module | null = null;
 
   ngOnInit() {
-    this.mostrarAlerta('¡Bienvenido a la gestión de módulos!', 'bienvenida');
     this.cargarModules();
     
     // Datos de prueba (comentar cuando la API funcione)

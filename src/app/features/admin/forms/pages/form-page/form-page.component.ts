@@ -59,7 +59,6 @@ export class FormPageComponent implements OnInit {
   formAEliminar: Form | null = null;
 
   ngOnInit() {
-    this.mostrarAlerta('¡Bienvenido a la gestión de formularios!', 'bienvenida');
     this.cargarForms();
 
     // Datos de prueba (comentar cuando la API funcione)
