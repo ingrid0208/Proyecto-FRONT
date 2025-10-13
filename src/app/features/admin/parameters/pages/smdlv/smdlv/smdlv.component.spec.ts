@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TiposMultasComponent } from './tipos-multas.component';
+import { SmdlvComponent } from './smdlv.component';
 
-describe('TiposMultasComponent', () => {
-  let component: TiposMultasComponent;
-  let fixture: ComponentFixture<TiposMultasComponent>;
+describe('SmdlvComponent', () => {
+  let component: SmdlvComponent;
+  let fixture: ComponentFixture<SmdlvComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TiposMultasComponent]
+      imports: [SmdlvComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TiposMultasComponent);
+    fixture = TestBed.createComponent(SmdlvComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

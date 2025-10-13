@@ -22,7 +22,6 @@ export const routes: Routes = [
       { path: 'perfil', loadChildren: () => import('./app/features/profile/perfil.routes').then(m => m.PERFIL_ROUTES) },
       { path: 'notificaciones', loadChildren: () => import('./app/features/multas/notificaciones/pages/notificacion-multas.routes').then(m => m.NOTIFICACION_ROUTES) },
       { path: 'acuerdo-pago', loadChildren: () => import('./app/features/multas/acuerdos-pago/acuerdo-pago.routes').then(m => m.ACUERDO_PAGO_ROUTES) },
-      { path: 'tipos-multas', loadChildren: () => import('./app/features/multas/tipos/tipos-multas.routes').then(m => m.TIPOS_MULTAS_ROUTES) },
       { path: 'calendario', loadChildren: () => import('./app/features/calendar/calendario.routes').then(m => m.CALENDARIO_ROUTES) },
       { path: 'anexar-multas', loadChildren: () => import('./app/features/anexar-multas/anexar-multas.routes').then(m => m.ANEXAR_MULTAS_ROUTES) },
       { path: 'roles', loadChildren: () => import('./app/features/admin/roles/roles.routes').then(m => m.ROLES_ROUTES) },
@@ -33,7 +32,7 @@ export const routes: Routes = [
       { path: 'form-modules', loadChildren: () => import('./app/features/admin/form-module/form-module.routes').then(m => m.FORM_MODULE_ROUTES) },
       { path: 'rol-form-permission', loadChildren: () => import('./app/features/admin/permissions/rol-form-permission.routes').then(m => m.ROL_FORM_PERMISSION_ROUTES) },
       { path: 'rol-user', loadChildren: () => import('./app/features/admin/roles/rol-user.routes').then(m => m.rolUserRoutes) },
-      { path: 'parameters', loadChildren: () => import('./app/features/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
+      { path: 'parameters', loadChildren: () => import('./app/features/admin/parameters/pages/parameters.routes').then(m => m.PARAMETERS_ROUTES) },
       { path: 'permisos', loadChildren: () => import('./app/features/admin/permissions/permissions.routes').then(m => m.PERMISOS_ROUTES) },
       { path: 'home', loadChildren: () => import('./app/features/home/pages/password/home.routes').then(m => m.HOMEPASSWORD_ROUTES) },
     ]

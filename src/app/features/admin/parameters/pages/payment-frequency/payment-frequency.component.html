@@ -1,44 +1,44 @@
-<app-topbar></app-topbar>
+<!-- <app-topbar></app-topbar> -->
 
 <mat-card>
   <app-card-header
-    title="Tipos de documento"
-    [description]="'Listado de tipos de documento habilitados.'">
+    title="Frecuencias de pago"
+    [description]="'Intervalo y día de corte configurados.'">
   </app-card-header>
 
   <mat-card-content>
     <ng-container *ngIf="!loading && !errorMsg; else estado">
-      <!-- Tabla personalizada para tipos de documento -->
+      <!-- Tabla personalizada para frecuencias de pago -->
       <div class="table-container">
         <table class="custom-table">
           <thead>
             <tr>
-              <th>Tipo de documento</th>
-              <th>Abreviatura</th>
+              <th>Nombre</th>
+              <th>Intervalo en días</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let tipo of tipos">
-              <td>{{ tipo.name }}</td>
-              <td>{{ tipo.abbreviation }}</td>
+            <tr *ngFor="let frecuencia of frecuencias">
+              <td>{{ frecuencia.name }}</td>
+              <td>{{ frecuencia.daysInterval }}</td>
               <td class="actions-cell">
                 <button
                   class="btn btn-sm btn-success"
-                  (click)="abrirFormularioActualizar(tipo)"
-                  title="Editar tipo de documento">
+                  (click)="abrirFormularioActualizar(frecuencia)"
+                  title="Editar frecuencia de pago">
                   Editar
                 </button>
                 <button
                   class="btn btn-sm btn-success-dark ml-2"
-                  (click)="confirmarEliminacion(tipo)"
-                  title="Eliminar tipo de documento">
+                  (click)="confirmarEliminacion(frecuencia)"
+                  title="Eliminar frecuencia de pago">
                   Eliminar
                 </button>
               </td>
             </tr>
-            <tr *ngIf="tipos.length === 0">
-              <td colspan="3" class="text-center">No hay tipos de documento para mostrar</td>
+            <tr *ngIf="frecuencias.length === 0">
+              <td colspan="3" class="text-center">No hay frecuencias de pago para mostrar</td>
             </tr>
           </tbody>
         </table>
@@ -46,13 +46,13 @@
     </ng-container>
 
     <ng-template #estado>
-      <div *ngIf="loading">Cargando tipos de documento...</div>
+      <div *ngIf="loading">Cargando frecuencias de pago...</div>
       <div *ngIf="!loading && errorMsg" class="text-red-600">{{ errorMsg }}</div>
     </ng-template>
   </mat-card-content>
 
   <app-button
-    texto="Agregar nuevo tipo de documento"
+    texto="Agregar nueva frecuencia de pago"
     color="accent"
     (clicked)="abrirFormulario()">
   </app-button>
@@ -67,7 +67,7 @@
   {{ errorMsg }}
 </div>
 
-<!-- Modal para crear tipo de documento -->
+<!-- Modal para crear frecuencia de pago -->
 <div *ngIf="showForm" class="modal-overlay" (click)="cerrarFormulario()">
   <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -78,8 +78,8 @@
           </svg>
         </div>
         <div class="header-text">
-          <h3>Crear Nuevo Tipo de Documento</h3>
-          <p>Ingresa la información del nuevo tipo de documento</p>
+          <h3>Crear Nueva Frecuencia de Pago</h3>
+          <p>Ingresa la información de la nueva frecuencia de pago</p>
         </div>
       </div>
       <button class="close-btn" (click)="cerrarFormulario()">
@@ -90,15 +90,15 @@
     </div>
 
     <div class="modal-body">
-      <form [formGroup]="documentTypeForm" (ngSubmit)="crearDocumentTypeDto()">
+      <form [formGroup]="paymentFrequencyForm" (ngSubmit)="crearPaymentFrequency()">
         <div class="form-grid">
           <div class="form-group">
             <label for="name">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
+                <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
               </svg>
-              Nombre del Tipo de Documento
+              Nombre
             </label>
             <input
               type="text"
@@ -106,29 +106,50 @@
               formControlName="name"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('name')"
-              placeholder="Ej: Cédula de Ciudadanía">
+              placeholder="Ej: Mensual">
             <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
               {{ getFieldError('name') }}
             </div>
           </div>
 
           <div class="form-group">
-            <label for="abbreviation">
+            <label for="code">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
-                <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
+                <path d="M2 2H14V14H2V2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
               </svg>
-              Abreviatura
+              Código
             </label>
             <input
               type="text"
-              id="abbreviation"
-              formControlName="abbreviation"
+              id="code"
+              formControlName="code"
               class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('abbreviation')"
-              placeholder="Ej: CC">
-            <div *ngIf="isFieldInvalid('abbreviation')" class="invalid-feedback">
-              {{ getFieldError('abbreviation') }}
+              [class.is-invalid]="isFieldInvalid('code')"
+              placeholder="Ej: MENSUAL">
+            <div *ngIf="isFieldInvalid('code')" class="invalid-feedback">
+              {{ getFieldError('code') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="daysInterval">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Intervalo en días
+            </label>
+            <input
+              type="number"
+              id="daysInterval"
+              formControlName="daysInterval"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('daysInterval')"
+              placeholder="Ej: 30"
+              min="1"
+              max="365">
+            <div *ngIf="isFieldInvalid('daysInterval')" class="invalid-feedback">
+              {{ getFieldError('daysInterval') }}
             </div>
           </div>
         </div>
@@ -140,13 +161,13 @@
             </svg>
             Cancelar
           </button>
-          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || documentTypeForm.invalid">
+          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || paymentFrequencyForm.invalid">
             <svg *ngIf="!loading" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <div *ngIf="loading" class="loading-spinner"></div>
             <span *ngIf="loading">Creando...</span>
-            <span *ngIf="!loading">Crear Tipo de Documento</span>
+            <span *ngIf="!loading">Crear Frecuencia de Pago</span>
           </button>
         </div>
       </form>
@@ -154,7 +175,7 @@
   </div>
 </div>
 
-<!-- Modal para actualizar tipo de documento -->
+<!-- Modal para actualizar frecuencia de pago -->
 <div *ngIf="showUpdateForm" class="modal-overlay" (click)="cerrarFormularioActualizar()">
   <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -166,8 +187,8 @@
           </svg>
         </div>
         <div class="header-text">
-          <h3>Actualizar Tipo de Documento</h3>
-          <p>Modifica la información del tipo de documento</p>
+          <h3>Actualizar Frecuencia de Pago</h3>
+          <p>Modifica la información de la frecuencia de pago</p>
         </div>
       </div>
       <button class="close-btn" (click)="cerrarFormularioActualizar()">
@@ -178,15 +199,15 @@
     </div>
 
     <div class="modal-body">
-      <form [formGroup]="updateForm" (ngSubmit)="actualizarDocumentTypeDto()">
+      <form [formGroup]="updateForm" (ngSubmit)="actualizarPaymentFrequency()">
         <div class="form-grid">
           <div class="form-group">
             <label for="update-name">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
+                <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
               </svg>
-              Nombre del Tipo de Documento
+              Nombre
             </label>
             <input
               type="text"
@@ -194,29 +215,50 @@
               formControlName="name"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('name', updateForm)"
-              placeholder="Ej: Cédula de Ciudadanía">
+              placeholder="Ej: Mensual">
             <div *ngIf="isFieldInvalid('name', updateForm)" class="invalid-feedback">
               {{ getFieldError('name', updateForm) }}
             </div>
           </div>
 
           <div class="form-group">
-            <label for="update-abbreviation">
+            <label for="update-code">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
-                <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
+                <path d="M2 2H14V14H2V2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
               </svg>
-              Abreviatura
+              Código
             </label>
             <input
               type="text"
-              id="update-abbreviation"
-              formControlName="abbreviation"
+              id="update-code"
+              formControlName="code"
               class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('abbreviation', updateForm)"
-              placeholder="Ej: CC">
-            <div *ngIf="isFieldInvalid('abbreviation', updateForm)" class="invalid-feedback">
-              {{ getFieldError('abbreviation', updateForm) }}
+              [class.is-invalid]="isFieldInvalid('code', updateForm)"
+              placeholder="Ej: MENSUAL">
+            <div *ngIf="isFieldInvalid('code', updateForm)" class="invalid-feedback">
+              {{ getFieldError('code', updateForm) }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="update-daysInterval">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Intervalo en días
+            </label>
+            <input
+              type="number"
+              id="update-daysInterval"
+              formControlName="daysInterval"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('daysInterval', updateForm)"
+              placeholder="Ej: 30"
+              min="1"
+              max="365">
+            <div *ngIf="isFieldInvalid('daysInterval', updateForm)" class="invalid-feedback">
+              {{ getFieldError('daysInterval', updateForm) }}
             </div>
           </div>
         </div>
@@ -234,7 +276,7 @@
             </svg>
             <div *ngIf="loading" class="loading-spinner"></div>
             <span *ngIf="loading">Actualizando...</span>
-            <span *ngIf="!loading">Actualizar Tipo de Documento</span>
+            <span *ngIf="!loading">Actualizar Frecuencia de Pago</span>
           </button>
         </div>
       </form>
@@ -250,7 +292,7 @@
     </div>
 
     <div class="modal-body">
-      <p>¿Está seguro que desea eliminar el tipo de documento <strong>{{ documentTypeAEliminar?.name }}</strong>?</p>
+      <p>¿Está seguro que desea eliminar la frecuencia de pago con nombre <strong>{{ paymentFrequencyAEliminar?.name }}</strong>?</p>
       <p class="text-warning">Esta acción no se puede deshacer.</p>
     </div>
 
@@ -258,7 +300,7 @@
       <button type="button" class="btn btn-secondary" (click)="cancelarEliminacion()">
         Cancelar
       </button>
-      <button type="button" class="btn btn-danger" (click)="eliminarDocumentTypeDto()" [disabled]="loading">
+      <button type="button" class="btn btn-danger" (click)="eliminarPaymentFrequency()" [disabled]="loading">
         <span *ngIf="loading">Eliminando...</span>
         <span *ngIf="!loading">Eliminar</span>
       </button>

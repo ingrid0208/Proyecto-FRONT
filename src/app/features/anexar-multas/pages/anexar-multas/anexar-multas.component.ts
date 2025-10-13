@@ -27,7 +27,7 @@ export class AnexarMultasComponent implements OnInit {
     documentTypeId: null as number | null,
     documentNumber: '',
     typeInfractionId: null as number | null,
-    infractionId: null as number | null,
+    fineCalculationId: null as number | null,
     smldvCount: null as number | null,
     email: ''
   };
@@ -83,7 +83,7 @@ export class AnexarMultasComponent implements OnInit {
 
   // Cambio de tipo de infracción
   onInfractionTypeChange(typeId: number) {
-    this.form.infractionId = null;
+    this.form.fineCalculationId = null;
     this.form.smldvCount = null;
     this.infractions = [];
 
@@ -138,7 +138,7 @@ export class AnexarMultasComponent implements OnInit {
     this.form.lastName = '';
     this.form.email = '';
     this.form.typeInfractionId = null;
-    this.form.infractionId = null;
+    this.form.fineCalculationId = null;
     this.form.smldvCount = null;
     this.infractions = [];
     this.isExistingUser = false; 
@@ -212,7 +212,7 @@ export class AnexarMultasComponent implements OnInit {
       documentTypeId: null,
       documentNumber: '',
       typeInfractionId: null,
-      infractionId: null,
+      fineCalculationId: null,
       smldvCount: null
     };
     this.infractions = [];

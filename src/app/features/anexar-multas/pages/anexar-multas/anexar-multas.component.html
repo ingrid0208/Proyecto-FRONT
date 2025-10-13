@@ -49,7 +49,7 @@
     <!-- Infracciones -->
     <div class="mb-6">
       <label class="block mb-2 font-medium text-gray-700">Infracción cometida</label>
-      <p-dropdown [options]="infractions" [(ngModel)]="form.infractionId" name="infractionId"
+      <p-dropdown [options]="infractions" [(ngModel)]="form.fineCalculationId" name="fineCalculationId"
         (onChange)="onInfractionChange($event.value)" optionLabel="label" optionValue="value"
         placeholder="Seleccione la infracción cometida" class="w-full text-lg" required>
       </p-dropdown>
