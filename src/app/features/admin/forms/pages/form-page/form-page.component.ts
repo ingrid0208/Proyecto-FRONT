@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
 import { validateFormDescription, validateFormName } from '../../../../../shared/utils/validator/validator-form/form';
-import { Form } from '../../../../../shared/Models/modelSecurity/form';
+import { Form } from '../../../../../shared/models/modelSecurity/form';
 import { FormService } from '../../../../../core/services/ModelSecurity/form.service';
 
 @Component({
