@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Form as AngularForm, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
 import { validateFormDescription, validateFormName } from '../../../../../shared/utils/validator/validator-form/form';
@@ -14,22 +13,15 @@ import { FormService } from '../../../../../core/services/ModelSecurity/form.ser
   styleUrls: ['./form-page.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   providers: [FormService]
 })
 export class FormPageComponent implements OnInit {
-
-  constructor(
-    private formService: FormService,
-    private cdr: ChangeDetectorRef,
-    private paginationService: PaginationService
-  ) { }
-
+  // Datos principales
   forms: Form[] = [];
-  paginatedForms: 
-  Form[] = [];
+  paginatedForms: Form[] = [];
 
-  // Paginación
+  // Configuración de paginación
   paginationConfig: PaginationConfig = {
     currentPage: 1,
     itemsPerPage: 5,
@@ -37,103 +29,100 @@ export class FormPageComponent implements OnInit {
     totalPages: 0
   };
 
-  // Modal y formulario
-  showModal: boolean = false;
-  showUpdateModal: boolean = false;
-  showUpdateConfirm: boolean = false;
+  // Estados de modales
+  showModal = false;
+  showUpdateModal = false;
+  showUpdateConfirm = false;
+  showAlert = false;
+  showConfirm = false;
+
+  // Formularios y objetos temporales
   formSeleccionado: Form | null = null;
   formAActualizar: Form | null = null;
-
-  nuevoForm: {
-    name: string;
-    description: string;
-  } = {
-      name: '',
-      description: ''
-    };
-
-  showAlert = false;
-  alertMsg = '';
-  alertType: string = 'creado';
-  showConfirm = false;
   formAEliminar: Form | null = null;
+  
+  nuevoForm: { name: string; description: string } = {
+    name: '',
+    description: ''
+  };
 
-  ngOnInit() {
+  // Mensajes y alertas
+  alertMsg = '';
+  alertType: 'error' | 'creado' | 'eliminado' | 'bienvenida' | 'info' = 'creado';
+
+  constructor(
+    private formService: FormService,
+    private cdr: ChangeDetectorRef,
+    private paginationService: PaginationService
+  ) { }
+
+  ngOnInit(): void {
     this.cargarForms();
-
-    // Datos de prueba (comentar cuando la API funcione)
-    setTimeout(() => {
-      if (this.forms.length === 0) {
-        console.log('No se cargaron formularios de la API, agregando datos de prueba');
-        this.forms = [
-          {
-            id: 1,
-            name: 'Formulario de acuerdo de pago',
-            description: 'Formulario de creación de acuerdo de pago'
-          },
-          {
-            id: 2,
-            name: 'Formulario de registro de multas',
-            description: 'Formulario para registrar nuevas multas'
-          }
-        ];
-        this.updatePagination();
-      }
-    }, 2000);
   }
 
-  // Cargar formularios desde la API
-  cargarForms(esDespuesDeOperacion: boolean = false): void {
-    console.log('Cargando formularios desde la API...'); // Para depuración
-
+  /**
+   * Carga formularios desde la API
+   */
+  private cargarForms(esDespuesDeOperacion = false): void {
     this.formService.genericService.getAll<Form>(this.formService.endpoint).subscribe({
       next: (forms: Form[]) => {
-        console.log('Formularios cargados:', forms); // Para depuración
-        this.forms = forms || []; // Asegurar que forms sea un array
+        this.forms = Array.isArray(forms) ? forms : [];
         this.updatePagination();
-        // Forzar detección de cambios para asegurar que la vista se actualice
         this.cdr.detectChanges();
       },
       error: (error: any) => {
         console.error('Error al cargar formularios:', error);
-        this.mostrarAlerta('Error al cargar los formularios: ' + (error.error?.message || error.message), 'error');
+        const errorMessage = error.error?.message || error.message || 'Error desconocido';
+        this.mostrarAlerta(`Error al cargar los formularios: ${errorMessage}`, 'error');
 
-        // Solo agregar datos de prueba si no es después de una operación y no hay formularios
+        // Solo agregar datos de prueba si no es después de una operación
         if (!esDespuesDeOperacion && this.forms.length === 0) {
-          console.log('Agregando datos de prueba debido a error de API');
-          this.forms = [
-            {
-              id: 1,
-              name: 'Formulario de acuerdo de pago',
-              description: 'Formulario de creación de acuerdo de pago'
-            },
-            {
-              id: 2,
-              name: 'Formulario de registro de multas',
-              description: 'Formulario para registrar nuevas multas'
-            }
-          ];
-          this.updatePagination();
+          this.cargarDatosPrueba();
         }
       }
     });
   }
 
-  abrirModal() {
-    this.showModal = true;
-    this.nuevoForm = {
-      name: '',
-      description: ''
-    };
+  /**
+   * Carga datos de prueba cuando la API no está disponible
+   */
+  private cargarDatosPrueba(): void {
+    this.forms = [
+      {
+        id: 1,
+        name: 'Formulario de acuerdo de pago',
+        description: 'Formulario de creación de acuerdo de pago'
+      },
+      {
+        id: 2,
+        name: 'Formulario de registro de multas',
+        description: 'Formulario para registrar nuevas multas'
+      }
+    ];
+    this.updatePagination();
   }
 
-  cerrarModal() {
+  /**
+   * Abre el modal para crear un nuevo formulario
+   */
+  abrirModal(): void {
+    this.showModal = true;
+    this.limpiarNuevoForm();
+  }
+
+  /**
+   * Cierra el modal de creación
+   */
+  cerrarModal(): void {
     this.showModal = false;
-    // Limpiar el formulario al cerrar
-    this.nuevoForm = {
-      name: '',
-      description: ''
-    };
+    this.limpiarNuevoForm();
+  }
+
+  /**
+   * Limpia los datos del formulario nuevo
+   */
+  private limpiarNuevoForm(): void {
+    this.nuevoForm = { name: '', description: '' };
   }
 
   confirmarActualizacion(form: Form) {

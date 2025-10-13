@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { PaymentAgreementSelectDto } from '../../../../../../../shared/Models/Entities/select/PaymentAgreementSelectDto';
+import { PaymentAgreementSelectDto } from '../../../../../../../shared/models/entities/select/PaymentAgreementSelectDto';
 
 @Component({
   selector: 'app-multa-card',

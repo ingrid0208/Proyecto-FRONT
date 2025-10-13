@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultaCardComponent } from '../../contenido/multa-card/multa-card.component';
 import Swal from 'sweetalert2';
-import { PaymentAgreementSelectDto } from '../../../../../../../shared/Models/Entities/select/PaymentAgreementSelectDto';
+import { PaymentAgreementSelectDto } from '../../../../../../../shared/models/entities/select/PaymentAgreementSelectDto';
 import { ServiceGenericService } from '../../../../../../../core/services/utils/generic/service-generic.service';
 
 @Component({
