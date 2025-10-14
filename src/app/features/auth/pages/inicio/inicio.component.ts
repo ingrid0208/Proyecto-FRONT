@@ -52,15 +52,40 @@ export class InicioComponent implements OnInit {
   this.loadingTypes = true;
   this.loadError = '';
 
-  this.api.getAll<TypeInfraction>('Infraction').subscribe({
-    next: (items) => {
-      this.loadingTypes = false;
+  // Cargar tipos de infracción
+  this.api.getAll<any>('TypeInfraction').subscribe({
+    next: (types) => {
+      // Cargar todas las infracciones
+      this.api.getAll<any>('Infraction').subscribe({
+        next: (infractions) => {
+          this.loadingTypes = false;
 
-      // Mapear cada tipo de infracción a un Category para el acordeón
-      this.categories = items.map(i => ({
-        title: i.typeInfractionName,
-        items: [{ title: `Valor SMLDV: ${i.numer_smldv}`, text: i.description }]
-      }));
+          // Agrupar infracciones por tipo
+          this.categories = types.map((type: any) => {
+            const typeInfractions = infractions.filter((inf: any) =>
+              inf.typeInfractionName === type.name
+            );
+
+            return {
+              title: type.typeInfractionName || type.name,
+              items: typeInfractions.map((inf: any) => ({
+                title: inf.description.length > 50
+                  ? inf.description.substring(0, 50) + '...'
+                  : inf.description,
+                text: `Valor SMLDV: ${inf.numer_smldv} - ${inf.description}`
+              }))
+            };
+          }).filter(cat => cat.items.length > 0); // Solo mostrar tipos que tienen infracciones
+        },
+        error: (err) => {
+          this.loadingTypes = false;
+          if (err.status === 0) {
+            this.loadError = 'El servidor no está disponible en este momento. Intenta más tarde.';
+          } else {
+            this.loadError = err?.error?.message || 'No fue posible cargar las infracciones.';
+          }
+        }
+      });
     },
     error: (err) => {
       this.loadingTypes = false;

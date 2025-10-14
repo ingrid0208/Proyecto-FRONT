@@ -114,7 +114,7 @@ export class Login {
           console.log("✅ Usuario autenticado:", user);
 
           // 🔍 Aquí más adelante podrías reactivar lógica de verificación mensual
-          this.router.navigate(['/consultar-ingresar/consultar-ingresar']);
+          this.router.navigate(['/home']);
 
           this.loading = false;
         },

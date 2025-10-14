@@ -27,7 +27,7 @@ export class AnexarMultasComponent implements OnInit {
     documentTypeId: null as number | null,
     documentNumber: '',
     typeInfractionId: null as number | null,
-    fineCalculationId: null as number | null,
+    infractionId: null as number | null,
     smldvCount: null as number | null,
     email: ''
   };
@@ -83,7 +83,7 @@ export class AnexarMultasComponent implements OnInit {
 
   // Cambio de tipo de infracción
   onInfractionTypeChange(typeId: number) {
-    this.form.fineCalculationId = null;
+    this.form.infractionId = null;
     this.form.smldvCount = null;
     this.infractions = [];
 
@@ -138,7 +138,7 @@ export class AnexarMultasComponent implements OnInit {
     this.form.lastName = '';
     this.form.email = '';
     this.form.typeInfractionId = null;
-    this.form.fineCalculationId = null;
+    this.form.infractionId = null;
     this.form.smldvCount = null;
     this.infractions = [];
     this.isExistingUser = false; 
@@ -152,12 +152,58 @@ export class AnexarMultasComponent implements OnInit {
   saveInfraction() {
   if (this.isLoading) return; // evita doble click
 
+  // ✅ Validaciones del frontend
+  if (!this.form.documentTypeId) {
+    Swal.fire('⚠️', 'Debe seleccionar un tipo de documento', 'warning');
+    return;
+  }
+
+  if (!this.form.documentNumber.trim()) {
+    Swal.fire('⚠️', 'Debe ingresar el número de documento', 'warning');
+    return;
+  }
+
+  if (!this.form.firstName.trim()) {
+    Swal.fire('⚠️', 'Debe ingresar el nombre', 'warning');
+    return;
+  }
+
+  if (!this.form.lastName.trim()) {
+    Swal.fire('⚠️', 'Debe ingresar el apellido', 'warning');
+    return;
+  }
+
+  if (!this.form.typeInfractionId) {
+    Swal.fire('⚠️', 'Debe seleccionar un tipo de multa', 'warning');
+    return;
+  }
+
+  if (!this.form.infractionId) {
+    Swal.fire('⚠️', 'Debe seleccionar la infracción cometida', 'warning');
+    return;
+  }
+
+  if (!this.form.email.trim()) {
+    Swal.fire('⚠️', 'Debe ingresar el correo electrónico', 'warning');
+    return;
+  }
+
+  // Validación básica de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(this.form.email)) {
+    Swal.fire('⚠️', 'El correo electrónico no tiene un formato válido', 'warning');
+    return;
+  }
+
   this.isLoading = true; // ahora sí bloqueamos mientras se registra
 
   const payload = {
-    ...this.form,
+    firstName: this.form.firstName,
+    lastName: this.form.lastName,
     documentTypeId: Number(this.form.documentTypeId),
-    typeInfractionId: Number(this.form.typeInfractionId),
+    documentNumber: this.form.documentNumber,
+    email: this.form.email,
+    typeInfractionId: Number(this.form.infractionId), // Enviar el ID de la infracción específica, no del tipo
     smldvCount: Number(this.form.smldvCount)
   };
 
@@ -212,11 +258,18 @@ export class AnexarMultasComponent implements OnInit {
       documentTypeId: null,
       documentNumber: '',
       typeInfractionId: null,
-      fineCalculationId: null,
+      infractionId: null,
       smldvCount: null
     };
     this.infractions = [];
     this.isExistingUser = false;
   }
 
+  getSelectedInfractionDescription(): string {
+    if (!this.form.infractionId) return '';
+    const selected = this.infractions.find(x => x.value === this.form.infractionId);
+    return selected ? selected.label : '';
+  }
+
 }
+

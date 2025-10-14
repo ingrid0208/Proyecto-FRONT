@@ -9,14 +9,12 @@ import { CardHeaderComponent } from '../../../../../shared/components/card-heade
 import { AuthService } from '../../../../../core/services/auth/auth.service';
 import { DocumentSessionService } from '../../../../../core/services/documents/document-session.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
-import { UserInfractionSelectDto } from '../../../../../shared/Models/Entities/select/UserInfractionSelectDto';
 
-// 🔹 DTO reducido para mostrar en la tabla
-export interface InfractionView {
+interface MultaTableRow {
   tipo: string;
   fecha: string;
   descripcion: string;
-  estado: 'Pendiente' | 'Pagada' | 'Vencida';
+  estado: 'Pendiente' | 'Pagada' | 'Vencida' | 'Con acuerdo';
 }
 
 @Component({
@@ -35,14 +33,7 @@ export interface InfractionView {
 })
 export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
 
-  constructor(
-    private authService: AuthService,
-    private documentSessionService: DocumentSessionService,
-    private router: Router,
-    private sessionPing: SessionPingService
-  ) {}
-
-  multas: InfractionView[] = []; // 🔹 ahora usamos el DTO reducido
+  multas: MultaTableRow[] = [];
   ciudadano = '';
 
   columns: ColumnDef[] = [
@@ -52,48 +43,39 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
     { key: 'estado', header: 'Estado', type: 'chip' },
   ];
 
+  constructor(
+    private authService: AuthService,
+    private documentSessionService: DocumentSessionService,
+    private router: Router,
+    private sessionPing: SessionPingService
+  ) {}
+
+  // 📌 Carga inicial de multas (usando docTypeId + docNumber)
   async ngOnInit() {
-    this.sessionPing.start();
-
-    const nav = this.router.getCurrentNavigation();
-    const st: any = nav?.extras?.state ?? history.state;
-
-    if (st?.multas?.length) {
-      this.multas = st.multas;
-      this.ciudadano = st.ciudadano ?? '';
-      return;
-    }
-
     const docTypeId = Number(sessionStorage.getItem('docTypeId'));
     const docNumber = sessionStorage.getItem('docNumber') || '';
-    if (!docTypeId || !docNumber) {
-      alert('No se encontraron datos de documento. Inicia la consulta nuevamente.');
-      this.router.navigate(['/auth/inicio']);
-      return;
-    }
+    if (!docTypeId || !docNumber) return;
 
     try {
       const r = await this.documentSessionService.getMultasByDocument(docTypeId, docNumber).toPromise();
-      const data: UserInfractionSelectDto[] = r?.data ?? [];
-      if (!data.length) {
-        alert('Este usuario no tiene multas registradas.');
-        this.router.navigate(['/auth/inicio']);
-        return;
-      }
+      this.sessionPing.start();
+      const data = r?.data ?? [];
 
-      // 🔹 Adaptamos UserInfractionSelectDto → InfractionView
-      this.multas = data.map((x: UserInfractionSelectDto) => ({
+      this.multas = data.map((x: any) => ({
+        id: x.id,
+        userId: x.userId,
         tipo: x.typeInfractionName ?? '—',
         fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        estado: mapEstadoFromNumber(x.stateInfraction)
+        estado: mapEstadoFromEnum(x.stateInfraction)
       }));
 
       const first = data[0];
-      this.ciudadano = [first?.firstName, first?.lastName].filter(Boolean).join(' ');
-    } catch (e: any) {
-      alert(e?.error?.message || 'No fue posible obtener las multas.');
-      this.router.navigate(['/auth/inicio']);
+      if (first) {
+        this.ciudadano = [first.firstName, first.lastName].filter(Boolean).join(' ');
+      }
+    } catch (error) {
+      console.error('Error al cargar multas:', error);
     }
   }
 
@@ -115,9 +97,27 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
   }
 }
 
-// 🔹 Cambié a number porque tu DTO define stateInfraction: number
-function mapEstadoFromNumber(v: number | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' {
-  if (v === 1) return 'Pagada';
-  if (v === 2) return 'Vencida';
+// 🔎 Mapear enum del backend a texto legible
+function mapEstadoFromEnum(v: string | number | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' | 'Con acuerdo' {
+  if (v === null || v === undefined) return 'Pendiente';
+
+  if (typeof v === 'string') {
+    switch (v) {
+      case 'Pendiente': return 'Pendiente';
+      case 'Pagada': return 'Pagada';
+      case 'Vencida': return 'Vencida';
+      case 'ConAcuerdoPago': return 'Con acuerdo';
+    }
+  }
+
+  if (typeof v === 'number') {
+    switch (v) {
+      case 0: return 'Pendiente';
+      case 1: return 'Pagada';
+      case 2: return 'Vencida';
+      case 3: return 'Con acuerdo';
+    }
+  }
+
   return 'Pendiente';
 }

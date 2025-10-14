@@ -234,6 +234,19 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
           document.body.removeChild(link);
         }
 
+        // Actualizar el estado de la infracción a "Con Acuerdo" (estado 3)
+        this.updateInfractionStatus(this.form.userInfractionId, 3);
+
+        // Redirigir al usuario de vuelta a la consulta de documentos para que vea el cambio
+        setTimeout(() => {
+          this.router.navigate(['/home/contenido'], {
+            state: {
+              refresh: true,
+              message: 'Acuerdo de pago creado exitosamente. El estado de la multa se ha actualizado.'
+            }
+          });
+        }, 2000);
+
         this.step = 3;
       },
       error: (err) => {
@@ -256,6 +269,24 @@ export class FormularioAcuerdoPagoComponent implements OnInit {
   onMonthlyFeeChange(value: any) {
     const rawValue = String(value).replace(/\D/g, '');
     this.form.monthlyFee = rawValue ? Number(rawValue) : 0;
+  }
+
+  // Actualizar el estado de la infracción después de crear el acuerdo
+  private updateInfractionStatus(infractionId: number, newStatus: number): void {
+    const updatePayload = {
+      id: infractionId,
+      stateInfraction: newStatus
+    };
+
+    this.serviceGeneric.update('UserInfraction', infractionId, updatePayload).subscribe({
+      next: () => {
+        console.log(`✅ Estado de infracción ${infractionId} actualizado a ${newStatus}`);
+      },
+      error: (err) => {
+        console.error('❌ Error actualizando estado de infracción:', err);
+        // No mostramos error al usuario ya que el acuerdo se creó correctamente
+      }
+    });
   }
 
   getToday(): string {

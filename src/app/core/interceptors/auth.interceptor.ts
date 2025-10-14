@@ -39,18 +39,18 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         userStore.clear();
         // Aviso suave al usuario
 
-        router.navigate(['/']);
+        router.navigate(['/auth/inicio']);
         return EMPTY;
       }
 
-      // Para 401 en otros endpoints de API, intentamos refresh y reintentamos
-      if (isHttp && status === 401 && isApiRequest && !isRefreshEndpoint) {
+      // Para 401 en otros endpoints de API (excepto login), intentamos refresh y reintentamos
+      if (isHttp && status === 401 && isApiRequest && !isRefreshEndpoint && !req.url.includes('/Auth/login')) {
         return authService.RefreshToken().pipe(
           switchMap(() => next(req)),
           catchError(() => {
             userStore.clear();
 
-            router.navigate(['/']);
+            router.navigate(['/auth/inicio']);
             return EMPTY;
           })
         );
