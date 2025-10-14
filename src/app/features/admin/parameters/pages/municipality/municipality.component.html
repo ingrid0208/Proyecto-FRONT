@@ -1,42 +1,49 @@
+<<<<<<< HEAD:src/app/features/parameters/pages/municipality/municipality.component.html
+=======
+<!-- <app-topbar></app-topbar> -->
+
+>>>>>>> smdlv:src/app/features/admin/parameters/pages/municipality/municipality.component.html
 <mat-card>
   <app-card-header
-    title="Frecuencias de pago"
-    [description]="'Intervalo y día de corte configurados.'">
+    title="Municipios"
+    [description]="'Listado de municipios con su código DANE y departamento.'">
   </app-card-header>
 
   <mat-card-content>
     <ng-container *ngIf="!loading && !errorMsg; else estado">
-      <!-- Tabla personalizada para frecuencias de pago -->
+      <!-- Tabla personalizada para municipios -->
       <div class="table-container">
         <table class="custom-table">
           <thead>
             <tr>
-              <th>Nombre</th>
-              <th>Intervalo en días</th>
+              <th>Municipio</th>
+              <th>Código DANE</th>
+              <th>Departamento</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let frecuencia of frecuencias">
-              <td>{{ frecuencia.name }}</td>
-              <td>{{ frecuencia.daysInterval }}</td>
+            <tr *ngFor="let municipio of municipios">
+              <td>{{ municipio.name }}</td>
+              <td>{{ municipio.daneCode }}</td>
+              <td>{{ municipio.departmentName }}</td>
               <td class="actions-cell">
                 <button
                   class="btn btn-sm btn-success"
-                  (click)="abrirFormularioActualizar(frecuencia)"
-                  title="Editar frecuencia de pago">
+                  (click)="confirmarActualizacion(municipio)"
+                  title="Editar municipio">
                   Editar
                 </button>
                 <button
                   class="btn btn-sm btn-success-dark ml-2"
-                  (click)="confirmarEliminacion(frecuencia)"
-                  title="Eliminar frecuencia de pago">
+                  (click)="confirmarEliminacion(municipio)"
+                  title="Eliminar municipio">
                   Eliminar
                 </button>
               </td>
             </tr>
-            <tr *ngIf="frecuencias.length === 0">
-              <td colspan="3" class="text-center">No hay frecuencias de pago para mostrar</td>
+            <tr *ngIf="municipios.length === 0">
+              <td colspan="4" class="text-center">No hay municipios para mostrar</td>
             </tr>
           </tbody>
         </table>
@@ -44,13 +51,13 @@
     </ng-container>
 
     <ng-template #estado>
-      <div *ngIf="loading">Cargando frecuencias de pago...</div>
+      <div *ngIf="loading">Cargando municipios...</div>
       <div *ngIf="!loading && errorMsg" class="text-red-600">{{ errorMsg }}</div>
     </ng-template>
   </mat-card-content>
 
   <app-button
-    texto="Agregar nueva frecuencia de pago"
+    texto="Agregar nuevo municipio"
     color="accent"
     (clicked)="abrirFormulario()">
   </app-button>
@@ -65,7 +72,7 @@
   {{ errorMsg }}
 </div>
 
-<!-- Modal para crear frecuencia de pago -->
+<!-- Modal para crear municipio -->
 <div *ngIf="showForm" class="modal-overlay" (click)="cerrarFormulario()">
   <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -76,8 +83,8 @@
           </svg>
         </div>
         <div class="header-text">
-          <h3>Crear Nueva Frecuencia de Pago</h3>
-          <p>Ingresa la información de la nueva frecuencia de pago</p>
+          <h3>Crear Nuevo Municipio</h3>
+          <p>Ingresa la información del nuevo municipio</p>
         </div>
       </div>
       <button class="close-btn" (click)="cerrarFormulario()">
@@ -86,9 +93,9 @@
         </svg>
       </button>
     </div>
-
+    
     <div class="modal-body">
-      <form [formGroup]="paymentFrequencyForm" (ngSubmit)="crearPaymentFrequency()">
+      <form [formGroup]="municipalityForm" (ngSubmit)="crearMunicipio()">
         <div class="form-grid">
           <div class="form-group">
             <label for="name">
@@ -96,7 +103,7 @@
                 <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
                 <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
               </svg>
-              Nombre
+              Nombre del Municipio
             </label>
             <input
               type="text"
@@ -104,50 +111,53 @@
               formControlName="name"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('name')"
-              placeholder="Ej: Mensual">
+              placeholder="Ej: Medellín">
             <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
               {{ getFieldError('name') }}
             </div>
           </div>
 
           <div class="form-group">
-            <label for="code">
-              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 2H14V14H2V2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              </svg>
-              Código
-            </label>
-            <input
-              type="text"
-              id="code"
-              formControlName="code"
-              class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('code')"
-              placeholder="Ej: MENSUAL">
-            <div *ngIf="isFieldInvalid('code')" class="invalid-feedback">
-              {{ getFieldError('code') }}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="daysInterval">
+            <label for="daneCode">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
                 <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
               </svg>
-              Intervalo en días
+              Código DANE
             </label>
             <input
-              type="number"
-              id="daysInterval"
-              formControlName="daysInterval"
+              type="text"
+              id="daneCode"
+              formControlName="daneCode"
               class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('daysInterval')"
-              placeholder="Ej: 30"
-              min="1"
-              max="365">
-            <div *ngIf="isFieldInvalid('daysInterval')" class="invalid-feedback">
-              {{ getFieldError('daysInterval') }}
+              [class.is-invalid]="isFieldInvalid('daneCode')"
+              placeholder="Ej: 05001">
+            <div *ngIf="isFieldInvalid('daneCode')" class="invalid-feedback">
+              {{ getFieldError('daneCode') }}
+            </div>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label for="departmentId">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1L14 4V12L8 15L2 12V4L8 1Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              Departamento
+            </label>
+            <select
+              id="departmentId"
+              formControlName="departmentId"
+              class="form-control modern-select"
+              [class.is-invalid]="isFieldInvalid('departmentId')">
+              <option value="" disabled>Seleccione un departamento</option>
+              <option value="1">Antioquia</option>
+              <option value="2">Cundinamarca</option>
+              <option value="3">Valle del Cauca</option>
+              <option value="4">Atlántico</option>
+              <option value="5">Bolívar</option>
+            </select>
+            <div *ngIf="isFieldInvalid('departmentId')" class="invalid-feedback">
+              {{ getFieldError('departmentId') }}
             </div>
           </div>
         </div>
@@ -159,13 +169,13 @@
             </svg>
             Cancelar
           </button>
-          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || paymentFrequencyForm.invalid">
+          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || municipalityForm.invalid">
             <svg *ngIf="!loading" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <div *ngIf="loading" class="loading-spinner"></div>
             <span *ngIf="loading">Creando...</span>
-            <span *ngIf="!loading">Crear Frecuencia de Pago</span>
+            <span *ngIf="!loading">Crear Municipio</span>
           </button>
         </div>
       </form>
@@ -173,7 +183,7 @@
   </div>
 </div>
 
-<!-- Modal para actualizar frecuencia de pago -->
+<!-- Modal para actualizar municipio -->
 <div *ngIf="showUpdateForm" class="modal-overlay" (click)="cerrarFormularioActualizar()">
   <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -185,8 +195,8 @@
           </svg>
         </div>
         <div class="header-text">
-          <h3>Actualizar Frecuencia de Pago</h3>
-          <p>Modifica la información de la frecuencia de pago</p>
+          <h3>Actualizar Municipio</h3>
+          <p>Modifica la información del municipio</p>
         </div>
       </div>
       <button class="close-btn" (click)="cerrarFormularioActualizar()">
@@ -195,9 +205,9 @@
         </svg>
       </button>
     </div>
-
+    
     <div class="modal-body">
-      <form [formGroup]="updateForm" (ngSubmit)="actualizarPaymentFrequency()">
+      <form [formGroup]="updateForm" (ngSubmit)="actualizarMunicipio()">
         <div class="form-grid">
           <div class="form-group">
             <label for="update-name">
@@ -205,7 +215,7 @@
                 <path d="M8 8C10.2091 8 12 6.20914 12 4C12 1.79086 10.2091 0 8 0C5.79086 0 4 1.79086 4 4C4 6.20914 5.79086 8 8 8Z" fill="currentColor"/>
                 <path d="M8 10C3.58172 10 0 12.6863 0 16H16C16 12.6863 12.4183 10 8 10Z" fill="currentColor"/>
               </svg>
-              Nombre
+              Nombre del Municipio
             </label>
             <input
               type="text"
@@ -213,50 +223,53 @@
               formControlName="name"
               class="form-control modern-input"
               [class.is-invalid]="isFieldInvalid('name', updateForm)"
-              placeholder="Ej: Mensual">
+              placeholder="Ej: Medellín">
             <div *ngIf="isFieldInvalid('name', updateForm)" class="invalid-feedback">
               {{ getFieldError('name', updateForm) }}
             </div>
           </div>
 
           <div class="form-group">
-            <label for="update-code">
-              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2 2H14V14H2V2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              </svg>
-              Código
-            </label>
-            <input
-              type="text"
-              id="update-code"
-              formControlName="code"
-              class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('code', updateForm)"
-              placeholder="Ej: MENSUAL">
-            <div *ngIf="isFieldInvalid('code', updateForm)" class="invalid-feedback">
-              {{ getFieldError('code', updateForm) }}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="update-daysInterval">
+            <label for="update-daneCode">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
                 <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
               </svg>
-              Intervalo en días
+              Código DANE
             </label>
             <input
-              type="number"
-              id="update-daysInterval"
-              formControlName="daysInterval"
+              type="text"
+              id="update-daneCode"
+              formControlName="daneCode"
               class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('daysInterval', updateForm)"
-              placeholder="Ej: 30"
-              min="1"
-              max="365">
-            <div *ngIf="isFieldInvalid('daysInterval', updateForm)" class="invalid-feedback">
-              {{ getFieldError('daysInterval', updateForm) }}
+              [class.is-invalid]="isFieldInvalid('daneCode', updateForm)"
+              placeholder="Ej: 05001">
+            <div *ngIf="isFieldInvalid('daneCode', updateForm)" class="invalid-feedback">
+              {{ getFieldError('daneCode', updateForm) }}
+            </div>
+          </div>
+
+          <div class="form-group form-group-full">
+            <label for="update-departmentId">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1L14 4V12L8 15L2 12V4L8 1Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              Departamento
+            </label>
+            <select
+              id="update-departmentId"
+              formControlName="departmentId"
+              class="form-control modern-select"
+              [class.is-invalid]="isFieldInvalid('departmentId', updateForm)">
+              <option value="" disabled>Seleccione un departamento</option>
+              <option value="1">Antioquia</option>
+              <option value="2">Cundinamarca</option>
+              <option value="3">Valle del Cauca</option>
+              <option value="4">Atlántico</option>
+              <option value="5">Bolívar</option>
+            </select>
+            <div *ngIf="isFieldInvalid('departmentId', updateForm)" class="invalid-feedback">
+              {{ getFieldError('departmentId', updateForm) }}
             </div>
           </div>
         </div>
@@ -274,7 +287,7 @@
             </svg>
             <div *ngIf="loading" class="loading-spinner"></div>
             <span *ngIf="loading">Actualizando...</span>
-            <span *ngIf="!loading">Actualizar Frecuencia de Pago</span>
+            <span *ngIf="!loading">Actualizar Municipio</span>
           </button>
         </div>
       </form>
@@ -290,7 +303,7 @@
     </div>
 
     <div class="modal-body">
-      <p>¿Está seguro que desea eliminar la frecuencia de pago con nombre <strong>{{ paymentFrequencyAEliminar?.name }}</strong>?</p>
+      <p>¿Está seguro que desea eliminar el municipio <strong>{{ municipalityAEliminar?.name }}</strong>?</p>
       <p class="text-warning">Esta acción no se puede deshacer.</p>
     </div>
 
@@ -298,9 +311,43 @@
       <button type="button" class="btn btn-secondary" (click)="cancelarEliminacion()">
         Cancelar
       </button>
-      <button type="button" class="btn btn-danger" (click)="eliminarPaymentFrequency()" [disabled]="loading">
+      <button type="button" class="btn btn-danger" (click)="eliminarMunicipio()" [disabled]="loading">
         <span *ngIf="loading">Eliminando...</span>
         <span *ngIf="!loading">Eliminar</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm" class="modal-overlay">
+  <div class="modal-content modal-sm">
+    <div class="modal-header">
+      <h3>Confirmar Actualización</h3>
+    </div>
+
+    <div class="modal-body">
+      <div class="warning-content">
+        <div class="warning-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="warning-text">
+          <h4>¿Desea actualizar este municipio?</h4>
+          <p>Va a editar la información del municipio <strong>"{{ municipalityAActualizar?.name }}"</strong></p>
+          <p class="text-info"><strong>📝 Se abrirá el formulario de edición.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="cancelarActualizacion()">
+        Cancelar
+      </button>
+      <button type="button" class="btn btn-primary" (click)="abrirFormularioActualizar()">
+        Sí, Editar
       </button>
     </div>
   </div>

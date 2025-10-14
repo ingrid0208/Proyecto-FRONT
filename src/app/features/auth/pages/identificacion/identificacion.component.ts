@@ -21,7 +21,7 @@ import { TerminosCondicionesModalComponent } from '../../../../shared/components
   standalone: true,
   imports: [CommonModule, FormsModule, DropdownModule, InputTextModule, ButtonModule, TerminosCondicionesModalComponent],
   template: `
-  <div [ngClass]="layout === 'embedded' ? 'block pt-0' : 'flex justify-center items-center pt-40'">
+  <div [ngClass]="layout === 'embedded' ? 'block pt-0' : 'flex justify-center items-center pt-20'">
     <div [ngClass]="layout === 'embedded' ? 'bg-white p-8 md:p-10 rounded-xl shadow-lg w-full max-w-md md:max-w-lg' : 'bg-white p-12 rounded-xl shadow-lg w-full max-w-2xl'">
       <h2 class="text-center text-3xl font-semibold mb-8 text-gray-800">Identificación ciudadana</h2>
 
@@ -54,6 +54,15 @@ import { TerminosCondicionesModalComponent } from '../../../../shared/components
         (click)="onSubmit()">
       </button>
 
+      <button
+        *ngIf="showLogoutButton"
+        pButton
+        type="button"
+        label="Cerrar Sesión"
+        class="w-full bg-gray-600 border-none hover:bg-gray-700 text-lg py-3 mt-3"
+        (click)="onLogout()">
+      </button>
+
       <small>
         Este sitio está protegido por reCAPTCHA y aplican la
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad</a>
@@ -73,7 +82,9 @@ import { TerminosCondicionesModalComponent } from '../../../../shared/components
 export class Identificacion implements OnInit {
   @Input() layout: 'standalone' | 'embedded' = 'standalone';
   @Input() redirectTo: string = '/contenido-documento/document';
+  @Input() showLogoutButton = false;
   @Output() loginSuccess = new EventEmitter<void>();
+  @Output() logoutClick = new EventEmitter<void>();
 
   constructor(
     private router: Router,
@@ -208,6 +219,10 @@ export class Identificacion implements OnInit {
       if (Array.isArray(list) && list.length) return list[0];
     }
     return null;
+  }
+
+  onLogout() {
+    this.logoutClick.emit();
   }
 
   /**

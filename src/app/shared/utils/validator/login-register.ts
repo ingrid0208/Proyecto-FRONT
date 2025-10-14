@@ -34,11 +34,11 @@ export function validateRegisterPassword(password: string): string | null {
 }
 
 export function validateRegisterEmail(email: string): string | null {
-  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!email.trim()) return 'El correo electrónico es obligatorio.';
   if (email.length > 150) return 'El correo electrónico no debe superar los 150 caracteres.';
-  if (!gmailRegex.test(email)) return 'El correo debe ser un Gmail válido (usuario@gmail.com).';
+  if (!emailRegex.test(email)) return 'El correo electrónico no tiene un formato válido.';
 
   return null;
 }

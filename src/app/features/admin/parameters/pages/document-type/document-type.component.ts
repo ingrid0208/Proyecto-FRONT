@@ -2,13 +2,22 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
-import { DocumentTypeService } from '../../../../core/services/parameters/document-type.service';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+<<<<<<< HEAD:src/app/features/parameters/pages/document-type/document-type.component.ts
 import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { DocumentTypeDto } from '../../../../shared/models/parameters/document-type.models';
 import { ColumnDef } from '../../../../shared/models/util/table.Generic';
+=======
+import { AppTopbar } from '../../../../../layout/header/topbar.component';
+import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { DocumentTypeService } from '../../../../../core/services/parameters/document-type.service';
+import { DocumentTypeDto } from '../../../../../shared/Models/parameters/document-type.models';
+import { ColumnDef } from '../../../../../shared/Models/util/table.Generic';
+
+>>>>>>> smdlv:src/app/features/admin/parameters/pages/document-type/document-type.component.ts
 
 
 @Component({

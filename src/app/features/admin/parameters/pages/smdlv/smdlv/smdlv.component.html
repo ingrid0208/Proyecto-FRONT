@@ -1,42 +1,46 @@
+<!-- <app-topbar></app-topbar> -->
+
 <mat-card>
   <app-card-header
-    title="Departamentos"
-    [description]="'Listado de departamentos con su código DANE.'">
+    title="Valores "
+    [description]="'Listado de valores SMLDV con su salario mínimo correspondiente.'">
   </app-card-header>
 
   <mat-card-content>
     <ng-container *ngIf="!loading && !errorMsg; else estado">
-      <!-- Tabla personalizada para departamentos -->
+      <!-- Tabla personalizada para SMLDV -->
       <div class="table-container">
         <table class="custom-table">
           <thead>
             <tr>
-              <th>Nombre del departamento</th>
-              <th>Código DANE</th>
+              <th>Valor SMLDV</th>
+              <th>Año Vigente</th>
+              <th>Salario Mínimo</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let departamento of paginatedDepartamentos">
-              <td>{{ departamento.name }}</td>
-              <td>{{ departamento.daneCode }}</td>
+            <tr *ngFor="let smdlv of paginatedSmdlv">
+              <td>{{ smdlv.value_smldv | currency:'COP':'symbol':'1.0-0' }}</td>
+              <td>{{ smdlv.current_Year }}</td>
+              <td>{{ smdlv.minimunWage | currency:'COP':'symbol':'1.0-0' }}</td>
               <td class="actions-cell">
                 <button
                   class="btn btn-sm btn-success"
-                  (click)="confirmarActualizacion(departamento)"
-                  title="Editar departamento">
+                  (click)="confirmarActualizacion(smdlv)"
+                  title="Editar valor SMLDV">
                   Editar
                 </button>
                 <button
                   class="btn btn-sm btn-success-dark ml-2"
-                  (click)="confirmarEliminacion(departamento)"
-                  title="Eliminar departamento">
+                  (click)="confirmarEliminacion(smdlv)"
+                  title="Eliminar valor SMLDV">
                   Eliminar
                 </button>
               </td>
             </tr>
-            <tr *ngIf="paginatedDepartamentos.length === 0 && !loading">
-              <td colspan="3" class="text-center">No hay departamentos para mostrar</td>
+            <tr *ngIf="paginatedSmdlv.length === 0 && !loading">
+              <td colspan="4" class="text-center">No hay valores SMLDV para mostrar</td>
             </tr>
           </tbody>
         </table>
@@ -44,7 +48,7 @@
         <!-- Paginación -->
         <div class="pagination-container" *ngIf="totalPages > 1">
           <div class="pagination-info">
-            <span>Página {{ currentPage }} de {{ totalPages }} ({{ departamentos.length }} elementos)</span>
+            <span>Página {{ currentPage }} de {{ totalPages }} ({{ smdlvs.length }} elementos)</span>
           </div>
           <div class="pagination-controls">
             <button
@@ -76,16 +80,17 @@
     </ng-container>
 
     <ng-template #estado>
-      <div *ngIf="loading">Cargando departamentos...</div>
+      <div *ngIf="loading">Cargando valores SMLDV...</div>
       <div *ngIf="!loading && errorMsg" class="text-red-600">{{ errorMsg }}</div>
     </ng-template>
   </mat-card-content>
 
-  <app-button
-    texto="Agregar nuevo departamento"
-    color="accent"
-    (clicked)="abrirFormulario()">
-  </app-button>
+ <app-button
+   *ngIf="mostrarBotonCrear()"
+   texto="Agregar nuevo valor SMLDV"
+   color="accent"
+   (clicked)="abrirFormulario()">
+ </app-button>
 </mat-card>
 
 <!-- Mensajes de éxito y error -->
@@ -97,7 +102,7 @@
   {{ errorMsg }}
 </div>
 
-<!-- Modal para crear departamento -->
+<!-- Modal para crear valor SMLDV -->
 <div *ngIf="showForm" class="modal-overlay" (click)="cerrarFormulario()">
   <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -108,8 +113,8 @@
           </svg>
         </div>
         <div class="header-text">
-          <h3>Crear Nuevo Departamento</h3>
-          <p>Ingresa la información del nuevo departamento</p>
+          <h3>Crear Nuevo Valor SMLDV</h3>
+          <p>Ingresa la información del nuevo valor SMLDV</p>
         </div>
       </div>
       <button class="close-btn" (click)="cerrarFormulario()">
@@ -120,46 +125,65 @@
     </div>
 
     <div class="modal-body">
-      <form [formGroup]="departmentForm" (ngSubmit)="crearDepartamento()">
+      <form [formGroup]="smdlvForm" (ngSubmit)="crearSmdlv()">
         <div class="form-grid">
           <div class="form-group">
-            <label for="name">
-              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 1L14 4V12L8 15L2 12V4L8 1Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              </svg>
-              Nombre del Departamento
-            </label>
-            <input
-              type="text"
-              id="name"
-              formControlName="name"
-              class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('name')"
-              placeholder="Ej: Antioquia"
-              maxlength="50">
-            <div *ngIf="isFieldInvalid('name')" class="invalid-feedback">
-              {{ getFieldError('name') }}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="daneCode">
+            <label for="value_smldv">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
                 <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
               </svg>
-              Código DANE
+              Valor SMLDV (Calculado automáticamente)
             </label>
             <input
-              type="text"
-              id="daneCode"
-              formControlName="daneCode"
+              type="number"
+              id="value_smldv"
+              [value]="smdlvForm.get('minimunWage')?.value ? (smdlvForm.get('minimunWage')?.value * 30) : 0"
               class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('daneCode')"
-              placeholder="Ej: 05"
-              maxlength="5">
-            <div *ngIf="isFieldInvalid('daneCode')" class="invalid-feedback">
-              {{ getFieldError('daneCode') }}
+              readonly
+              placeholder="Se calcula automáticamente">
+            <small class="text-muted">Valor calculado como: Salario Mínimo ÷ 30</small>
+          </div>
+
+          <div class="form-group">
+            <label for="current_Year">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1L14 4V12L8 15L2 12V4L8 1Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              Año Vigente
+            </label>
+            <input
+              type="number"
+              id="current_Year"
+              formControlName="current_Year"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('current_Year')"
+              placeholder="Ej: 2024"
+              min="1900"
+              max="2100">
+            <div *ngIf="isFieldInvalid('current_Year')" class="invalid-feedback">
+              {{ getFieldError('current_Year') }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="minimunWage">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Salario Mínimo
+            </label>
+            <input
+              type="number"
+              id="minimunWage"
+              formControlName="minimunWage"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('minimunWage')"
+              placeholder="Ej: 1160000"
+              min="0">
+            <div *ngIf="isFieldInvalid('minimunWage')" class="invalid-feedback">
+              {{ getFieldError('minimunWage') }}
             </div>
           </div>
         </div>
@@ -171,13 +195,13 @@
             </svg>
             Cancelar
           </button>
-          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || departmentForm.invalid">
+          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || smdlvForm.invalid">
             <svg *ngIf="!loading" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <div *ngIf="loading" class="loading-spinner"></div>
             <span *ngIf="loading">Creando...</span>
-            <span *ngIf="!loading">Crear Departamento</span>
+            <span *ngIf="!loading">Crear Valor SMLDV</span>
           </button>
         </div>
       </form>
@@ -185,7 +209,7 @@
   </div>
 </div>
 
-<!-- Modal para actualizar departamento -->
+<!-- Modal para actualizar valor SMLDV -->
 <div *ngIf="showUpdateForm" class="modal-overlay" (click)="cerrarFormularioActualizar()">
   <div class="modal-content modern-modal" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -197,8 +221,8 @@
           </svg>
         </div>
         <div class="header-text">
-          <h3>Actualizar Departamento</h3>
-          <p>Modifica la información del departamento</p>
+          <h3>Actualizar Valor SMLDV</h3>
+          <p>Modifica la información del valor SMLDV</p>
         </div>
       </div>
       <button class="close-btn" (click)="cerrarFormularioActualizar()">
@@ -209,46 +233,65 @@
     </div>
 
     <div class="modal-body">
-      <form [formGroup]="updateForm" (ngSubmit)="actualizarDepartamento()">
+      <form [formGroup]="updateForm" (ngSubmit)="actualizarSmdlv()">
         <div class="form-grid">
           <div class="form-group">
-            <label for="update-name">
-              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 1L14 4V12L8 15L2 12V4L8 1Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              </svg>
-              Nombre del Departamento
-            </label>
-            <input
-              type="text"
-              id="update-name"
-              formControlName="name"
-              class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('name', updateForm)"
-              placeholder="Ej: Antioquia"
-              maxlength="50">
-            <div *ngIf="isFieldInvalid('name', updateForm)" class="invalid-feedback">
-              {{ getFieldError('name', updateForm) }}
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="update-daneCode">
+            <label for="update-value_smldv">
               <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
                 <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
               </svg>
-              Código DANE
+              Valor SMLDV (Calculado automáticamente)
             </label>
             <input
-              type="text"
-              id="update-daneCode"
-              formControlName="daneCode"
+              type="number"
+              id="update-value_smldv"
+              [value]="updateForm.get('minimunWage')?.value ? (updateForm.get('minimunWage')?.value * 30) : 0"
               class="form-control modern-input"
-              [class.is-invalid]="isFieldInvalid('daneCode', updateForm)"
-              placeholder="Ej: 05"
-              maxlength="5">
-            <div *ngIf="isFieldInvalid('daneCode', updateForm)" class="invalid-feedback">
-              {{ getFieldError('daneCode', updateForm) }}
+              readonly
+              placeholder="Se calcula automáticamente">
+            <small class="text-muted">Valor calculado como: Salario Mínimo ÷ 30</small>
+          </div>
+
+          <div class="form-group">
+            <label for="update-current_Year">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 1L14 4V12L8 15L2 12V4L8 1Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              Año Vigente
+            </label>
+            <input
+              type="number"
+              id="update-current_Year"
+              formControlName="current_Year"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('current_Year', updateForm)"
+              placeholder="Ej: 2024"
+              min="1900"
+              max="2100">
+            <div *ngIf="isFieldInvalid('current_Year', updateForm)" class="invalid-feedback">
+              {{ getFieldError('current_Year', updateForm) }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="update-minimunWage">
+              <svg class="input-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 3H14V13H2V3Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <path d="M5 6H11M5 8H11M5 10H8" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Salario Mínimo
+            </label>
+            <input
+              type="number"
+              id="update-minimunWage"
+              formControlName="minimunWage"
+              class="form-control modern-input"
+              [class.is-invalid]="isFieldInvalid('minimunWage', updateForm)"
+              placeholder="Ej: 1160000"
+              min="0">
+            <div *ngIf="isFieldInvalid('minimunWage', updateForm)" class="invalid-feedback">
+              {{ getFieldError('minimunWage', updateForm) }}
             </div>
           </div>
         </div>
@@ -260,13 +303,13 @@
             </svg>
             Cancelar
           </button>
-          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading || updateForm.invalid">
+          <button type="submit" class="btn btn-primary modern-btn" [disabled]="loading">
             <svg *ngIf="!loading" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M13 4L6 11L3 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <div *ngIf="loading" class="loading-spinner"></div>
             <span *ngIf="loading">Actualizando...</span>
-            <span *ngIf="!loading">Actualizar Departamento</span>
+            <span *ngIf="!loading">Actualizar Valor SMLDV</span>
           </button>
         </div>
       </form>
@@ -285,12 +328,12 @@
       <div class="warning-content">
         <div class="warning-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 9V13M12 17H12.01M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <div class="warning-text">
           <h4>¿Está seguro que desea eliminar?</h4>
-          <p>Va a eliminar permanentemente el departamento <strong>"{{ departmentAEliminar?.name }}"</strong></p>
+          <p>Va a eliminar permanentemente el valor SMLDV del año <strong>"{{ smdlvAEliminar?.current_Year }}"</strong></p>
           <p class="text-warning"><strong>⚠️ Esta acción no se puede deshacer.</strong></p>
         </div>
       </div>
@@ -300,7 +343,7 @@
       <button type="button" class="btn btn-secondary" (click)="cancelarEliminacion()">
         Cancelar
       </button>
-      <button type="button" class="btn btn-danger" (click)="eliminarDepartamento()" [disabled]="loading">
+      <button type="button" class="btn btn-danger" (click)="eliminarSmdlv()" [disabled]="loading">
         <span *ngIf="loading">Eliminando...</span>
         <span *ngIf="!loading">Eliminar</span>
       </button>
@@ -319,13 +362,13 @@
       <div class="warning-content">
         <div class="warning-icon">
           <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M18.5 2.5C18.8978 2.10218 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10218 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10218 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
         <div class="warning-text">
-          <h4>¿Desea actualizar este departamento?</h4>
-          <p>Va a editar la información del departamento <strong>"{{ departmentAActualizar?.name }}"</strong></p>
+          <h4>¿Desea actualizar este valor SMLDV?</h4>
+          <p>Va a editar la información del valor SMLDV del año <strong>"{{ smdlvAActualizar?.current_Year }}"</strong></p>
           <p class="text-info"><strong>📝 Se abrirá el formulario de edición.</strong></p>
         </div>
       </div>

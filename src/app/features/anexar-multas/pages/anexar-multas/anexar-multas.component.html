@@ -26,28 +26,29 @@
     <div class="mb-6">
       <label class="block mb-2 font-medium text-gray-700">Nombre</label>
       <input pInputText type="text" [(ngModel)]="form.firstName" name="firstName" class="w-full p-3 text-lg"
-        placeholder="Ingrese su nombre" required maxlength="100" pattern="^[a-zA-ZÀ-ÿ\s]+$" [readonly]="isExistingUser"/>
+        placeholder="Ingrese su nombre" required maxlength="100" pattern="^[a-zA-ZÀ-ÿ\s]+$"
+        [readonly]="isExistingUser" />
     </div>
 
     <!-- Apellido -->
     <div class="mb-6">
       <label class="block mb-2 font-medium text-gray-700">Apellido</label>
       <input pInputText type="text" [(ngModel)]="form.lastName" name="lastName" class="w-full p-3 text-lg"
-        placeholder="Ingrese su apellido" required maxlength="100" pattern="^[a-zA-ZÀ-ÿ\s]+$" [readonly]="isExistingUser"/>
+        placeholder="Ingrese su apellido" required maxlength="100" pattern="^[a-zA-ZÀ-ÿ\s]+$"
+        [readonly]="isExistingUser" />
     </div>
 
     <!-- Tipo de multa -->
-    <div class="mb-6">
+    <div class="mb-6 dd-wrap">
       <label class="block mb-2 font-medium text-gray-700">Tipo de multa</label>
       <p-dropdown [options]="infractionTypes" [(ngModel)]="form.typeInfractionId" name="typeInfractionId"
         (onChange)="onInfractionTypeChange($event.value)" optionLabel="label" optionValue="value"
         placeholder="Seleccione el tipo de multa" class="w-full text-lg" required>
       </p-dropdown>
-
     </div>
 
     <!-- Infracciones -->
-    <div class="mb-6">
+    <div class="mb-6 dd-wrap">
       <label class="block mb-2 font-medium text-gray-700">Infracción cometida</label>
       <p-dropdown [options]="infractions" [(ngModel)]="form.infractionId" name="infractionId"
         (onChange)="onInfractionChange($event.value)" optionLabel="label" optionValue="value"
@@ -69,21 +70,20 @@
       <label class="block mb-2 font-medium text-gray-700">Correo electrónico</label>
       <input pInputText type="email" [(ngModel)]="form.email" name="email" class="w-full p-3 text-lg"
         placeholder="Ingrese su correo electrónico" required maxlength="100"
-        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" [readonly]="isExistingUser"/>
+        pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" [readonly]="isExistingUser" />
     </div>
 
 
     <!-- Botón -->
-   <button pButton type="button" label="Anexar nueva multa"
-  class="w-full bg-green-700 border-none hover:bg-green-800 text-lg py-4"
-  (click)="saveInfraction()"
-  [disabled]="isLoading">
-</button>
+    <button pButton type="button" label="Anexar nueva multa"
+      class="w-full bg-green-700 border-none hover:bg-green-800 text-lg py-4" (click)="saveInfraction()"
+      [disabled]="isLoading">
+    </button>
 
-<!-- Opcional: mostrar un indicador mientras carga -->
-<div *ngIf="isLoading" class="text-center mt-2 text-gray-700">
-  Registrando multa, por favor espere...
-</div>
+    <!-- Opcional: mostrar un indicador mientras carga -->
+    <div *ngIf="isLoading" class="text-center mt-2 text-gray-700">
+      Registrando multa, por favor espere...
+    </div>
 
   </div>
 </div>

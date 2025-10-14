@@ -23,7 +23,7 @@ export const authExpiredInterceptor: HttpInterceptorFn = (req, next) => {
         });
 
         localStorage.removeItem('currentUser');
-        router.navigate(['/auth/inicio']);
+        router.navigate(['/auth/login']);
       }
       return throwError(() => err);
     })

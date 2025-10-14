@@ -43,8 +43,19 @@ export class AuthService extends ApiService {
   /** Login + consulta de usuario en un solo flujo */
   Login(obj: LoginEmailRequest): Observable<User> {
     return this.http.post<any>(this.url('Auth', 'login'), obj, { withCredentials: true }).pipe(
-      switchMap(() => this.GetMe()),
+      switchMap((response) => {
+        // Si el login falla, devolver el error sin intentar GetMe
+        if (response?.isSuccess === false || response?.status === 'error') {
+          return throwError(() => ({ error: { message: response?.message || 'Credenciales incorrectas' } }));
+        }
+        // Si la respuesta no tiene isSuccess pero tampoco es un error, intentar GetMe
+        return this.GetMe();
+      }),
       catchError((error) => {
+        // Si es un error HTTP (como 401), devolver el error sin intentar GetMe
+        if (error.status === 401 || error.status === 400) {
+          return throwError(() => error);
+        }
         const detail = error?.error?.detail;
         if (detail) {
           error.error = { ...error.error, message: detail };

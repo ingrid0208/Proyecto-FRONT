@@ -7,8 +7,6 @@ import { Router } from '@angular/router';
 import { ColumnDef } from '../../models/util/table.Generic';
 
 import Swal from 'sweetalert2';
-import { SessionPingService } from '../../../core/services/utils/session-ping.service';
-import { ServiceGenericService } from '../../../core/services/utils/generic/service-generic.service';
 
 
 @Component({
@@ -21,14 +19,8 @@ import { ServiceGenericService } from '../../../core/services/utils/generic/serv
 export class GenericMultasTableComponent {
   @Input() data: any[] = [];
   @Input() columns: ColumnDef[] = [];
+  @Input() showStatusValidation = true; // Nueva propiedad para controlar validación
   @Output() rowClicked = new EventEmitter<any>();
-
-  constructor(
-    private auth: ServiceGenericService,
-    private router: Router,
-    private sessionPing: SessionPingService // opcional
-
-  ) { }
 
   get displayedColumnKeys(): string[] {
     return this.columns.map(c => c.key);
@@ -52,8 +44,8 @@ export class GenericMultasTableComponent {
 
     const selected = original ?? row;
 
-    // 🚨 validar estado
-    if (selected.estado !== 'Pendiente') {
+    // 🚨 validar estado solo si showStatusValidation es true
+    if (this.showStatusValidation && selected.estado !== 'Pendiente') {
       Swal.fire({
         icon: 'warning',
         title: 'Acción no permitida',

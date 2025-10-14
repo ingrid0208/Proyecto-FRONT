@@ -3,13 +3,14 @@
   <app-card-header
     [showBack]="true"
     (back)="onBack()"
-    title="Selección de Multas para Acuerdo de Pago"
+    title="Multas de convivencia ciudadana"
     [description]="ciudadano ? 'Ciudadano: ' + ciudadano : 'Seleccione las multas que desea incluir en el acuerdo de pago.\nPuede elegir una o varias multas para generar el acuerdo.'">
   </app-card-header>
 
   <app-generic-multas-table
     [data]="multas"
-    [columns]="columns">
+    [columns]="columns"
+    [showStatusValidation]="false">
   </app-generic-multas-table>
 
 </mat-card>
