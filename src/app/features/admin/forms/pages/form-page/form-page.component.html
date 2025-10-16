@@ -20,11 +20,11 @@
       [attr.aria-label]="'Formulario: ' + form.name">
       <div class="persona-info">
         <div class="info-row">
-          <span class="label" id="name-label-{{form.id}}">Nombre:</span>
+          <span class="label" [id]="'name-label-' + form.id">Nombre:</span>
           <span class="value" [attr.aria-labelledby]="'name-label-' + form.id">{{ form.name }}</span>
         </div>
         <div class="info-row">
-          <span class="label" id="desc-label-{{form.id}}">Descripción:</span>
+          <span class="label" [id]="'desc-label-' + form.id">Descripción:</span>
           <span class="value" [attr.aria-labelledby]="'desc-label-' + form.id">{{ form.description }}</span>
         </div>
       </div>
@@ -49,6 +49,7 @@
     </div>
   </section>
 
+  <!-- Mensaje cuando no hay datos -->
   <div *ngIf="forms.length === 0" class="no-data">
     <i class="pi pi-info-circle"></i>
     <p>No hay formularios registrados</p>
@@ -65,7 +66,11 @@
   </app-pagination>
 </div>
 
-<!-- Modal de alerta -->
+<!-- ========================================
+     MODALES GLOBALES (FUERA DEL CONTENEDOR)
+     ======================================== -->
+
+<!-- Modal de alerta (éxito, error, info) -->
 <div *ngIf="showAlert" class="alert-modal-overlay">
   <div class="alert-modal-content" [ngClass]="alertType">
     <span class="alert-icon" *ngIf="alertType === 'creado'">✅</span>
@@ -84,6 +89,18 @@
     <div class="modal-actions">
       <button class="blue-btn" (click)="cancelarEliminar()">Cancelar</button>
       <button class="red-btn" (click)="confirmarEliminar()">Eliminar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para actualizar -->
+<div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
+  <div class="alert-modal-content eliminado">
+    <span class="alert-icon">✏️</span>
+    <span class="alert-msg">¿Está seguro que desea actualizar el formulario "{{ formAActualizar?.name }}"?</span>
+    <div class="modal-actions">
+      <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
+      <button class="blue-btn" (click)="abrirModalActualizar()">Sí, Editar</button>
     </div>
   </div>
 </div>
@@ -156,42 +173,68 @@
 </div>
 
 <!-- Modal para actualizar formulario -->
-<div *ngIf="showUpdateModal && formSeleccionado" class="modal-overlay">
+<div *ngIf="showUpdateModal && formSeleccionado" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="update-modal-title">
   <div class="modal-content persona-form">
-    <h2>Actualizar Formulario</h2>
-    <form (ngSubmit)="actualizarForm()" autocomplete="off" #updateForm="ngForm">
-      <label>
+    <h2 id="update-modal-title">Actualizar Formulario</h2>
+    <form (ngSubmit)="actualizarForm()" autocomplete="off" #updateForm="ngForm" novalidate>
+      <label for="update-name-input">
         Nombre del Formulario:
-        <input type="text" [(ngModel)]="formSeleccionado.name" name="name" required
-               #nameUpdateInput="ngModel" maxlength="100" />
-        <div *ngIf="nameUpdateInput.invalid && nameUpdateInput.touched" class="error-msg">
+        <input
+          id="update-name-input"
+          type="text"
+          [(ngModel)]="formSeleccionado.name"
+          name="name"
+          required
+          #nameUpdateInput="ngModel"
+          maxlength="100"
+          placeholder="Ej: Formulario de acuerdo de pago"
+          aria-describedby="update-name-error"
+          [attr.aria-invalid]="nameUpdateInput.invalid && nameUpdateInput.touched" />
+        <div
+          id="update-name-error"
+          *ngIf="nameUpdateInput.invalid && nameUpdateInput.touched"
+          class="error-msg"
+          role="alert"
+          aria-live="polite">
           El nombre es requerido
         </div>
       </label>
-      <label>
+      <label for="update-desc-input">
         Descripción:
-        <textarea [(ngModel)]="formSeleccionado.description" name="description" required
-                 #descriptionUpdateInput="ngModel" maxlength="300" rows="4"></textarea>
-        <div *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched" class="error-msg">
+        <textarea
+          id="update-desc-input"
+          [(ngModel)]="formSeleccionado.description"
+          name="description"
+          required
+          #descriptionUpdateInput="ngModel"
+          maxlength="300"
+          rows="4"
+          placeholder="Describe el propósito y uso del formulario..."
+          aria-describedby="update-desc-error"
+          [attr.aria-invalid]="descriptionUpdateInput.invalid && descriptionUpdateInput.touched"></textarea>
+        <div
+          id="update-desc-error"
+          *ngIf="descriptionUpdateInput.invalid && descriptionUpdateInput.touched"
+          class="error-msg"
+          role="alert"
+          aria-live="polite">
           La descripción es requerida
         </div>
       </label>
       <div class="modal-actions">
-        <button type="button" (click)="cerrarModalActualizar()">Cancelar</button>
-        <button type="submit" [disabled]="updateForm.invalid || !formSeleccionado.name.trim() || !formSeleccionado.description.trim()">Actualizar</button>
+        <button
+          type="button"
+          (click)="cerrarModalActualizar()"
+          aria-label="Cancelar actualización del formulario">
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          [disabled]="updateForm.invalid || !formSeleccionado.name.trim() || !formSeleccionado.description.trim()"
+          aria-label="Actualizar formulario">
+          Actualizar
+        </button>
       </div>
     </form>
-  </div>
-</div>
-
-<!-- Modal de confirmación para actualizar -->
-<div *ngIf="showUpdateConfirm" class="alert-modal-overlay">
-  <div class="alert-modal-content eliminado">
-    <span class="alert-icon">✏️</span>
-    <span class="alert-msg">¿Está seguro que desea actualizar el formulario "{{ formAActualizar?.name }}"?</span>
-    <div class="modal-actions">
-      <button class="blue-btn" (click)="cancelarActualizacion()">Cancelar</button>
-      <button class="blue-btn" (click)="abrirModalActualizar()">Sí, Editar</button>
-    </div>
   </div>
 </div>

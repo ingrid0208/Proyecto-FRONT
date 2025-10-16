@@ -57,31 +57,6 @@ export class ModulePageComponent implements OnInit {
 
   ngOnInit() {
     this.cargarModules();
-    
-    // Datos de prueba (comentar cuando la API funcione)
-    setTimeout(() => {
-      if (this.modules.length === 0) {
-        console.log('No se cargaron módulos de la API, agregando datos de prueba');
-        this.modules = [
-          {
-            id: 1,
-            name: 'Módulo de Usuarios',
-            description: 'Módulo para gestionar usuarios del sistema'
-          },
-          {
-            id: 2,
-            name: 'Módulo de Reportes',
-            description: 'Módulo para generar y visualizar reportes'
-          },
-          {
-            id: 3,
-            name: 'Módulo de Configuración',
-            description: 'Módulo para configurar parámetros del sistema'
-          }
-        ];
-        this.updatePagination();
-      }
-    }, 2000);
   }
 
   // Cargar módulos desde la API
@@ -99,29 +74,6 @@ export class ModulePageComponent implements OnInit {
       error: (error: any) => {
         console.error('Error al cargar módulos:', error);
         this.mostrarAlerta('Error al cargar los módulos: ' + (error.error?.message || error.message), 'error');
-        
-        // Solo agregar datos de prueba si no es después de una operación y no hay módulos
-        if (!esDespuesDeOperacion && this.modules.length === 0) {
-          console.log('Agregando datos de prueba debido a error de API');
-          this.modules = [
-            { 
-              id: 1, 
-              name: 'Módulo de Usuarios',
-              description: 'Módulo para gestionar usuarios del sistema'
-            },
-            { 
-              id: 2, 
-              name: 'Módulo de Reportes',
-              description: 'Módulo para generar y visualizar reportes'
-            },
-            { 
-              id: 3, 
-              name: 'Módulo de Configuración',
-              description: 'Módulo para configurar parámetros del sistema'
-            }
-          ];
-          this.updatePagination();
-        }
       }
     });
   }
@@ -191,8 +143,8 @@ export class ModulePageComponent implements OnInit {
       return;
     }
 
-    if (this.nuevoModule.description.length < 10 || this.nuevoModule.description.length > 250) {
-      this.mostrarAlerta('La descripción debe tener entre 10 y 250 caracteres', 'error');
+    if (this.nuevoModule.description.length < 5 || this.nuevoModule.description.length > 250) {
+      this.mostrarAlerta('La descripción debe tener entre 5 y 250 caracteres', 'error');
       return;
     }
 
