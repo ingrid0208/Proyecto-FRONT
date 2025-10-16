@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { CardMultasComponent } from '../../contenido/card-multas/card-multas.component';
 import { ServiceGenericService } from '../../../../../../../../core/services/utils/generic/service-generic.service';
-import { UserInfractionSelectDto } from '../../../../../../../../shared/Models/Entities/select/UserInfractionSelectDto';
+import { UserInfractionSelectDto } from '../../../../../../../../shared/modeloModelados/Entities/select/UserInfractionSelectDto';
 
 @Component({
   selector: 'app-notification-multas',

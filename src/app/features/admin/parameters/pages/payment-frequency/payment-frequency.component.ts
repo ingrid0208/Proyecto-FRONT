@@ -4,21 +4,14 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { MatCardModule } from '@angular/material/card';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-<<<<<<< HEAD:src/app/features/parameters/pages/payment-frequency/payment-frequency.component.ts
-import { GenericMultasTableComponent } from '../../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { PaymentFrequency } from '../../../../shared/models/parameters/payment-frequency.models';
-import { ColumnDef } from '../../../../shared/models/util/table.Generic';
-=======
-import { AppTopbar } from '../../../../../layout/header/topbar.component';
 import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
-import { PaymentFrequency } from '../../../../../shared/Models/parameters/payment-frequency.models';
+import { PaymentFrequency } from '../../../../../shared/modeloModelados/parameters/payment-frequency.models';
 import { PaymentFrequencyService } from '../../../../../core/services/parameters/payment-frequency.service';
-import { ColumnDef } from '../../../../../shared/Models/util/table.Generic';
->>>>>>> smdlv:src/app/features/admin/parameters/pages/payment-frequency/payment-frequency.component.ts
+import { ColumnDef } from '../../../../../shared/modeloModelados/util/table.Generic';
+
+
 
 
 @Component({

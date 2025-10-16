@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { StepCard } from '../../models/util/StepCard';
+import { StepCard } from '../../modeloModelados/util/StepCard';
 
 @Component({
   selector: 'app-step-card',

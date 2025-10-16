@@ -17,8 +17,8 @@
     </div>
 
     <div class="multa-location">
-      💰 {{ multa.baseAmount | number:'1.0-0':'es-CO' }}
-      <span *ngIf="multa.installments"> | {{ multa.installments }} cuotas de {{ multa.monthlyFee | number:'1.0-0':'es-CO' }}</span>
+      💰 {{ multa.baseAmount | currency:'COP':'symbol-narrow' }}
+      <span *ngIf="multa.installments"> | {{ multa.installments }} cuotas de {{ multa.monthlyFee | currency:'COP':'symbol-narrow' }}</span>
     </div>
 
     <p><strong>Método pago:</strong> {{ multa.paymentMethod }} ({{ multa.frequencyPayment }})</p>

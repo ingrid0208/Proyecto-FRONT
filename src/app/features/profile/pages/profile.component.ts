@@ -14,7 +14,7 @@ import { LayoutService } from '../../../layout/services/layout.service';
 import { AuthService } from '../../../core/services/auth/auth.service';
 
 // Models
-import { ProfileDto } from '../../../shared/models/profile/profile.model';
+import { ProfileDto } from '../../../shared/modeloModelados/profile/profile.model';
 
 // ===============================
 // 👤 Componente de Perfil

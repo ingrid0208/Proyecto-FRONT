@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { ServiceGenericService } from '../utils/generic/service-generic.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { Municipio } from '../../../shared/models/parameters/municipality.models';
+import { Municipio } from '../../../shared/modeloModelados/parameters/municipality.models';
 
 @Injectable({ providedIn: 'root' })
 export class MunicipalityService {

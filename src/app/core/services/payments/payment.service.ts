@@ -1,10 +1,10 @@
 // ===============================
 import { Injectable } from '@angular/core';
 import { ApiService } from '../base/api.service';
+import { PaymentAgreementCreateResponse } from '../../../shared/modeloModelados/Entities/PaymentAgreementCreateResponse';
+import { PaymentAgreementInitDto } from '../../../shared/modeloModelados/init/PaymentAgreementInitDto';
 
 // Models
-import { PaymentAgreementCreateResponse } from '../../../shared/models/entities/PaymentAgreementCreateResponse';
-import { PaymentAgreementInitDto } from '../../../shared/models/Init/PaymentAgreementInitDto';
 
 @Injectable({ providedIn: 'root' })
 export class PaymentService extends ApiService {

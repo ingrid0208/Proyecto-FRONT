@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RolUserService } from '../../../../../core/services/ModelSecurity/rol-user.service';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
-import { RolUser } from '../../../../../shared/models/modelSecurity/rol-user';
+import { RolUser } from '../../../../../shared/modeloModelados/modelSecurity/rol-user';
 
 @Component({
   selector: 'app-rol-user-page',

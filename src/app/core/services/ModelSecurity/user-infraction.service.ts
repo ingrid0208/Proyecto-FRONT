@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { ServiceGenericService } from '../utils/generic/service-generic.service';
-import { UserInfractionDto } from '../../../shared/Models/Entities/user-infraction';
+import { UserInfractionDto } from '../../../shared/modeloModelados/Entities/user-infraction';
 
 @Injectable({ providedIn: 'root' })
 export class UserInfractionService {

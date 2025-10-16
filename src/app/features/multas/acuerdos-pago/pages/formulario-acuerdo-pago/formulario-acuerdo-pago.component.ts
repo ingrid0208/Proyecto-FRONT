@@ -10,9 +10,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 
 import Swal from 'sweetalert2';
-import { PaymentAgreementInitDto } from '../../../../../shared/models/Init/PaymentAgreementInitDto';
 import { PaymentService } from '../../../../../core/services/payments/payment.service';
 import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
+import { PaymentAgreementInitDto } from '../../../../../shared/modeloModelados/init/PaymentAgreementInitDto';
 
 @Component({
   selector: 'app-formulario-acuerdo-pago',

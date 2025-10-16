@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { UserInfractionSelectDto } from '../../../../../../../../shared/Models/Entities/select/UserInfractionSelectDto';
+import { UserInfractionSelectDto } from '../../../../../../../../shared/modeloModelados/Entities/select/UserInfractionSelectDto';
 @Component({
   selector: 'app-card-multas',
   standalone: true,

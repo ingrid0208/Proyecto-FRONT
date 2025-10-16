@@ -8,10 +8,10 @@ import { ApiService } from '../base/api.service';
 import { UserStore } from '../User.Store';
 
 // Models
-import { LoginEmailRequest } from '../../../shared/models/auth/request/LoginEmailRequest';
-import { LoginEmailResponse } from '../../../shared/models/auth/response/LoginEmailResponse';
-import { RegisterRequestDto } from '../../../shared/models/auth/request/RegisterRequestDto';
-import { User } from '../../../shared/Models/modelSecurity/user.model';
+import { LoginEmailRequest } from '../../../shared/modeloModelados/auth/request/LoginEmailRequest';
+import { LoginEmailResponse } from '../../../shared/modeloModelados/auth/response/LoginEmailResponse';
+import { RegisterRequestDto } from '../../../shared/modeloModelados/auth/request/RegisterRequestDto';
+import { User } from '../../../shared/modeloModelados/modelSecurity/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends ApiService {

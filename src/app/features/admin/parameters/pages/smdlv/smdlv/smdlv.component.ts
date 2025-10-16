@@ -5,13 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { AppTopbar } from '../../../../../../layout/header/topbar.component';
 import { GenericMultasTableComponent } from '../../../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../../../shared/components/card-header/card-header.component';
 import { ButtonComponent } from '../../../../../../shared/components/button/button.component';
 import { SmdlvService } from '../../../../../../core/services/parameters/smdlv.service';
-import { Smdlv } from '../../../../../../shared/Models/parameters/smdlv.models';
-import { ColumnDef } from '../../../../../../shared/Models/util/table.Generic';
+import { Smdlv } from '../../../../../../shared/modeloModelados/parameters/smdlv.models';
+import { ColumnDef } from '../../../../../../shared/modeloModelados/util/table.Generic';
 
 
 @Component({
@@ -24,7 +23,6 @@ import { ColumnDef } from '../../../../../../shared/Models/util/table.Generic';
     MatCardModule,
     MatButtonModule,
     RouterModule,
-    AppTopbar,
     GenericMultasTableComponent,
     CardHeaderComponent,
     ButtonComponent

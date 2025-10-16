@@ -2,7 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable, BehaviorSubject, catchError, throwError, map, switchMap } from 'rxjs';
 import { ApiService } from '../base/api.service';
-import { ProfileDto } from '../../../shared/models/profile/profile.model';
+import { ProfileDto } from '../../../shared/modeloModelados/profile/profile.model';
 
 // ===============================
 // 👤 Servicio de Perfil

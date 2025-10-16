@@ -6,7 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { RolesService } from '../../../../../core/services/ModelSecurity/roles.service';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
-import { Rol } from '../../../../../shared/models/modelSecurity/rol';
+import { Rol } from '../../../../../shared/modeloModelados/modelSecurity/rol';
 
 @Component({
   selector: 'app-roles-page',

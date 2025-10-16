@@ -10,7 +10,7 @@ import { RippleModule } from 'primeng/ripple';
 import Swal from 'sweetalert2';
 
 import { AuthService } from '../../../../core/services/auth/auth.service';
-import { User } from '../../../../shared/Models/modelSecurity/user.model';
+import { User } from '../../../../shared/modeloModelados/modelSecurity/user.model';
 import { validateEmail, validatePassword } from '../../../../shared/utils/validator/login-register';
 
 @Component({
@@ -114,7 +114,7 @@ export class Login {
           console.log("✅ Usuario autenticado:", user);
 
           // 🔍 Aquí más adelante podrías reactivar lógica de verificación mensual
-          this.router.navigate(['/home']);
+          this.router.navigate(['/anexar-multas/multas']);
 
           this.loading = false;
         },

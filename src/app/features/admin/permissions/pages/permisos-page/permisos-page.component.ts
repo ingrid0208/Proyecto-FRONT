@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
 import { PermissionService } from '../../../../../core/services/ModelSecurity/permission.service';
-import { Permission } from '../../../../../shared/models/modelSecurity/permission';
+import { Permission } from '../../../../../shared/modeloModelados/modelSecurity/permission';
 
 @Component({
   selector: 'app-permisos-page',

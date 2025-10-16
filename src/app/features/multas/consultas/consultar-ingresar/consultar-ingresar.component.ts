@@ -11,8 +11,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
   template: `
     <app-identification
       [redirectTo]="'/home/contenido'"
-      [showLogoutButton]="true"
-      (logoutClick)="logout()">
+      [showLogoutButton]="true">
     </app-identification>
   `,
   styles: [`:host{display:block;padding:1rem;}`]

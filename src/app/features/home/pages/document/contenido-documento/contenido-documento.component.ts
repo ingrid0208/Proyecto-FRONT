@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ColumnDef } from '../../../../../shared/models/util/table.Generic';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +8,7 @@ import { CardHeaderComponent } from '../../../../../shared/components/card-heade
 import { AuthService } from '../../../../../core/services/auth/auth.service';
 import { DocumentSessionService } from '../../../../../core/services/documents/document-session.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
+import { ColumnDef } from '../../../../../shared/modeloModelados/util/table.Generic';
 
 interface MultaTableRow {
   tipo: string;

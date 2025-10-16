@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Persona } from '../../../shared/Models/modelSecurity/persona.model';
+import { Persona } from '../../../shared/modeloModelados/modelSecurity/persona.model';
 import { ServiceGenericService } from '../utils/generic/service-generic.service';
 
 @Injectable({ providedIn: 'root' })

@@ -4,22 +4,12 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { MatCardModule } from '@angular/material/card';
 import { finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-<<<<<<< HEAD:src/app/features/parameters/pages/municipality/municipality.component.ts
-// import { AppTopbar } from '../../../../layout/header/topbar.component'; // Comentado temporalmente
-import { GenericMultasTableComponent } from '../../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { CardHeaderComponent } from '../../../../shared/components/card-header/card-header.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { Municipality } from '../../../../shared/models/parameters/municipality.models';
-import { ColumnDef } from '../../../../shared/models/util/table.Generic';
-=======
-import { AppTopbar } from '../../../../../layout/header/topbar.component';
 import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
 import { MunicipalityService } from '../../../../../core/services/parameters/municipality.service';
-import { Municipality } from '../../../../../shared/Models/parameters/municipality.models';
-import { ColumnDef } from '../../../../../shared/Models/util/table.Generic';
->>>>>>> smdlv:src/app/features/admin/parameters/pages/municipality/municipality.component.ts
+import { Municipality } from '../../../../../shared/modeloModelados/parameters/municipality.models';
+import { ColumnDef } from '../../../../../shared/modeloModelados/util/table.Generic';
 
 @Component({
   selector: 'app-municipality',

@@ -4,11 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
-import { ColumnDef } from '../../../../../shared/models/util/table.Generic';
+import { ColumnDef } from '../../../../../shared/modeloModelados/util/table.Generic';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { DocumentSessionService } from '../../../../../core/services/documents/document-session.service';
 import { FilterService } from '../../../../../core/services/filters/filter.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
+import { AuthService } from '../../../../../core/services/auth/auth.service';
 
 interface MultaTableRow {
   id: number;              // id de la multa (infractionId)
@@ -49,6 +50,7 @@ export class ContenidoInicioComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private documentSessionService: DocumentSessionService,
     private filterService: FilterService,
     private sessionPing: SessionPingService
@@ -83,6 +85,19 @@ export class ContenidoInicioComponent implements OnInit {
     } catch (error) {
       console.error('Error al cargar multas:', error);
     }
+  }
+
+  onBack() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.sessionPing.stop();
+        this.router.navigate(['/consultar-ingresar']);
+      },
+      error: () => {
+        this.sessionPing.stop();
+        this.router.navigate(['/consultar-ingresar']);
+      }
+    });
   }
 
   // 📌 Filtro con buscador

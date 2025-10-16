@@ -4,49 +4,27 @@ import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { mapBackendMenuToPrimeNG } from '../../core/services/utils/menu-mapper';
 import { AuthService } from '../../core/services/auth/auth.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  styleUrls: ['./styles/app.menu.scss'],
-  animations: [
-    trigger('slideDown', [
-      transition(':enter', [
-        style({ height: '0px', opacity: 0, overflow: 'hidden' }),
-        animate('250ms ease-out', style({ height: '*', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ height: '*', opacity: 1, overflow: 'hidden' }),
-        animate('250ms ease-in', style({ height: '0px', opacity: 0 }))
-      ])
-    ])
-  ],
   template: `
     <div class="menu-logo">
       <img src="../../../assets/demo/logo.png" alt="Logo" />
     </div>
 
     <ul class="layout-menu">
-      <ng-container *ngFor="let section of model; let i = index">
-        <li class="menu-section" [class.expanded]="expandedSections[i]">
-          <div class="section-header" (click)="toggleSection(i)">
+      <ng-container *ngFor="let section of model">
+        <li class="menu-section">
+          <div class="section-header">
             <i *ngIf="section.icon" [class]="section.icon" class="section-icon"></i>
             <span class="section-label">{{ section.label }}</span>
-            <i class="pi pi-chevron-down toggle-icon" 
-               [class.rotated]="expandedSections[i]"></i>
           </div>
-          <ul class="submenu" 
-              *ngIf="section.items && expandedSections[i]"
-              [@slideDown]>
+          <ul class="submenu" *ngIf="section.items">
             <li *ngFor="let item of section.items" class="menu-item">
-              <a [routerLink]="item.routerLink" 
-                 class="menu-link" 
-                 [class.disabled]="item.disabled"
-                 routerLinkActive="active-route"
-                 [routerLinkActiveOptions]="{exact: false}">
+              <a [routerLink]="item.routerLink" class="menu-link" [class.disabled]="item.disabled">
                 <i *ngIf="item.icon" [class]="item.icon" class="menu-icon"></i>
                 <span class="menu-label">{{ item.label }}</span>
               </a>
@@ -55,11 +33,77 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         </li>
       </ng-container>
     </ul>
-  `
+  `,
+  styles: [`
+    .layout-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu-section {
+      margin-bottom: 1rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      color: #ccc;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .section-icon {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .submenu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      margin-left: 0.5rem;
+    }
+
+    .menu-item {
+      margin-bottom: 0.25rem;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      padding: 0.6rem 1rem;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      font-size: 0.95rem;
+    }
+
+    .menu-link:hover:not(.disabled) {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-link.disabled {
+      color: #666;
+      cursor: not-allowed;
+    }
+
+    .menu-icon {
+      margin-right: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .menu-label {
+      font-weight: 500;
+    }
+  `]
 })
 export class AppMenu {
   public model: MenuItem[] = [];
-  public expandedSections: boolean[] = [];
 
   constructor(private authService: AuthService) {}
 
@@ -67,13 +111,8 @@ export class AppMenu {
     this.authService.GetMe().subscribe((user: any) => {
       console.log("✅ Usuario cargado en sidebar:", user);
       this.model = mapBackendMenuToPrimeNG(user.menu);
-      // Inicializar el estado de expansión (primera sección expandida por defecto)
-      this.expandedSections = this.model.map((_, index) => index === 0);
+      console.log("📌 Menu recibido del backend:", user.menu);
     });
-  }
-
-  toggleSection(index: number) {
-    this.expandedSections[index] = !this.expandedSections[index];
   }
 }
 

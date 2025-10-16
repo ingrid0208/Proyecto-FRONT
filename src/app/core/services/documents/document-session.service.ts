@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../base/api.service';
 
 // Models
-import { LoginDocumentoRequest } from '../../../shared/models/auth/request/LoginDocumentoRequest';
-import { LoginDocumentoResponse } from '../../../shared/models/auth/response/LoginDocumentoResponse';
+import { LoginDocumentoRequest } from '../../../shared/modeloModelados/auth/request/LoginDocumentoRequest';
+import { LoginDocumentoResponse } from '../../../shared/modeloModelados/auth/response/LoginDocumentoResponse';
 
 @Injectable({ providedIn: 'root' })
 export class DocumentSessionService extends ApiService {

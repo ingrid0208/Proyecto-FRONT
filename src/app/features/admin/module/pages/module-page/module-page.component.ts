@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../../../shared/components/pagination/pagination.component';
 import { ModuleService } from '../../../../../core/services/ModelSecurity/module.service';
 import { PaginationConfig, PaginationService } from '../../../../../shared/services/pagination.service';
-import { Module } from '../../../../../shared/models/modelSecurity/module';
+import { Module } from '../../../../../shared/modeloModelados/modelSecurity/module';
 
 
 @Component({

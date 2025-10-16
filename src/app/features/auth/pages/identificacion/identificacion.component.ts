@@ -9,11 +9,10 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { RecaptchaService } from '../../../../core/services/utils/recaptcha.service';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
-import { AuthService } from '../../../../core/services/auth/auth.service';
 import { DocumentSessionService } from '../../../../core/services/documents/document-session.service';
 import { SessionPingService } from '../../../../core/services/utils/session-ping.service';
-import { DocumentTypeDto } from '../../../../shared/models/parameters/document-type.models';
-import { LoginDocumentoRequest } from '../../../../shared/models/auth/request/LoginDocumentoRequest';
+import { DocumentTypeDto } from '../../../../shared/modeloModelados/parameters/document-type.models';
+import { LoginDocumentoRequest } from '../../../../shared/modeloModelados/auth/request/LoginDocumentoRequest';
 import { TerminosCondicionesModalComponent } from '../../../../shared/components/terminos-condiciones/terminos-condiciones-modal.component';
 
 @Component({
@@ -54,15 +53,6 @@ import { TerminosCondicionesModalComponent } from '../../../../shared/components
         (click)="onSubmit()">
       </button>
 
-      <button
-        *ngIf="showLogoutButton"
-        pButton
-        type="button"
-        label="Cerrar Sesión"
-        class="w-full bg-gray-600 border-none hover:bg-gray-700 text-lg py-3 mt-3"
-        (click)="onLogout()">
-      </button>
-
       <small>
         Este sitio está protegido por reCAPTCHA y aplican la
         <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Política de privacidad</a>
@@ -89,7 +79,6 @@ export class Identificacion implements OnInit {
   constructor(
     private router: Router,
     private recaptcha: RecaptchaService,
-    private authService: AuthService,
     private documentSessionService: DocumentSessionService,
     private sessionPing: SessionPingService,
     private api: ServiceGenericService
