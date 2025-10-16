@@ -33,7 +33,7 @@ export class PersonasPageComponent implements OnInit {
     totalPages: 0
   };
   municipios: Municipio[] = [];
-  documentTypes: DocumentTypeDto[] = [];
+  // documentTypes: DocumentTypeDto[] = []; // Ya no se usa
   showForm: boolean = false;
   showInfoModal: boolean = false;
   showUpdateModal: boolean = false;
@@ -56,7 +56,7 @@ export class PersonasPageComponent implements OnInit {
   constructor(
     private personaService: PersonaService,
     private municipioService: MunicipalityService,
-    private documentTypeService: DocumentTypeService,
+    // private documentTypeService: DocumentTypeService, // Ya no se usa
     private fb: FormBuilder,
     private paginationService: PaginationService
   ) {
@@ -65,8 +65,7 @@ export class PersonasPageComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
       address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      municipalityId: [null, [Validators.required, Validators.min(1)]],
-      documentTypeId: [null, [Validators.required, Validators.min(1)]]
+      municipalityId: [null, [Validators.required, Validators.min(1)]]
     });
 
     this.updateForm = this.fb.group({
@@ -74,8 +73,7 @@ export class PersonasPageComponent implements OnInit {
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       phoneNumber: ['', [Validators.required, Validators.pattern(/^[0-9]{7,15}$/), Validators.maxLength(15)]],
       address: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
-      municipalityId: [null, [Validators.required, Validators.min(1)]],
-      documentTypeId: [null, [Validators.required, Validators.min(1)]]
+      municipalityId: [null, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -94,10 +92,10 @@ export class PersonasPageComponent implements OnInit {
       this.municipios = municipios;
     });
 
-    // Cargar tipos de documento
-    this.documentTypeService.genericService.getAll<any>(this.documentTypeService.endpoint).subscribe((documentTypes: any) => {
-      this.documentTypes = documentTypes;
-    });
+    // Cargar tipos de documento (ya no se usa, pero se mantiene por si acaso)
+    // this.documentTypeService.genericService.getAll<any>(this.documentTypeService.endpoint).subscribe((documentTypes: any) => {
+    //   this.documentTypes = documentTypes;
+    // });
   }
 
   onSearch(term: string) {
@@ -126,18 +124,12 @@ export class PersonasPageComponent implements OnInit {
         lastName: formValue.lastName,
         phoneNumber: formValue.phoneNumber,
         address: formValue.address,
-        municipalityId: Number(formValue.municipalityId),
-        documentTypeId: Number(formValue.documentTypeId)
+        municipalityId: Number(formValue.municipalityId)
       };
 
       // Validación adicional
       if (!nuevaPersona.municipalityId || nuevaPersona.municipalityId <= 0) {
         this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
-        return;
-      }
-
-      if (!nuevaPersona.documentTypeId || nuevaPersona.documentTypeId <= 0) {
-        this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
         return;
       }
 
@@ -148,6 +140,7 @@ export class PersonasPageComponent implements OnInit {
         next: (persona: any) => {
           this.mostrarAlerta('Persona creada exitosamente.', 'creado');
           this.cerrarFormulario();
+          this.personaService.refreshPersonas(); // Refrescar la lista
         },
         error: (error: any) => {
           console.error('Error al crear persona:', error);
@@ -204,6 +197,7 @@ export class PersonasPageComponent implements OnInit {
       this.personaService.genericService.delete(this.personaService.endpoint, this.personaAEliminar.id).subscribe({
         next: () => {
           this.mostrarAlerta('Persona eliminada correctamente.', 'eliminado');
+          this.personaService.refreshPersonas(); // Refrescar la lista
         },
         error: (error: any) => {
           console.error('Error al eliminar persona:', error);
@@ -259,18 +253,12 @@ export class PersonasPageComponent implements OnInit {
         lastName: formValue.lastName,
         phoneNumber: formValue.phoneNumber,
         address: formValue.address,
-        municipalityId: Number(formValue.municipalityId),
-        documentTypeId: Number(formValue.documentTypeId)
+        municipalityId: Number(formValue.municipalityId)
       };
 
       // Validación adicional
       if (!personaActualizada.municipalityId || personaActualizada.municipalityId <= 0) {
         this.mostrarAlerta('Debe seleccionar un municipio válido.', 'eliminado');
-        return;
-      }
-
-      if (!personaActualizada.documentTypeId || personaActualizada.documentTypeId <= 0) {
-        this.mostrarAlerta('Debe seleccionar un tipo de documento válido.', 'eliminado');
         return;
       }
 
@@ -282,6 +270,7 @@ export class PersonasPageComponent implements OnInit {
           next: (persona: any) => {
             this.mostrarAlerta('Persona actualizada exitosamente.', 'creado');
             this.cerrarModalActualizar();
+            this.personaService.refreshPersonas(); // Refrescar la lista
           },
           error: (error: any) => {
             console.error('Error al actualizar persona:', error);
@@ -323,14 +312,14 @@ export class PersonasPageComponent implements OnInit {
     return municipio ? municipio.name : `Municipio ID: ${municipioId}`;
   }
 
-  // Método helper para obtener el nombre del tipo de documento por ID
-  getDocumentTypeNombre(documentTypeId: number): string {
-    if (this.documentTypes.length === 0) {
-      return 'No se encuentran tipos de documento';
-    }
-    const documentType = this.documentTypes.find(dt => dt.id === documentTypeId);
-    return documentType ? documentType.name : `Tipo de documento ID: ${documentTypeId}`;
-  }
+  // Método helper para obtener el nombre del tipo de documento por ID (ya no se usa)
+  // getDocumentTypeNombre(documentTypeId: number): string {
+  //   if (this.documentTypes.length === 0) {
+  //     return 'No se encuentran tipos de documento';
+  //   }
+  //   const documentType = this.documentTypes.find(dt => dt.id === documentTypeId);
+  //   return documentType ? documentType.name : `Tipo de documento ID: ${documentTypeId}`;
+  // }
 
   // Métodos de paginación
   updatePagination(): void {
