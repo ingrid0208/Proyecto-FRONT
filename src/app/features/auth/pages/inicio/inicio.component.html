@@ -24,7 +24,11 @@
         </p>
       </div>
       <div class="hero-form">
-        <app-identification [layout]="'embedded'"></app-identification>
+        <app-identification
+          [layout]="'embedded'"
+          [mode]="'modal'"
+          (loginSuccess)="onMultasConsultadas($event.multas, $event.ciudadano)">
+        </app-identification>
       </div>
     </div>
   </main>
@@ -171,4 +175,12 @@
       </div>
     </div>
   </footer>
+
+  <!-- MODAL DE MULTAS -->
+  <app-multas-modal
+    [(visible)]="modalVisible"
+    [multas]="multas"
+    [ciudadano]="ciudadano"
+    (visibleChange)="onModalClose()">
+  </app-multas-modal>
 </div>

@@ -2,13 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
-import { GenericMultasTableComponent } from '../../../../../shared/components/generic-multas-table/generic-multas-table.component';
 import { CardHeaderComponent } from '../../../../../shared/components/card-header/card-header.component';
 import { AuthService } from '../../../../../core/services/auth/auth.service';
 import { DocumentSessionService } from '../../../../../core/services/documents/document-session.service';
 import { SessionPingService } from '../../../../../core/services/utils/session-ping.service';
-import { ColumnDef } from '../../../../../shared/modeloModelados/util/table.Generic';
+import { MultasModalComponent } from '../../../../auth/pages/Modal/multas-modal.component';
 
 interface MultaTableRow {
   tipo: string;
@@ -24,9 +24,10 @@ interface MultaTableRow {
     CommonModule,
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
     RouterModule,
-    GenericMultasTableComponent,
     CardHeaderComponent,
+    MultasModalComponent,
   ],
   templateUrl: './contenido-documento.component.html',
   styleUrls: ['./contenido-documento.component.scss'] // 🔹 styleUrls (plural)
@@ -35,13 +36,7 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
 
   multas: MultaTableRow[] = [];
   ciudadano = '';
-
-  columns: ColumnDef[] = [
-    { key: 'tipo', header: 'Tipo de multa', type: 'text' },
-    { key: 'fecha', header: 'Fecha de infracción', type: 'date', dateFormat: 'dd/MM/yyyy' },
-    { key: 'descripcion', header: 'Descripción', type: 'text' },
-    { key: 'estado', header: 'Estado', type: 'chip' },
-  ];
+  modalVisible = false;
 
   constructor(
     private authService: AuthService,
@@ -67,7 +62,9 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
         tipo: x.typeInfractionName ?? '—',
         fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        estado: mapEstadoFromEnum(x.stateInfraction)
+        estado: mapEstadoFromEnum(x.stateInfraction),
+        pdfUrl: x.pdfUrl,
+        documentNumber: x.documentNumber
       }));
 
       const first = data[0];
@@ -81,6 +78,14 @@ export class ContenidoDocumentoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sessionPing.stop();
+  }
+
+  openMultasModal() {
+    this.modalVisible = true;
+  }
+
+  onModalClose() {
+    this.modalVisible = false;
   }
 
   onBack() {

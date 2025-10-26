@@ -35,4 +35,12 @@ export class PaymentService extends ApiService {
       this.optsJwt()
     );
   }
+
+  downloadPaymentAgreementPdf(agreementId: number) {
+    const url = this.url('PaymentAgreement', agreementId, 'pdf');
+    return this.http.get(url, {
+      ...this.optsJwt(),
+      responseType: 'blob' as 'json'
+    });
+  }
 }

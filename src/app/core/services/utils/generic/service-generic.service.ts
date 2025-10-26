@@ -40,5 +40,13 @@ export class ServiceGenericService extends ApiService {
   restore(controller: string, id: number | string) {
     return this.http.patch<void>(this.url(controller, 'logical-restore', id), {}, this.optsJwt());
   }
+
+  downloadPdf(controller: string, id: number | string) {
+    const url = this.url(controller, id, 'pdf');
+    return this.http.get(url, {
+      ...this.optsJwt(),
+      responseType: 'blob' as 'json'
+    });
+  }
 }
 

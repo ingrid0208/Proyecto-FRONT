@@ -11,7 +11,8 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
   template: `
     <app-identification
       [redirectTo]="'/home/contenido'"
-      [showLogoutButton]="true">
+      [showLogoutButton]="true"
+      [mode]="'redirect'">
     </app-identification>
   `,
   styles: [`:host{display:block;padding:1rem;}`]
@@ -34,5 +35,6 @@ export class ConsultarIngresarComponent {
     });
   }
 }
+
 
 

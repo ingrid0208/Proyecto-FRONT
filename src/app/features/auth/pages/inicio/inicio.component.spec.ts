@@ -6,9 +6,9 @@ import { InicioComponent } from './inicio.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
+import { TypeInfraction } from '../../../../shared/modeloModelados/Entities/TypeInfractionDto';
 
-import { ServiceGenericService } from '../../../../../core/services/utils/generic/service-generic.service';
-import { TypeInfraction } from '../../../../../shared/Models/Entities/TypeInfractionDto';
 
 
 describe('InicioComponent', () => {

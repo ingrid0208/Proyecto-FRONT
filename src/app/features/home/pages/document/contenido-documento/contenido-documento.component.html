@@ -7,10 +7,18 @@
     [description]="ciudadano ? 'Ciudadano: ' + ciudadano : 'Seleccione las multas que desea incluir en el acuerdo de pago.\nPuede elegir una o varias multas para generar el acuerdo.'">
   </app-card-header>
 
-  <app-generic-multas-table
-    [data]="multas"
-    [columns]="columns"
-    [showStatusValidation]="false">
-  </app-generic-multas-table>
+  <div class="multas-actions">
+    <button mat-raised-button color="primary" (click)="openMultasModal()">
+      <mat-icon>visibility</mat-icon>
+      Ver Multas
+    </button>
+  </div>
+
+  <app-multas-modal
+    [(visible)]="modalVisible"
+    [multas]="multas"
+    [ciudadano]="ciudadano"
+    (visibleChange)="onModalClose()">
+  </app-multas-modal>
 
 </mat-card>

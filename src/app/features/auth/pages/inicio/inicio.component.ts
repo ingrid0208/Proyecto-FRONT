@@ -8,7 +8,7 @@ import { Identificacion } from '../identificacion/identificacion.component';
 import { StepCardComponent } from '../../../../shared/components/step-card/step-card.component';
 import { ServiceGenericService } from '../../../../core/services/utils/generic/service-generic.service';
 import { StepCard } from '../../../../shared/modeloModelados/util/StepCard';
-import { TypeInfraction } from '../../../../shared/modeloModelados/entities/TypeInfractionDto';
+import { MultasModalComponent } from '../Modal/multas-modal.component';
 
 
 // ⬇️ usa tu servicio genérico
@@ -19,7 +19,7 @@ interface Category { title: string; items: SubItem[]; }
 @Component({
   selector: 'app-inicio',
   standalone: true,
-  imports: [CommonModule, MatExpansionModule, MatIconModule, Identificacion, StepCardComponent],
+  imports: [CommonModule, MatExpansionModule, MatIconModule, Identificacion, StepCardComponent, MultasModalComponent],
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.scss'],
 })
@@ -37,6 +37,11 @@ export class InicioComponent implements OnInit {
 
   // datos renderizados
   categories: Category[] = [];
+
+  // modal de multas
+  modalVisible = false;
+  multas: any[] = [];
+  ciudadano = '';
 
   steps: StepCard[] = [
     { number: '01', icon: 'edit_note', title: 'Ingresa tus datos', description: 'Completa el formulario con tu tipo y número de documento' },
@@ -108,5 +113,17 @@ export class InicioComponent implements OnInit {
   onLogin(e?: Event): void {
     e?.preventDefault();
     this.router.navigate(['/auth/login']);
+  }
+
+  onMultasConsultadas(multas: any[], ciudadano: string): void {
+    this.multas = multas;
+    this.ciudadano = ciudadano;
+    this.modalVisible = true;
+  }
+
+  onModalClose(): void {
+    this.modalVisible = false;
+    this.multas = [];
+    this.ciudadano = '';
   }
 }

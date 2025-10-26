@@ -73,7 +73,8 @@ export class Identificacion implements OnInit {
   @Input() layout: 'standalone' | 'embedded' = 'standalone';
   @Input() redirectTo: string = '/contenido-documento/document';
   @Input() showLogoutButton = false;
-  @Output() loginSuccess = new EventEmitter<void>();
+  @Input() mode: 'modal' | 'redirect' = 'redirect'; // Nuevo input para controlar el comportamiento
+  @Output() loginSuccess = new EventEmitter<{multas: any[], ciudadano: string}>();
   @Output() logoutClick = new EventEmitter<void>();
 
   constructor(
@@ -150,12 +151,16 @@ export class Identificacion implements OnInit {
         return;
       }
 
-      // 4) Mapear a la interfaz de la tabla
+      // 4) Mapear a la interfaz de la tabla (usando la misma función que el componente de tabla)
       const multas = data.map((x: any) => ({
-        tipo:        x.typeInfractionName ?? '—',
-        fecha:       x.dateInfraction ?? '',
+        id: x.id,
+        userId: x.userId,
+        tipo: x.typeInfractionName ?? '—',
+        fecha: x.dateInfraction ?? '',
         descripcion: x.observations ?? '',
-        estado:      mapEstadoFromBool(x.stateInfraction)
+        estado: mapEstadoFromEnum(x.stateInfraction),
+        pdfUrl: x.pdfUrl,
+        documentNumber: x.documentNumber
       }));
 
       const first = data[0];
@@ -235,11 +240,16 @@ export class Identificacion implements OnInit {
     if (this.pendingData) {
       const { multas, ciudadano } = this.pendingData;
 
-      // Navegar con state
-      if (this.redirectTo) {
-        this.router.navigate([this.redirectTo], { state: { multas, ciudadano } });
+      if (this.mode === 'modal') {
+        // Emitir datos para mostrar modal
+        this.loginSuccess.emit({ multas, ciudadano });
+      } else {
+        // Navegar con state (comportamiento original)
+        if (this.redirectTo) {
+          this.router.navigate([this.redirectTo], { state: { multas, ciudadano } });
+        }
+        this.loginSuccess.emit();
       }
-      this.loginSuccess.emit();
 
       this.pendingData = null;
     }
@@ -256,8 +266,27 @@ export class Identificacion implements OnInit {
   }
 }
 
-function mapEstadoFromBool(v: boolean | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' {
-  if (v === true) return 'Pagada';
-  if (v === false) return 'Pendiente';
+// 🔎 Mapear enum del backend a texto legible (misma función que en contenido-documento.component.ts)
+function mapEstadoFromEnum(v: string | number | null | undefined): 'Pendiente' | 'Pagada' | 'Vencida' | 'Con acuerdo' {
+  if (v === null || v === undefined) return 'Pendiente';
+
+  if (typeof v === 'string') {
+    switch (v) {
+      case 'Pendiente': return 'Pendiente';
+      case 'Pagada': return 'Pagada';
+      case 'Vencida': return 'Vencida';
+      case 'ConAcuerdoPago': return 'Con acuerdo';
+    }
+  }
+
+  if (typeof v === 'number') {
+    switch (v) {
+      case 0: return 'Pendiente';
+      case 1: return 'Pagada';
+      case 2: return 'Vencida';
+      case 3: return 'Con acuerdo';
+    }
+  }
+
   return 'Pendiente';
 }

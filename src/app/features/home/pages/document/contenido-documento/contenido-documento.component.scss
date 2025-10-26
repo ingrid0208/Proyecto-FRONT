@@ -15,3 +15,18 @@
     background: linear-gradient(180deg,#ffffff 0%, #fafafa 100%);
   }
 }
+
+.multas-actions {
+  padding: 24px;
+  text-align: center;
+
+  button {
+    font-size: 1.1rem;
+    padding: 12px 24px;
+    border-radius: 8px;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
