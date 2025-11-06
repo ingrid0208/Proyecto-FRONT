@@ -7,7 +7,12 @@
       "Bash(npm run build:*)",
       "Bash(npm run lint)",
       "Bash(npx ng build:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(pandoc:*)",
+      "Bash(node --version)",
+      "Bash(node convert-to-word.js:*)",
+      "Bash(winget install:*)",
+      "Bash(node convert-manual-tecnico.js:*)"
     ],
     "deny": []
   }

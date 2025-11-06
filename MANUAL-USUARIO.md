@@ -1,7 +1,7 @@
 # Manual de Usuario - Sistema de Gestión de Multas Ciudadanas
 ## Versión 1.0
 
----
+
 
 ## Información del Documento
 
@@ -208,8 +208,8 @@ Los roles son asignados por un administrador del sistema:
 
 1. Los nuevos usuarios se registran como **Usuario Ciudadano** por defecto
 2. Un administrador puede elevar privilegios según las necesidades
-3. Los cambios de rol requieren aprobación administrativa
-4. Los permisos se aplican inmediatamente después de la asignación
+
+3. Los permisos se aplican inmediatamente después de la asignación
 
 ---
 
@@ -232,8 +232,7 @@ Una vez autenticado, accederá al panel principal con:
 - **Notificaciones:** Avisos de multas pendientes
 - **Acuerdos de Pago:** Gestión de convenios
 - **Tipos de Multas:** Catálogo de infracciones
-- **Anexar Multas:** (Solo operadores/admin)
-- **Administración:** (Solo administradores)
+- 
 
 **Área de Contenido:**
 - Información principal según la sección seleccionada
@@ -292,20 +291,7 @@ Puede filtrar por:
 - Tipo de infracción
 - Valor (rango)
 
-#### Opción 2: Consulta por Identificación (Operadores/Admin)
 
-**Paso 1: Ingresar Datos**
-1. Seleccione **"Consultar/Ingresar"**
-2. En el campo de búsqueda, ingrese:
-   - Número de documento
-   - Tipo de documento
-3. Haga clic en **"Buscar"**
-
-**Paso 2: Ver Resultados**
-- Se mostrarán todas las multas ciudadanas asociadas al documento
-- Puede realizar las mismas acciones que en su consulta personal
-
----
 
 ### 6.2 Detalle de Multa Ciudadana
 
@@ -400,7 +386,7 @@ Cada tipo de multa incluye:
 
 ---
 
-### 6.5 Anexar Multas Ciudadanas (Solo Operadores/Admin)
+### 6.5 Anexar Multas Ciudadanas (Solo Admin / inspectora)
 
 #### Proceso de Carga
 
@@ -901,7 +887,7 @@ Muestra todas las personas registradas:
 
 Además del sistema web, el Sistema de Gestión de Multas Ciudadanas cuenta con una **aplicación móvil** que permite a los ciudadanos consultar sus infracciones al Código Nacional de Policía y Convivencia desde dispositivos Android.
 
-**⚠️ Importante:** Esta aplicación está diseñada para consultar **infracciones al Código Nacional de Policía y Convivencia** (multas ciudadanas por comportamientos que afectan la convivencia), **NO para multas de tránsito**.
+**⚠️ Importante:** Esta aplicación está diseñada para consultar **infracciones al Código Nacional de Policía y Convivencia** (multas ciudadanas por comportamientos que afectan la convivencia).
 
 **Tipos de infracciones que puedes consultar:**
 - Amenazas a personas
@@ -1388,7 +1374,7 @@ Posibles causas:
 | **Cálculo SMDLV** | ✅ Sí | ✅ Sí |
 | **Administración** | ✅ Sí (según rol) | ❌ No |
 | **Gestión de usuarios** | ✅ Sí (admin) | ❌ No |
-| **Anexar multas** | ✅ Sí (operadores/admin) | ❌ No |
+| **Anexar multas** | ✅ Sí (admin) | ❌ No |
 | **Almacenamiento local** | Cookies/sesión | ❌ No almacena datos |
 | **Seguridad de sesión** | 30 minutos | 5 minutos |
 
@@ -1696,13 +1682,7 @@ R: Por seguridad, el sistema cierra la sesión después de * minutos de inactivi
 
 
 
-### Para Operadores
 
-✓ Valide toda la información antes de cargar multas
-✓ Use carga masiva para múltiples registros
-✓ Adjunte evidencias fotográficas
-✓ Verifique duplicados antes de guardar
-✓ Mantenga respaldo de archivos importados
 
 ### Para Administradores
 

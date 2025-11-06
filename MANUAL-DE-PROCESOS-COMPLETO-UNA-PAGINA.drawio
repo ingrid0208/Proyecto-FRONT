@@ -1,0 +1,1046 @@
+<mxfile host="65bd71144e">
+    <diagram name="Manual de Procesos Completo CRUD" id="proceso-completo-crud">
+        <mxGraphModel dx="286" dy="322" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4200" pageHeight="3000" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="titulo-principal" value="MANUAL DE PROCESOS COMPLETO - SISTEMA DE GESTIÓN DE MULTAS E INFRACCIONES (CRUD)" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=22;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="20" width="4100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="seccion-personas" value="GESTIÓN DE PERSONAS" style="text;html=1;strokeColor=#82b366;fillColor=#d5e8d4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=16;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="100" width="1000" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-titulo" value="1. CREAR PERSONA" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="150" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="100" y="185" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-form" value="Formulario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="235" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p1-inicio" target="p1-form" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-datos" value="Ingresar Datos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="280" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p1-form" target="p1-datos" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-val" value="¿Válido?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="325" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p1-datos" target="p1-val" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-api" value="POST /api/Person" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="385" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="p1-val" target="p1-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="100" y="425" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p1-api" target="p1-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-titulo" value="2. ACTUALIZAR PERSONA" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="280" y="150" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="330" y="185" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-select" value="Seleccionar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="235" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p2-inicio" target="p2-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-form" value="Editar Datos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="280" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p2-select" target="p2-form" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-val" value="¿Válido?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="345" y="325" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p2-form" target="p2-val" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-api" value="PUT /api/Person/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="385" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="p2-val" target="p2-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="330" y="425" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p2-api" target="p2-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-titulo" value="3. ELIMINAR PERSONA" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="510" y="150" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="560" y="185" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-select" value="Seleccionar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="235" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p3-inicio" target="p3-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-confirm" value="Confirmar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="280" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p3-select" target="p3-confirm" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-decision" value="¿Confirmar?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="575" y="325" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p3-confirm" target="p3-decision" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-api" value="DELETE /api/Person/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="385" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="p3-decision" target="p3-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="560" y="425" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="p3-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="p3-api" target="p3-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="seccion-multas" value="GESTIÓN DE MULTAS E INFRACCIONES" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=16;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="490" width="1000" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-titulo" value="4. CREAR MULTA" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="100" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-persona" value="Datos Persona" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m1-inicio" target="m1-persona" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-infraccion" value="Datos Infracción" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m1-persona" target="m1-infraccion" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-val" value="¿Válido?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="715" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m1-infraccion" target="m1-val" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-api" value="POST /api/Multa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="775" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="m1-val" target="m1-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="100" y="815" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m1-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m1-api" target="m1-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-titulo" value="5. ACTUALIZAR MULTA" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="280" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="330" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-select" value="Seleccionar Multa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m2-inicio" target="m2-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-editar" value="Editar Datos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m2-select" target="m2-editar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-val" value="¿Válido?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="345" y="715" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m2-editar" target="m2-val" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-api" value="PUT /api/Multa/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="775" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="m2-val" target="m2-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="330" y="815" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m2-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m2-api" target="m2-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-titulo" value="6. ELIMINAR MULTA" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="510" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="560" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-select" value="Seleccionar Multa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m3-inicio" target="m3-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-confirm" value="Modal Confirmar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m3-select" target="m3-confirm" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-decision" value="¿Confirmar?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="575" y="715" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m3-confirm" target="m3-decision" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-api" value="DELETE /api/Multa/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="775" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="m3-decision" target="m3-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="560" y="815" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m3-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m3-api" target="m3-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-titulo" value="7. PAGAR MULTA" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="740" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="790" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-select" value="Seleccionar Multa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="785" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m4-inicio" target="m4-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-metodo" value="Método Pago" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="785" y="670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m4-select" target="m4-metodo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-datos" value="Datos Pago" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="785" y="715" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m4-metodo" target="m4-datos" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-api" value="PUT /api/Multa (Pago)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="785" y="760" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m4-datos" target="m4-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-recibo" value="Generar Recibo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="785" y="800" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m4-api" target="m4-recibo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="790" y="840" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m4-a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m4-recibo" target="m4-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-titulo" value="8. CONSULTAR MULTAS" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="970" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-inicio" value="Login" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1020" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-dashboard" value="Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1015" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m5-inicio" target="m5-dashboard" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-tipo" value="Tipo?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1035" y="670" width="70" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m5-dashboard" target="m5-tipo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-tabla" value="Ver Tabla" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1015" y="735" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m5-tipo" target="m5-tabla" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1020" y="780" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="m5-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="m5-tabla" target="m5-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="seccion-usuarios" value="GESTIÓN DE USUARIOS" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=16;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="100" width="1000" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-titulo" value="9. CREAR USUARIO" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="150" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1250" y="185" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-menu" value="Menu Usuarios" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="235" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u1-inicio" target="u1-menu" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-form" value="Formulario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="280" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u1-menu" target="u1-form" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-datos" value="Datos + Rol" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="325" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u1-form" target="u1-datos" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-api" value="POST /api/users" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="370" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u1-datos" target="u1-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-email" value="Enviar Email" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="410" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u1-api" target="u1-email" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1250" y="450" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="u1-a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u1-email" target="u1-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-titulo" value="10. ACTUALIZAR USUARIO" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1430" y="150" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1480" y="185" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-select" value="Seleccionar Usuario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1475" y="235" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u2-inicio" target="u2-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-editar" value="Editar Datos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1475" y="280" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u2-select" target="u2-editar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-val" value="¿Válido?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1495" y="325" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u2-editar" target="u2-val" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-api" value="PUT /api/users/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1475" y="385" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="u2-val" target="u2-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1480" y="425" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="u2-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u2-api" target="u2-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-titulo" value="11. ELIMINAR USUARIO" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1660" y="150" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1710" y="185" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-select" value="Seleccionar Usuario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1705" y="235" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u3-inicio" target="u3-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-confirm" value="Confirmar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1705" y="280" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u3-select" target="u3-confirm" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-decision" value="¿Confirmar?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1725" y="325" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u3-confirm" target="u3-decision" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-api" value="DELETE /api/users/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1705" y="385" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="u3-decision" target="u3-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1710" y="425" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="u3-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="u3-api" target="u3-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="seccion-roles" value="GESTIÓN DE ROLES Y PERMISOS" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=16;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="490" width="1000" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-titulo" value="12. CREAR ROL" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1200" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1250" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-menu" value="Menu Roles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r1-inicio" target="r1-menu" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-nuevo" value="Nuevo Rol" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r1-menu" target="r1-nuevo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-permisos" value="Asignar Permisos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="715" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r1-nuevo" target="r1-permisos" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-api" value="POST /api/roles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1245" y="760" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r1-permisos" target="r1-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1250" y="800" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r1-api" target="r1-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-titulo" value="13. ACTUALIZAR ROL" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1430" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1480" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-select" value="Seleccionar Rol" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1475" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r2-inicio" target="r2-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-editar" value="Editar Permisos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1475" y="670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r2-select" target="r2-editar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-val" value="¿Válido?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1495" y="715" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r2-editar" target="r2-val" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-api" value="PUT /api/roles/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1475" y="775" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="r2-val" target="r2-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1480" y="815" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r2-api" target="r2-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-titulo" value="14. ELIMINAR ROL" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1660" y="540" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1710" y="575" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-select" value="Seleccionar Rol" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1705" y="625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r3-inicio" target="r3-select" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-confirm" value="Confirmar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1705" y="670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r3-select" target="r3-confirm" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-decision" value="¿Confirmar?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1725" y="715" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r3-confirm" target="r3-decision" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-api" value="DELETE /api/roles/{id}" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1705" y="775" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-a4" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="r3-decision" target="r3-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1710" y="815" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="r3-api" target="r3-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="seccion-otros" value="OTROS PROCESOS DEL SISTEMA" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=16;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="920" width="1000" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-titulo" value="15. CARGA MASIVA (Inspectora)" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="970" width="240" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-inicio" value="Acceder" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="120" y="1005" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-plantilla" value="Descargar Plantilla" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="1055" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o1-inicio" target="o1-plantilla" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-completar" value="Completar pdf" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="1100" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o1-plantilla" target="o1-completar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-subir" value="Subir Archivo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="1145" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o1-completar" target="o1-subir" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-api" value="POST /api/Multa/batch" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="1190" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o1-subir" target="o1-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-reporte" value="Generar Reporte" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="1230" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o1-api" target="o1-reporte" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="120" y="1270" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="o1-a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o1-reporte" target="o1-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-titulo" value="16. LOGIN Y AUTENTICACIÓN" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="320" y="970" width="240" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="390" y="1005" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-form" value="Formulario Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="385" y="1055" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o2-inicio" target="o2-form" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-credenciales" value="Email/Password" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="385" y="1100" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o2-form" target="o2-credenciales" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-api" value="POST /api/auth/login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="385" y="1145" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o2-credenciales" target="o2-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-validar" value="Validar" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="405" y="1185" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o2-api" target="o2-validar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-token" value="Generar JWT (15min)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="385" y="1245" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-a5" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="o2-validar" target="o2-token" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-permisos" value="Cargar Permisos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="385" y="1285" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o2-token" target="o2-permisos" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-fin" value="Dashboard" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="390" y="1325" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="o2-a7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="o2-permisos" target="o2-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="matriz-titulo" value="MATRIZ DE PERMISOS POR ROL" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="600" y="970" width="650" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-head-func" value="FUNCIONALIDAD" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6c8ebf;strokeColor=#2e5c8a;fontColor=#ffffff;fontStyle=1;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1010" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-head-ciudadano" value="CIUDADANO" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6c8ebf;strokeColor=#2e5c8a;fontColor=#ffffff;fontStyle=1;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1010" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-head-inspectora" value="INSPECTORA" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6c8ebf;strokeColor=#2e5c8a;fontColor=#ffffff;fontStyle=1;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1010" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-head-admin" value="ADMIN" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#6c8ebf;strokeColor=#2e5c8a;fontColor=#ffffff;fontStyle=1;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1010" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r1-f" value="Consultar multas" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;align=left;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1035" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r1-c" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1035" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r1-i" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1035" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r1-a" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1035" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r2-f" value="Crear acuerdo de pago" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;align=left;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1060" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r2-c" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1060" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r2-i" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1060" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r2-a" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1060" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r3-f" value="Ingresar multas" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;align=left;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1085" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r3-c" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1085" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r3-i" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1085" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r3-a" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1085" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r4-f" value="Carga masiva de multas" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;align=left;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1110" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r4-c" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1110" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r4-i" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1110" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r4-a" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1110" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r5-f" value="Gestionar usuarios" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;align=left;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1135" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r5-c" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1135" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r5-i" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1135" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r5-a" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1135" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r6-f" value="Gestionar roles y permisos" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;align=left;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1160" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r6-c" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1160" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r6-i" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1160" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r6-a" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1160" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r7-f" value="Configurar parámetros sistema" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8;align=left;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1185" width="250" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r7-c" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="850" y="1185" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r7-i" value="✗" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="980" y="1185" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="m-r7-a" value="✓" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1110" y="1185" width="130" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="leyenda-titulo" value="LEYENDA:" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1230" width="100" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="ley-1" value="🟢 Inicio/Fin" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1255" width="110" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="ley-2" value="🟡 Procesos/Acciones" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="710" y="1255" width="130" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="ley-3" value="🟠 Decisiones" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="840" y="1255" width="100" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="ley-4" value="🟣 API Calls" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="940" y="1255" width="90" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="ley-5" value="🔵 Base de Datos" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1030" y="1255" width="110" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="ley-6" value="🔴 Errores" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1140" y="1255" width="80" height="18" as="geometry"/>
+                </mxCell>
+                <mxCell id="notas-titulo" value="NOTAS IMPORTANTES:" style="text;html=1;strokeColor=#d79b00;fillColor=#ffe6cc;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=10;fontStyle=1;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1285" width="640" height="22" as="geometry"/>
+                </mxCell>
+                <mxCell id="nota-1" value="• Eliminaciones tipo &#39;Persistent&#39; - datos marcados como eliminados pero conservados en BD" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1310" width="640" height="15" as="geometry"/>
+                </mxCell>
+                <mxCell id="nota-2" value="• JWT Token válido 15 minutos - renovación automática" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1325" width="640" height="15" as="geometry"/>
+                </mxCell>
+                <mxCell id="nota-3" value="• Rol Inspectora hereda permisos de Ciudadano + permisos adicionales" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=8;spacingLeft=8" parent="1" vertex="1">
+                    <mxGeometry x="600" y="1340" width="640" height="15" as="geometry"/>
+                </mxCell>
+
+                <!-- ===================== SECCIÓN PROCESOS COBRO Y LEGALES ===================== -->
+                <mxCell id="seccion-legales" value="PROCESOS DE COBRO Y LEGALES" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=16;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="1400" width="1000" height="35" as="geometry"/>
+                </mxCell>
+
+                <!-- 17. PASARELA DE PAGO -->
+                <mxCell id="pp-titulo" value="17. PASARELA DE PAGO" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="50" y="1450" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="100" y="1485" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-multa" value="Seleccionar Multa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="1535" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pp-inicio" target="pp-multa" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-pasarela" value="Ir a Pasarela" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="1580" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pp-multa" target="pp-pasarela" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-datos" value="Ingresar Datos Tarjeta" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="1625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pp-pasarela" target="pp-datos" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-procesar" value="Procesar Pago" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="1670" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pp-datos" target="pp-procesar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-validar" value="¿Aprobado?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="115" y="1710" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pp-procesar" target="pp-validar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-actualizar" value="Actualizar Estado Multa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="1770" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a6" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="pp-validar" target="pp-actualizar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-recibo" value="Generar Comprobante" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="95" y="1815" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pp-actualizar" target="pp-recibo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="100" y="1855" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="pp-a8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pp-recibo" target="pp-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- 18. COBRO COACTIVO -->
+                <mxCell id="cc-titulo" value="18. COBRO COACTIVO" style="text;html=1;strokeColor=#d6b656;fillColor=#fff2cc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="280" y="1450" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="330" y="1485" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-verificar" value="Verificar Multas Vencidas" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="1535" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="cc-inicio" target="cc-verificar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-generar" value="Generar Título Ejecutivo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="1580" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="cc-verificar" target="cc-generar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-notificar" value="Notificar Deudor" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="1625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="cc-generar" target="cc-notificar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-plazo" value="Esperar Plazo (15 días)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="1670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="cc-notificar" target="cc-plazo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-decision" value="¿Pagó?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="345" y="1715" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="cc-plazo" target="cc-decision" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-embargo" value="Iniciar Embargo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="1775" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a6" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="cc-decision" target="cc-embargo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-api" value="PUT /api/Multa/coactivo" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="325" y="1820" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="cc-embargo" target="cc-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="330" y="1860" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="cc-a8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="cc-api" target="cc-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- 19. PREJURÍDICO -->
+                <mxCell id="pj-titulo" value="19. PROCESO PREJURÍDICO" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="510" y="1450" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="560" y="1485" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-analizar" value="Analizar Caso" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="1535" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pj-inicio" target="pj-analizar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-carta" value="Enviar Carta Invitación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="1580" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pj-analizar" target="pj-carta" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-espera" value="Esperar Respuesta (10 días)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="1625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pj-carta" target="pj-espera" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-decision" value="¿Respuesta?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="575" y="1670" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pj-espera" target="pj-decision" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-acuerdo" value="Negociar Acuerdo Pago" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="655" y="1685" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a5" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="pj-decision" target="pj-acuerdo" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-juridico" value="Pasar a Jurídico" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="1730" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a6" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="pj-decision" target="pj-juridico" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-api" value="PUT /api/Multa/prejuridico" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="555" y="1775" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pj-juridico" target="pj-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="560" y="1815" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="pj-a8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="pj-api" target="pj-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- 20. JURÍDICO -->
+                <mxCell id="ju-titulo" value="20. PROCESO JURÍDICO" style="text;html=1;strokeColor=#9673a6;fillColor=#e1d5e7;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="790" y="1450" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="840" y="1485" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-expediente" value="Crear Expediente" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="835" y="1535" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="ju-inicio" target="ju-expediente" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-abogado" value="Asignar Abogado" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="835" y="1580" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="ju-expediente" target="ju-abogado" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-docs" value="Preparar Documentos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="835" y="1625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="ju-abogado" target="ju-docs" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-demanda" value="Presentar Demanda" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="835" y="1670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="ju-docs" target="ju-demanda" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-api" value="PUT /api/Multa/juridico" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="835" y="1715" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="ju-demanda" target="ju-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-seguimiento" value="Seguimiento Proceso" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="835" y="1755" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="ju-api" target="ju-seguimiento" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="840" y="1800" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="ju-a7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="ju-seguimiento" target="ju-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+                <!-- 21. DEMANDA -->
+                <mxCell id="dm-titulo" value="21. PROCESO DE DEMANDA" style="text;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=11;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="1020" y="1450" width="200" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-inicio" value="Inicio" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1070" y="1485" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-radicacion" value="Radicación Demanda" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1065" y="1535" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-inicio" target="dm-radicacion" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-notif" value="Notificación Demandado" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1065" y="1580" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-radicacion" target="dm-notif" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-contestacion" value="Esperar Contestación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1065" y="1625" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-notif" target="dm-contestacion" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-audiencia" value="Audiencia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1065" y="1670" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-contestacion" target="dm-audiencia" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-sentencia" value="Sentencia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1065" y="1715" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-audiencia" target="dm-sentencia" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-decision" value="¿Favorable?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1085" y="1760" width="70" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-sentencia" target="dm-decision" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-ejecutar" value="Ejecutar Sentencia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1065" y="1820" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a7" value="SÍ" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;fontSize=7" parent="1" source="dm-decision" target="dm-ejecutar" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-api" value="PUT /api/Multa/demanda" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=8" parent="1" vertex="1">
+                    <mxGeometry x="1065" y="1865" width="110" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-ejecutar" target="dm-api" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-fin" value="Fin" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9" parent="1" vertex="1">
+                    <mxGeometry x="1070" y="1905" width="100" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="dm-a9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;" parent="1" source="dm-api" target="dm-fin" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
