@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit {
       error: (err) => {
         console.warn('⚠️ Backend no disponible para multas por mes, usando datos de ejemplo');
         this.multasPorMes.set([
-          { mes: 'Junio', cantidad: 42 },
+          { mes: 'Junio', cantidad: 4 },
           { mes: 'Julio', cantidad: 38 },
           { mes: 'Agosto', cantidad: 51 },
           { mes: 'Septiembre', cantidad: 45 },
