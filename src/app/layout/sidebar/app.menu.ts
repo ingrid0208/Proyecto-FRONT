@@ -24,7 +24,12 @@ import { AuthService } from '../../core/services/auth/auth.service';
           </div>
           <ul class="submenu" *ngIf="section.items">
             <li *ngFor="let item of section.items" class="menu-item">
-              <a [routerLink]="item.routerLink" class="menu-link" [class.disabled]="item.disabled">
+              <a 
+                [routerLink]="item.routerLink" 
+                routerLinkActive="active"
+                class="menu-link" 
+                [class.disabled]="item.disabled"
+              >
                 <i *ngIf="item.icon" [class]="item.icon" class="menu-icon"></i>
                 <span class="menu-label">{{ item.label }}</span>
               </a>
@@ -87,6 +92,11 @@ import { AuthService } from '../../core/services/auth/auth.service';
       background-color: rgba(255, 255, 255, 0.1);
     }
 
+    .menu-link.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      font-weight: 600;
+    }
+
     .menu-link.disabled {
       color: #666;
       cursor: not-allowed;
@@ -108,10 +118,35 @@ export class AppMenu {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.GetMe().subscribe((user: any) => {
-      console.log("✅ Usuario cargado en sidebar:", user);
-      this.model = mapBackendMenuToPrimeNG(user.menu);
-      console.log("📌 Menu recibido del backend:", user.menu);
+    // Agregar Dashboard como primer elemento (siempre visible)
+    this.model = [
+      {
+        label: 'Principal',
+        icon: 'pi pi-fw pi-home',
+        items: [
+          {
+            label: 'Dashboard',
+            icon: 'pi pi-fw pi-chart-bar',
+            routerLink: ['/dashboard']
+          }
+        ]
+      }
+    ];
+
+    // Cargar el resto del menú desde el backend
+    this.authService.GetMe().subscribe({
+      next: (user: any) => {
+        console.log("✅ Usuario cargado en sidebar:", user);
+        const backendMenu = mapBackendMenuToPrimeNG(user.menu);
+        console.log("📌 Menu recibido del backend:", user.menu);
+        
+        // Combinar Dashboard con el menú del backend
+        this.model = [...this.model, ...backendMenu];
+      },
+      error: (err) => {
+        console.warn("⚠️ No se pudo cargar el menú del backend, mostrando solo Dashboard");
+        // Si falla, al menos mostramos el Dashboard
+      }
     });
   }
 }

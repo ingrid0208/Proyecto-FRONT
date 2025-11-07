@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { LayoutService } from '../services/layout.service';
@@ -10,7 +11,7 @@ import { LayoutService } from '../services/layout.service';
   standalone: true,
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, RouterModule]
 })
 export class AppTopbar implements OnInit, OnDestroy {
   searchTerm = '';
